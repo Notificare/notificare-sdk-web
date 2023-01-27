@@ -1,0 +1,12 @@
+# Dependency directories
+node_modules/
+
+# Logs
+yarn-debug.log
+yarn-error.log
+
+# WebStorm
+.idea/
+
+# Build directories
+/packages/**/dist/
