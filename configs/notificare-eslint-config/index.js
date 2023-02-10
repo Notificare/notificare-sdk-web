@@ -1,12 +1,12 @@
 module.exports = {
   extends: [
+    "airbnb-base",
+    "airbnb-typescript/base",
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
     "plugin:import/recommended",
     "plugin:import/typescript",
     "plugin:prettier/recommended",
-    "airbnb-base",
-    "airbnb-typescript/base",
   ],
   rules: {
     "@typescript-eslint/no-use-before-define": "off",
