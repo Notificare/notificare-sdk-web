@@ -9,6 +9,7 @@ module.exports = {
     "airbnb-typescript/base",
   ],
   rules: {
+    "@typescript-eslint/no-use-before-define": "off",
     "import/prefer-default-export": "off", // prefer named to default exports
   },
 };

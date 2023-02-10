@@ -1,14 +1,17 @@
 {
   "name": "notificare-sdk-web",
   "private": true,
-  "workspaces": [
-    "apps/*",
-    "configs/*",
-    "packages/*"
-  ],
+  "workspaces": {
+    "packages": [
+      "apps/*",
+      "configs/*",
+      "packages/*"
+    ]
+  },
   "scripts": {
     "prepare": "husky install",
     "build": "lerna run --scope @notificare/* --scope notificare build",
+    "dev": "lerna run --scope @notificare/* --scope notificare dev --parallel",
     "lint": "lerna run --scope @notificare/* --scope notificare lint"
   },
   "devDependencies": {
