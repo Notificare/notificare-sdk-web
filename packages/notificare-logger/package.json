@@ -11,6 +11,7 @@
   "typings": "dist/commonjs/index.d.ts",
   "scripts": {
     "build": "rollup -c",
+    "clean": "rm -rf dist/",
     "dev": "rollup -c -w",
     "lint": "eslint ."
   },
