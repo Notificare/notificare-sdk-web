@@ -10,3 +10,6 @@ yarn-error.log
 
 # Build directories
 /packages/**/dist/
+
+# Misc.
+.DS_Store
