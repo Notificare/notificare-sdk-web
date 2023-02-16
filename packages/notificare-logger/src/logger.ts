@@ -55,8 +55,13 @@ export class Logger {
     const now = new Date().toISOString();
     const method = consoleMethodConverter[logLevel];
 
+    const format =
+      this.logLevel >= LogLevel.INFO
+        ? `[${now}] [${this.name}]`
+        : `[${now}] [${this.name}] [${logLevelToStringConverter[logLevel]}]`;
+
     // eslint-disable-next-line no-console
-    console[method](`[${now}] ${this.name}:`, ...args);
+    console[method](format, ...args);
   }
 }
 
@@ -74,6 +79,13 @@ const logLevelStringConverter: Record<LogLevelString, LogLevel> = {
   info: LogLevel.INFO,
   warning: LogLevel.WARNING,
   error: LogLevel.ERROR,
+};
+
+const logLevelToStringConverter: Record<LogLevel, LogLevelString> = {
+  [LogLevel.DEBUG]: 'debug',
+  [LogLevel.INFO]: 'info',
+  [LogLevel.WARNING]: 'warning',
+  [LogLevel.ERROR]: 'error',
 };
 
 type ConsoleMethod = Extract<keyof Console, 'log' | 'info' | 'warn' | 'error'>;

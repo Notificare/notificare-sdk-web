@@ -1,3 +1,3 @@
 import { Logger } from '@notificare/logger';
 
-export const logger = new Logger('@notificare');
+export const logger = new Logger('notificare');
