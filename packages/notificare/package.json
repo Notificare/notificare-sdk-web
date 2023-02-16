@@ -4,12 +4,11 @@
   "description": "The 'notificare' umbrella package.",
   "author": "Notificare <info@notificare.com> (https://notificare.com)",
   "license": "MIT",
-  "type": "module",
-  "main": "dist/index.cjs.js",
-  "browser": "dist/esm/index.esm2017.js",
-  "module": "dist/esm/index.esm2017.js",
-  "esm5": "dist/esm/index.esm.js",
-  "typings": "dist/index.d.ts",
+  "main": "dist/commonjs/index.js",
+  "browser": "dist/esm/index.js",
+  "module": "dist/esm/index.js",
+  "esm5": "dist/esm5/index.js",
+  "typings": "dist/commonjs/index.d.ts",
   "scripts": {
     "build": "rollup -c",
     "lint": "eslint ."
@@ -23,12 +22,8 @@
   },
   "devDependencies": {
     "@notificare/eslint-config": "*",
+    "@notificare/rollup": "*",
     "@notificare/tsconfig": "*",
-    "@rollup/plugin-commonjs": "^24.0.0",
-    "@rollup/plugin-json": "^6.0.0",
-    "@rollup/plugin-node-resolve": "^15.0.1",
-    "@rollup/plugin-typescript": "^11.0.0",
-    "rollup": "^3.10.0",
     "typescript": "^4.9.4"
   }
 }
