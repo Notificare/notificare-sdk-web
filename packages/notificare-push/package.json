@@ -18,7 +18,9 @@
     "dist"
   ],
   "dependencies": {
-    "@notificare/core": "^3.0.0"
+    "@notificare/core": "^3.0.0",
+    "@notificare/logger": "^3.0.0",
+    "tslib": "^2.5.0"
   },
   "devDependencies": {
     "@notificare/eslint-config": "*",
