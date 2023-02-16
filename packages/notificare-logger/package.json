@@ -17,6 +17,9 @@
   "files": [
     "dist"
   ],
+  "dependencies": {
+    "tslib": "^2.5.0"
+  },
   "devDependencies": {
     "@notificare/eslint-config": "*",
     "@notificare/rollup": "*",
