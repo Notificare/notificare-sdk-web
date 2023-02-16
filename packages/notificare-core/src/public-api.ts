@@ -1,3 +1,4 @@
+import { LogLevel } from '@notificare/logger';
 import { request } from './internal/network/request';
 import {
   convertNetworkApplicationToPublic,
@@ -13,6 +14,8 @@ import { NotificareNotConfiguredError } from './errors/notificare-not-configured
 import { NotificareNetworkRequestError } from './errors/notificare-network-request-error';
 
 let launchState: LaunchState = LaunchState.NONE;
+
+export const SDK_VERSION = '3.0.0';
 
 export function isConfigured(): boolean {
   return launchState >= LaunchState.CONFIGURED;
@@ -49,7 +52,6 @@ export function configure(options: NotificareOptions) {
 
 export async function launch(): Promise<void> {
   // TODO: check is lib supported
-  // TODO: check if it has been configured
   // TODO: load options from NOTIFICARE_PLUGIN_OPTIONS
 
   if (launchState === LaunchState.LAUNCHING) {
@@ -93,9 +95,7 @@ export async function launch(): Promise<void> {
   }
 
   launchState = LaunchState.LAUNCHED;
-  logger.info('Notificare is ready.');
-
-  // TODO: print SDK information
+  printLaunchSummary(application);
 }
 
 export async function fetchApplication(): Promise<NotificareApplication> {
@@ -106,4 +106,27 @@ export async function fetchApplication(): Promise<NotificareApplication> {
 
   const { application }: NetworkApplicationResponse = await response.json();
   return convertNetworkApplicationToPublic(application);
+}
+
+function printLaunchSummary(application: NotificareApplication) {
+  if (logger.getLogLevel() >= LogLevel.INFO) {
+    logger.info('Notificare is ready.');
+    return;
+  }
+
+  const enabledServices = Object.entries(application.services)
+    .filter(([, enabled]) => enabled)
+    .map(([service]) => service);
+
+  const enabledComponents = [...components.keys()].sort();
+
+  logger.debug('/==============================================================================/');
+  logger.debug('Notificare SDK is ready to use for application');
+  logger.debug(`App name: ${application.name}`);
+  logger.debug(`App ID: ${application.id}`);
+  logger.debug(`App services: ${enabledServices.join(', ')}`);
+  logger.debug('/==============================================================================/');
+  logger.debug(`SDK version: ${SDK_VERSION}`);
+  logger.debug(`SDK modules: ${enabledComponents.join(', ')}`);
+  logger.debug('/==============================================================================/');
 }
