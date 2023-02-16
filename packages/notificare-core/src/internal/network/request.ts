@@ -12,17 +12,20 @@ export async function request(url: string, options?: RequestOptions): Promise<Re
 
   const retries = options?.retries ?? defaults.retries;
 
+  const headers = new Headers();
+  headers.set('Accept', 'application/json');
+  headers.set('Content-Type', 'application/json');
+
+  const authorizationHeader = getAuthorizationHeader();
+  if (authorizationHeader) headers.set('Authorization', authorizationHeader);
+
   for (let attempt = 0; attempt <= retries; attempt += 1) {
     try {
       // eslint-disable-next-line no-await-in-loop
       return await fetch(completeUrl, {
         method: options?.method ?? 'GET',
         body: JSON.stringify(options?.body),
-        headers: {
-          Accept: 'application/json',
-          'Content-Type': 'application/json',
-          Authorization: authorizationHeader(),
-        },
+        headers,
       });
     } catch (e) {
       logger.error(`Request attempt #${attempt + 1} failed.`, e);
@@ -76,9 +79,9 @@ function getCompleteUrl(url: string): string {
   return url.startsWith('/') ? `${baseUrl}${url}` : `${baseUrl}/${url}`;
 }
 
-function authorizationHeader(): string {
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  const options = getOptions()!;
+function getAuthorizationHeader(): string | undefined {
+  const options = getOptions();
+  if (!options) return undefined;
 
   const username = options.applicationKey;
   const password = options.applicationSecret;
