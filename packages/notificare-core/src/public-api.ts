@@ -7,11 +7,11 @@ import {
 import { NotificareOptions } from './options';
 import { logger } from './internal/logger';
 import { getOptions, setOptions } from './internal/options';
-import { components } from './internal/components';
 import { LaunchState } from './internal/launch-state';
 import { NotificareApplication } from './models/notificare-application';
 import { NotificareNotConfiguredError } from './errors/notificare-not-configured-error';
 import { NotificareNetworkRequestError } from './errors/notificare-network-request-error';
+import { components } from './internal/component-cache';
 
 let launchState: LaunchState = LaunchState.NONE;
 

@@ -1,10 +1,5 @@
-import { logger } from '../logger';
-
-export abstract class Component {
-  protected constructor(readonly name: string) {}
-
-  abstract launch(): Promise<void>;
-}
+import { logger } from './logger';
+import { Component } from './component';
 
 export const components = new Map<string, Component>();
 
