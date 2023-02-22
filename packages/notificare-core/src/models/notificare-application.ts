@@ -25,8 +25,8 @@ export interface NotificareWebPushConfig {
   readonly icon: string;
   readonly allowedDomains: string[];
   readonly urlFormatString: string;
-  readonly info: NotificareWebPushConfigInfo;
-  readonly vapid: NotificareWebPushConfigVapid;
+  readonly info?: NotificareWebPushConfigInfo;
+  readonly vapid?: NotificareWebPushConfigVapid;
 }
 
 export interface NotificareWebPushConfigInfo {

@@ -5,6 +5,8 @@ import {
   NotificareRegionConfig,
   NotificareUserDataField,
   NotificareWebPushConfig,
+  NotificareWebPushConfigInfo,
+  NotificareWebPushConfigVapid,
 } from '../../../models/notificare-application';
 
 export interface NetworkApplicationResponse {
@@ -23,7 +25,7 @@ export interface NetworkApplication {
   readonly regionConfig?: {
     readonly proximityUUID?: string;
   };
-  readonly webPushConfig?: {
+  readonly websitePushConfig?: {
     readonly icon?: string;
     readonly allowedDomains?: string[];
     readonly urlFormatString?: string;
@@ -95,34 +97,45 @@ function convertNetworkApplicationToPublicWebPushConfig(
   networkApplication: NetworkApplication,
 ): NotificareWebPushConfig | undefined {
   if (
-    !networkApplication.webPushConfig?.icon ||
-    !networkApplication.webPushConfig?.allowedDomains ||
-    !networkApplication.webPushConfig?.urlFormatString ||
-    !networkApplication.webPushConfig?.info?.subject?.UID ||
-    !networkApplication.webPushConfig?.info?.subject?.CN ||
-    !networkApplication.webPushConfig?.info?.subject?.OU ||
-    !networkApplication.webPushConfig?.info?.subject?.O ||
-    !networkApplication.webPushConfig?.info?.subject?.C ||
-    !networkApplication.webPushConfig?.vapid?.publicKey
-  )
+    !networkApplication.websitePushConfig?.icon ||
+    !networkApplication.websitePushConfig?.allowedDomains ||
+    !networkApplication.websitePushConfig?.urlFormatString
+  ) {
     return undefined;
+  }
+
+  let info: NotificareWebPushConfigInfo | undefined;
+  if (
+    networkApplication.websitePushConfig?.info?.subject?.UID &&
+    networkApplication.websitePushConfig?.info?.subject?.CN &&
+    networkApplication.websitePushConfig?.info?.subject?.OU &&
+    networkApplication.websitePushConfig?.info?.subject?.O &&
+    networkApplication.websitePushConfig?.info?.subject?.C
+  ) {
+    info = {
+      subject: {
+        UID: networkApplication.websitePushConfig.info.subject.UID,
+        CN: networkApplication.websitePushConfig.info.subject.CN,
+        OU: networkApplication.websitePushConfig.info.subject.OU,
+        O: networkApplication.websitePushConfig.info.subject.O,
+        C: networkApplication.websitePushConfig.info.subject.C,
+      },
+    };
+  }
+
+  let vapid: NotificareWebPushConfigVapid | undefined;
+  if (networkApplication.websitePushConfig?.vapid?.publicKey) {
+    vapid = {
+      publicKey: networkApplication.websitePushConfig.vapid.publicKey,
+    };
+  }
 
   return {
-    icon: networkApplication.webPushConfig.icon,
-    allowedDomains: networkApplication.webPushConfig.allowedDomains,
-    urlFormatString: networkApplication.webPushConfig.urlFormatString,
-    info: {
-      subject: {
-        UID: networkApplication.webPushConfig.info.subject.UID,
-        CN: networkApplication.webPushConfig.info.subject.CN,
-        OU: networkApplication.webPushConfig.info.subject.OU,
-        O: networkApplication.webPushConfig.info.subject.O,
-        C: networkApplication.webPushConfig.info.subject.C,
-      },
-    },
-    vapid: {
-      publicKey: networkApplication.webPushConfig.vapid.publicKey,
-    },
+    icon: networkApplication.websitePushConfig.icon,
+    allowedDomains: networkApplication.websitePushConfig.allowedDomains,
+    urlFormatString: networkApplication.websitePushConfig.urlFormatString,
+    info,
+    vapid,
   };
 }
 
