@@ -100,6 +100,22 @@ export async function launch(): Promise<void> {
   printLaunchSummary(application);
 }
 
+export function getApplication(): NotificareApplication | undefined {
+  const applicationStr = localStorage.getItem('re.notifica.application');
+  if (!applicationStr) return undefined;
+
+  try {
+    return JSON.parse(applicationStr);
+  } catch (e) {
+    logger.warning('Failed to decode the stored application.', e);
+
+    // Remove the corrupted device from local storage.
+    localStorage.removeItem('re.notifica.application');
+
+    return undefined;
+  }
+}
+
 export async function fetchApplication(): Promise<NotificareApplication> {
   if (!isConfigured()) throw new NotificareNotConfiguredError();
 
