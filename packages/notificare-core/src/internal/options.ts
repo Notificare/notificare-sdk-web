@@ -12,15 +12,14 @@ export function setOptions(options: NotificareInternalOptions) {
 }
 
 export interface NotificareInternalOptions {
-  services: {
-    cloudHost: string;
-    pushHost: string;
-  };
+  services: NotificareInternalOptionsServices;
   applicationKey: string;
   applicationSecret: string;
   applicationHost: string;
   applicationVersion: string;
   mode: NotificareLaunchMode;
+  serviceWorker?: string;
+  serviceWorkerScope?: string;
 }
 
 export interface NotificareInternalOptionsServices {

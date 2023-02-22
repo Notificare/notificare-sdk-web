@@ -45,6 +45,8 @@ export function configure(options: NotificareOptions) {
     applicationVersion: options.applicationVersion ?? '1.0.0',
     applicationHost: `${window.location.protocol}//${window.location.host}`,
     mode: options.mode ?? 'manual',
+    serviceWorker: options.serviceWorker,
+    serviceWorkerScope: options.serviceWorkerScope,
   });
 
   launchState = LaunchState.CONFIGURED;
