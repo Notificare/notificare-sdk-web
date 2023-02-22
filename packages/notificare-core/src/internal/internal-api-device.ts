@@ -146,9 +146,11 @@ function registrationChanged(token?: string, userId?: string, userName?: string)
     changed = true;
   }
 
-  const oneDayAgo = new Date().getDate() - 1;
+  const oneDayAgo = new Date();
+  oneDayAgo.setDate(oneDayAgo.getDate() - 1);
+
   const lastRegistered = Date.parse(device.lastRegistered);
-  if (lastRegistered < oneDayAgo) {
+  if (lastRegistered < oneDayAgo.getTime()) {
     logger.debug('Registration check: region changed');
     changed = true;
   }
