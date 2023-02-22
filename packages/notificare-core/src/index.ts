@@ -3,6 +3,7 @@ import { registerCoreComponents } from './register-core-components';
 export * from './internal/network/request';
 export * from './internal/component';
 export { registerComponent } from './internal/component-cache';
+export { getOptions, NotificareInternalOptions } from './internal/options';
 
 export * from './models/notificare-application';
 export * from './models/notificare-device';
