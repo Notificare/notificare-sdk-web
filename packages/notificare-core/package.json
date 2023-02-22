@@ -13,7 +13,8 @@
     "build": "rollup -c",
     "clean": "rm -rf dist/",
     "dev": "rollup -c -w",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@notificare/logger": "^3.0.0",

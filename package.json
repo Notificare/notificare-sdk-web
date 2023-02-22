@@ -13,7 +13,8 @@
     "build": "lerna run --scope @notificare/* --scope notificare build",
     "clean": "lerna run --scope @notificare/* --scope notificare clean",
     "dev": "lerna run --scope @notificare/* --scope notificare dev --parallel",
-    "lint": "lerna run --scope @notificare/* --scope notificare lint"
+    "lint": "lerna run --scope @notificare/* --scope notificare lint",
+    "typecheck": "lerna run --scope @notificare/* --scope notificare typecheck"
   },
   "devDependencies": {
     "husky": "^8.0.3",
