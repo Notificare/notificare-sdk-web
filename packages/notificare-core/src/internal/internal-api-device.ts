@@ -72,6 +72,7 @@ export async function registerDeviceInternal(options: InternalRegisterDeviceOpti
       region: getDeviceRegion(),
       platform: 'Web',
       transport: options.transport,
+      keys: options.keys,
       sdkVersion: SDK_VERSION,
       appVersion: getApplicationVersion(),
       userAgent: navigator.userAgent,

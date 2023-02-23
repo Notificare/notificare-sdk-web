@@ -9,6 +9,7 @@ export interface DeviceRegistration {
   readonly region: string;
   readonly platform: string;
   readonly transport: NotificareTransport;
+  readonly keys?: object;
   readonly sdkVersion: string;
   readonly appVersion: string;
   readonly userAgent: string;
