@@ -6,6 +6,11 @@ import {
 } from '../internal-api-device';
 import { logger } from '../logger';
 import { getApplicationVersion } from '../utils';
+import {
+  logApplicationInstall,
+  logApplicationRegistration,
+  logApplicationUpgrade,
+} from '../internal-api-events';
 
 export class DeviceComponent extends Component {
   constructor() {
@@ -19,8 +24,8 @@ export class DeviceComponent extends Component {
     if (device) {
       if (device.appVersion !== getApplicationVersion()) {
         // It's not the same version, let's log it as an upgrade.
-        logger.debug('New version detected');
-        // TODO: logApplicationUpgrade()
+        logger.debug('New version detected.');
+        await logApplicationUpgrade();
       }
 
       await registerDeviceInternal({
@@ -35,9 +40,9 @@ export class DeviceComponent extends Component {
       try {
         await registerTemporaryDevice();
 
-        // We will log the Install & Registration events here since this will execute only one time at the start.
-        // TODO: logApplicationInstall()
-        // TODO: logApplicationRegistration()
+        // We will log the Installation & Registration events here since this will execute only one time at the start.
+        await logApplicationInstall();
+        await logApplicationRegistration();
       } catch (e) {
         logger.warning('Failed to register temporary device.', e);
         throw e;

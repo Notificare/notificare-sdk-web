@@ -3,6 +3,35 @@ import { request } from './network/request';
 import { isConfigured } from '../public-api';
 import { logger } from './logger';
 
+export async function logApplicationInstall() {
+  await logInternal({ type: 're.notifica.event.application.Install' });
+}
+
+export async function logApplicationRegistration() {
+  await logInternal({ type: 're.notifica.event.application.Registration' });
+}
+
+export async function logApplicationUpgrade() {
+  await logInternal({ type: 're.notifica.event.application.Upgrade' });
+}
+
+export async function logApplicationOpen(sessionId: string) {
+  await logInternal({
+    type: 're.notifica.event.application.Open',
+    sessionId,
+  });
+}
+
+export async function logApplicationClose(sessionId: string, sessionLength: number) {
+  await logInternal({
+    type: 're.notifica.event.application.Close',
+    sessionId,
+    data: {
+      length: sessionLength.toString(),
+    },
+  });
+}
+
 export async function logNotificationOpen(notificationId: string) {
   await logInternal({
     type: 're.notifica.event.notification.Open',
