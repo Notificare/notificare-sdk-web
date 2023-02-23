@@ -7,8 +7,9 @@ const defaults: DefaultRetryOptions = {
 };
 
 export async function request(url: string, options?: RequestOptions): Promise<Response> {
+  const method = options?.method ?? 'GET';
   const completeUrl = options?.isAbsolutePath ? url : getCompleteUrl(url);
-  logger.debug(`Fetching ${completeUrl}`);
+  logger.debug(`${method} ${completeUrl}`);
 
   const retries = options?.retries ?? defaults.retries;
 
@@ -23,7 +24,7 @@ export async function request(url: string, options?: RequestOptions): Promise<Re
     try {
       // eslint-disable-next-line no-await-in-loop
       return await fetch(completeUrl, {
-        method: options?.method ?? 'GET',
+        method,
         body: JSON.stringify(options?.body),
         headers,
       });
