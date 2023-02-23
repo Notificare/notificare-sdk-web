@@ -44,6 +44,7 @@ export async function enableRemoteNotifications(): Promise<void> {
     const token = await enableWebPushNotifications(application, options);
 
     await registerPushDevice({
+      transport: 'WebPush',
       token: token.endpoint,
       keys: token.keys,
     });

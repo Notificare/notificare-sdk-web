@@ -1,1 +1,1 @@
-export type NotificareTransport = 'Notificare' | 'WebsitePush';
+export type NotificareTransport = 'Notificare' | 'WebPush' | 'WebsitePush';

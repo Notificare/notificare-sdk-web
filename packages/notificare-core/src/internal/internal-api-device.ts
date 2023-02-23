@@ -47,7 +47,7 @@ export async function registerPushDevice(options: InternalRegisterPushDeviceOpti
   const device = getCurrentDevice();
 
   await registerDeviceInternal({
-    transport: 'WebsitePush',
+    transport: options.transport,
     token: options.token,
     keys: options.keys,
     userId: device?.userId,
@@ -200,6 +200,7 @@ interface InternalRegisterDeviceOptions {
 }
 
 interface InternalRegisterPushDeviceOptions {
+  readonly transport: Extract<NotificareTransport, 'WebPush' | 'WebsitePush'>;
   readonly token: string;
   readonly keys?: object;
 }
