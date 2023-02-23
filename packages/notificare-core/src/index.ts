@@ -3,6 +3,7 @@ import { registerCoreComponents } from './register-core-components';
 export * from './internal/network/request';
 export * from './internal/component';
 export { registerComponent } from './internal/component-cache';
+export { registerPushDevice } from './internal/internal-api-device';
 export { getOptions, NotificareInternalOptions } from './internal/options';
 export { logInternal } from './internal/internal-api-events';
 
@@ -12,6 +13,7 @@ export * from './models/notificare-transport';
 
 export * from './errors/notificare-network-request-error';
 export * from './errors/notificare-not-configured-error';
+export * from './errors/notificare-device-unavailable-error';
 export * from './errors/notificare-not-ready-error';
 
 export * from './public-api';

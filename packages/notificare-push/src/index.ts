@@ -10,13 +10,7 @@ declare global {
   }
 }
 
-export function hasWebPushCapabilities(): boolean {
-  const safariPushSupported = window.safari?.pushNotification != null;
-  const webPushSupported = navigator.serviceWorker != null && window.PushManager != null;
-  // ServiceWorkerRegistration.prototype.showNotification;
-
-  return safariPushSupported || webPushSupported;
-}
+export * from './public-api';
 
 function registerComponents() {
   registerComponent(new PushComponent());

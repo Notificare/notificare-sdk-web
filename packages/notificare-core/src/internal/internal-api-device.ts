@@ -43,14 +43,13 @@ export async function registerTemporaryDevice() {
   });
 }
 
-export async function registerPushDevice(transport: NotificareTransport, token: string) {
-  if (transport === 'Notificare') throw new Error(`Invalid transport '${transport}'.`);
-
+export async function registerPushDevice(options: InternalRegisterPushDeviceOptions) {
   const device = getCurrentDevice();
 
   await registerDeviceInternal({
-    transport,
-    token,
+    transport: 'WebsitePush',
+    token: options.token,
+    keys: options.keys,
     userId: device?.userId,
     userName: device?.userName,
   });
@@ -195,6 +194,12 @@ function convertRegistrationToStoredDevice(
 interface InternalRegisterDeviceOptions {
   transport: NotificareTransport;
   token: string;
+  keys?: object;
   userId?: string;
   userName?: string;
+}
+
+interface InternalRegisterPushDeviceOptions {
+  readonly token: string;
+  readonly keys?: object;
 }
