@@ -1,7 +1,7 @@
 import { registerDeviceInternal, getCurrentDevice } from './internal/internal-api-device';
 import { NotificareNotReadyError } from './errors/notificare-not-ready-error';
 
-export { getCurrentDevice } from './internal/internal-api-device';
+export { getCurrentDevice, onDeviceRegistered } from './internal/internal-api-device';
 
 export async function registerDevice(options?: RegisterDeviceOptions): Promise<void> {
   // TODO: check prerequisites

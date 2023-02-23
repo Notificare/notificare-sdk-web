@@ -12,6 +12,7 @@ import { request } from './network/request';
 import { logger } from './logger';
 import { getOptions } from './options';
 import { NotificareDevice } from '../models/notificare-device';
+import { EventSubscription } from '../event-subscription';
 
 export function getCurrentDevice(): NotificareDevice | undefined {
   const deviceStr = localStorage.getItem('re.notifica.device');
@@ -92,8 +93,28 @@ export async function registerDeviceInternal(options: InternalRegisterDeviceOpti
     logger.info('Skipping device registration, nothing changed.');
   }
 
-  // TODO: emit device_registered event.
+  const device = getCurrentDevice();
+  if (device && onDeviceRegisteredCallback) {
+    onDeviceRegisteredCallback(device);
+  }
 }
+
+// region Events
+
+type OnDeviceRegisteredCallback = (device: NotificareDevice) => void;
+let onDeviceRegisteredCallback: OnDeviceRegisteredCallback | undefined;
+
+export function onDeviceRegistered(callback: OnDeviceRegisteredCallback): EventSubscription {
+  onDeviceRegisteredCallback = callback;
+
+  return {
+    remove: () => {
+      onDeviceRegisteredCallback = undefined;
+    },
+  };
+}
+
+// endregion
 
 function registrationChanged(token?: string, userId?: string, userName?: string): boolean {
   const device = getCurrentDevice();
