@@ -99,6 +99,18 @@ export async function enableWebPushNotifications(
   return getPushTokenFromPushSubscription(existingSubscription);
 }
 
+export async function disableWebPushNotifications() {
+  const registration = await navigator.serviceWorker.ready;
+  const subscription = await registration.pushManager.getSubscription();
+
+  if (!subscription) {
+    logger.warning('No push subscription when disabling web push.');
+    return;
+  }
+
+  await subscription.unsubscribe();
+}
+
 export interface PushToken {
   endpoint: string;
   keys?: PushKeys;

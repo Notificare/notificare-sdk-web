@@ -1,12 +1,19 @@
 import {
   getApplication,
+  getCurrentDevice,
   getOptions,
+  NotificareDeviceUnavailableError,
   NotificareNotConfiguredError,
   NotificareNotReadyError,
   registerPushDevice,
+  registerTemporaryDevice,
 } from '@notificare/core';
 import { logger } from './logger';
-import { enableWebPushNotifications, hasWebPushSupport } from './internal/internal-api-web-push';
+import {
+  disableWebPushNotifications,
+  enableWebPushNotifications,
+  hasWebPushSupport,
+} from './internal/internal-api-web-push';
 import {
   enableSafariPushNotifications,
   hasSafariPushSupport,
@@ -59,4 +66,17 @@ export async function enableRemoteNotifications(): Promise<void> {
   } catch (e) {
     logger.warning('Unable to update the notification settings.', e);
   }
+}
+
+export async function disableRemoteNotifications(): Promise<void> {
+  // TODO: check prerequisites
+
+  const device = getCurrentDevice();
+  if (!device) throw new NotificareDeviceUnavailableError();
+
+  if (device.transport === 'WebPush') {
+    await disableWebPushNotifications();
+  }
+
+  await registerTemporaryDevice();
 }
