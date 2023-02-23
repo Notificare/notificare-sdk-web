@@ -10,7 +10,6 @@ import { getOptions, setOptions } from './internal/options';
 import { LaunchState } from './internal/launch-state';
 import { NotificareApplication } from './models/notificare-application';
 import { NotificareNotConfiguredError } from './errors/notificare-not-configured-error';
-import { NotificareNetworkRequestError } from './errors/notificare-network-request-error';
 import { components } from './internal/component-cache';
 
 let launchState: LaunchState = LaunchState.NONE;
@@ -69,13 +68,12 @@ export async function launch(): Promise<void> {
 
   if (launchState < LaunchState.CONFIGURED) {
     logger.debug('Notificare has not been configured before launching.');
-    const response = await request('/config.json', { isAbsolutePath: true });
-    if (response.ok) {
-      const options = await response.json();
-      configure(options);
 
-      logger.info('Successfully configured Notificare with config.json.');
-    }
+    const response = await request('/config.json', { isAbsolutePath: true });
+    const options = await response.json();
+    configure(options);
+
+    logger.info('Successfully configured Notificare with config.json.');
   }
 
   const options = getOptions();
@@ -120,7 +118,6 @@ export async function fetchApplication(): Promise<NotificareApplication> {
   if (!isConfigured()) throw new NotificareNotConfiguredError();
 
   const response = await request('/api/application/info');
-  if (!response.ok) throw new NotificareNetworkRequestError(response);
 
   const { application }: NetworkApplicationResponse = await response.json();
   return convertNetworkApplicationToPublic(application);

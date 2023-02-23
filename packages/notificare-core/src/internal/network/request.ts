@@ -1,5 +1,6 @@
 import { getOptions } from '../options';
 import { logger } from '../logger';
+import { NotificareNetworkRequestError } from '../../errors/notificare-network-request-error';
 
 const defaults: DefaultRetryOptions = {
   retries: 3,
@@ -21,13 +22,19 @@ export async function request(url: string, options?: RequestOptions): Promise<Re
   if (authorizationHeader) headers.set('Authorization', authorizationHeader);
 
   for (let attempt = 0; attempt <= retries; attempt += 1) {
+    let response: Response | undefined;
+
     try {
       // eslint-disable-next-line no-await-in-loop
-      return await fetch(completeUrl, {
+      response = await fetch(completeUrl, {
         method,
         body: JSON.stringify(options?.body),
         headers,
       });
+
+      // The request completed successfully and the response is OK.
+      // Otherwise, don't retry and throw immediately.
+      if (response.ok) return response;
     } catch (e) {
       logger.error(`Request attempt #${attempt + 1} failed.`, e);
 
@@ -47,6 +54,10 @@ export async function request(url: string, options?: RequestOptions): Promise<Re
         await sleep(retryDelayMilliseconds);
       }
     }
+
+    // Having a response after the try catch means the request completed successfully
+    // but there's something wrong with it (ie bad request).
+    if (response) throw new NotificareNetworkRequestError(response);
   }
 
   throw new Error('Request exceeded maximum retries.');
