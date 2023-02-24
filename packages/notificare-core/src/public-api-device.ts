@@ -1,9 +1,9 @@
-import { registerDeviceInternal, getCurrentDevice } from './internal/internal-api-device';
+import { getCurrentDevice, registerDeviceInternal } from './internal/internal-api-device';
 import { NotificareNotReadyError } from './errors/notificare-not-ready-error';
 
 export { getCurrentDevice, onDeviceRegistered } from './internal/internal-api-device';
 
-export async function registerDevice(options?: RegisterDeviceOptions): Promise<void> {
+export async function registerDevice(options: RegisterDeviceOptions): Promise<void> {
   // TODO: check prerequisites
 
   const device = getCurrentDevice();
@@ -12,12 +12,12 @@ export async function registerDevice(options?: RegisterDeviceOptions): Promise<v
   await registerDeviceInternal({
     transport: device.transport,
     token: device.id,
-    userId: options?.userId,
-    userName: options?.userName,
+    userId: options.userId ?? undefined,
+    userName: options.userName ?? undefined,
   });
 }
 
 interface RegisterDeviceOptions {
-  userId?: string;
-  userName?: string;
+  userId: string | null;
+  userName: string | null;
 }
