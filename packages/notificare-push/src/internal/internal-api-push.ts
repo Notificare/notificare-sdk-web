@@ -34,6 +34,6 @@ export async function updateNotificationSettings() {
 
   if (allowedUI && firstRegistration) {
     await logPushRegistration();
-    localStorage.setItem('re.notifica.push.first_registration', 'true');
+    localStorage.setItem('re.notifica.push.first_registration', 'false');
   }
 }
