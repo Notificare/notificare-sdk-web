@@ -3,8 +3,11 @@ import { arrayBufferToBase64, arrayBufferToBase64Url, base64UrlToUint8Array } fr
 import { logger } from '../logger';
 
 export function hasWebPushSupport(): boolean {
-  return navigator.serviceWorker != null && window.PushManager != null;
-  // ServiceWorkerRegistration.prototype.showNotification;
+  return (
+    navigator.serviceWorker != null &&
+    window.PushManager != null &&
+    'showNotification' in ServiceWorkerRegistration.prototype
+  );
   // TODO: check iPhone && standalone
 }
 
