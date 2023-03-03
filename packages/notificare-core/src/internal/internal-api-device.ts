@@ -24,10 +24,19 @@ export function getCurrentDevice(): NotificareDevice | undefined {
     logger.warning('Failed to decode the stored device.', e);
 
     // Remove the corrupted device from local storage.
-    localStorage.removeItem('re.notifica.device');
+    storeCurrentDevice(undefined);
 
     return undefined;
   }
+}
+
+export function storeCurrentDevice(device: NotificareDevice | undefined) {
+  if (!device) {
+    localStorage.removeItem('re.notifica.device');
+    return;
+  }
+
+  localStorage.setItem('re.notifica.device', JSON.stringify(device));
 }
 
 export async function registerTemporaryDevice() {
@@ -89,7 +98,7 @@ export async function registerDeviceInternal(options: InternalRegisterDeviceOpti
     });
 
     const device = convertRegistrationToStoredDevice(deviceRegistration, currentDevice);
-    localStorage.setItem('re.notifica.device', JSON.stringify(device));
+    storeCurrentDevice(device);
   } else {
     logger.info('Skipping device registration, nothing changed.');
   }
@@ -179,14 +188,14 @@ function registrationChanged(token?: string, userId?: string, userName?: string)
   return changed;
 }
 
-function getDeviceLanguage(): string {
+export function getDeviceLanguage(): string {
   const preferredLanguage = localStorage.getItem('re.notifica.preferred_language');
   if (!preferredLanguage) return getBrowserLanguage();
 
   return preferredLanguage;
 }
 
-function getDeviceRegion(): string {
+export function getDeviceRegion(): string {
   const preferredRegion = localStorage.getItem('re.notifica.preferred_region');
   if (!preferredRegion) return getBrowserRegion();
 

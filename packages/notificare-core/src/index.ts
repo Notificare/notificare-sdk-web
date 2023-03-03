@@ -17,6 +17,8 @@ export * from './event-subscription';
 export * from './models/notificare-application';
 export * from './models/notificare-device';
 export * from './models/notificare-transport';
+export * from './models/notificare-do-not-disturb';
+export * from './models/notificare-user-data';
 
 export * from './public-api';
 export * from './public-api-device';

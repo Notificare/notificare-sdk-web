@@ -3,7 +3,7 @@ import { request } from './internal/network/request';
 import {
   convertNetworkApplicationToPublic,
   NetworkApplicationResponse,
-} from './internal/network/models/application';
+} from './internal/network/responses/application-response';
 import { NotificareOptions } from './options';
 import { logger } from './internal/logger';
 import { getOptions, setOptions } from './internal/options';
