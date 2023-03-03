@@ -11,17 +11,25 @@ import {
   logApplicationRegistration,
   logApplicationUpgrade,
 } from '../internal-api-events';
+import { launch as launchSession } from '../internal-api-session';
 
+/* eslint-disable class-methods-use-this */
 export class DeviceComponent extends Component {
   constructor() {
     super('device');
   }
 
-  // eslint-disable-next-line class-methods-use-this
+  configure() {
+    //
+  }
+
   async launch(): Promise<void> {
     const device = getCurrentDevice();
 
     if (device) {
+      // Having a stored device, we can safely launch the session module.
+      await launchSession();
+
       if (device.appVersion !== getApplicationVersion()) {
         // It's not the same version, let's log it as an upgrade.
         logger.debug('New version detected.');
@@ -41,6 +49,9 @@ export class DeviceComponent extends Component {
       try {
         await registerTemporaryDevice();
 
+        // Having a stored device, we can safely launch the session module.
+        await launchSession();
+
         // We will log the Installation & Registration events here since this will execute only one time at the start.
         await logApplicationInstall();
         await logApplicationRegistration();
@@ -49,5 +60,9 @@ export class DeviceComponent extends Component {
         throw e;
       }
     }
+  }
+
+  async unlaunch(): Promise<void> {
+    //
   }
 }

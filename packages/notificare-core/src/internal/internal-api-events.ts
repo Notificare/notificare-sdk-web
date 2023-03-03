@@ -2,6 +2,7 @@ import { getCurrentDevice } from './internal-api-device';
 import { request } from './network/request';
 import { isConfigured } from '../public-api';
 import { logger } from './logger';
+import { getSession } from './internal-api-session-shared';
 
 export async function logApplicationInstall() {
   await logInternal({ type: 're.notifica.event.application.Install' });
@@ -61,7 +62,7 @@ export async function logInternal(options: InternalLogEventOptions) {
       timestamp: Date.now(),
       deviceID: currentDevice?.id,
       userID: currentDevice?.userId,
-      sessionID: options.sessionId, // TODO: fallback to the session module
+      sessionID: options.sessionId ?? getSession()?.id,
       notification: options.notificationId,
       data: options.data,
     },

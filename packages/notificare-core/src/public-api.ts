@@ -48,6 +48,12 @@ export function configure(options: NotificareOptions) {
     serviceWorkerScope: options.serviceWorkerScope,
   });
 
+  // eslint-disable-next-line no-restricted-syntax
+  for (const component of components.values()) {
+    logger.debug(`Configuring '${component.name}' component.`);
+    component.configure();
+  }
+
   launchState = LaunchState.CONFIGURED;
 }
 
