@@ -7,12 +7,13 @@ import {
 } from './utils';
 import { NotificareTransport } from '../models/notificare-transport';
 import { DeviceRegistration } from './network/payloads/device-registration';
-import { SDK_VERSION } from '../public-api';
+import { isReady, SDK_VERSION } from '../public-api';
 import { request } from './network/request';
 import { logger } from './logger';
 import { getOptions } from './options';
 import { NotificareDevice } from '../models/notificare-device';
 import { EventSubscription } from '../event-subscription';
+import { NotificareNotReadyError } from '../errors/notificare-not-ready-error';
 
 export function getCurrentDevice(): NotificareDevice | undefined {
   const deviceStr = localStorage.getItem('re.notifica.device');
@@ -125,6 +126,13 @@ export function onDeviceRegistered(callback: OnDeviceRegisteredCallback): EventS
 }
 
 // endregion
+
+export function checkPrerequisites() {
+  if (!isReady()) {
+    logger.warning('Notificare is not ready yet.');
+    throw new NotificareNotReadyError();
+  }
+}
 
 function registrationChanged(token?: string, userId?: string, userName?: string): boolean {
   const device = getCurrentDevice();

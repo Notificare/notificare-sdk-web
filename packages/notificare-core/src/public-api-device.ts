@@ -1,4 +1,5 @@
 import {
+  checkPrerequisites,
   getCurrentDevice,
   getDeviceLanguage,
   getDeviceRegion,
@@ -17,7 +18,7 @@ import { DeviceUserDataResponse } from './internal/network/responses/device-user
 export { getCurrentDevice, onDeviceRegistered } from './internal/internal-api-device';
 
 export async function registerDevice(options: RegisterDeviceOptions): Promise<void> {
-  // TODO: check prerequisites
+  checkPrerequisites();
 
   const device = getCurrentDevice();
   if (!device) throw new NotificareNotReadyError();
@@ -41,7 +42,7 @@ export function getPreferredLanguage(): string | undefined {
 }
 
 export async function updatePreferredLanguage(language: string | null): Promise<void> {
-  // TODO: check prerequisites
+  checkPrerequisites();
 
   const device = getCurrentDevice();
   if (!device) throw new NotificareDeviceUnavailableError();
@@ -71,7 +72,7 @@ export async function updatePreferredLanguage(language: string | null): Promise<
 }
 
 export async function fetchTags(): Promise<string[]> {
-  // TODO: check prerequisites
+  checkPrerequisites();
 
   const device = getCurrentDevice();
   if (!device) throw new NotificareDeviceUnavailableError();
@@ -87,7 +88,7 @@ export async function addTag(tag: string): Promise<void> {
 }
 
 export async function addTags(tags: string[]): Promise<void> {
-  // TODO: check prerequisites
+  checkPrerequisites();
 
   const device = getCurrentDevice();
   if (!device) throw new NotificareDeviceUnavailableError();
@@ -105,7 +106,7 @@ export async function removeTag(tag: string): Promise<void> {
 }
 
 export async function removeTags(tags: string[]): Promise<void> {
-  // TODO: check prerequisites
+  checkPrerequisites();
 
   const device = getCurrentDevice();
   if (!device) throw new NotificareDeviceUnavailableError();
@@ -119,7 +120,7 @@ export async function removeTags(tags: string[]): Promise<void> {
 }
 
 export async function clearTags(): Promise<void> {
-  // TODO: check prerequisites
+  checkPrerequisites();
 
   const device = getCurrentDevice();
   if (!device) throw new NotificareDeviceUnavailableError();
@@ -130,7 +131,7 @@ export async function clearTags(): Promise<void> {
 }
 
 export async function fetchDoNotDisturb(): Promise<NotificareDoNotDisturb | undefined> {
-  // TODO: check prerequisites
+  checkPrerequisites();
 
   const device = getCurrentDevice();
   if (!device) throw new NotificareDeviceUnavailableError();
@@ -148,7 +149,7 @@ export async function fetchDoNotDisturb(): Promise<NotificareDoNotDisturb | unde
 }
 
 export async function updateDoNotDisturb(dnd: NotificareDoNotDisturb): Promise<void> {
-  // TODO: check prerequisites
+  checkPrerequisites();
 
   const device = getCurrentDevice();
   if (!device) throw new NotificareDeviceUnavailableError();
@@ -166,7 +167,7 @@ export async function updateDoNotDisturb(dnd: NotificareDoNotDisturb): Promise<v
 }
 
 export async function clearDoNotDisturb(): Promise<void> {
-  // TODO: check prerequisites
+  checkPrerequisites();
 
   const device = getCurrentDevice();
   if (!device) throw new NotificareDeviceUnavailableError();
@@ -183,7 +184,7 @@ export async function clearDoNotDisturb(): Promise<void> {
 }
 
 export async function fetchUserData(): Promise<NotificareUserData> {
-  // TODO: check prerequisites
+  checkPrerequisites();
 
   const device = getCurrentDevice();
   if (!device) throw new NotificareDeviceUnavailableError();
@@ -201,7 +202,7 @@ export async function fetchUserData(): Promise<NotificareUserData> {
 }
 
 export async function updateUserData(userData: NotificareUserData): Promise<void> {
-  // TODO: check prerequisites
+  checkPrerequisites();
 
   const device = getCurrentDevice();
   if (!device) throw new NotificareDeviceUnavailableError();
