@@ -31,6 +31,7 @@ export class DeviceComponent extends Component {
       await registerDeviceInternal({
         transport: device.transport,
         token: device.id,
+        keys: device.keys,
         userId: device.userId,
         userName: device.userName,
       });

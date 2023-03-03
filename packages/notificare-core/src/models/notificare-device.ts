@@ -11,6 +11,7 @@ export interface NotificareDevice {
   readonly language: string;
   readonly region: string;
   readonly transport: NotificareTransport;
+  readonly keys?: object;
   readonly dnd?: NotificareDoNotDisturb;
   readonly userData: Record<string, string>;
   readonly lastRegistered: string;

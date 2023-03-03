@@ -207,6 +207,10 @@ function convertRegistrationToStoredDevice(
     language: registration.language,
     region: registration.region,
     transport: registration.transport,
+    keys:
+      registration.transport === 'Notificare'
+        ? undefined
+        : registration.keys ?? previousDevice?.keys,
     dnd: previousDevice?.dnd,
     userData: previousDevice?.userData ?? {},
     lastRegistered: new Date().toUTCString(),
