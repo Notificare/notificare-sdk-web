@@ -12,6 +12,11 @@ import { NotificareApplication } from './models/notificare-application';
 import { NotificareNotConfiguredError } from './errors/notificare-not-configured-error';
 import { components } from './internal/component-cache';
 import { EventSubscription } from './event-subscription';
+import { NotificareNotification } from './models/notificare-notification';
+import {
+  convertNetworkNotificationToPublic,
+  NetworkNotificationResponse,
+} from './internal/network/responses/notification-response';
 
 let launchState: LaunchState = LaunchState.NONE;
 
@@ -130,6 +135,15 @@ export async function fetchApplication(): Promise<NotificareApplication> {
 
   const { application }: NetworkApplicationResponse = await response.json();
   return convertNetworkApplicationToPublic(application);
+}
+
+export async function fetchNotification(id: string): Promise<NotificareNotification> {
+  if (!isConfigured()) throw new NotificareNotConfiguredError();
+
+  const response = await request(`/api/notification/${encodeURIComponent(id)}`);
+
+  const { notification }: NetworkNotificationResponse = await response.json();
+  return convertNetworkNotificationToPublic(notification);
 }
 
 // region Events
