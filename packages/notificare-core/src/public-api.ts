@@ -11,6 +11,7 @@ import { LaunchState } from './internal/launch-state';
 import { NotificareApplication } from './models/notificare-application';
 import { NotificareNotConfiguredError } from './errors/notificare-not-configured-error';
 import { components } from './internal/component-cache';
+import { EventSubscription } from './event-subscription';
 
 let launchState: LaunchState = LaunchState.NONE;
 
@@ -102,6 +103,8 @@ export async function launch(): Promise<void> {
 
   launchState = LaunchState.LAUNCHED;
   printLaunchSummary(application);
+
+  onReadyCallback?.(application);
 }
 
 export function getApplication(): NotificareApplication | undefined {
@@ -128,6 +131,23 @@ export async function fetchApplication(): Promise<NotificareApplication> {
   const { application }: NetworkApplicationResponse = await response.json();
   return convertNetworkApplicationToPublic(application);
 }
+
+// region Events
+
+type OnReadyCallback = (application: NotificareApplication) => void;
+let onReadyCallback: OnReadyCallback | undefined;
+
+export function onReady(callback: OnReadyCallback): EventSubscription {
+  onReadyCallback = callback;
+
+  return {
+    remove: () => {
+      onReadyCallback = undefined;
+    },
+  };
+}
+
+// endregion
 
 function printLaunchSummary(application: NotificareApplication) {
   if (logger.getLogLevel() >= LogLevel.INFO) {
