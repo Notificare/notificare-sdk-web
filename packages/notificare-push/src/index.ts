@@ -1,5 +1,4 @@
-import { registerComponent } from '@notificare/core';
-import { PushComponent } from './component';
+import { registerComponents } from './register-components';
 
 declare global {
   // noinspection JSUnusedGlobalSymbols
@@ -11,9 +10,5 @@ declare global {
 }
 
 export * from './public-api';
-
-function registerComponents() {
-  registerComponent(new PushComponent());
-}
 
 registerComponents();

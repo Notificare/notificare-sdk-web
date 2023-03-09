@@ -1,4 +1,4 @@
-import { registerCoreComponents } from './register-core-components';
+import { registerComponents } from './register-components';
 
 export * from './internal/network/request';
 export * from './internal/component';
@@ -24,4 +24,4 @@ export * from './public-api';
 export * from './public-api-device';
 export * from './public-api-events';
 
-registerCoreComponents();
+registerComponents();
