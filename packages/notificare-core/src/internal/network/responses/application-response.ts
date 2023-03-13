@@ -20,6 +20,7 @@ export interface NetworkApplication {
   readonly services?: Record<string, boolean>;
   readonly inboxConfig?: {
     readonly useInbox?: boolean;
+    readonly useUserInbox?: boolean;
     readonly autoBadge?: boolean;
   };
   readonly regionConfig?: {
@@ -89,6 +90,7 @@ function convertNetworkApplicationToPublicInboxConfig(
 
   return {
     useInbox: networkApplication.inboxConfig.useInbox ?? false,
+    useUserInbox: networkApplication.inboxConfig.useUserInbox ?? false,
     autoBadge: networkApplication.inboxConfig.autoBadge ?? false,
   };
 }

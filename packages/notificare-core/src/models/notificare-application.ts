@@ -14,6 +14,7 @@ export interface NotificareApplication {
 
 export interface NotificareInboxConfig {
   readonly useInbox: boolean;
+  readonly useUserInbox: boolean;
   readonly autoBadge: boolean;
 }
 

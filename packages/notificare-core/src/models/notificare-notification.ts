@@ -11,7 +11,6 @@ export interface NotificareNotification {
   readonly attachments: NotificareNotificationAttachment[];
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   readonly extra: Record<string, any>;
-  readonly targetContentIdentifier?: string;
 }
 
 export interface NotificareNotificationContent {

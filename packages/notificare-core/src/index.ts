@@ -5,12 +5,18 @@ export * from './internal/component';
 export { registerComponent } from './internal/component-cache';
 export { registerTemporaryDevice, registerPushDevice } from './internal/internal-api-device';
 export { getOptions, NotificareInternalOptions } from './internal/options';
-export { logInternal } from './internal/internal-api-events';
+export { logInternal, logNotificationOpen } from './internal/internal-api-events';
+export {
+  NetworkNotificationResponse,
+  convertNetworkNotificationToPublic,
+} from './internal/network/responses/notification-response';
 
 export * from './errors/notificare-network-request-error';
 export * from './errors/notificare-not-configured-error';
+export * from './errors/notificare-application-unavailable-error';
 export * from './errors/notificare-device-unavailable-error';
 export * from './errors/notificare-not-ready-error';
+export * from './errors/notificare-service-unavailable-error';
 
 export * from './event-subscription';
 

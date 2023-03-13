@@ -1,0 +1,33 @@
+{
+  "name": "@notificare/inbox",
+  "version": "3.0.0",
+  "description": "The inbox package for the 'notificare' umbrella package.",
+  "author": "Notificare <info@notificare.com> (https://notificare.com)",
+  "license": "MIT",
+  "main": "dist/commonjs/index.js",
+  "browser": "dist/esm/index.js",
+  "module": "dist/esm/index.js",
+  "esm5": "dist/esm5/index.js",
+  "typings": "dist/commonjs/index.d.ts",
+  "scripts": {
+    "build": "rollup -c",
+    "clean": "rm -rf dist/",
+    "dev": "rollup -c -w",
+    "lint": "eslint .",
+    "typecheck": "tsc --noEmit"
+  },
+  "files": [
+    "dist"
+  ],
+  "dependencies": {
+    "@notificare/core": "^3.0.0",
+    "@notificare/logger": "^3.0.0",
+    "tslib": "^2.5.0"
+  },
+  "devDependencies": {
+    "@notificare/eslint-config": "*",
+    "@notificare/rollup": "*",
+    "@notificare/tsconfig": "*",
+    "typescript": "^4.9.4"
+  }
+}
