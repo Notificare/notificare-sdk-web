@@ -95,6 +95,10 @@ export async function refreshBadge(): Promise<number> {
   const { unread }: NetworkInboxResponse = await response.json();
 
   localStorage.setItem('re.notifica.inbox.badge', unread.toString());
+
+  if (navigator.setAppBadge) navigator.setAppBadge(unread);
+  if (navigator.setClientBadge) navigator.setClientBadge(unread);
+
   return unread;
 }
 
