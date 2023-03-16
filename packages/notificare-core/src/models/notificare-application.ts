@@ -7,7 +7,7 @@ export interface NotificareApplication {
   readonly services: Record<string, boolean>;
   readonly inboxConfig?: NotificareInboxConfig;
   readonly regionConfig?: NotificareRegionConfig;
-  readonly webPushConfig?: NotificareWebPushConfig;
+  readonly websitePushConfig?: NotificareWebsitePushConfig;
   readonly userDataFields: NotificareUserDataField[];
   readonly actionCategories: NotificareActionCategory[];
 }
@@ -22,15 +22,15 @@ export interface NotificareRegionConfig {
   readonly proximityUUID?: string;
 }
 
-export interface NotificareWebPushConfig {
+export interface NotificareWebsitePushConfig {
   readonly icon: string;
   readonly allowedDomains: string[];
   readonly urlFormatString: string;
-  readonly info?: NotificareWebPushConfigInfo;
-  readonly vapid?: NotificareWebPushConfigVapid;
+  readonly info?: NotificareWebsitePushConfigInfo;
+  readonly vapid?: NotificareWebsitePushConfigVapid;
 }
 
-export interface NotificareWebPushConfigInfo {
+export interface NotificareWebsitePushConfigInfo {
   readonly subject: {
     readonly UID: string;
     readonly CN: string;
@@ -40,7 +40,7 @@ export interface NotificareWebPushConfigInfo {
   };
 }
 
-export interface NotificareWebPushConfigVapid {
+export interface NotificareWebsitePushConfigVapid {
   readonly publicKey: string;
 }
 

@@ -4,9 +4,9 @@ import {
   NotificareInboxConfig,
   NotificareRegionConfig,
   NotificareUserDataField,
-  NotificareWebPushConfig,
-  NotificareWebPushConfigInfo,
-  NotificareWebPushConfigVapid,
+  NotificareWebsitePushConfig,
+  NotificareWebsitePushConfigInfo,
+  NotificareWebsitePushConfigVapid,
 } from '../../../models/notificare-application';
 
 export interface NetworkApplicationResponse {
@@ -67,7 +67,7 @@ export function convertNetworkApplicationToPublic(
     services: networkApplication.services ?? {},
     inboxConfig: convertNetworkApplicationToPublicInboxConfig(networkApplication),
     regionConfig: convertNetworkApplicationToPublicRegionConfig(networkApplication),
-    webPushConfig: convertNetworkApplicationToPublicWebPushConfig(networkApplication),
+    websitePushConfig: convertNetworkApplicationToPublicWebPushConfig(networkApplication),
     userDataFields: convertNetworkApplicationToPublicUserDataFields(networkApplication),
     actionCategories: convertNetworkApplicationToPublicNotificationCategories(networkApplication),
   };
@@ -97,7 +97,7 @@ function convertNetworkApplicationToPublicInboxConfig(
 
 function convertNetworkApplicationToPublicWebPushConfig(
   networkApplication: NetworkApplication,
-): NotificareWebPushConfig | undefined {
+): NotificareWebsitePushConfig | undefined {
   if (
     !networkApplication.websitePushConfig?.icon ||
     !networkApplication.websitePushConfig?.allowedDomains ||
@@ -106,7 +106,7 @@ function convertNetworkApplicationToPublicWebPushConfig(
     return undefined;
   }
 
-  let info: NotificareWebPushConfigInfo | undefined;
+  let info: NotificareWebsitePushConfigInfo | undefined;
   if (
     networkApplication.websitePushConfig?.info?.subject?.UID &&
     networkApplication.websitePushConfig?.info?.subject?.CN &&
@@ -125,7 +125,7 @@ function convertNetworkApplicationToPublicWebPushConfig(
     };
   }
 
-  let vapid: NotificareWebPushConfigVapid | undefined;
+  let vapid: NotificareWebsitePushConfigVapid | undefined;
   if (networkApplication.websitePushConfig?.vapid?.publicKey) {
     vapid = {
       publicKey: networkApplication.websitePushConfig.vapid.publicKey,
