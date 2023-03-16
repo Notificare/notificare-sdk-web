@@ -82,7 +82,7 @@ function convertNetworkNotificationContentToPublic(
   };
 }
 
-function convertNetworkNotificationActionToPublic(
+export function convertNetworkNotificationActionToPublic(
   action: NetworkNotificationAction,
 ): NotificareNotificationAction | undefined {
   if (!action.label) return undefined;

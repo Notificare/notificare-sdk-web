@@ -8,6 +8,11 @@ import {
   NotificareWebsitePushConfigInfo,
   NotificareWebsitePushConfigVapid,
 } from '../../../models/notificare-application';
+import {
+  convertNetworkNotificationActionToPublic,
+  NetworkNotificationAction,
+} from './notification-response';
+import { NotificareNotificationAction } from '../../../models/notificare-notification';
 
 export interface NetworkApplicationResponse {
   readonly application: NetworkApplication;
@@ -52,7 +57,7 @@ export interface NetworkApplication {
     readonly type?: string;
     readonly name?: string;
     readonly description?: string;
-    // readonly actions?: NotificareNotificationAction[];
+    readonly actions?: NetworkNotificationAction[];
   }>;
 }
 
@@ -173,7 +178,12 @@ function convertNetworkApplicationToPublicNotificationCategories(
       type: actionCategory.type,
       name: actionCategory.name,
       description: actionCategory.description,
-      actions: [], // TODO: update with parser
+      actions: (actionCategory.actions ?? []).reduce((acc, currentValue) => {
+        const action = convertNetworkNotificationActionToPublic(currentValue);
+        if (action) acc.push(action);
+
+        return acc;
+      }, [] as NotificareNotificationAction[]),
     });
   });
 
