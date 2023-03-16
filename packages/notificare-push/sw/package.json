@@ -1,0 +1,9 @@
+{
+  "name": "@notificare/push-sw",
+  "version": "3.0.0",
+  "description": "The push service worker package for the 'notificare' umbrella package.",
+  "author": "Notificare <info@notificare.com> (https://notificare.com)",
+  "license": "MIT",
+  "main": "../dist/sw/commonjs/index.js",
+  "module": "../dist/sw/esm/index.js"
+}

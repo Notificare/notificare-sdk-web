@@ -33,3 +33,9 @@ export function uint8ArrayToBase64(bytes: Uint8Array): string {
 
   return btoa(rawData);
 }
+
+export function sleep(milliseconds: number): Promise<void> {
+  return new Promise((resolve) => {
+    setTimeout(resolve, milliseconds);
+  });
+}

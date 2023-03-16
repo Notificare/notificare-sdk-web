@@ -9,6 +9,20 @@
   "module": "dist/esm/index.js",
   "esm5": "dist/esm5/index.js",
   "typings": "dist/commonjs/index.d.ts",
+  "sw-main": "dist/sw/commonjs/index.js",
+  "sw-browser": "dist/sw/esm/index.js",
+  "exports": {
+    ".": {
+      "node": "./dist/commonjs/index.js",
+      "browser": "./dist/esm/index.js",
+      "module": "./dist/esm/index.js",
+      "default": "./dist/commonjs/index.js"
+    },
+    "./sw": {
+      "node": "./dist/sw/commonjs/index.js",
+      "default": "./dist/sw/esm/index.js"
+    }
+  },
   "scripts": {
     "build": "rollup -c",
     "clean": "rm -rf dist/",
@@ -17,7 +31,8 @@
     "typecheck": "tsc --noEmit"
   },
   "files": [
-    "dist"
+    "dist",
+    "sw/package.json"
   ],
   "dependencies": {
     "@notificare/core": "^3.0.0",

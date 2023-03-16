@@ -2,7 +2,12 @@
   "$schema": "https://json.schemastore.org/tsconfig",
   "extends": "@notificare/tsconfig/base.json",
   "compilerOptions": {
-    "outDir": "dist"
+    "outDir": "dist",
+    "lib": [
+      "ES2017",
+      "DOM",
+      "WebWorker"
+    ]
   },
   "exclude": [
     "dist"
