@@ -3,12 +3,15 @@ import { arrayBufferToBase64, arrayBufferToBase64Url, base64UrlToUint8Array } fr
 import { logger } from '../logger';
 
 export function hasWebPushSupport(): boolean {
+  // The navigator.standalone check ensures that iOS Safari with WebPush
+  // support is running in 'Add To Home Screen' mode.
+
   return (
-    navigator.serviceWorker != null &&
-    window.PushManager != null &&
-    'showNotification' in ServiceWorkerRegistration.prototype
+    'serviceWorker' in navigator &&
+    'PushManager' in window &&
+    'showNotification' in ServiceWorkerRegistration.prototype &&
+    (navigator.standalone === undefined || navigator.standalone)
   );
-  // TODO: check iPhone && standalone
 }
 
 export async function enableWebPushNotifications(

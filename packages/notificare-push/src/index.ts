@@ -7,6 +7,11 @@ declare global {
       pushNotification?: unknown;
     };
   }
+
+  // noinspection JSUnusedGlobalSymbols
+  interface Navigator {
+    standalone?: boolean;
+  }
 }
 
 export * from './public-api';
