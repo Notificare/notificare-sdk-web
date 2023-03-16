@@ -96,7 +96,6 @@ export async function launch(): Promise<void> {
   // TODO: check allowOnlyWebPushSupportedDevices
 
   const application = await fetchApplication();
-  localStorage.setItem('re.notifica.application', JSON.stringify(application));
 
   // eslint-disable-next-line no-restricted-syntax
   for (const component of components.values()) {
@@ -133,8 +132,12 @@ export async function fetchApplication(): Promise<NotificareApplication> {
 
   const response = await request('/api/application/info');
 
-  const { application }: NetworkApplicationResponse = await response.json();
-  return convertNetworkApplicationToPublic(application);
+  const { application: networkApplication }: NetworkApplicationResponse = await response.json();
+  const application = convertNetworkApplicationToPublic(networkApplication);
+
+  localStorage.setItem('re.notifica.application', JSON.stringify(application));
+
+  return application;
 }
 
 export async function fetchNotification(id: string): Promise<NotificareNotification> {
