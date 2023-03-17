@@ -44,13 +44,13 @@ export async function enableRemoteNotifications(): Promise<void> {
   const application = getApplication();
   if (!application) throw new NotificareNotReadyError();
 
-  if (!application.webPushConfig?.icon) {
+  if (!application.websitePushConfig?.icon) {
     throw new Error(
       'Missing application icon. Please check your Website Push configurations in our dashboard before proceeding.',
     );
   }
 
-  if (application.webPushConfig.allowedDomains.indexOf(options.applicationHost) === -1) {
+  if (application.websitePushConfig.allowedDomains.indexOf(options.applicationHost) === -1) {
     throw new Error(
       'Missing allowed domain. Please check your Website Push configurations in our dashboard before proceeding.',
     );

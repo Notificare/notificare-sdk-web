@@ -72,7 +72,7 @@ export function convertNetworkApplicationToPublic(
     services: networkApplication.services ?? {},
     inboxConfig: convertNetworkApplicationToPublicInboxConfig(networkApplication),
     regionConfig: convertNetworkApplicationToPublicRegionConfig(networkApplication),
-    websitePushConfig: convertNetworkApplicationToPublicWebPushConfig(networkApplication),
+    websitePushConfig: convertNetworkApplicationToPublicWebsitePushConfig(networkApplication),
     userDataFields: convertNetworkApplicationToPublicUserDataFields(networkApplication),
     actionCategories: convertNetworkApplicationToPublicNotificationCategories(networkApplication),
   };
@@ -100,7 +100,7 @@ function convertNetworkApplicationToPublicInboxConfig(
   };
 }
 
-function convertNetworkApplicationToPublicWebPushConfig(
+function convertNetworkApplicationToPublicWebsitePushConfig(
   networkApplication: NetworkApplication,
 ): NotificareWebsitePushConfig | undefined {
   if (

@@ -32,7 +32,7 @@ export async function enableWebPushNotifications(
   application: NotificareApplication,
   options: NotificareInternalOptions,
 ): Promise<PushToken> {
-  const publicKey = application.webPushConfig?.vapid?.publicKey;
+  const publicKey = application.websitePushConfig?.vapid?.publicKey;
   if (!publicKey) {
     throw new Error(
       'Missing VAPID configuration. Please check your Website Push configurations in our dashboard before proceeding.',
@@ -69,7 +69,7 @@ export async function enableWebPushNotifications(
     !existingSubscription ||
     !existingSubscription.options.applicationServerKey ||
     arrayBufferToBase64Url(existingSubscription.options.applicationServerKey) !==
-      application.webPushConfig.vapid.publicKey
+      application.websitePushConfig.vapid.publicKey
   ) {
     logger.debug('Subscribing for push notifications.');
 
@@ -77,7 +77,7 @@ export async function enableWebPushNotifications(
       const subscription = await registration.pushManager.subscribe({
         // name: 'push',
         userVisibleOnly: true,
-        applicationServerKey: base64UrlToUint8Array(application.webPushConfig.vapid.publicKey),
+        applicationServerKey: base64UrlToUint8Array(application.websitePushConfig.vapid.publicKey),
       });
 
       return getPushTokenFromPushSubscription(subscription);
@@ -86,7 +86,7 @@ export async function enableWebPushNotifications(
         existingSubscription &&
         existingSubscription.options.applicationServerKey &&
         arrayBufferToBase64Url(existingSubscription.options.applicationServerKey) !==
-          application.webPushConfig.vapid.publicKey
+          application.websitePushConfig.vapid.publicKey
       ) {
         logger.info('Removing stale push subscription.');
         await existingSubscription.unsubscribe();
@@ -112,7 +112,7 @@ export async function enableWebPushNotifications(
     await registration.pushManager.subscribe({
       // name: 'push',
       userVisibleOnly: true,
-      applicationServerKey: base64UrlToUint8Array(application.webPushConfig.vapid.publicKey),
+      applicationServerKey: base64UrlToUint8Array(application.websitePushConfig.vapid.publicKey),
     });
   }
 
