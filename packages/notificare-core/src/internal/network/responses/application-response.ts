@@ -6,6 +6,11 @@ import {
   NotificareUserDataField,
   NotificareWebsitePushConfig,
   NotificareWebsitePushConfigInfo,
+  NotificareWebsitePushConfigLaunchConfig,
+  NotificareWebsitePushConfigLaunchConfigAutoOnboardingOptions,
+  NotificareWebsitePushConfigLaunchConfigFloatingButtonHorizontalAlignment,
+  NotificareWebsitePushConfigLaunchConfigFloatingButtonOptions,
+  NotificareWebsitePushConfigLaunchConfigFloatingButtonVerticalAlignment,
   NotificareWebsitePushConfigVapid,
 } from '../../../models/notificare-application';
 import {
@@ -47,6 +52,26 @@ export interface NetworkApplication {
     };
     readonly vapid?: {
       readonly publicKey?: string;
+    };
+    readonly launchConfig?: {
+      readonly autoOnboardingOptions?: {
+        readonly message?: string;
+        readonly cancelButton?: string;
+        readonly acceptButton?: string;
+        readonly retryAfterHours?: number;
+        readonly showAfterSeconds?: number;
+      };
+      readonly floatingButtonOptions?: {
+        readonly alignment: {
+          readonly horizontal: NotificareWebsitePushConfigLaunchConfigFloatingButtonHorizontalAlignment;
+          readonly vertical: NotificareWebsitePushConfigLaunchConfigFloatingButtonVerticalAlignment;
+        };
+        readonly permissionTexts: {
+          readonly default: string;
+          readonly granted: string;
+          readonly denied: string;
+        };
+      };
     };
   };
   readonly userDataFields?: Array<{
@@ -138,12 +163,83 @@ function convertNetworkApplicationToPublicWebsitePushConfig(
     };
   }
 
+  let launchConfig: NotificareWebsitePushConfigLaunchConfig | undefined;
+  let autoOnboardingOptions:
+    | NotificareWebsitePushConfigLaunchConfigAutoOnboardingOptions
+    | undefined;
+  let floatingButtonOptions:
+    | NotificareWebsitePushConfigLaunchConfigFloatingButtonOptions
+    | undefined;
+
+  if (networkApplication.websitePushConfig?.launchConfig) {
+    if (
+      networkApplication.websitePushConfig.launchConfig.autoOnboardingOptions?.message &&
+      networkApplication.websitePushConfig.launchConfig.autoOnboardingOptions?.acceptButton &&
+      networkApplication.websitePushConfig.launchConfig.autoOnboardingOptions?.cancelButton
+    ) {
+      autoOnboardingOptions = {
+        message: networkApplication.websitePushConfig.launchConfig.autoOnboardingOptions.message,
+        acceptButton:
+          networkApplication.websitePushConfig.launchConfig.autoOnboardingOptions.acceptButton,
+        cancelButton:
+          networkApplication.websitePushConfig.launchConfig.autoOnboardingOptions.cancelButton,
+        retryAfterHours:
+          networkApplication.websitePushConfig.launchConfig.autoOnboardingOptions.retryAfterHours,
+        showAfterSeconds:
+          networkApplication.websitePushConfig.launchConfig.autoOnboardingOptions.showAfterSeconds,
+      };
+    }
+
+    if (
+      networkApplication.websitePushConfig.launchConfig.floatingButtonOptions?.alignment
+        ?.horizontal &&
+      networkApplication.websitePushConfig.launchConfig.floatingButtonOptions?.alignment
+        ?.vertical &&
+      networkApplication.websitePushConfig.launchConfig.floatingButtonOptions?.permissionTexts
+        ?.default &&
+      networkApplication.websitePushConfig.launchConfig.floatingButtonOptions?.permissionTexts
+        ?.granted &&
+      networkApplication.websitePushConfig.launchConfig.floatingButtonOptions?.permissionTexts
+        ?.denied
+    ) {
+      floatingButtonOptions = {
+        alignment: {
+          horizontal:
+            networkApplication.websitePushConfig.launchConfig.floatingButtonOptions.alignment
+              .horizontal,
+          vertical:
+            networkApplication.websitePushConfig.launchConfig.floatingButtonOptions.alignment
+              .vertical,
+        },
+        permissionTexts: {
+          default:
+            networkApplication.websitePushConfig.launchConfig.floatingButtonOptions.permissionTexts
+              .default,
+          granted:
+            networkApplication.websitePushConfig.launchConfig.floatingButtonOptions.permissionTexts
+              .granted,
+          denied:
+            networkApplication.websitePushConfig.launchConfig.floatingButtonOptions.permissionTexts
+              .denied,
+        },
+      };
+    }
+
+    if (autoOnboardingOptions || floatingButtonOptions) {
+      launchConfig = {
+        autoOnboardingOptions,
+        floatingButtonOptions,
+      };
+    }
+  }
+
   return {
     icon: networkApplication.websitePushConfig.icon,
     allowedDomains: networkApplication.websitePushConfig.allowedDomains,
     urlFormatString: networkApplication.websitePushConfig.urlFormatString,
     info,
     vapid,
+    launchConfig,
   };
 }
 

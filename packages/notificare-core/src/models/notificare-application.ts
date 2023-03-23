@@ -29,6 +29,7 @@ export interface NotificareWebsitePushConfig {
   readonly urlFormatString?: string;
   readonly info?: NotificareWebsitePushConfigInfo;
   readonly vapid?: NotificareWebsitePushConfigVapid;
+  readonly launchConfig?: NotificareWebsitePushConfigLaunchConfig;
 }
 
 export interface NotificareWebsitePushConfigInfo {
@@ -43,6 +44,43 @@ export interface NotificareWebsitePushConfigInfo {
 
 export interface NotificareWebsitePushConfigVapid {
   readonly publicKey: string;
+}
+
+export interface NotificareWebsitePushConfigLaunchConfig {
+  readonly autoOnboardingOptions?: NotificareWebsitePushConfigLaunchConfigAutoOnboardingOptions;
+  readonly floatingButtonOptions?: NotificareWebsitePushConfigLaunchConfigFloatingButtonOptions;
+}
+
+export interface NotificareWebsitePushConfigLaunchConfigAutoOnboardingOptions {
+  readonly message: string;
+  readonly cancelButton: string;
+  readonly acceptButton: string;
+  readonly retryAfterHours?: number;
+  readonly showAfterSeconds?: number;
+}
+
+export interface NotificareWebsitePushConfigLaunchConfigFloatingButtonOptions {
+  readonly alignment: {
+    readonly horizontal: NotificareWebsitePushConfigLaunchConfigFloatingButtonHorizontalAlignment;
+    readonly vertical: NotificareWebsitePushConfigLaunchConfigFloatingButtonVerticalAlignment;
+  };
+  readonly permissionTexts: NotificareWebsitePushConfigLaunchConfigFloatingButtonPermissionTexts;
+}
+
+export type NotificareWebsitePushConfigLaunchConfigFloatingButtonHorizontalAlignment =
+  | 'start'
+  | 'center'
+  | 'end';
+
+export type NotificareWebsitePushConfigLaunchConfigFloatingButtonVerticalAlignment =
+  | 'top'
+  | 'center'
+  | 'bottom';
+
+export interface NotificareWebsitePushConfigLaunchConfigFloatingButtonPermissionTexts {
+  readonly default: string;
+  readonly granted: string;
+  readonly denied: string;
 }
 
 export interface NotificareUserDataField {
