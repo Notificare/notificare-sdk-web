@@ -107,8 +107,7 @@ function convertNetworkApplicationToPublicWebsitePushConfig(
 ): NotificareWebsitePushConfig | undefined {
   if (
     !networkApplication.websitePushConfig?.icon ||
-    !networkApplication.websitePushConfig?.allowedDomains ||
-    !networkApplication.websitePushConfig?.urlFormatString
+    !networkApplication.websitePushConfig?.allowedDomains
   ) {
     return undefined;
   }

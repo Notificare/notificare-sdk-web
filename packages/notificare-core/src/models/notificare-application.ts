@@ -26,7 +26,7 @@ export interface NotificareRegionConfig {
 export interface NotificareWebsitePushConfig {
   readonly icon: string;
   readonly allowedDomains: string[];
-  readonly urlFormatString: string;
+  readonly urlFormatString?: string;
   readonly info?: NotificareWebsitePushConfigInfo;
   readonly vapid?: NotificareWebsitePushConfigVapid;
 }
