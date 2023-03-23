@@ -22,6 +22,7 @@ export interface NetworkApplication {
   readonly _id: string;
   readonly name: string;
   readonly category: string;
+  readonly branding?: boolean;
   readonly services?: Record<string, boolean>;
   readonly inboxConfig?: {
     readonly useInbox?: boolean;
@@ -69,6 +70,7 @@ export function convertNetworkApplicationToPublic(
     id: networkApplication._id,
     name: networkApplication.name,
     category: networkApplication.category,
+    branding: networkApplication.branding ?? true,
     services: networkApplication.services ?? {},
     inboxConfig: convertNetworkApplicationToPublicInboxConfig(networkApplication),
     regionConfig: convertNetworkApplicationToPublicRegionConfig(networkApplication),

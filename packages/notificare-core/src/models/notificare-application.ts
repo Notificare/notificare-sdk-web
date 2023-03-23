@@ -4,6 +4,7 @@ export interface NotificareApplication {
   readonly id: string;
   readonly name: string;
   readonly category: string;
+  readonly branding: boolean;
   readonly services: Record<string, boolean>;
   readonly inboxConfig?: NotificareInboxConfig;
   readonly regionConfig?: NotificareRegionConfig;
