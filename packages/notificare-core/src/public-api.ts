@@ -6,7 +6,7 @@ import {
 } from './internal/network/responses/application-response';
 import { NotificareOptions } from './options';
 import { logger } from './internal/logger';
-import { getOptions, setOptions } from './internal/options';
+import { getOptions, NotificareInternalOptionsServices, setOptions } from './internal/options';
 import { LaunchState } from './internal/launch-state';
 import { NotificareApplication } from './models/notificare-application';
 import { NotificareNotConfiguredError } from './errors/notificare-not-configured-error';
@@ -39,12 +39,28 @@ export function configure(options: NotificareOptions) {
   // TODO: validate the user input
   logger.debug('Configuring notificare.');
 
-  setOptions({
-    // TODO: consider adding an (test) environment option.
-    services: {
+  // Hidden property from the consumer options.
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  const { useTestEnvironment } = options;
+
+  let services: NotificareInternalOptionsServices;
+  if (useTestEnvironment) {
+    services = {
+      cloudHost: 'https://cloud-test.notifica.re',
+      pushHost: 'https://push-test.notifica.re',
+      awsStorageHost: 'https://push-test.notifica.re/upload',
+    };
+  } else {
+    services = {
       cloudHost: 'https://cloud.notifica.re',
       pushHost: 'https://push.notifica.re',
-    },
+      awsStorageHost: 'https://push.notifica.re/upload',
+    };
+  }
+
+  setOptions({
+    services,
     applicationKey: options.applicationKey,
     applicationSecret: options.applicationSecret,
     applicationVersion: options.applicationVersion ?? '1.0.0',

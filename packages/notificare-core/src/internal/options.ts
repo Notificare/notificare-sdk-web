@@ -25,4 +25,5 @@ export interface NotificareInternalOptions {
 export interface NotificareInternalOptionsServices {
   cloudHost: string;
   pushHost: string;
+  awsStorageHost: string;
 }
