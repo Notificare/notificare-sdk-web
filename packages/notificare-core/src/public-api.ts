@@ -65,6 +65,7 @@ export function configure(options: NotificareOptions) {
     applicationSecret: options.applicationSecret,
     applicationVersion: options.applicationVersion ?? '1.0.0',
     applicationHost: `${window.location.protocol}//${window.location.host}`,
+    language: options.language,
     serviceWorker: options.serviceWorker,
     serviceWorkerScope: options.serviceWorkerScope,
   });

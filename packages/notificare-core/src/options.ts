@@ -2,6 +2,7 @@ export interface NotificareOptions {
   applicationKey: string;
   applicationSecret: string;
   applicationVersion?: string;
+  language?: string;
   serviceWorker: string;
   serviceWorkerScope?: string;
 }

@@ -15,6 +15,7 @@ export interface NotificareInternalOptions {
   applicationSecret: string;
   applicationHost: string;
   applicationVersion: string;
+  language?: string;
   serviceWorker?: string;
   serviceWorkerScope?: string;
 }
