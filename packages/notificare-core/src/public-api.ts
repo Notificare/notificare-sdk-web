@@ -146,7 +146,19 @@ export function getApplication(): NotificareApplication | undefined {
 export async function fetchApplication(): Promise<NotificareApplication> {
   if (!isConfigured()) throw new NotificareNotConfiguredError();
 
-  const response = await request('/api/application/info');
+  const options = getOptions();
+  if (!options) throw new NotificareNotConfiguredError();
+
+  const queryParameters = new URLSearchParams();
+  if (options.language) queryParameters.set('language', options.language);
+
+  const encodedQueryParameters = queryParameters.toString();
+  let url = '/api/application/info';
+  if (encodedQueryParameters) {
+    url = url.concat('?', encodedQueryParameters);
+  }
+
+  const response = await request(url);
 
   const { application: networkApplication }: NetworkApplicationResponse = await response.json();
   const application = convertNetworkApplicationToPublic(networkApplication);
