@@ -1,5 +1,3 @@
-import { NotificareLaunchMode } from '../options';
-
 // eslint-disable-next-line @typescript-eslint/naming-convention,no-underscore-dangle
 let _options: NotificareInternalOptions | undefined;
 
@@ -17,7 +15,6 @@ export interface NotificareInternalOptions {
   applicationSecret: string;
   applicationHost: string;
   applicationVersion: string;
-  mode: NotificareLaunchMode;
   serviceWorker?: string;
   serviceWorkerScope?: string;
 }
