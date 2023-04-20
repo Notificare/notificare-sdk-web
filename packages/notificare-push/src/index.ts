@@ -4,7 +4,13 @@ declare global {
   // noinspection JSUnusedGlobalSymbols
   interface Window {
     safari?: {
-      pushNotification?: unknown;
+      pushNotification: {
+        permission: (uid: string) => {
+          deviceToken?: string | null;
+          permission: 'default' | 'granted' | 'denied';
+        };
+        // TODO: typesafe requestPermission()
+      };
     };
   }
 
