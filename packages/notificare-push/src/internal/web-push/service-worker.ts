@@ -88,7 +88,12 @@ function hasSupportedProtocol(applicationHost: string): boolean {
 function getWorkerLocation(options: NotificareInternalOptions): string | undefined {
   if (!options.serviceWorker) return undefined;
 
-  return options.serviceWorker;
+  const workerAuthentication = new URLSearchParams({
+    're.notifica.application_key': options.applicationKey,
+    're.notifica.application_secret': options.applicationSecret,
+  });
+
+  return options.serviceWorker.concat('?', workerAuthentication.toString());
 }
 
 async function getActiveWorkerRegistration(
