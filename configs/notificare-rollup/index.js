@@ -16,7 +16,7 @@ export function build(pkg, options) {
     typescriptPlugin({
       typescript: typescript,
       target: "es5",
-      noEmitOnError: true,
+      // noEmitOnError: true,
     }),
     json(),
   ];
@@ -55,7 +55,7 @@ export function build(pkg, options) {
     typescriptPlugin({
       typescript: typescript,
       target: "es2017",
-      noEmitOnError: true,
+      // noEmitOnError: true,
     }),
     json({ preferConst: true }),
   ];
