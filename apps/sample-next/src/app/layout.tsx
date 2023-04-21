@@ -1,4 +1,5 @@
 import { NavigationBar } from "@/components/navigation-bar";
+import { NotificareLauncher } from "@/components/notificare-launcher";
 
 import "./globals.css";
 
@@ -32,6 +33,8 @@ export default function RootLayout({
             </div>
           </main>
         </div>
+
+        <NotificareLauncher />
       </body>
     </html>
   );

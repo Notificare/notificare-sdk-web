@@ -1,3 +1,6 @@
+@import '@notificare/push/css/notificare-push.css';
+@import '@notificare/push-ui/css/notificare-push-ui.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
