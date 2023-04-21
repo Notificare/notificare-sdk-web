@@ -33,3 +33,11 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Generated workbox files
+public/sw*
+public/worker-development.js
+public/workbox*
+
+# Notificare configuration file
+public/config.json
