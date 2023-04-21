@@ -74,7 +74,7 @@ export async function enableRemoteNotifications(): Promise<void> {
         action: 're.notifica.ready',
       });
     } catch (e) {
-      logger.warning('Failed to send a message to the service worker.');
+      logger.warning('Failed to send a message to the service worker.', e);
     }
   }
 
