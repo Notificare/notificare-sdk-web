@@ -18,6 +18,9 @@
       "module": "./dist/esm/index.js",
       "default": "./dist/commonjs/index.js"
     },
+    "./css/notificare-push.css": {
+      "default": "./css/notificare-push.css"
+    },
     "./sw": {
       "node": "./dist/sw/commonjs/index.js",
       "default": "./dist/sw/esm/index.js"
@@ -32,6 +35,7 @@
   },
   "files": [
     "dist",
+    "css/notificare-push.css",
     "sw/package.json"
   ],
   "dependencies": {
