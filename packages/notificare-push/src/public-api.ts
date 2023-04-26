@@ -79,7 +79,12 @@ export async function enableRemoteNotifications(): Promise<void> {
   }
 
   if (hasSafariPushSupport()) {
-    await enableSafariPushNotifications();
+    const token = await enableSafariPushNotifications();
+
+    await registerPushDevice({
+      transport: 'WebsitePush',
+      token,
+    });
   }
 
   try {

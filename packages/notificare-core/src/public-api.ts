@@ -50,12 +50,14 @@ export function configure(options: NotificareOptions) {
       cloudHost: 'https://cloud-test.notifica.re',
       pushHost: 'https://push-test.notifica.re',
       awsStorageHost: 'https://push-test.notifica.re/upload',
+      websitePushHost: 'https://push-test.notifica.re/website-push/safari',
     };
   } else {
     services = {
       cloudHost: 'https://cloud.notifica.re',
       pushHost: 'https://push.notifica.re',
       awsStorageHost: 'https://push.notifica.re/upload',
+      websitePushHost: 'https://push.notifica.re/website-push/safari',
     };
   }
 

@@ -5,13 +5,20 @@ declare global {
   interface Window {
     safari?: {
       pushNotification: {
-        permission: (uid: string) => {
-          deviceToken?: string | null;
-          permission: 'default' | 'granted' | 'denied';
-        };
-        // TODO: typesafe requestPermission()
+        permission: (uid: string) => SafariRemoteNotificationPermission;
+        requestPermission: (
+          websiteUrl: string,
+          websiteIdentifier: string,
+          queryParameters: Record<string, string>,
+          callback: (permission: SafariRemoteNotificationPermission) => void,
+        ) => void;
       };
     };
+  }
+
+  interface SafariRemoteNotificationPermission {
+    deviceToken?: string | null;
+    permission: 'default' | 'granted' | 'denied';
   }
 
   // noinspection JSUnusedGlobalSymbols
