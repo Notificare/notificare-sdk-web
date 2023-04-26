@@ -1,13 +1,22 @@
 "use client";
 
+import { useEffect } from "react";
 import { useNotificare } from "@/hooks/use-notificare";
-
-// Using the managed onboarding & floating button requires the module
-// to be imported even though we're not accessing anything from it explicitly.
-import "@notificare/push";
+import { onNotificationOpened } from "@notificare/push";
+import { presentNotification } from "@notificare/push-ui";
 
 export function NotificareLauncher() {
   useNotificare();
+
+  useEffect(function setupListeners() {
+    const subscriptions = [
+      onNotificationOpened((notification) => {
+        presentNotification(notification);
+      }),
+    ];
+
+    return () => subscriptions.forEach((subscription) => subscription.remove());
+  }, []);
 
   return <></>;
 }
