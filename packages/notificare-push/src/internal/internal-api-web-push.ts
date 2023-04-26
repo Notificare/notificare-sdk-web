@@ -10,12 +10,12 @@ import { logger } from '../logger';
 import { logNotificationInfluenced, logNotificationReceived } from './internal-api-events';
 import {
   notifyNotificationActionOpened,
-  notifyNotificationOpened,
   notifyNotificationReceived,
   notifySystemNotificationReceived,
   notifyUnknownNotificationReceived,
 } from './consumer-events';
 import { createWebPushSubscription, registerServiceWorker } from './web-push/service-worker';
+import { handleNotificationOpened } from './internal-api-shared';
 
 export function hasWebPushSupport(): boolean {
   // The navigator.standalone check ensures that iOS Safari with WebPush
@@ -139,15 +139,7 @@ async function handleServiceWorkerNotificationReceived(event: MessageEvent) {
 }
 
 async function handleServiceWorkerNotificationClicked(event: MessageEvent) {
-  // Log the notification open event.
-  await logNotificationOpen(event.data.notification.notificationId);
-  await logNotificationInfluenced(event.data.notification.notificationId);
-
-  // Notify the inbox to mark the item as read.
-  // InboxIntegration.markItemAsRead(message)
-
-  const notification = await fetchNotification(event.data.notification.id);
-  notifyNotificationOpened(notification);
+  await handleNotificationOpened(event.data.notification.id);
 }
 
 async function handleServiceWorkerNotificationReply(event: MessageEvent) {
