@@ -131,24 +131,35 @@ function createContentElement(notification: NotificareNotification): HTMLElement
   const content = document.createElement('div');
   content.classList.add('notificare__notification-content');
 
+  switch (notification.type) {
+    case 're.notifica.notification.Alert':
+      populateContentWithAlert(notification, content);
+      break;
+
+    default:
+      logger.warning(`Unsupported notification type: ${notification.type}`);
+  }
+
+  return content;
+}
+
+function populateContentWithAlert(notification: NotificareNotification, container: HTMLElement) {
   if (notification.title) {
     const contentTitle = document.createElement('p');
     contentTitle.classList.add('notificare__notification-content-title');
     contentTitle.innerHTML = notification.title;
-    content.appendChild(contentTitle);
+    container.appendChild(contentTitle);
   }
 
   if (notification.subtitle) {
     const contentSubtitle = document.createElement('p');
     contentSubtitle.classList.add('notificare__notification-content-subtitle');
     contentSubtitle.innerHTML = notification.subtitle;
-    content.appendChild(contentSubtitle);
+    container.appendChild(contentSubtitle);
   }
 
   const contentMessage = document.createElement('p');
   contentMessage.classList.add('notificare__notification-content-message');
   contentMessage.innerHTML = notification.message;
-  content.appendChild(contentMessage);
-
-  return content;
+  container.appendChild(contentMessage);
 }
