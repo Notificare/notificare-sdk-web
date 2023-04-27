@@ -1,4 +1,10 @@
-import { getApplication, getOptions, NotificareNotification } from '@notificare/core';
+import {
+  getApplication,
+  getOptions,
+  NotificareApplication,
+  NotificareInternalOptions,
+  NotificareNotification,
+} from '@notificare/core';
 import { logger } from './logger';
 
 export function presentNotification(notification: NotificareNotification) {
@@ -39,31 +45,8 @@ export function presentNotification(notification: NotificareNotification) {
   });
   backdrop.appendChild(modal);
 
-  const header = document.createElement('div');
-  header.classList.add('notificare__notification-header');
+  const header = createHeader(options, application);
   modal.appendChild(header);
-
-  const headerLogo = document.createElement('img');
-  headerLogo.classList.add('notificare__notification-header-logo');
-
-  if (application.websitePushConfig?.icon) {
-    headerLogo.setAttribute(
-      'src',
-      `${options.services.awsStorageHost}${application.websitePushConfig.icon}`,
-    );
-  }
-
-  header.appendChild(headerLogo);
-
-  const headerTitle = document.createElement('p');
-  headerTitle.classList.add('notificare__notification-header-title');
-  headerTitle.innerHTML = application.name;
-  header.appendChild(headerTitle);
-
-  const headerCloseButton = document.createElement('div');
-  headerCloseButton.classList.add('notificare__notification-header-close-button');
-  headerCloseButton.addEventListener('click', dismissNotificationUI);
-  header.appendChild(headerCloseButton);
 
   const attachmentImage = createAttachmentElement(notification);
   if (attachmentImage) modal.appendChild(attachmentImage);
@@ -112,6 +95,38 @@ function ensureCleanState() {
 
 function dismissNotificationUI() {
   ensureCleanState();
+}
+
+function createHeader(
+  options: NotificareInternalOptions,
+  application: NotificareApplication,
+): HTMLElement {
+  const header = document.createElement('div');
+  header.classList.add('notificare__notification-header');
+
+  const headerLogo = document.createElement('img');
+  headerLogo.classList.add('notificare__notification-header-logo');
+
+  if (application.websitePushConfig?.icon) {
+    headerLogo.setAttribute(
+      'src',
+      `${options.services.awsStorageHost}${application.websitePushConfig.icon}`,
+    );
+  }
+
+  header.appendChild(headerLogo);
+
+  const headerTitle = document.createElement('p');
+  headerTitle.classList.add('notificare__notification-header-title');
+  headerTitle.innerHTML = application.name;
+  header.appendChild(headerTitle);
+
+  const headerCloseButton = document.createElement('div');
+  headerCloseButton.classList.add('notificare__notification-header-close-button');
+  headerCloseButton.addEventListener('click', dismissNotificationUI);
+  header.appendChild(headerCloseButton);
+
+  return header;
 }
 
 function createAttachmentElement(notification: NotificareNotification): HTMLElement | undefined {
