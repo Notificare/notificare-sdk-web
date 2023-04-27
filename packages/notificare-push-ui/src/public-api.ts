@@ -29,6 +29,10 @@ export function presentNotification(notification: NotificareNotification) {
       );
       return;
 
+    case 're.notifica.notification.InAppBrowser':
+      presentInAppBrowser(notification);
+      return;
+
     case 're.notifica.notification.URLScheme':
       presentUrlScheme(notification);
       return;
@@ -89,6 +93,16 @@ export function presentNotification(notification: NotificareNotification) {
 
   // Add the complete notification DOM to the page.
   document.body.appendChild(backdrop);
+}
+
+function presentInAppBrowser(notification: NotificareNotification) {
+  const content = notification.content.find(({ type }) => type === 're.notifica.content.URL');
+  if (!content) {
+    // TODO: this should fail to present the notification.
+    return;
+  }
+
+  window.open(content.data);
 }
 
 function presentPassbook(options: NotificareInternalOptions, notification: NotificareNotification) {
