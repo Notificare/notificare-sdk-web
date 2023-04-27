@@ -53,28 +53,8 @@ export function presentNotification(notification: NotificareNotification) {
   const attachmentImage = createAttachmentElement(notification);
   if (attachmentImage) modal.appendChild(attachmentImage);
 
-  const content = document.createElement('div');
-  content.classList.add('notificare__notification-content');
+  const content = createContentElement(notification);
   modal.appendChild(content);
-
-  if (notification.title) {
-    const contentTitle = document.createElement('p');
-    contentTitle.classList.add('notificare__notification-content-title');
-    contentTitle.innerHTML = notification.title;
-    content.appendChild(contentTitle);
-  }
-
-  if (notification.subtitle) {
-    const contentSubtitle = document.createElement('p');
-    contentSubtitle.classList.add('notificare__notification-content-subtitle');
-    contentSubtitle.innerHTML = notification.subtitle;
-    content.appendChild(contentSubtitle);
-  }
-
-  const contentMessage = document.createElement('p');
-  contentMessage.classList.add('notificare__notification-content-message');
-  contentMessage.innerHTML = notification.message;
-  content.appendChild(contentMessage);
 
   if (notification.actions.length) {
     const actionsContainer = document.createElement('div');
@@ -119,4 +99,30 @@ function createAttachmentElement(notification: NotificareNotification): HTMLElem
   element.setAttribute('src', attachment.uri);
 
   return element;
+}
+
+function createContentElement(notification: NotificareNotification): HTMLElement {
+  const content = document.createElement('div');
+  content.classList.add('notificare__notification-content');
+
+  if (notification.title) {
+    const contentTitle = document.createElement('p');
+    contentTitle.classList.add('notificare__notification-content-title');
+    contentTitle.innerHTML = notification.title;
+    content.appendChild(contentTitle);
+  }
+
+  if (notification.subtitle) {
+    const contentSubtitle = document.createElement('p');
+    contentSubtitle.classList.add('notificare__notification-content-subtitle');
+    contentSubtitle.innerHTML = notification.subtitle;
+    content.appendChild(contentSubtitle);
+  }
+
+  const contentMessage = document.createElement('p');
+  contentMessage.classList.add('notificare__notification-content-message');
+  contentMessage.innerHTML = notification.message;
+  content.appendChild(contentMessage);
+
+  return content;
 }
