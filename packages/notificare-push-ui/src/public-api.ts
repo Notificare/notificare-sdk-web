@@ -16,6 +16,11 @@ export function presentNotification(notification: NotificareNotification) {
     return;
   }
 
+  if (notification.type === 're.notifica.notification.URLScheme') {
+    presentUrlScheme(notification);
+    return;
+  }
+
   const backdrop = document.createElement('div');
   backdrop.id = 'notificare-push-ui';
   backdrop.classList.add('notificare', 'notificare__notification-backdrop');
@@ -86,6 +91,18 @@ export function presentNotification(notification: NotificareNotification) {
 
   // Add the complete notification DOM to the page.
   document.body.appendChild(backdrop);
+}
+
+function presentUrlScheme(notification: NotificareNotification) {
+  if (notification.type !== 're.notifica.notification.URLScheme') return;
+
+  const content = notification.content.find(({ type }) => type === 're.notifica.content.URL');
+  if (!content) {
+    logger.warning('Unable to present the notification. No URL content available.');
+    return;
+  }
+
+  window.location.href = content.data;
 }
 
 function ensureCleanState() {
