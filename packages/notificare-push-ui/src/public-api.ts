@@ -22,9 +22,17 @@ export function presentNotification(notification: NotificareNotification) {
     return;
   }
 
-  if (notification.type === 're.notifica.notification.URLScheme') {
-    presentUrlScheme(notification);
-    return;
+  switch (notification.type) {
+    case 're.notifica.notification.URLScheme':
+      presentUrlScheme(notification);
+      return;
+
+    case 're.notifica.notification.Passbook':
+      presentPassbook(options, notification);
+      return;
+
+    default:
+      break;
   }
 
   const backdrop = document.createElement('div');
@@ -75,6 +83,26 @@ export function presentNotification(notification: NotificareNotification) {
 
   // Add the complete notification DOM to the page.
   document.body.appendChild(backdrop);
+}
+
+function presentPassbook(options: NotificareInternalOptions, notification: NotificareNotification) {
+  const content = notification.content.find(({ type }) => type === 're.notifica.content.PKPass');
+  if (!content) {
+    // TODO: this should fail to present the notification.
+    return;
+  }
+
+  const passUrlStr: string = content.data;
+  const components = passUrlStr.split('/');
+  if (!components.length) {
+    // TODO: this should fail to present the notification.
+    return;
+  }
+
+  const id = components[components.length - 1];
+  const url = `${options.services.pushHost}/pass/web/${id}?showWebVersion=1`;
+
+  window.open(url);
 }
 
 function presentUrlScheme(notification: NotificareNotification) {
@@ -155,10 +183,6 @@ function createContentElement(
       populateContentWithAlert(notification, content);
       break;
 
-    case 're.notifica.notification.Passbook':
-      populateContentWithPassbook(options, notification, content);
-      break;
-
     case 're.notifica.notification.URL':
       populateContentWithUrl(notification, content);
       break;
@@ -193,33 +217,6 @@ function populateContentWithAlert(notification: NotificareNotification, containe
   contentMessage.classList.add('notificare__notification-content-message');
   contentMessage.innerHTML = notification.message;
   container.appendChild(contentMessage);
-}
-
-function populateContentWithPassbook(
-  options: NotificareInternalOptions,
-  notification: NotificareNotification,
-  container: HTMLElement,
-) {
-  const content = notification.content.find(({ type }) => type === 're.notifica.content.PKPass');
-  if (!content) {
-    // TODO: this should fail to present the notification.
-    return;
-  }
-
-  const passUrlStr: string = content.data;
-  const components = passUrlStr.split('/');
-  if (!components.length) {
-    // TODO: this should fail to present the notification.
-    return;
-  }
-
-  const id = components[components.length - 1];
-  const url = `${options.services.pushHost}/pass/web/${id}?showWebVersion=1`;
-
-  const iframe = document.createElement('iframe');
-  iframe.classList.add('notificare__notification-content-iframe');
-  iframe.setAttribute('src', url);
-  container.appendChild(iframe);
 }
 
 function populateContentWithUrl(notification: NotificareNotification, container: HTMLElement) {
