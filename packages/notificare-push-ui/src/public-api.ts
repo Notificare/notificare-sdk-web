@@ -38,6 +38,7 @@ export function presentNotification(notification: NotificareNotification) {
 
   const modal = document.createElement('div');
   modal.classList.add('notificare__notification');
+  modal.setAttribute('data-notification-type', notification.type);
   modal.addEventListener('click', (e) => {
     // Prevent the backdrop click to dismiss from receiving events when
     // the notification content is clicked.
