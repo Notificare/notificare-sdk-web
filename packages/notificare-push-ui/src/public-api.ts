@@ -156,6 +156,10 @@ function createContentElement(notification: NotificareNotification): HTMLElement
       populateContentWithUrl(notification, content);
       break;
 
+    case 're.notifica.notification.WebView':
+      populateContentWithWebView(notification, content);
+      break;
+
     default:
       logger.warning(`Unsupported notification type: ${notification.type}`);
   }
@@ -194,5 +198,20 @@ function populateContentWithUrl(notification: NotificareNotification, container:
   const iframe = document.createElement('iframe');
   iframe.classList.add('notificare__notification-content-iframe');
   iframe.setAttribute('src', content.data);
+  container.appendChild(iframe);
+}
+
+function populateContentWithWebView(notification: NotificareNotification, container: HTMLElement) {
+  const content = notification.content.find(({ type }) => type === 're.notifica.content.HTML');
+  if (!content) {
+    // TODO: this should fail to present the notification.
+    return;
+  }
+
+  const html = `<!DOCTYPE html><html><head><title></title><meta name="viewport" content="width=device-width, maximum-scale=1, initial-scale=1, user-scalable=0"></head><body>${content.data}</body></html>`;
+
+  const iframe = document.createElement('iframe');
+  iframe.classList.add('notificare__notification-content-iframe');
+  iframe.setAttribute('srcdoc', html);
   container.appendChild(iframe);
 }
