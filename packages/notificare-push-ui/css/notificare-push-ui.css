@@ -32,7 +32,7 @@
     left: 0;
 
     display: flex;
-    align-items: center;
+    /*align-items: center;*/
     justify-content: center;
     background: rgba(0, 0, 0, 0.5);
     overflow: hidden;
@@ -50,6 +50,20 @@
     row-gap: 16px;
 
     padding: 16px;
+}
+
+.notificare__notification[data-notification-type="re.notifica.notification.Alert"] {
+    align-self: center;
+}
+
+.notificare__notification[data-notification-type="re.notifica.notification.URL"] {
+    width: 100%;
+    flex-grow: 1;
+    margin: 32px;
+}
+
+.notificare__notification[data-notification-type="re.notifica.notification.URL"] .notificare__notification-content {
+    flex-grow: 1;
 }
 
 .notificare__notification-header {
@@ -107,6 +121,12 @@
 }
 
 .notificare__notification-content-message {
+}
+
+.notificare__notification-content-iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
 }
 
 .notificare__notification-actions {

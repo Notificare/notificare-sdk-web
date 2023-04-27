@@ -152,6 +152,10 @@ function createContentElement(notification: NotificareNotification): HTMLElement
       populateContentWithAlert(notification, content);
       break;
 
+    case 're.notifica.notification.URL':
+      populateContentWithUrl(notification, content);
+      break;
+
     default:
       logger.warning(`Unsupported notification type: ${notification.type}`);
   }
@@ -178,4 +182,17 @@ function populateContentWithAlert(notification: NotificareNotification, containe
   contentMessage.classList.add('notificare__notification-content-message');
   contentMessage.innerHTML = notification.message;
   container.appendChild(contentMessage);
+}
+
+function populateContentWithUrl(notification: NotificareNotification, container: HTMLElement) {
+  const content = notification.content.find(({ type }) => type === 're.notifica.content.URL');
+  if (!content) {
+    // TODO: this should fail to present the notification.
+    return;
+  }
+
+  const iframe = document.createElement('iframe');
+  iframe.classList.add('notificare__notification-content-iframe');
+  iframe.setAttribute('src', content.data);
+  container.appendChild(iframe);
 }
