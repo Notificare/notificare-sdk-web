@@ -1,6 +1,5 @@
 "use client";
 
-import { useNotificare } from "@/hooks/use-notificare";
 import { useEffect, useState } from "react";
 import {
   fetchInbox,
@@ -9,13 +8,14 @@ import {
 } from "@notificare/inbox";
 import { formatDistanceToNow, parseISO } from "date-fns";
 import { presentNotification } from "@notificare/push-ui";
+import { useNotificare } from "@/context/notificare";
 
 export default function Inbox() {
-  const { state } = useNotificare();
+  const notificareState = useNotificare();
   const [items, setItems] = useState<NotificareInboxItem[]>([]);
 
   useEffect(() => {
-    if (state !== "ready") {
+    if (notificareState !== "launched") {
       setItems([]);
       return;
     }
@@ -28,7 +28,7 @@ export default function Inbox() {
         console.error(`Something went wrong: ${e}`);
       }
     })();
-  }, [state]);
+  }, [notificareState]);
 
   const onInboxItemClicked = async (item: NotificareInboxItem) => {
     try {
@@ -41,7 +41,7 @@ export default function Inbox() {
 
   return (
     <>
-      {state !== "ready" ? (
+      {notificareState !== "launched" ? (
         <p>stuff is not ready</p>
       ) : (
         <>
