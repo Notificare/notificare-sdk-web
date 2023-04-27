@@ -50,13 +50,8 @@ export function presentNotification(notification: NotificareNotification) {
   headerCloseButton.addEventListener('click', onCloseButtonClicked);
   header.appendChild(headerCloseButton);
 
-  const attachmentImage = notification.attachments.find(({ mimeType }) => /image/.test(mimeType));
-  if (attachmentImage) {
-    const attachment = document.createElement('img');
-    attachment.classList.add('notificare__notification-attachment');
-    attachment.setAttribute('src', attachmentImage.uri);
-    modal.appendChild(attachment);
-  }
+  const attachmentImage = createAttachmentElement(notification);
+  if (attachmentImage) modal.appendChild(attachmentImage);
 
   const content = document.createElement('div');
   content.classList.add('notificare__notification-content');
@@ -111,4 +106,17 @@ function ensureCleanState() {
 function onCloseButtonClicked() {
   //
   ensureCleanState();
+}
+
+function createAttachmentElement(notification: NotificareNotification): HTMLElement | undefined {
+  if (notification.type !== 're.notifica.notification.Alert') return undefined;
+
+  const attachment = notification.attachments.find(({ mimeType }) => /image/.test(mimeType));
+  if (!attachment) return undefined;
+
+  const element = document.createElement('img');
+  element.classList.add('notificare__notification-attachment');
+  element.setAttribute('src', attachment.uri);
+
+  return element;
 }
