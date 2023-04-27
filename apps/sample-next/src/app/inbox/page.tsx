@@ -87,6 +87,10 @@ export function InboxItem({ item, onClick }: InboxItemProps) {
           <p className="text-sm text-gray-500 truncate dark:text-gray-400">
             {item.notification.message}
           </p>
+
+          <p className="text-xs text-gray-500 truncate dark:text-gray-400">
+            {item.notification.type}
+          </p>
         </div>
 
         <div className="flex flex-col items-end space-y-1">
