@@ -52,7 +52,7 @@ export function presentNotification(notification: NotificareNotification) {
   const attachmentImage = createAttachmentElement(notification);
   if (attachmentImage) modal.appendChild(attachmentImage);
 
-  const content = createContentElement(notification);
+  const content = createContentElement(options, notification);
   modal.appendChild(content);
 
   if (notification.actions.length) {
@@ -143,13 +143,20 @@ function createAttachmentElement(notification: NotificareNotification): HTMLElem
   return element;
 }
 
-function createContentElement(notification: NotificareNotification): HTMLElement {
+function createContentElement(
+  options: NotificareInternalOptions,
+  notification: NotificareNotification,
+): HTMLElement {
   const content = document.createElement('div');
   content.classList.add('notificare__notification-content');
 
   switch (notification.type) {
     case 're.notifica.notification.Alert':
       populateContentWithAlert(notification, content);
+      break;
+
+    case 're.notifica.notification.Passbook':
+      populateContentWithPassbook(options, notification, content);
       break;
 
     case 're.notifica.notification.URL':
@@ -186,6 +193,33 @@ function populateContentWithAlert(notification: NotificareNotification, containe
   contentMessage.classList.add('notificare__notification-content-message');
   contentMessage.innerHTML = notification.message;
   container.appendChild(contentMessage);
+}
+
+function populateContentWithPassbook(
+  options: NotificareInternalOptions,
+  notification: NotificareNotification,
+  container: HTMLElement,
+) {
+  const content = notification.content.find(({ type }) => type === 're.notifica.content.PKPass');
+  if (!content) {
+    // TODO: this should fail to present the notification.
+    return;
+  }
+
+  const passUrlStr: string = content.data;
+  const components = passUrlStr.split('/');
+  if (!components.length) {
+    // TODO: this should fail to present the notification.
+    return;
+  }
+
+  const id = components[components.length - 1];
+  const url = `${options.services.pushHost}/pass/web/${id}?showWebVersion=1`;
+
+  const iframe = document.createElement('iframe');
+  iframe.classList.add('notificare__notification-content-iframe');
+  iframe.setAttribute('src', url);
+  container.appendChild(iframe);
 }
 
 function populateContentWithUrl(notification: NotificareNotification, container: HTMLElement) {

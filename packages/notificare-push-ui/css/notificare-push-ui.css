@@ -56,6 +56,7 @@
     align-self: center;
 }
 
+.notificare__notification[data-notification-type="re.notifica.notification.Passbook"],
 .notificare__notification[data-notification-type="re.notifica.notification.URL"],
 .notificare__notification[data-notification-type="re.notifica.notification.WebView"] {
     width: 100%;
@@ -63,6 +64,7 @@
     margin: 32px;
 }
 
+.notificare__notification[data-notification-type="re.notifica.notification.Passbook"] .notificare__notification-content,
 .notificare__notification[data-notification-type="re.notifica.notification.URL"] .notificare__notification-content,
 .notificare__notification[data-notification-type="re.notifica.notification.WebView"] .notificare__notification-content {
     flex-grow: 1;
