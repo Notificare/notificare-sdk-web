@@ -19,9 +19,19 @@ export function presentNotification(notification: NotificareNotification) {
   const backdrop = document.createElement('div');
   backdrop.id = 'notificare-push-ui';
   backdrop.classList.add('notificare', 'notificare__notification-backdrop');
+  backdrop.addEventListener('click', (e) => {
+    if (e.defaultPrevented) return;
+
+    dismissNotificationUI();
+  });
 
   const modal = document.createElement('div');
   modal.classList.add('notificare__notification');
+  modal.addEventListener('click', (e) => {
+    // Prevent the backdrop click to dismiss from receiving events when
+    // the notification content is clicked.
+    e.preventDefault();
+  });
   backdrop.appendChild(modal);
 
   const header = document.createElement('div');
@@ -47,7 +57,7 @@ export function presentNotification(notification: NotificareNotification) {
 
   const headerCloseButton = document.createElement('div');
   headerCloseButton.classList.add('notificare__notification-header-close-button');
-  headerCloseButton.addEventListener('click', onCloseButtonClicked);
+  headerCloseButton.addEventListener('click', dismissNotificationUI);
   header.appendChild(headerCloseButton);
 
   const attachmentImage = createAttachmentElement(notification);
@@ -83,8 +93,7 @@ function ensureCleanState() {
   if (root) root.remove();
 }
 
-function onCloseButtonClicked() {
-  //
+function dismissNotificationUI() {
   ensureCleanState();
 }
 
