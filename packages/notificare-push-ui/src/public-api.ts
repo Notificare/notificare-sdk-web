@@ -22,6 +22,13 @@ export function presentNotification(notification: NotificareNotification) {
     return;
   }
 
+  if (!checkNotificationSupport(notification)) {
+    logger.warning(
+      `Unable to present the notification. Unsupported notification type '${notification.type}'.`,
+    );
+    return;
+  }
+
   switch (notification.type) {
     case 're.notifica.notification.None':
       logger.debug(
@@ -144,6 +151,24 @@ function ensureCleanState() {
 
 function dismissNotificationUI() {
   ensureCleanState();
+}
+
+function checkNotificationSupport(notification: NotificareNotification): boolean {
+  switch (notification.type) {
+    case 're.notifica.notification.None':
+    case 're.notifica.notification.Alert':
+    case 're.notifica.notification.Image':
+    case 're.notifica.notification.InAppBrowser':
+    case 're.notifica.notification.Map':
+    case 're.notifica.notification.Passbook':
+    case 're.notifica.notification.URL':
+    case 're.notifica.notification.URLScheme':
+    case 're.notifica.notification.Video':
+    case 're.notifica.notification.WebView':
+      return true;
+    default:
+      return false;
+  }
 }
 
 function createHeader(
