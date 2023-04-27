@@ -14,6 +14,7 @@ import { getOptions } from './options';
 import { NotificareDevice } from '../models/notificare-device';
 import { EventSubscription } from '../event-subscription';
 import { NotificareNotReadyError } from '../errors/notificare-not-ready-error';
+import { NotificareDeviceUnavailableError } from '../errors/notificare-device-unavailable-error';
 
 export function getCurrentDevice(): NotificareDevice | undefined {
   const deviceStr = localStorage.getItem('re.notifica.device');
@@ -63,6 +64,17 @@ export async function registerPushDevice(options: InternalRegisterPushDeviceOpti
     keys: options.keys,
     userId: device?.userId,
     userName: device?.userName,
+  });
+}
+
+export async function registerTestDevice(nonce: string) {
+  const device = getCurrentDevice();
+  if (!device) throw new NotificareDeviceUnavailableError();
+
+  const encodedNonce = encodeURIComponent(nonce);
+  await request(`/api/support/testdevice/${encodedNonce}`, {
+    method: 'PUT',
+    body: { deviceID: device.id },
   });
 }
 

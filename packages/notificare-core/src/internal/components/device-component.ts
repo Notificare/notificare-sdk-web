@@ -3,6 +3,7 @@ import {
   getCurrentDevice,
   registerDeviceInternal,
   registerTemporaryDevice,
+  registerTestDevice,
 } from '../internal-api-device';
 import { logger } from '../logger';
 import { getApplicationVersion } from '../utils';
@@ -60,9 +61,22 @@ export class DeviceComponent extends Component {
         throw e;
       }
     }
+
+    this.handleTestDeviceRegistration();
   }
 
   async unlaunch(): Promise<void> {
     //
+  }
+
+  private handleTestDeviceRegistration() {
+    const searchParams = new URLSearchParams(window.location.search);
+
+    const nonce = searchParams.get('notificareTestNonce');
+    if (!nonce) return;
+
+    registerTestDevice(nonce)
+      .then(() => logger.debug('Test device registered.'))
+      .catch((error) => logger.error(`Failed to register the test device: ${error}`));
   }
 }
