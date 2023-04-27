@@ -23,6 +23,12 @@ export function presentNotification(notification: NotificareNotification) {
   }
 
   switch (notification.type) {
+    case 're.notifica.notification.None':
+      logger.debug(
+        "Attempting to present a notification of type 'none'. These should be handled by the application instead.",
+      );
+      return;
+
     case 're.notifica.notification.URLScheme':
       presentUrlScheme(notification);
       return;
