@@ -9,6 +9,8 @@ import {
 } from "react";
 import { isReady, launch, onReady } from "@notificare/core";
 import { setLogLevel } from "@notificare/logger";
+import { onNotificationOpened } from "@notificare/push";
+import { presentNotification } from "@notificare/push-ui";
 
 export type NotificareState = "idle" | "launched" | "failed";
 
@@ -26,7 +28,10 @@ export function NotificareProvider({ children }: PropsWithChildren) {
       onReady(() => {
         setState("launched");
       }),
-      // TODO: on unlaunched
+      // TODO: on unlaunched,
+      onNotificationOpened((notification) => {
+        presentNotification(notification);
+      }),
     ];
 
     return () => subscriptions.forEach((sub) => sub.remove());
