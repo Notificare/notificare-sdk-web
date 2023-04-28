@@ -52,14 +52,18 @@ export function presentNotification(notification: NotificareNotification) {
       break;
   }
 
+  const container = document.createElement('div');
+  container.id = 'notificare-push-ui';
+  container.classList.add('notificare');
+
   const backdrop = document.createElement('div');
-  backdrop.id = 'notificare-push-ui';
-  backdrop.classList.add('notificare', 'notificare__notification-backdrop');
+  backdrop.classList.add('notificare__notification-backdrop');
   backdrop.addEventListener('click', (e) => {
     if (e.defaultPrevented) return;
 
     dismissNotificationUI();
   });
+  container.appendChild(backdrop);
 
   const modal = document.createElement('div');
   modal.classList.add('notificare__notification');
@@ -69,7 +73,7 @@ export function presentNotification(notification: NotificareNotification) {
     // the notification content is clicked.
     e.preventDefault();
   });
-  backdrop.appendChild(modal);
+  container.appendChild(modal);
 
   const header = createHeader(options, application);
   modal.appendChild(header);
@@ -99,7 +103,7 @@ export function presentNotification(notification: NotificareNotification) {
   }
 
   // Add the complete notification DOM to the page.
-  document.body.appendChild(backdrop);
+  document.body.appendChild(container);
 }
 
 function presentInAppBrowser(notification: NotificareNotification) {
@@ -228,6 +232,10 @@ function createContentElement(
       populateContentWithAlert(notification, content);
       break;
 
+    case 're.notifica.notification.Image':
+      populateContentWithImage(notification, content);
+      break;
+
     case 're.notifica.notification.URL':
       populateContentWithUrl(notification, content);
       break;
@@ -262,6 +270,29 @@ function populateContentWithAlert(notification: NotificareNotification, containe
   contentMessage.classList.add('notificare__notification-content-message');
   contentMessage.innerHTML = notification.message;
   container.appendChild(contentMessage);
+}
+
+function populateContentWithImage(notification: NotificareNotification, container: HTMLElement) {
+  const content = notification.content.filter(({ type }) => type === 're.notifica.content.Image');
+  if (!content.length) {
+    // TODO: this should fail to present the notification.
+    return;
+  }
+
+  const slider = document.createElement('div');
+  slider.classList.add('notificare__notification-content-slider');
+  container.appendChild(slider);
+
+  content.forEach((element) => {
+    const item = document.createElement('div');
+    item.classList.add('notificare__notification-content-slider-item');
+    slider.appendChild(item);
+
+    const image = document.createElement('img');
+    image.classList.add('notificare__notification-content-slider-image');
+    image.setAttribute('src', element.data);
+    item.appendChild(image);
+  });
 }
 
 function populateContentWithUrl(notification: NotificareNotification, container: HTMLElement) {
