@@ -63,6 +63,7 @@
     max-width: 900px;
 }
 
+.notificare__notification[data-notification-type="re.notifica.notification.Map"],
 .notificare__notification[data-notification-type="re.notifica.notification.Video"] {
     width: 100%;
     max-width: 900px;
@@ -168,6 +169,27 @@
     width: 100%;
     height: 500px;
     border: none;
+}
+
+.notificare__notification-content-map {
+    width: 100%;
+    height: 500px;
+}
+
+.notificare__notification-content-map-info-window {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    max-width: 400px;
+}
+
+.notificare__notification-content-map-info-window-title {
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.notificare__notification-content-map-info-window-description {
+    font-size: 14px;
 }
 
 .notificare__notification-actions {

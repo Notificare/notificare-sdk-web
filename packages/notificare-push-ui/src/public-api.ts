@@ -236,6 +236,10 @@ function createContentElement(
       populateContentWithImage(notification, content);
       break;
 
+    case 're.notifica.notification.Map':
+      populateContentWithMap(notification, content);
+      break;
+
     case 're.notifica.notification.URL':
       populateContentWithUrl(notification, content);
       break;
@@ -297,6 +301,78 @@ function populateContentWithImage(notification: NotificareNotification, containe
     image.setAttribute('src', element.data);
     item.appendChild(image);
   });
+}
+
+function populateContentWithMap(notification: NotificareNotification, container: HTMLElement) {
+  const content = notification.content.filter(({ type }) => type === 're.notifica.content.Marker');
+  if (!content.length) {
+    // TODO: this should fail to present the notification.
+    return;
+  }
+
+  if (typeof window.google === 'undefined' || !window.google || !window.google.maps) {
+    // TODO: this should fail to present the notification.
+    return;
+  }
+
+  const mapContainer = document.createElement('div');
+  mapContainer.classList.add('notificare__notification-content-map');
+  container.appendChild(mapContainer);
+
+  const map = new google.maps.Map(mapContainer, {
+    zoom: 15,
+    center: new google.maps.LatLng(content[0].data.latitude, content[0].data.longitude),
+  });
+
+  const markers = content.map(({ data }) => {
+    const marker = new google.maps.Marker({
+      position: new google.maps.LatLng(data.latitude, data.longitude),
+      map,
+    });
+
+    if (data.title || data.description) {
+      const infoWindowContent = document.createElement('div');
+      infoWindowContent.classList.add('notificare__notification-content-map-info-window');
+
+      if (data.title) {
+        const title = document.createElement('h2');
+        title.classList.add('notificare__notification-content-map-info-window-title');
+        title.innerHTML = data.title;
+        infoWindowContent.appendChild(title);
+      }
+
+      if (data.description) {
+        const description = document.createElement('p');
+        description.classList.add('notificare__notification-content-map-info-window-description');
+        description.innerHTML = data.description;
+        infoWindowContent.appendChild(description);
+      }
+
+      const infoWindow = new google.maps.InfoWindow({
+        content: infoWindowContent,
+        ariaLabel: 'Uluru',
+      });
+
+      marker.addListener('click', () => {
+        infoWindow.open({
+          anchor: marker,
+          map,
+        });
+      });
+    }
+
+    return marker;
+  });
+
+  if (content.length > 1) {
+    const bounds = new window.google.maps.LatLngBounds();
+    markers.forEach((marker) => {
+      const position = marker.getPosition();
+      if (position) bounds.extend(position);
+    });
+
+    map.fitBounds(bounds);
+  }
 }
 
 function populateContentWithUrl(notification: NotificareNotification, container: HTMLElement) {

@@ -2256,6 +2256,11 @@
     "@types/minimatch" "*"
     "@types/node" "*"
 
+"@types/google.maps@^3.52.6":
+  version "3.52.6"
+  resolved "https://registry.yarnpkg.com/@types/google.maps/-/google.maps-3.52.6.tgz#5a3f0d1ae005580f9016683b5d0acf71ae2f4465"
+  integrity sha512-CnwN5UcezNiRuJzV0wGIsqXWNwMM6WzIxmy9lOUx+yauRQMee5XH/N7NaVOsiY5T5ygrnBwPO+csND652HYsTQ==
+
 "@types/json-schema@^7.0.5", "@types/json-schema@^7.0.8", "@types/json-schema@^7.0.9":
   version "7.0.11"
   resolved "https://registry.npmjs.org/@types/json-schema/-/json-schema-7.0.11.tgz"
