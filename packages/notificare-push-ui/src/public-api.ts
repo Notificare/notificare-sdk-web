@@ -240,6 +240,10 @@ function createContentElement(
       populateContentWithUrl(notification, content);
       break;
 
+    case 're.notifica.notification.Video':
+      populateContentWithVideo(notification, content);
+      break;
+
     case 're.notifica.notification.WebView':
       populateContentWithWebView(notification, content);
       break;
@@ -306,6 +310,62 @@ function populateContentWithUrl(notification: NotificareNotification, container:
   iframe.classList.add('notificare__notification-content-iframe');
   iframe.setAttribute('src', content.data);
   container.appendChild(iframe);
+}
+
+function populateContentWithVideo(notification: NotificareNotification, container: HTMLElement) {
+  if (!notification.content.length) {
+    // TODO: this should fail to present the notification.
+    return;
+  }
+
+  const content = notification.content[0];
+  let element: HTMLElement | undefined;
+
+  if (content.type === 're.notifica.content.YouTube') {
+    element = createYouTubeElement(content.data);
+  } else if (content.type === 're.notifica.content.Vimeo') {
+    element = createVimeoElement(content.data);
+  } else if (content.type === 're.notifica.content.HTML5Video') {
+    element = createHtml5VideoElement(content.data);
+  } else {
+    // TODO: this should fail to present the notification.
+    return;
+  }
+
+  container.appendChild(element);
+}
+
+function createYouTubeElement(videoId: string): HTMLElement {
+  const iframe = document.createElement('iframe');
+  iframe.classList.add('notificare__notification-content-video-iframe');
+  iframe.setAttribute('src', `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&rel=0`);
+  iframe.setAttribute('allowfullscreen', '');
+
+  return iframe;
+}
+
+function createVimeoElement(videoId: string): HTMLElement {
+  const iframe = document.createElement('iframe');
+  iframe.classList.add('notificare__notification-content-video-iframe');
+  iframe.setAttribute('src', `https://player.vimeo.com/video/${videoId}?autoplay=1`);
+  iframe.setAttribute('allowfullscreen', '');
+
+  return iframe;
+}
+
+function createHtml5VideoElement(videoUrl: string): HTMLElement {
+  const video = document.createElement('video');
+  video.classList.add('notificare__notification-content-video');
+  video.setAttribute('autoplay', '');
+  video.setAttribute('controls', '');
+  video.setAttribute('preload', '');
+
+  const source = document.createElement('source');
+  source.setAttribute('src', videoUrl);
+  source.setAttribute('type', 'video/mp4');
+  video.appendChild(source);
+
+  return video;
 }
 
 function populateContentWithWebView(notification: NotificareNotification, container: HTMLElement) {
