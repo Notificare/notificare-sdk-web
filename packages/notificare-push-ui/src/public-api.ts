@@ -303,7 +303,10 @@ function populateContentWithImage(notification: NotificareNotification, containe
   });
 }
 
-function populateContentWithMap(notification: NotificareNotification, container: HTMLElement) {
+async function populateContentWithMap(
+  notification: NotificareNotification,
+  container: HTMLElement,
+) {
   const content = notification.content.filter(({ type }) => type === 're.notifica.content.Marker');
   if (!content.length) {
     // TODO: this should fail to present the notification.
@@ -319,15 +322,25 @@ function populateContentWithMap(notification: NotificareNotification, container:
   mapContainer.classList.add('notificare__notification-content-map');
   container.appendChild(mapContainer);
 
-  const map = new google.maps.Map(mapContainer, {
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  const { Map } = await google.maps.importLibrary('maps');
+
+  const map = new Map(mapContainer, {
     zoom: 15,
-    center: new google.maps.LatLng(content[0].data.latitude, content[0].data.longitude),
+    center: {
+      lat: content[0].data.latitude,
+      lng: content[0].data.longitude,
+    },
   });
 
   const markers = content.map(({ data }) => {
     const marker = new google.maps.Marker({
-      position: new google.maps.LatLng(data.latitude, data.longitude),
       map,
+      position: {
+        lat: data.latitude,
+        lng: data.longitude,
+      },
     });
 
     if (data.title || data.description) {
@@ -365,7 +378,7 @@ function populateContentWithMap(notification: NotificareNotification, container:
   });
 
   if (content.length > 1) {
-    const bounds = new window.google.maps.LatLngBounds();
+    const bounds = new google.maps.LatLngBounds();
     markers.forEach((marker) => {
       const position = marker.getPosition();
       if (position) bounds.extend(position);
