@@ -29,6 +29,8 @@ export function presentNotification(notification: NotificareNotification) {
     return;
   }
 
+  logger.debug(`Presenting notification '${notification.id}'.`);
+
   switch (notification.type) {
     case 're.notifica.notification.None':
       logger.debug(
