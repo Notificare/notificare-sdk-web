@@ -349,10 +349,14 @@ function createActionsSection(notification: NotificareNotification): HTMLElement
   const container = document.createElement('div');
   container.classList.add('notificare__notification-actions');
 
-  notification.actions.forEach((action) => {
+  notification.actions.forEach((action, index) => {
     const actionButton = document.createElement('a');
     actionButton.classList.add('notificare__notification-action-button');
     actionButton.innerHTML = action.label;
+
+    if (index === 0) {
+      actionButton.classList.add('notificare__notification-action-button__primary');
+    }
 
     if (action.destructive) {
       actionButton.classList.add('notificare__notification-action-button__destructive');
