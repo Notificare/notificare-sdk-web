@@ -6,19 +6,36 @@ import {
 } from '@notificare/core';
 import { logger } from './logger';
 import { createNotificationContainer } from './internal/notification-ui';
+import {
+  notifyNotificationFailedToPresent,
+  notifyNotificationFinishedPresenting,
+  notifyNotificationPresented,
+  notifyNotificationWillPresent,
+} from './internal/consumer-events';
+
+export {
+  onNotificationWillPresent,
+  onNotificationPresented,
+  onNotificationFinishedPresenting,
+  onNotificationFailedToPresent,
+} from './internal/consumer-events';
 
 export function presentNotification(notification: NotificareNotification) {
   ensureCleanState();
 
+  notifyNotificationWillPresent(notification);
+
   const application = getApplication();
   if (!application) {
     logger.warning('Unable to present the notification. The cached application is unavailable.');
+    notifyNotificationFailedToPresent(notification);
     return;
   }
 
   const options = getOptions();
   if (!options) {
     logger.warning('Unable to present the notification. Notificare is not configured.');
+    notifyNotificationFailedToPresent(notification);
     return;
   }
 
@@ -26,6 +43,7 @@ export function presentNotification(notification: NotificareNotification) {
     logger.warning(
       `Unable to present the notification. Unsupported notification type '${notification.type}'.`,
     );
+    notifyNotificationFailedToPresent(notification);
     return;
   }
 
@@ -36,18 +54,22 @@ export function presentNotification(notification: NotificareNotification) {
       logger.debug(
         "Attempting to present a notification of type 'none'. These should be handled by the application instead.",
       );
+      notifyNotificationPresented(notification);
       return;
 
     case 're.notifica.notification.InAppBrowser':
       presentInAppBrowser(notification);
+      notifyNotificationPresented(notification);
       return;
 
     case 're.notifica.notification.URLScheme':
       presentUrlScheme(notification);
+      notifyNotificationPresented(notification);
       return;
 
     case 're.notifica.notification.Passbook':
       presentPassbook(options, notification);
+      notifyNotificationPresented(notification);
       return;
 
     default:
@@ -58,15 +80,21 @@ export function presentNotification(notification: NotificareNotification) {
     options,
     application,
     notification,
-    () => ensureCleanState(),
-    (action) => presentAction(notification, action),
+    () => {
+      ensureCleanState();
+      notifyNotificationFinishedPresenting(notification);
+    },
+    (action) => {},
   )
     .then((container) => {
       // Add the complete notification DOM to the page.
       document.body.appendChild(container);
+
+      notifyNotificationPresented(notification);
     })
     .catch((error) => {
-      //
+      logger.error('Failed to present a notification: ', error);
+      notifyNotificationFailedToPresent(notification);
     });
 }
 
