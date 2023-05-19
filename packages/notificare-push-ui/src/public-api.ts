@@ -54,7 +54,13 @@ export function presentNotification(notification: NotificareNotification) {
       break;
   }
 
-  createNotificationContainer(options, application, notification, ensureCleanState)
+  createNotificationContainer(
+    options,
+    application,
+    notification,
+    () => ensureCleanState(),
+    (action) => presentAction(notification, action),
+  )
     .then((container) => {
       // Add the complete notification DOM to the page.
       document.body.appendChild(container);

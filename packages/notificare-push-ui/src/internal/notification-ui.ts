@@ -2,6 +2,7 @@ import {
   NotificareApplication,
   NotificareInternalOptions,
   NotificareNotification,
+  NotificareNotificationAction,
 } from '@notificare/core';
 
 export async function createNotificationContainer(
@@ -9,6 +10,7 @@ export async function createNotificationContainer(
   application: NotificareApplication,
   notification: NotificareNotification,
   closeNotification: () => void,
+  presentAction: (action: NotificareNotificationAction) => void,
 ) {
   const container = document.createElement('div');
   container.id = 'notificare-push-ui';
@@ -42,7 +44,7 @@ export async function createNotificationContainer(
   const content = await createContentSection(options, notification);
   modal.appendChild(content);
 
-  const actions = createActionsSection(notification);
+  const actions = createActionsSection(notification, presentAction);
   if (actions) modal.appendChild(actions);
 
   return container;
@@ -343,7 +345,10 @@ async function createWebViewContent(notification: NotificareNotification): Promi
   return iframe;
 }
 
-function createActionsSection(notification: NotificareNotification): HTMLElement | undefined {
+function createActionsSection(
+  notification: NotificareNotification,
+  onActionClicked: (action: NotificareNotificationAction) => void,
+): HTMLElement | undefined {
   if (!notification.actions.length) return undefined;
 
   const container = document.createElement('div');
@@ -361,6 +366,10 @@ function createActionsSection(notification: NotificareNotification): HTMLElement
     if (action.destructive) {
       actionButton.classList.add('notificare__notification-action-button__destructive');
     }
+
+    actionButton.addEventListener('click', () => {
+      onActionClicked(action);
+    });
 
     container.appendChild(actionButton);
   });
