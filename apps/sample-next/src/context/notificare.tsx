@@ -11,6 +11,10 @@ import { isReady, launch, onReady } from "@notificare/core";
 import { setLogLevel } from "@notificare/logger";
 import { onNotificationOpened } from "@notificare/push";
 import {
+  onActionExecuted,
+  onActionFailedToExecute,
+  onActionWillExecute,
+  onCustomActionReceived,
   onNotificationFailedToPresent,
   onNotificationFinishedPresenting,
   onNotificationPresented,
@@ -49,6 +53,28 @@ export function NotificareProvider({ children }: PropsWithChildren) {
       }),
       onNotificationFailedToPresent((notification) => {
         console.log(`notification ${notification.id} failed to present`);
+      }),
+      onActionWillExecute((notification, action) => {
+        console.log(
+          `notification ${notification.id} / action '${action.label}' will execute`
+        );
+      }),
+      onActionExecuted((notification, action) => {
+        console.log(
+          `notification ${notification.id} / action '${action.label}' executed`
+        );
+      }),
+      onActionFailedToExecute((notification, action) => {
+        console.log(
+          `notification ${notification.id} / action '${action.label}' failed to execute`
+        );
+      }),
+      onCustomActionReceived((notification, action, target) => {
+        console.log(
+          `notification ${notification.id} / action '${action.label}' custom action received`
+        );
+
+        window.location.href = target;
       }),
     ];
 
