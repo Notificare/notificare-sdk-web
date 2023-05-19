@@ -18,6 +18,10 @@ export {
   onNotificationPresented,
   onNotificationFinishedPresenting,
   onNotificationFailedToPresent,
+  onActionWillExecute,
+  onActionExecuted,
+  onActionFailedToExecute,
+  onCustomActionReceived,
 } from './internal/consumer-events';
 
 export function presentNotification(notification: NotificareNotification) {

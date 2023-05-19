@@ -1,15 +1,40 @@
-import { EventSubscription, NotificareNotification } from '@notificare/core';
+import {
+  EventSubscription,
+  NotificareNotification,
+  NotificareNotificationAction,
+} from '@notificare/core';
 import { logger } from '../logger';
 
 let notificationWillPresentCallback: OnNotificationWillPresentCallback | undefined;
 let notificationPresentedCallback: OnNotificationPresentedCallback | undefined;
 let notificationFinishedPresentingCallback: OnNotificationFinishedPresentingCallback | undefined;
 let notificationFailedToPresentCallback: OnNotificationFailedToPresentCallback | undefined;
+let actionWillExecuteCallback: OnActionWillExecuteCallback | undefined;
+let actionExecutedCallback: OnActionExecutedCallback | undefined;
+let actionFailedToExecuteCallback: OnActionFailedToExecuteCallback | undefined;
+let customActionReceivedCallback: OnCustomActionReceivedCallback | undefined;
 
 type OnNotificationWillPresentCallback = (notification: NotificareNotification) => void;
 type OnNotificationPresentedCallback = (notification: NotificareNotification) => void;
 type OnNotificationFinishedPresentingCallback = (notification: NotificareNotification) => void;
 type OnNotificationFailedToPresentCallback = (notification: NotificareNotification) => void;
+type OnActionWillExecuteCallback = (
+  notification: NotificareNotification,
+  action: NotificareNotificationAction,
+) => void;
+type OnActionExecutedCallback = (
+  notification: NotificareNotification,
+  action: NotificareNotificationAction,
+) => void;
+type OnActionFailedToExecuteCallback = (
+  notification: NotificareNotification,
+  action: NotificareNotificationAction,
+) => void;
+type OnCustomActionReceivedCallback = (
+  notification: NotificareNotification,
+  action: NotificareNotificationAction,
+  target: string,
+) => void;
 
 export function onNotificationWillPresent(
   callback: OnNotificationWillPresentCallback,
@@ -59,6 +84,50 @@ export function onNotificationFailedToPresent(
   };
 }
 
+export function onActionWillExecute(callback: OnActionWillExecuteCallback): EventSubscription {
+  actionWillExecuteCallback = callback;
+
+  return {
+    remove: () => {
+      actionWillExecuteCallback = undefined;
+    },
+  };
+}
+
+export function onActionExecuted(callback: OnActionExecutedCallback): EventSubscription {
+  actionExecutedCallback = callback;
+
+  return {
+    remove: () => {
+      actionExecutedCallback = undefined;
+    },
+  };
+}
+
+export function onActionFailedToExecute(
+  callback: OnActionFailedToExecuteCallback,
+): EventSubscription {
+  actionFailedToExecuteCallback = callback;
+
+  return {
+    remove: () => {
+      actionFailedToExecuteCallback = undefined;
+    },
+  };
+}
+
+export function onCustomActionReceived(
+  callback: OnCustomActionReceivedCallback,
+): EventSubscription {
+  customActionReceivedCallback = callback;
+
+  return {
+    remove: () => {
+      customActionReceivedCallback = undefined;
+    },
+  };
+}
+
 export function notifyNotificationWillPresent(notification: NotificareNotification) {
   const callback = notificationWillPresentCallback;
   if (!callback) {
@@ -97,4 +166,57 @@ export function notifyNotificationFailedToPresent(notification: NotificareNotifi
   }
 
   callback(notification);
+}
+
+export function notifyActionWillExecute(
+  notification: NotificareNotification,
+  action: NotificareNotificationAction,
+) {
+  const callback = actionWillExecuteCallback;
+  if (!callback) {
+    logger.debug("The 'action_will_execute' handler is not configured.");
+    return;
+  }
+
+  callback(notification, action);
+}
+
+export function notifyActionExecuted(
+  notification: NotificareNotification,
+  action: NotificareNotificationAction,
+) {
+  const callback = actionExecutedCallback;
+  if (!callback) {
+    logger.debug("The 'action_executed' handler is not configured.");
+    return;
+  }
+
+  callback(notification, action);
+}
+
+export function notifyActionFailedToExecute(
+  notification: NotificareNotification,
+  action: NotificareNotificationAction,
+) {
+  const callback = actionFailedToExecuteCallback;
+  if (!callback) {
+    logger.debug("The 'action_failed_to_execute' handler is not configured.");
+    return;
+  }
+
+  callback(notification, action);
+}
+
+export function notifyCustomActionReceived(
+  notification: NotificareNotification,
+  action: NotificareNotificationAction,
+  target: string,
+) {
+  const callback = customActionReceivedCallback;
+  if (!callback) {
+    logger.debug("The 'custom_action_received' handler is not configured.");
+    return;
+  }
+
+  callback(notification, action, target);
 }
