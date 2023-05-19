@@ -10,7 +10,13 @@ import {
 import { isReady, launch, onReady } from "@notificare/core";
 import { setLogLevel } from "@notificare/logger";
 import { onNotificationOpened } from "@notificare/push";
-import { presentNotification } from "@notificare/push-ui";
+import {
+  onNotificationFailedToPresent,
+  onNotificationFinishedPresenting,
+  onNotificationPresented,
+  onNotificationWillPresent,
+  presentNotification,
+} from "@notificare/push-ui";
 
 export type NotificareState = "idle" | "launched" | "failed";
 
@@ -31,6 +37,18 @@ export function NotificareProvider({ children }: PropsWithChildren) {
       // TODO: on unlaunched,
       onNotificationOpened((notification) => {
         presentNotification(notification);
+      }),
+      onNotificationWillPresent((notification) => {
+        console.log(`notification ${notification.id} will present`);
+      }),
+      onNotificationPresented((notification) => {
+        console.log(`notification ${notification.id} presented`);
+      }),
+      onNotificationFinishedPresenting((notification) => {
+        console.log(`notification ${notification.id} finished presenting`);
+      }),
+      onNotificationFailedToPresent((notification) => {
+        console.log(`notification ${notification.id} failed to present`);
       }),
     ];
 
