@@ -38,9 +38,6 @@ export async function createNotificationContainer(
   const header = createHeader(options, application, () => closeNotification());
   modal.appendChild(header);
 
-  const attachment = createAttachmentSection(notification);
-  if (attachment) modal.appendChild(attachment);
-
   const content = await createContentSection(options, notification);
   modal.appendChild(content);
 
@@ -83,25 +80,15 @@ function createHeader(
   return header;
 }
 
-function createAttachmentSection(notification: NotificareNotification): HTMLElement | undefined {
-  if (notification.type !== 're.notifica.notification.Alert') return undefined;
-
-  const attachment = notification.attachments.find(({ mimeType }) => /image/.test(mimeType));
-  if (!attachment) return undefined;
-
-  const element = document.createElement('img');
-  element.classList.add('notificare__notification-attachment');
-  element.setAttribute('src', attachment.uri);
-
-  return element;
-}
-
 async function createContentSection(
   options: NotificareInternalOptions,
   notification: NotificareNotification,
 ): Promise<HTMLElement> {
   const content = document.createElement('div');
   content.classList.add('notificare__notification-content');
+
+  const attachment = createAttachmentSection(notification);
+  if (attachment) content.appendChild(attachment);
 
   switch (notification.type) {
     case 're.notifica.notification.Alert': {
@@ -139,6 +126,19 @@ async function createContentSection(
   }
 
   return content;
+}
+
+function createAttachmentSection(notification: NotificareNotification): HTMLElement | undefined {
+  if (notification.type !== 're.notifica.notification.Alert') return undefined;
+
+  const attachment = notification.attachments.find(({ mimeType }) => /image/.test(mimeType));
+  if (!attachment) return undefined;
+
+  const element = document.createElement('img');
+  element.classList.add('notificare__notification-attachment');
+  element.setAttribute('src', attachment.uri);
+
+  return element;
 }
 
 function createAlertContent(notification: NotificareNotification): HTMLElement[] {
