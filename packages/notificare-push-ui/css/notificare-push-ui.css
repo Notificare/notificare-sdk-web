@@ -99,6 +99,9 @@
 .notificare__notification-header-title {
     font-size: 18px;
     flex-grow: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .notificare__notification-header-close-button {
