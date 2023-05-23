@@ -354,6 +354,10 @@ function createActionsSection(
   const container = document.createElement('div');
   container.classList.add('notificare__notification-actions');
 
+  if (notification.actions.length > 2) {
+    container.classList.add('notificare__notification-actions__list');
+  }
+
   notification.actions.forEach((action, index) => {
     const actionButton = document.createElement('a');
     actionButton.classList.add('notificare__notification-action-button');
