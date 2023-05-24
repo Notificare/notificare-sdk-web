@@ -87,9 +87,6 @@ async function createContentSection(
   const content = document.createElement('div');
   content.classList.add('notificare__notification-content');
 
-  const attachment = createAttachmentSection(notification);
-  if (attachment) content.appendChild(attachment);
-
   switch (notification.type) {
     case 're.notifica.notification.Alert': {
       const elements = createAlertContent(notification);
@@ -128,21 +125,11 @@ async function createContentSection(
   return content;
 }
 
-function createAttachmentSection(notification: NotificareNotification): HTMLElement | undefined {
-  if (notification.type !== 're.notifica.notification.Alert') return undefined;
-
-  const attachment = notification.attachments.find(({ mimeType }) => /image/.test(mimeType));
-  if (!attachment) return undefined;
-
-  const element = document.createElement('img');
-  element.classList.add('notificare__notification-attachment');
-  element.setAttribute('src', attachment.uri);
-
-  return element;
-}
-
 function createAlertContent(notification: NotificareNotification): HTMLElement[] {
   const content: HTMLElement[] = [];
+
+  const attachment = createAttachmentSection(notification);
+  if (attachment) content.push(attachment);
 
   if (notification.title) {
     const title = document.createElement('p');
@@ -164,6 +151,17 @@ function createAlertContent(notification: NotificareNotification): HTMLElement[]
   content.push(message);
 
   return content;
+}
+
+function createAttachmentSection(notification: NotificareNotification): HTMLElement | undefined {
+  const attachment = notification.attachments.find(({ mimeType }) => /image/.test(mimeType));
+  if (!attachment) return undefined;
+
+  const element = document.createElement('img');
+  element.classList.add('notificare__notification-attachment');
+  element.setAttribute('src', attachment.uri);
+
+  return element;
 }
 
 async function createImageContent(notification: NotificareNotification): Promise<HTMLElement> {
