@@ -18,6 +18,7 @@ export interface NotificareInternalOptions {
   language?: string;
   serviceWorker?: string;
   serviceWorkerScope?: string;
+  geolocation?: NotificareInternalOptionsGeolocation;
 }
 
 export interface NotificareInternalOptionsServices {
@@ -25,4 +26,10 @@ export interface NotificareInternalOptionsServices {
   pushHost: string;
   awsStorageHost: string;
   websitePushHost: string;
+}
+
+export interface NotificareInternalOptionsGeolocation {
+  timeout?: number;
+  enableHighAccuracy?: boolean;
+  maximumAge?: number;
 }

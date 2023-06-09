@@ -70,6 +70,7 @@ export function configure(options: NotificareOptions) {
     language: options.language,
     serviceWorker: options.serviceWorker,
     serviceWorkerScope: options.serviceWorkerScope,
+    geolocation: options.geolocation,
   });
 
   // eslint-disable-next-line no-restricted-syntax
