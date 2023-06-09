@@ -3,6 +3,7 @@ import {
   getOptions,
   NotificareInternalOptions,
   NotificareNotification,
+  NotificareNotificationAction,
 } from '@notificare/core';
 import { logger } from './logger';
 import { createNotificationContainer } from './internal/notification-ui';
@@ -12,6 +13,7 @@ import {
   notifyNotificationPresented,
   notifyNotificationWillPresent,
 } from './internal/consumer-events';
+import { presentActionInternal } from './internal/actions-ui';
 
 export {
   onNotificationWillPresent,
@@ -88,7 +90,11 @@ export function presentNotification(notification: NotificareNotification) {
       ensureCleanState();
       notifyNotificationFinishedPresenting(notification);
     },
-    (action) => {},
+    (action) => {
+      ensureCleanState();
+      notifyNotificationFinishedPresenting(notification);
+      presentAction(notification, action);
+    },
   )
     .then((container) => {
       // Add the complete notification DOM to the page.
@@ -100,6 +106,13 @@ export function presentNotification(notification: NotificareNotification) {
       logger.error('Failed to present a notification: ', error);
       notifyNotificationFailedToPresent(notification);
     });
+}
+
+export function presentAction(
+  notification: NotificareNotification,
+  action: NotificareNotificationAction,
+) {
+  presentActionInternal(notification, action);
 }
 
 function ensureCleanState() {

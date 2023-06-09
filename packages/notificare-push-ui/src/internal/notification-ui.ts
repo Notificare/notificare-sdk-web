@@ -4,6 +4,14 @@ import {
   NotificareNotification,
   NotificareNotificationAction,
 } from '@notificare/core';
+import {
+  createBackdropElement,
+  createModalContentElement,
+  createModalElement,
+  createModalFooterElement,
+  createModalHeaderElement,
+  createRootElement,
+} from './ui/root-elements';
 
 export async function createNotificationContainer(
   options: NotificareInternalOptions,
@@ -12,117 +20,64 @@ export async function createNotificationContainer(
   closeNotification: () => void,
   presentAction: (action: NotificareNotificationAction) => void,
 ) {
-  const container = document.createElement('div');
-  container.id = 'notificare-push-ui';
-  container.classList.add('notificare');
+  const container = createRootElement();
 
-  const backdrop = document.createElement('div');
-  backdrop.classList.add('notificare__notification-backdrop');
-  backdrop.addEventListener('click', (e) => {
-    if (e.defaultPrevented) return;
-
-    closeNotification();
-  });
+  const backdrop = createBackdropElement(() => closeNotification());
   container.appendChild(backdrop);
 
-  const modal = document.createElement('div');
+  const modal = createModalElement();
   modal.classList.add('notificare__notification');
   modal.setAttribute('data-notification-type', notification.type);
-  modal.addEventListener('click', (e) => {
-    // Prevent the backdrop click to dismiss from receiving events when
-    // the notification content is clicked.
-    e.preventDefault();
-  });
   container.appendChild(modal);
 
-  const header = createHeader(options, application, () => closeNotification());
+  const header = createModalHeaderElement(options, application, () => closeNotification());
   modal.appendChild(header);
 
   const content = await createContentSection(options, notification);
   modal.appendChild(content);
 
-  const actions = createActionsSection(notification, presentAction);
+  const actions = createActionsSection(notification, (action) => presentAction(action));
   if (actions) modal.appendChild(actions);
 
   return container;
-}
-
-function createHeader(
-  options: NotificareInternalOptions,
-  application: NotificareApplication,
-  onCloseClicked: () => void,
-): HTMLElement {
-  const header = document.createElement('div');
-  header.classList.add('notificare__notification-header');
-
-  const logo = document.createElement('img');
-  logo.classList.add('notificare__notification-header-logo');
-
-  if (application.websitePushConfig?.icon) {
-    logo.setAttribute(
-      'src',
-      `${options.services.awsStorageHost}${application.websitePushConfig.icon}`,
-    );
-  }
-
-  header.appendChild(logo);
-
-  const title = document.createElement('p');
-  title.classList.add('notificare__notification-header-title');
-  title.innerHTML = application.name;
-  header.appendChild(title);
-
-  const closeButton = document.createElement('div');
-  closeButton.classList.add('notificare__notification-header-close-button');
-  closeButton.addEventListener('click', onCloseClicked);
-  header.appendChild(closeButton);
-
-  return header;
 }
 
 async function createContentSection(
   options: NotificareInternalOptions,
   notification: NotificareNotification,
 ): Promise<HTMLElement> {
-  const content = document.createElement('div');
-  content.classList.add('notificare__notification-content');
+  let children: HTMLElement[];
 
   switch (notification.type) {
     case 're.notifica.notification.Alert': {
-      const elements = createAlertContent(notification);
-      elements.forEach((element) => content.appendChild(element));
+      children = createAlertContent(notification);
       break;
     }
     case 're.notifica.notification.Image': {
-      const element = await createImageContent(notification);
-      content.appendChild(element);
+      children = await createImageContent(notification);
       break;
     }
     case 're.notifica.notification.Map': {
-      const element = await createMapContent(notification);
-      content.appendChild(element);
+      children = await createMapContent(notification);
       break;
     }
     case 're.notifica.notification.URL': {
-      const element = await createUrlContent(notification);
-      content.appendChild(element);
+      children = await createUrlContent(notification);
       break;
     }
     case 're.notifica.notification.Video': {
-      const element = await createVideoContent(notification);
-      content.appendChild(element);
+      children = await createVideoContent(notification);
       break;
     }
     case 're.notifica.notification.WebView': {
-      const element = await createWebViewContent(notification);
-      content.appendChild(element);
+      children = await createWebViewContent(notification);
       break;
     }
     default:
       throw new Error(`Unsupported notification type: ${notification.type}`);
   }
 
-  return content;
+  return createModalContentElement(children);
 }
 
 function createAlertContent(notification: NotificareNotification): HTMLElement[] {
@@ -164,7 +119,7 @@ function createAttachmentSection(notification: NotificareNotification): HTMLElem
   return element;
 }
 
-async function createImageContent(notification: NotificareNotification): Promise<HTMLElement> {
+async function createImageContent(notification: NotificareNotification): Promise<HTMLElement[]> {
   const content = notification.content.filter(({ type }) => type === 're.notifica.content.Image');
   if (!content.length) throw new Error(`Invalid content for notification '${notification.type}'.`);
 
@@ -182,10 +137,10 @@ async function createImageContent(notification: NotificareNotification): Promise
     item.appendChild(image);
   });
 
-  return slider;
+  return [slider];
 }
 
-async function createMapContent(notification: NotificareNotification): Promise<HTMLElement> {
+async function createMapContent(notification: NotificareNotification): Promise<HTMLElement[]> {
   const content = notification.content.filter(({ type }) => type === 're.notifica.content.Marker');
   if (!content.length) throw new Error(`Invalid content for notification '${notification.type}'.`);
 
@@ -261,10 +216,10 @@ async function createMapContent(notification: NotificareNotification): Promise<H
     map.fitBounds(bounds);
   }
 
-  return mapContainer;
+  return [mapContainer];
 }
 
-async function createUrlContent(notification: NotificareNotification): Promise<HTMLElement> {
+async function createUrlContent(notification: NotificareNotification): Promise<HTMLElement[]> {
   const content = notification.content.find(({ type }) => type === 're.notifica.content.URL');
   if (!content) throw new Error(`Invalid content for notification '${notification.type}'.`);
 
@@ -272,10 +227,10 @@ async function createUrlContent(notification: NotificareNotification): Promise<H
   iframe.classList.add('notificare__notification-content-iframe');
   iframe.setAttribute('src', content.data);
 
-  return iframe;
+  return [iframe];
 }
 
-async function createVideoContent(notification: NotificareNotification): Promise<HTMLElement> {
+async function createVideoContent(notification: NotificareNotification): Promise<HTMLElement[]> {
   const allowedVideoTypes = [
     're.notifica.content.YouTube',
     're.notifica.content.Vimeo',
@@ -287,11 +242,11 @@ async function createVideoContent(notification: NotificareNotification): Promise
 
   switch (content.type) {
     case 're.notifica.content.YouTube':
-      return createYouTubeContent(content.data);
+      return [createYouTubeContent(content.data)];
     case 're.notifica.content.Vimeo':
-      return createVimeoContent(content.data);
+      return [createVimeoContent(content.data)];
     case 're.notifica.content.HTML5Video':
-      return createHtml5VideoContent(content.data);
+      return [createHtml5VideoContent(content.data)];
     default:
       throw new Error(`Unsupported video type: ${content.type}`);
   }
@@ -330,7 +285,7 @@ function createHtml5VideoContent(videoUrl: string): HTMLElement {
   return video;
 }
 
-async function createWebViewContent(notification: NotificareNotification): Promise<HTMLElement> {
+async function createWebViewContent(notification: NotificareNotification): Promise<HTMLElement[]> {
   const content = notification.content.find(({ type }) => type === 're.notifica.content.HTML');
   if (!content) throw new Error(`Invalid content for notification '${notification.type}'.`);
 
@@ -340,7 +295,7 @@ async function createWebViewContent(notification: NotificareNotification): Promi
   iframe.classList.add('notificare__notification-content-iframe');
   iframe.setAttribute('srcdoc', html);
 
-  return iframe;
+  return [iframe];
 }
 
 function createActionsSection(
@@ -349,32 +304,25 @@ function createActionsSection(
 ): HTMLElement | undefined {
   if (!notification.actions.length) return undefined;
 
-  const container = document.createElement('div');
-  container.classList.add('notificare__notification-actions');
-
-  if (notification.actions.length > 2) {
-    container.classList.add('notificare__notification-actions__list');
-  }
-
-  notification.actions.forEach((action, index) => {
-    const actionButton = document.createElement('a');
-    actionButton.classList.add('notificare__notification-action-button');
-    actionButton.innerHTML = action.label;
+  const buttons = notification.actions.map((action, index) => {
+    const button = document.createElement('a');
+    button.classList.add('notificare__notification-action-button');
+    button.innerHTML = action.label;
 
     if (index === 0) {
-      actionButton.classList.add('notificare__notification-action-button__primary');
+      button.classList.add('notificare__notification-action-button__primary');
     }
 
     if (action.destructive) {
-      actionButton.classList.add('notificare__notification-action-button__destructive');
+      button.classList.add('notificare__notification-action-button__destructive');
     }
 
-    actionButton.addEventListener('click', () => {
+    button.addEventListener('click', () => {
       onActionClicked(action);
     });
 
-    container.appendChild(actionButton);
+    return button;
   });
 
-  return container;
+  return createModalFooterElement(buttons);
 }
