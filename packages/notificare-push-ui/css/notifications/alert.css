@@ -1,0 +1,30 @@
+.notificare__notification[data-notification-type="re.notifica.notification.Alert"] {
+    width: 500px;
+}
+
+.notificare__notification-alert {
+    display: flex;
+    flex-direction: column;
+}
+
+.notificare__notification-alert-attachment {
+    aspect-ratio: 16 / 9;
+    max-width: 100%;
+    max-height: 250px;
+    margin-bottom: 16px;
+}
+
+.notificare__notification-alert-title {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.notificare__notification-alert-subtitle {
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.notificare__notification-alert-message {
+}

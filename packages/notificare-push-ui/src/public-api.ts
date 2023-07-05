@@ -6,14 +6,14 @@ import {
   NotificareNotificationAction,
 } from '@notificare/core';
 import { logger } from './logger';
-import { createNotificationContainer } from './internal/notification-ui';
 import {
   notifyNotificationFailedToPresent,
-  notifyNotificationFinishedPresenting,
   notifyNotificationPresented,
   notifyNotificationWillPresent,
 } from './internal/consumer-events';
 import { presentActionInternal } from './internal/actions-ui';
+import { ensureCleanState } from './internal/ui/root';
+import { createNotificationModal } from './internal/ui/notifications/notification-modal';
 
 export {
   onNotificationWillPresent,
@@ -82,20 +82,7 @@ export function presentNotification(notification: NotificareNotification) {
       break;
   }
 
-  createNotificationContainer(
-    options,
-    application,
-    notification,
-    () => {
-      ensureCleanState();
-      notifyNotificationFinishedPresenting(notification);
-    },
-    (action) => {
-      ensureCleanState();
-      notifyNotificationFinishedPresenting(notification);
-      presentAction(notification, action);
-    },
-  )
+  createNotificationModal({ notification })
     .then((container) => {
       // Add the complete notification DOM to the page.
       document.body.appendChild(container);
@@ -106,6 +93,31 @@ export function presentNotification(notification: NotificareNotification) {
       logger.error('Failed to present a notification: ', error);
       notifyNotificationFailedToPresent(notification);
     });
+
+  // createNotificationContainer(
+  //   options,
+  //   application,
+  //   notification,
+  //   () => {
+  //     ensureCleanState();
+  //     notifyNotificationFinishedPresenting(notification);
+  //   },
+  //   (action) => {
+  //     ensureCleanState();
+  //     notifyNotificationFinishedPresenting(notification);
+  //     presentAction(notification, action);
+  //   },
+  // )
+  //   .then((container) => {
+  //     // Add the complete notification DOM to the page.
+  //     document.body.appendChild(container);
+  //
+  //     notifyNotificationPresented(notification);
+  //   })
+  //   .catch((error) => {
+  //     logger.error('Failed to present a notification: ', error);
+  //     notifyNotificationFailedToPresent(notification);
+  //   });
 }
 
 export function presentAction(
@@ -113,11 +125,6 @@ export function presentAction(
   action: NotificareNotificationAction,
 ) {
   presentActionInternal(notification, action);
-}
-
-function ensureCleanState() {
-  const root = document.getElementById('notificare-push-ui');
-  if (root) root.remove();
 }
 
 function checkNotificationSupport(notification: NotificareNotification): boolean {

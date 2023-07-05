@@ -23,6 +23,7 @@
   "dependencies": {
     "@notificare/core": "^3.0.0",
     "@notificare/logger": "^3.0.0",
+    "@notificare/ui": "^3.0.0",
     "tslib": "^2.5.0"
   },
   "devDependencies": {
