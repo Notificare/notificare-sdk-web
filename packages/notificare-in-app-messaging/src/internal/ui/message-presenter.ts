@@ -112,4 +112,6 @@ function presentAction(message: NotificareInAppMessage, type: ActionType) {
   } catch (e) {
     notifyActionFailedToExecute(message, action);
   }
+
+  dismissMessage();
 }
