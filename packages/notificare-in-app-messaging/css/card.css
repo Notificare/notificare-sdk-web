@@ -1,0 +1,61 @@
+.notificare__iam-card {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    max-width: calc(100vw - var(--notificare-modal-margin));
+    max-height: calc(100vh - var(--notificare-modal-margin));
+    z-index: var(--notificare-layer-highest);
+
+    background: white;
+    border-radius: 4px;
+    box-shadow: 0 0 32px -8px rgba(0, 0, 0, 0.52);
+
+    display: flex;
+    flex-direction: column;
+    row-gap: 16px;
+
+    width: 500px;
+    padding: 16px;
+}
+
+.notificare__iam-card-header {
+    position: relative;
+}
+
+.notificare__iam-card-header-image {
+    aspect-ratio: 2 / 1;
+    object-fit: cover;
+}
+
+.notificare__iam-card .notificare__close-button {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+}
+
+.notificare__iam-card-content {
+
+}
+
+.notificare__iam-card-content-title {
+    font-size: 16px;
+    font-weight: 600;
+
+    /* TODO: max-lines 2 */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    margin-bottom: 4px;
+}
+
+.notificare__iam-card-content-message {
+    /* TODO: max-lines 3 */
+}
+
+.notificare__iam-card-actions {
+    display: flex;
+    flex-direction: row-reverse;
+    column-gap: 16px;
+}

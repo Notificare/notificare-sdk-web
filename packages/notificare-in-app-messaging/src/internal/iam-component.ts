@@ -1,6 +1,5 @@
 import { Component } from '@notificare/core';
-import { evaluateContext } from './internal-api';
-import { logger } from '../logger';
+import { evaluateContext, handleDocumentVisibilityChanged } from './internal-api';
 
 /* eslint-disable class-methods-use-this */
 export class IamComponent extends Component {
@@ -11,7 +10,7 @@ export class IamComponent extends Component {
   configure() {
     document.addEventListener('visibilitychange', () => {
       const { visibilityState } = document;
-      logger.debug(`visibility state = ${visibilityState}`);
+      handleDocumentVisibilityChanged(visibilityState);
     });
   }
 

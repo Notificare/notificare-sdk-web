@@ -1,0 +1,48 @@
+.notificare__iam-banner {
+    position: fixed;
+    top: var(--notificare-modal-margin);
+    left: 50%;
+    transform: translate(-50%);
+    max-width: calc(100vw - var(--notificare-modal-margin));
+    max-height: calc(100vh - var(--notificare-modal-margin));
+    z-index: var(--notificare-layer-highest);
+
+    background: white;
+    border-radius: 4px;
+    box-shadow: 0 0 32px -8px rgba(0, 0, 0, 0.52);
+    cursor: pointer;
+
+    display: flex;
+    flex-direction: row;
+    column-gap: 16px;
+
+    width: 500px;
+    padding: 16px;
+}
+
+.notificare__iam-banner-image {
+    width: 64px;
+    height: 64px;
+    object-fit: cover;
+}
+
+.notificare__iam-banner-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.notificare__iam-banner-content-title {
+    font-size: 16px;
+    font-weight: 600;
+
+    /* TODO: max-lines 2 */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    margin-bottom: 4px;
+}
+
+.notificare__iam-banner-content-message {
+    /* TODO: max-lines 3 */
+}

@@ -1,8 +1,9 @@
 import {
   getCurrentDevice,
+  isReady,
   NotificareDeviceUnavailableError,
-  request,
   NotificareNetworkRequestError,
+  request,
 } from '@notificare/core';
 import { NotificareInAppMessage } from '../models/notificare-in-app-message';
 import {
@@ -10,6 +11,18 @@ import {
   NetworkInAppMessageResponse,
 } from './network/responses/in-app-message-response';
 import { logger } from '../logger';
+import { ApplicationContext } from './types/application-context';
+import { ApplicationState } from './types/application-state';
+import { dismissMessage, isShowingMessage, showMessage } from './ui/message-presenter';
+import { hasMessagesSuppressed } from '../public-api';
+import { notifyMessageFailedToPresent, notifyMessagePresented } from './consumer-events';
+import { logInAppMessageViewed } from './internal-api-events';
+
+const DEFAULT_BACKGROUND_GRACE_PERIOD_MILLIS = 5 * 60 * 1000;
+
+let applicationState = ApplicationState.BACKGROUND;
+let backgroundTimestamp: number | undefined;
+let delayedMessageTimeoutId: number | undefined;
 
 export function evaluateContext(context: ApplicationContext) {
   logger.debug(`Checking in-app message for context '${context}'.`);
@@ -34,9 +47,40 @@ export function evaluateContext(context: ApplicationContext) {
 function processMessage(message: NotificareInAppMessage) {
   logger.info(`Processing in-app message '${message.name}'.`);
 
-  // TODO: implementation
+  if (message.delaySeconds > 0) {
+    logger.debug(`Waiting ${message.delaySeconds} seconds before presenting the in-app message.`);
 
-  logger.debug(message);
+    // Keep a reference to the job to cancel it when the app goes into the background.
+    delayedMessageTimeoutId = window.setTimeout(() => {
+      presentMessage(message);
+    }, message.delaySeconds * 1000);
+
+    return;
+  }
+
+  presentMessage(message);
+}
+
+function presentMessage(message: NotificareInAppMessage) {
+  if (isShowingMessage()) {
+    logger.warning('Cannot display an in-app message while another is being presented.');
+    notifyMessageFailedToPresent(message);
+    return;
+  }
+
+  if (hasMessagesSuppressed()) {
+    logger.warning('Cannot display an in-app message while messages are being suppressed.');
+    notifyMessageFailedToPresent(message);
+    return;
+  }
+
+  showMessage(message);
+  notifyMessagePresented(message);
+
+  logger.debug('Tracking in-app message viewed event.');
+  logInAppMessageViewed(message).catch((e) =>
+    logger.error('Failed to log in-app message viewed event.', e),
+  );
 }
 
 async function fetchInAppMessage(context: ApplicationContext): Promise<NotificareInAppMessage> {
@@ -50,4 +94,49 @@ async function fetchInAppMessage(context: ApplicationContext): Promise<Notificar
   return convertNetworkInAppMessageToPublic(message);
 }
 
-type ApplicationContext = 'launch' | 'foreground';
+export function handleDocumentVisibilityChanged(visibilityState: DocumentVisibilityState) {
+  if (visibilityState === 'hidden') {
+    applicationState = ApplicationState.BACKGROUND;
+    backgroundTimestamp = Date.now();
+
+    if (delayedMessageTimeoutId) {
+      logger.info('Clearing delayed in-app message while going to the background.');
+      window.clearTimeout(delayedMessageTimeoutId);
+      delayedMessageTimeoutId = undefined;
+    }
+
+    return;
+  }
+
+  // No need to run the check when we already processed the foreground check.
+  if (applicationState === ApplicationState.FOREGROUND) return;
+
+  if (isShowingMessage() && backgroundTimestamp) {
+    if (Date.now() > backgroundTimestamp + DEFAULT_BACKGROUND_GRACE_PERIOD_MILLIS) {
+      logger.debug('Dismiss the shown in-app message for being in the background for too long.');
+      dismissMessage();
+    }
+  }
+
+  applicationState = ApplicationState.FOREGROUND;
+  backgroundTimestamp = undefined;
+
+  if (!isReady()) {
+    logger.debug('Postponing in-app message evaluation until Notificare is launched.');
+    return;
+  }
+
+  if (isShowingMessage()) {
+    logger.debug(
+      'Skipping context evaluation since there is another in-app message being presented.',
+    );
+    return;
+  }
+
+  if (hasMessagesSuppressed()) {
+    logger.debug('Skipping context evaluation since in-app messages are being suppressed.');
+    return;
+  }
+
+  evaluateContext('foreground');
+}
