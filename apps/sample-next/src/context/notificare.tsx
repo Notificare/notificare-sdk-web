@@ -22,6 +22,14 @@ import {
   presentNotification,
 } from "@notificare/push-ui";
 
+import "@notificare/core";
+import "@notificare/assets";
+import "@notificare/geo";
+import "@notificare/inbox";
+import "@notificare/in-app-messaging";
+import "@notificare/push";
+import "@notificare/push-ui";
+
 export type NotificareState = "idle" | "launched" | "failed";
 
 const NotificareContext = createContext<NotificareState>("idle");
