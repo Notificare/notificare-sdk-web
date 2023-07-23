@@ -1,3 +1,5 @@
+import { createCloseButton } from '../buttons';
+
 export function createModal(): HTMLElement {
   const modal = document.createElement('div');
   modal.classList.add('notificare__modal');
@@ -30,10 +32,7 @@ export function createModalHeader({
   titleElement.innerHTML = title ?? '';
   headerElement.appendChild(titleElement);
 
-  const closeButton = document.createElement('div');
-  closeButton.classList.add('notificare__modal-header-close-button');
-  closeButton.addEventListener('click', onCloseButtonClicked);
-  headerElement.appendChild(closeButton);
+  headerElement.appendChild(createCloseButton({ onClick: onCloseButtonClicked }));
 
   return headerElement;
 }
