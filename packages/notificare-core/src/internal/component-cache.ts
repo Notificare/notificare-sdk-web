@@ -11,3 +11,10 @@ export function registerComponent(component: Component) {
 
   components.set(component.name, component);
 }
+
+export function broadcastComponentEvent(event: string, data?: unknown) {
+  // eslint-disable-next-line no-restricted-syntax
+  for (const component of components.values()) {
+    component.processBroadcast(event, data);
+  }
+}
