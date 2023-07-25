@@ -20,6 +20,8 @@ import { NotificareInboxResponse } from './models/notificare-inbox-response';
 import { NotificareInboxItem } from './models/notificare-inbox-item';
 import { refreshBadgeInternal } from './internal/internal-api';
 
+export { onBadgeUpdated } from './internal/consumer-events';
+
 export function getBadge(): number {
   const application = getApplication();
   if (!application) {
