@@ -14,15 +14,30 @@ import { logger } from '../logger';
 import { ApplicationContext } from './types/application-context';
 import { ApplicationState } from './types/application-state';
 import { dismissMessage, isShowingMessage, showMessage } from './ui/message-presenter';
-import { hasMessagesSuppressed } from '../public-api';
 import { notifyMessageFailedToPresent, notifyMessagePresented } from './consumer-events';
 import { logInAppMessageViewed } from './internal-api-events';
 
 const DEFAULT_BACKGROUND_GRACE_PERIOD_MILLIS = 5 * 60 * 1000;
 
+let messagesSuppressed = false;
 let applicationState = ApplicationState.BACKGROUND;
 let backgroundTimestamp: number | undefined;
 let delayedMessageTimeoutId: number | undefined;
+
+export function hasMessagesSuppressed(): boolean {
+  return messagesSuppressed;
+}
+
+export function setMessagesSuppressed(suppressed: boolean, evaluate?: boolean) {
+  const suppressChanged = suppressed !== messagesSuppressed;
+  const canEvaluate = !suppressed && suppressChanged && evaluate;
+
+  messagesSuppressed = suppressed;
+
+  if (canEvaluate) {
+    evaluateContext('foreground');
+  }
+}
 
 export function evaluateContext(context: ApplicationContext) {
   logger.debug(`Checking in-app message for context '${context}'.`);

@@ -6,10 +6,4 @@ export {
   onActionFailedToExecute,
 } from './internal/consumer-events';
 
-export function hasMessagesSuppressed(): boolean {
-  return false;
-}
-
-export function setMessagesSuppressed(suppressed: boolean, evaluateContext: boolean) {
-  //
-}
+export { hasMessagesSuppressed, setMessagesSuppressed } from './internal/internal-api';
