@@ -20,7 +20,7 @@ import { NotificareInboxResponse } from './models/notificare-inbox-response';
 import { NotificareInboxItem } from './models/notificare-inbox-item';
 import { NotificareAutoBadgeUnavailableError } from './errors/notificare-auto-badge-unavailable-error';
 
-export async function getBadge(): Promise<number> {
+export function getBadge(): number {
   const application = getApplication();
   if (!application) {
     logger.warning('Notificare application is not yet available.');
