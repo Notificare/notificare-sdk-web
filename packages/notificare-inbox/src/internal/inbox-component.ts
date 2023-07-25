@@ -1,5 +1,6 @@
 import { Component, getApplication } from '@notificare/core';
 import { logger } from '../logger';
+import { refreshBadgeInternal } from './internal-api';
 
 /* eslint-disable class-methods-use-this */
 export class InboxComponent extends Component {
@@ -22,5 +23,11 @@ export class InboxComponent extends Component {
 
   async unlaunch(): Promise<void> {
     // TODO: clear the inbox
+  }
+
+  processBroadcast(event: string, data?: unknown) {
+    if (event === 'notification_received') {
+      refreshBadgeInternal().catch((error) => logger.error('Failed to refresh the badge.', error));
+    }
   }
 }
