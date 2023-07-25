@@ -42,3 +42,21 @@ export async function refreshBadgeInternal(): Promise<number> {
 
   return unread;
 }
+
+export async function clearInboxInternal() {
+  await clearRemoteInbox();
+  clearLocalBadge();
+}
+
+export async function clearRemoteInbox(): Promise<void> {
+  const device = getCurrentDevice();
+  if (!device) throw new NotificareDeviceUnavailableError();
+
+  await request(`/api/notification/inbox/fordevice/${encodeURIComponent(device.id)}`, {
+    method: 'DELETE',
+  });
+}
+
+function clearLocalBadge() {
+  localStorage.removeItem('re.notifica.inbox.badge');
+}
