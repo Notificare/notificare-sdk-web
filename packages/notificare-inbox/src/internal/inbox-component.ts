@@ -19,6 +19,8 @@ export class InboxComponent extends Component {
         'Using the device-level inbox module, but the user-level inbox is enabled for this application.',
       );
     }
+
+    await refreshBadgeInternal();
   }
 
   async unlaunch(): Promise<void> {
