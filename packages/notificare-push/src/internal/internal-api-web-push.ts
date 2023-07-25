@@ -1,4 +1,5 @@
 import {
+  broadcastComponentEvent,
   fetchApplication,
   fetchNotification,
   logNotificationOpen,
@@ -131,7 +132,8 @@ function getPushTokenFromPushSubscription(subscription: PushSubscription): PushT
 }
 
 async function handleServiceWorkerNotificationReceived(event: MessageEvent) {
-  // TODO: refresh the inbox badge.
+  broadcastComponentEvent('notification_received');
+
   await logNotificationReceived(event.data.message.notificationId);
 
   const notification = await fetchNotification(event.data.message.id);
