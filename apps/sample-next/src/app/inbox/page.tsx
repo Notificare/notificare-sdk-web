@@ -3,7 +3,9 @@
 import { useEffect, useState } from "react";
 import {
   fetchInbox,
+  getBadge,
   NotificareInboxItem,
+  onBadgeUpdated,
   openInboxItem,
 } from "@notificare/inbox";
 import { formatDistanceToNow, parseISO } from "date-fns";
@@ -12,23 +14,30 @@ import { useNotificare } from "@/context/notificare";
 
 export default function Inbox() {
   const notificareState = useNotificare();
+  const [badge, setBadge] = useState<number>(0);
   const [items, setItems] = useState<NotificareInboxItem[]>([]);
 
-  useEffect(() => {
-    if (notificareState !== "launched") {
-      setItems([]);
-      return;
-    }
+  useEffect(function setupListeners() {
+    const subscription = onBadgeUpdated((badge) => setBadge(badge));
+    return () => subscription.remove();
+  }, []);
 
-    (async () => {
-      try {
-        const { items } = await fetchInbox();
-        setItems(items);
-      } catch (e) {
-        console.error(`Something went wrong: ${e}`);
+  useEffect(
+    function reloadInbox() {
+      if (notificareState !== "launched") {
+        setBadge(0);
+        setItems([]);
+        return;
       }
-    })();
-  }, [notificareState]);
+
+      setBadge(getBadge());
+
+      fetchInbox()
+        .then(({ items }) => setItems(items))
+        .catch((e) => console.error(`Something went wrong: ${e}`));
+    },
+    [notificareState, badge]
+  );
 
   const onInboxItemClicked = async (item: NotificareInboxItem) => {
     try {
@@ -45,17 +54,33 @@ export default function Inbox() {
         <p>stuff is not ready</p>
       ) : (
         <>
-          {items.length === 0 && <p>No items.</p>}
+          {items.length === 0 && (
+            <div className="max-w-md mx-auto bg-white dark:bg-black rounded shadow-md overflow-hidden md:max-w-2xl p-3">
+              <p className="text-lg font-medium text-gray-900 truncate dark:text-white">
+                No items.
+              </p>
+            </div>
+          )}
 
-          <div className="space-y-4">
-            {items.map((item) => (
-              <InboxItem
-                key={item.id}
-                item={item}
-                onClick={() => onInboxItemClicked(item)}
-              />
-            ))}
-          </div>
+          {items.length !== 0 && (
+            <>
+              <div className="mb-6 max-w-md mx-auto bg-white dark:bg-black rounded shadow-md overflow-hidden md:max-w-2xl p-3">
+                <p className="text-lg font-medium text-gray-900 truncate dark:text-white">
+                  Current badge: {badge}
+                </p>
+              </div>
+
+              <div className="space-y-4">
+                {items.map((item) => (
+                  <InboxItem
+                    key={item.id}
+                    item={item}
+                    onClick={() => onInboxItemClicked(item)}
+                  />
+                ))}
+              </div>
+            </>
+          )}
         </>
       )}
     </>
