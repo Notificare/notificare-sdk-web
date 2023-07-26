@@ -8,6 +8,7 @@ import {
 import { logger } from './logger';
 import {
   notifyNotificationFailedToPresent,
+  notifyNotificationFinishedPresenting,
   notifyNotificationPresented,
   notifyNotificationWillPresent,
 } from './internal/consumer-events';
@@ -82,7 +83,13 @@ export function presentNotification(notification: NotificareNotification) {
       break;
   }
 
-  createNotificationModal({ notification })
+  createNotificationModal({
+    notification,
+    dismiss: () => {
+      notifyNotificationFinishedPresenting(notification);
+      ensureCleanState();
+    },
+  })
     .then((container) => {
       // Add the complete notification DOM to the page.
       document.body.appendChild(container);

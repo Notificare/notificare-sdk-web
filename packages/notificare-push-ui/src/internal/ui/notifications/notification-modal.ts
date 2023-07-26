@@ -7,7 +7,7 @@ import {
   createRoot,
 } from '@notificare/ui';
 import { NotificareNotification } from '@notificare/core';
-import { ensureCleanState, ROOT_ELEMENT_IDENTIFIER } from '../root';
+import { ROOT_ELEMENT_IDENTIFIER } from '../root';
 import { getApplicationIcon, getApplicationName } from '../../utils';
 import { createAlertContent } from './content/alert';
 import { createImageContent } from './content/image';
@@ -18,10 +18,11 @@ import { createWebViewContent } from './content/webview';
 
 export async function createNotificationModal({
   notification,
+  dismiss,
 }: CreateNotificationModalParams): Promise<HTMLElement> {
   const root = createRoot(ROOT_ELEMENT_IDENTIFIER);
 
-  root.appendChild(createBackdrop(() => ensureCleanState()));
+  root.appendChild(createBackdrop(() => dismiss()));
 
   const modal = root.appendChild(createModal());
   modal.classList.add('notificare__notification');
@@ -31,7 +32,7 @@ export async function createNotificationModal({
     createModalHeader({
       icon: getApplicationIcon(),
       title: getApplicationName(),
-      onCloseButtonClicked: () => ensureCleanState(),
+      onCloseButtonClicked: () => dismiss(),
     }),
   );
 
@@ -49,6 +50,7 @@ export async function createNotificationModal({
 
 export interface CreateNotificationModalParams {
   notification: NotificareNotification;
+  dismiss: () => void;
 }
 
 async function createContentContainer(notification: NotificareNotification): Promise<HTMLElement> {
