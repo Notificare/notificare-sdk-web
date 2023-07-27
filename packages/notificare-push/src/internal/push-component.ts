@@ -1,5 +1,9 @@
-import { Component, getApplication } from '@notificare/core';
-import { handleServiceWorkerMessage, hasWebPushSupport } from './internal-api-web-push';
+import { Component, getApplication, getCurrentDevice } from '@notificare/core';
+import {
+  disableWebPushNotifications,
+  handleServiceWorkerMessage,
+  hasWebPushSupport,
+} from './internal-api-web-push';
 import { handleAutoOnboarding, handleFloatingButton } from './internal-api';
 import { logger } from '../logger';
 import { handleNotificationOpened } from './internal-api-shared';
@@ -28,6 +32,11 @@ export class PushComponent extends Component {
     // // Update the local notification settings.
     // // Registering a temporary device automatically reports the allowedUI to the API.
     // allowedUI = false
+
+    const device = getCurrentDevice();
+    if (device && device.transport === 'WebPush') {
+      await disableWebPushNotifications();
+    }
   }
 
   private handleOnboarding() {
