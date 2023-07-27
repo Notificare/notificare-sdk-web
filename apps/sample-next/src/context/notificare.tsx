@@ -7,7 +7,7 @@ import {
   useEffect,
   useState,
 } from "react";
-import { isReady, launch, onReady } from "@notificare/core";
+import { isReady, launch, onReady, onUnlaunched } from "@notificare/core";
 import { setLogLevel } from "@notificare/logger";
 import { onNotificationOpened } from "@notificare/push";
 import {
@@ -43,10 +43,8 @@ export function NotificareProvider({ children }: PropsWithChildren) {
 
   useEffect(function setupListeners() {
     const subscriptions = [
-      onReady(() => {
-        setState("launched");
-      }),
-      // TODO: on unlaunched,
+      onReady(() => setState("launched")),
+      onUnlaunched(() => setState("idle")),
       onNotificationOpened((notification) => {
         presentNotification(notification);
       }),
