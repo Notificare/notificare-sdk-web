@@ -1,5 +1,6 @@
 import { Component } from '@notificare/core';
-import { enableLocationUpdates, hasLocationServicesEnabled } from '../public-api';
+import { setLocationServicesEnabled } from './storage/local-storage';
+import { clearLocation } from './internal-api';
 
 /* eslint-disable class-methods-use-this */
 export class GeoComponent extends Component {
@@ -18,6 +19,8 @@ export class GeoComponent extends Component {
   }
 
   async unlaunch(): Promise<void> {
-    //
+    setLocationServicesEnabled(undefined);
+
+    await clearLocation();
   }
 }

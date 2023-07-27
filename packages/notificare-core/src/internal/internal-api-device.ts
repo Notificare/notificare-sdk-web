@@ -7,7 +7,6 @@ import {
 } from './utils';
 import { NotificareTransport } from '../models/notificare-transport';
 import { DeviceRegistration } from './network/payloads/device-registration';
-import { SDK_VERSION } from '../public-api';
 import { request } from './network/request';
 import { logger } from './logger';
 import { getOptions } from './options';
@@ -16,6 +15,7 @@ import { EventSubscription } from '../event-subscription';
 import { NotificareNotReadyError } from '../errors/notificare-not-ready-error';
 import { NotificareDeviceUnavailableError } from '../errors/notificare-device-unavailable-error';
 import { isReady } from './launch-state';
+import { SDK_VERSION } from './version';
 
 export function getCurrentDevice(): NotificareDevice | undefined {
   const deviceStr = localStorage.getItem('re.notifica.device');
@@ -121,6 +121,19 @@ export async function registerDeviceInternal(options: InternalRegisterDeviceOpti
   if (device && onDeviceRegisteredCallback) {
     onDeviceRegisteredCallback(device);
   }
+}
+
+export async function deleteDevice(): Promise<void> {
+  checkPrerequisites();
+
+  const device = getCurrentDevice();
+  if (!device) throw new NotificareDeviceUnavailableError();
+
+  await request(`/api/device/${encodeURIComponent(device.id)}`, {
+    method: 'DELETE',
+  });
+
+  storeCurrentDevice(undefined);
 }
 
 // region Events

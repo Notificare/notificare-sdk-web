@@ -22,7 +22,12 @@ export class PushComponent extends Component {
   }
 
   async unlaunch(): Promise<void> {
-    //
+    localStorage.removeItem('re.notifica.push.first_registration');
+    localStorage.removeItem('re.notifica.push.onboarding_last_attempt');
+
+    // // Update the local notification settings.
+    // // Registering a temporary device automatically reports the allowedUI to the API.
+    // allowedUI = false
   }
 
   private handleOnboarding() {

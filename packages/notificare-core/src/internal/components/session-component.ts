@@ -2,6 +2,7 @@ import { Component } from '../component';
 import {
   handleDocumentBeforeUnload,
   handleDocumentVisibilityChanged,
+  unlaunch as unlaunchSession,
 } from '../internal-api-session';
 import { logger } from '../logger';
 
@@ -37,6 +38,6 @@ export class SessionComponent extends Component {
   }
 
   async unlaunch(): Promise<void> {
-    //
+    await unlaunchSession();
   }
 }

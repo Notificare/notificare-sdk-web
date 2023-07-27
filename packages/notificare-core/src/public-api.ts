@@ -22,11 +22,15 @@ import {
   convertNetworkNotificationToPublic,
   NetworkNotificationResponse,
 } from './internal/network/responses/notification-response';
-import { notifyOnReady } from './internal/consumer-events';
+import { notifyOnReady, notifyUnlaunched } from './internal/consumer-events';
+import { NotificareNotReadyError } from './errors/notificare-not-ready-error';
+import { clearTags } from './public-api-device';
+import { SDK_VERSION as SDK_VERSION_INTERNAL } from './internal/version';
+import { deleteDevice, registerTemporaryDevice } from './internal/internal-api-device';
 
-export const SDK_VERSION = '3.0.0';
+export const SDK_VERSION: string = SDK_VERSION_INTERNAL;
 
-export { onReady } from './internal/consumer-events';
+export { onReady, onUnlaunched } from './internal/consumer-events';
 
 export function isConfigured(): boolean {
   return isConfiguredInternal();
@@ -139,6 +143,48 @@ export async function launch(): Promise<void> {
   } catch (e) {
     logger.error('Failed to launch Notificare.', e);
     setLaunchState(LaunchState.CONFIGURED);
+  }
+}
+
+export async function unlaunch(): Promise<void> {
+  if (!isReady()) {
+    logger.warning('Cannot un-launch Notificare before it has been launched.');
+    throw new NotificareNotReadyError();
+  }
+
+  logger.info('Un-launching Notificare.');
+
+  try {
+    // eslint-disable-next-line no-restricted-syntax
+    for (const component of Array.from(components.values()).reverse()) {
+      logger.debug(`Un-launching the '${component.name}' component.`);
+
+      try {
+        // eslint-disable-next-line no-await-in-loop
+        await component.unlaunch();
+      } catch (e) {
+        logger.debug(`Failed to un-launch the '${component.name}' component.`, e);
+
+        // noinspection ExceptionCaughtLocallyJS
+        throw e;
+      }
+    }
+
+    logger.debug('Clearing device tags.');
+    await clearTags();
+
+    logger.debug('Registering a temporary device.');
+    await registerTemporaryDevice();
+
+    logger.debug('Removing device.');
+    await deleteDevice();
+
+    logger.info('Un-launched Notificare.');
+    setLaunchState(LaunchState.CONFIGURED);
+
+    notifyUnlaunched();
+  } catch (e) {
+    logger.error('Failed to launch Notificare.', e);
   }
 }
 

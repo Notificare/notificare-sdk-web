@@ -32,6 +32,16 @@ export async function launch() {
   await startSession();
 }
 
+export async function unlaunch() {
+  const currentSession = getSession();
+
+  if (!currentSession) {
+    return;
+  }
+
+  await stopSession(currentSession, Date.now());
+}
+
 export async function handleDocumentVisibilityChanged() {
   if (!isReady()) return;
 
