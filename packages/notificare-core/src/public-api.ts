@@ -17,14 +17,16 @@ import {
 import { NotificareApplication } from './models/notificare-application';
 import { NotificareNotConfiguredError } from './errors/notificare-not-configured-error';
 import { components } from './internal/component-cache';
-import { EventSubscription } from './event-subscription';
 import { NotificareNotification } from './models/notificare-notification';
 import {
   convertNetworkNotificationToPublic,
   NetworkNotificationResponse,
 } from './internal/network/responses/notification-response';
+import { notifyOnReady } from './internal/consumer-events';
 
 export const SDK_VERSION = '3.0.0';
+
+export { onReady } from './internal/consumer-events';
 
 export function isConfigured(): boolean {
   return isConfiguredInternal();
@@ -133,7 +135,7 @@ export async function launch(): Promise<void> {
     setLaunchState(LaunchState.LAUNCHED);
     printLaunchSummary(application);
 
-    onReadyCallback?.(application);
+    notifyOnReady(application);
   } catch (e) {
     logger.error('Failed to launch Notificare.', e);
     setLaunchState(LaunchState.CONFIGURED);
@@ -189,23 +191,6 @@ export async function fetchNotification(id: string): Promise<NotificareNotificat
   const { notification }: NetworkNotificationResponse = await response.json();
   return convertNetworkNotificationToPublic(notification);
 }
-
-// region Events
-
-type OnReadyCallback = (application: NotificareApplication) => void;
-let onReadyCallback: OnReadyCallback | undefined;
-
-export function onReady(callback: OnReadyCallback): EventSubscription {
-  onReadyCallback = callback;
-
-  return {
-    remove: () => {
-      onReadyCallback = undefined;
-    },
-  };
-}
-
-// endregion
 
 function printLaunchSummary(application: NotificareApplication) {
   if (logger.getLogLevel() >= LogLevel.INFO) {
