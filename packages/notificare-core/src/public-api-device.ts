@@ -15,7 +15,7 @@ import { DeviceDoNotDisturbResponse } from './internal/network/responses/device-
 import { NotificareUserData } from './models/notificare-user-data';
 import { DeviceUserDataResponse } from './internal/network/responses/device-user-data-response';
 
-export { getCurrentDevice, onDeviceRegistered } from './internal/internal-api-device';
+export { getCurrentDevice } from './internal/internal-api-device';
 
 export async function registerDevice(options: RegisterDeviceOptions): Promise<void> {
   checkPrerequisites();

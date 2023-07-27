@@ -1,12 +1,15 @@
 import { NotificareApplication } from '../models/notificare-application';
 import { EventSubscription } from '../event-subscription';
 import { logger } from './logger';
+import { NotificareDevice } from '../models/notificare-device';
 
 let onReadyCallback: OnReadyCallback | undefined;
 let unlaunchedCallback: OnUnlaunchedCallback | undefined;
+let deviceRegisteredCallback: OnDeviceRegisteredCallback | undefined;
 
 type OnReadyCallback = (application: NotificareApplication) => void;
 type OnUnlaunchedCallback = () => void;
+type OnDeviceRegisteredCallback = (device: NotificareDevice) => void;
 
 export function onReady(callback: OnReadyCallback): EventSubscription {
   onReadyCallback = callback;
@@ -24,6 +27,16 @@ export function onUnlaunched(callback: OnUnlaunchedCallback): EventSubscription 
   return {
     remove: () => {
       unlaunchedCallback = undefined;
+    },
+  };
+}
+
+export function onDeviceRegistered(callback: OnDeviceRegisteredCallback): EventSubscription {
+  deviceRegisteredCallback = callback;
+
+  return {
+    remove: () => {
+      deviceRegisteredCallback = undefined;
     },
   };
 }
@@ -46,4 +59,14 @@ export function notifyUnlaunched() {
   }
 
   callback();
+}
+
+export function notifyDeviceRegistered(device: NotificareDevice) {
+  const callback = deviceRegisteredCallback;
+  if (!callback) {
+    logger.debug("The 'device_registered' handler is not configured.");
+    return;
+  }
+
+  callback(device);
 }

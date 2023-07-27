@@ -11,11 +11,11 @@ import { request } from './network/request';
 import { logger } from './logger';
 import { getOptions } from './options';
 import { NotificareDevice } from '../models/notificare-device';
-import { EventSubscription } from '../event-subscription';
 import { NotificareNotReadyError } from '../errors/notificare-not-ready-error';
 import { NotificareDeviceUnavailableError } from '../errors/notificare-device-unavailable-error';
 import { isReady } from './launch-state';
 import { SDK_VERSION } from './version';
+import { notifyDeviceRegistered } from './consumer-events';
 
 export function getCurrentDevice(): NotificareDevice | undefined {
   const deviceStr = localStorage.getItem('re.notifica.device');
@@ -118,9 +118,7 @@ export async function registerDeviceInternal(options: InternalRegisterDeviceOpti
   }
 
   const device = getCurrentDevice();
-  if (device && onDeviceRegisteredCallback) {
-    onDeviceRegisteredCallback(device);
-  }
+  if (device) notifyDeviceRegistered(device);
 }
 
 export async function deleteDevice(): Promise<void> {
@@ -135,23 +133,6 @@ export async function deleteDevice(): Promise<void> {
 
   storeCurrentDevice(undefined);
 }
-
-// region Events
-
-type OnDeviceRegisteredCallback = (device: NotificareDevice) => void;
-let onDeviceRegisteredCallback: OnDeviceRegisteredCallback | undefined;
-
-export function onDeviceRegistered(callback: OnDeviceRegisteredCallback): EventSubscription {
-  onDeviceRegisteredCallback = callback;
-
-  return {
-    remove: () => {
-      onDeviceRegisteredCallback = undefined;
-    },
-  };
-}
-
-// endregion
 
 export function checkPrerequisites() {
   if (!isReady()) {

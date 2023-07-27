@@ -30,7 +30,7 @@ import { deleteDevice, registerTemporaryDevice } from './internal/internal-api-d
 
 export const SDK_VERSION: string = SDK_VERSION_INTERNAL;
 
-export { onReady, onUnlaunched } from './internal/consumer-events';
+export { onReady, onUnlaunched, onDeviceRegistered } from './internal/consumer-events';
 
 export function isConfigured(): boolean {
   return isConfiguredInternal();
