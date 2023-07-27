@@ -9,10 +9,10 @@ import { logger } from './internal/logger';
 import { getOptions, NotificareInternalOptionsServices, setOptions } from './internal/options';
 import {
   getLaunchState,
-  LaunchState,
-  setLaunchState,
   isConfigured as isConfiguredInternal,
   isReady as isReadyInternal,
+  LaunchState,
+  setLaunchState,
 } from './internal/launch-state';
 import { NotificareApplication } from './models/notificare-application';
 import { NotificareNotConfiguredError } from './errors/notificare-not-configured-error';
@@ -92,8 +92,7 @@ export async function launch(): Promise<void> {
 
   if (getLaunchState() === LaunchState.LAUNCHING) {
     logger.warning('Cannot launch again while Notificare is launching.');
-    // TODO: throw?
-    return;
+    throw new Error('Cannot launch again while Notificare is launching.');
   }
 
   if (getLaunchState() === LaunchState.LAUNCHED) {
@@ -102,7 +101,7 @@ export async function launch(): Promise<void> {
   }
 
   if (getLaunchState() < LaunchState.CONFIGURED) {
-    logger.debug('Notificare has not been configured before launching.');
+    logger.debug('Fetching remote configuration.');
 
     const response = await request('/config.json', { isAbsolutePath: true });
     const options = await response.json();
@@ -118,20 +117,27 @@ export async function launch(): Promise<void> {
   // TODO: check ignoreNonWebPushDevices
   // TODO: check allowOnlyWebPushSupportedDevices
 
-  const application = await fetchApplication();
+  try {
+    setLaunchState(LaunchState.LAUNCHING);
 
-  // eslint-disable-next-line no-restricted-syntax
-  for (const component of components.values()) {
-    logger.debug(`Launching '${component.name}' component.`);
+    const application = await fetchApplication();
 
-    // eslint-disable-next-line no-await-in-loop
-    await component.launch();
+    // eslint-disable-next-line no-restricted-syntax
+    for (const component of components.values()) {
+      logger.debug(`Launching '${component.name}' component.`);
+
+      // eslint-disable-next-line no-await-in-loop
+      await component.launch();
+    }
+
+    setLaunchState(LaunchState.LAUNCHED);
+    printLaunchSummary(application);
+
+    onReadyCallback?.(application);
+  } catch (e) {
+    logger.error('Failed to launch Notificare.', e);
+    setLaunchState(LaunchState.CONFIGURED);
   }
-
-  setLaunchState(LaunchState.LAUNCHED);
-  printLaunchSummary(application);
-
-  onReadyCallback?.(application);
 }
 
 export function getApplication(): NotificareApplication | undefined {
