@@ -5,60 +5,6 @@
 @import "./notifications/video.css";
 @import "./notifications/webview.css";
 
-
-.notificare__notification-actions {
-    display: flex;
-    flex-direction: row-reverse;
-    flex-wrap: wrap;
-    column-gap: 8px;
-    row-gap: 8px;
-}
-
-.notificare__notification-actions__list {
-    flex-direction: column;
-    flex-wrap: nowrap;
-}
-
-.notificare__notification-action-button {
-    border-radius: 4px;
-    color: #2B42F7;
-    cursor: pointer;
-    line-height: 20px;
-    font-size: 14px;
-    font-weight: 500;
-    padding: 8px 16px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    transition: background-color 300ms ease-in-out, color 300ms ease-in-out;
-}
-
-.notificare__notification-actions__list .notificare__notification-action-button {
-    width: 100%;
-}
-
-.notificare__notification-action-button:hover {
-    background-color: #F4F5F9;
-}
-
-.notificare__notification-action-button__primary {
-    background-color: #2B42F7;
-    color: white;
-}
-
-.notificare__notification-action-button__primary:hover {
-    background-color: #DFE0FF;
-    color: #000A64;
-}
-
-.notificare__notification-action-button__destructive {
-    color: #BA1A1A;
-}
-
-.notificare__notification-action-button__destructive:hover {
-    background-color: #FFDAD6;
-}
-
 .notificare-notification-callback-video-container {
 
 }

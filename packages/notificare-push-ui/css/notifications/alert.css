@@ -28,3 +28,20 @@
 
 .notificare__notification-alert-message {
 }
+
+.notificare__notification-actions {
+    display: flex;
+    flex-direction: row-reverse;
+    flex-wrap: wrap;
+    column-gap: 8px;
+    row-gap: 8px;
+}
+
+.notificare__notification-actions__list {
+    flex-direction: column;
+    flex-wrap: nowrap;
+}
+
+.notificare__notification-actions__list > * {
+    width: 100%;
+}

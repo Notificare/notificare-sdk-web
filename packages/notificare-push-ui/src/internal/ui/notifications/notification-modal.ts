@@ -1,12 +1,13 @@
 import {
   createBackdrop,
+  createButton,
   createModal,
   createModalContent,
   createModalFooter,
   createModalHeader,
   createRoot,
 } from '@notificare/ui';
-import { NotificareNotification } from '@notificare/core';
+import { NotificareNotification, NotificareNotificationAction } from '@notificare/core';
 import { ROOT_ELEMENT_IDENTIFIER } from '../root';
 import { getApplicationIcon, getApplicationName } from '../../utils';
 import { createAlertContent } from './content/alert';
@@ -19,6 +20,7 @@ import { createWebViewContent } from './content/webview';
 export async function createNotificationModal({
   notification,
   dismiss,
+  presentAction,
 }: CreateNotificationModalParams): Promise<HTMLElement> {
   const root = createRoot(ROOT_ELEMENT_IDENTIFIER);
 
@@ -39,10 +41,9 @@ export async function createNotificationModal({
   const content = modal.appendChild(createModalContent());
   content.appendChild(await createContentContainer(notification));
 
-  const actionsContainer = createActionsContainer(notification);
-  if (actionsContainer) {
+  if (notification.actions.length && notification.type === 're.notifica.notification.Alert') {
     const footer = modal.appendChild(createModalFooter());
-    footer.appendChild(actionsContainer);
+    footer.appendChild(createActionsContainer(notification, (action) => presentAction(action)));
   }
 
   return root;
@@ -51,6 +52,7 @@ export async function createNotificationModal({
 export interface CreateNotificationModalParams {
   notification: NotificareNotification;
   dismiss: () => void;
+  presentAction: (action: NotificareNotificationAction) => void;
 }
 
 async function createContentContainer(notification: NotificareNotification): Promise<HTMLElement> {
@@ -72,8 +74,26 @@ async function createContentContainer(notification: NotificareNotification): Pro
   }
 }
 
-function createActionsContainer(notification: NotificareNotification): HTMLElement | undefined {
-  if (!notification.actions.length) return undefined;
+function createActionsContainer(
+  notification: NotificareNotification,
+  onActionClick: (action: NotificareNotificationAction) => void,
+): HTMLElement {
+  const container = document.createElement('div');
+  container.classList.add('notificare__notification-actions');
 
-  return undefined;
+  if (notification.actions.length >= 3) {
+    container.classList.add('notificare__notification-actions__list');
+  }
+
+  notification.actions.forEach((action, index) => {
+    container.appendChild(
+      createButton({
+        variant: index === 0 ? 'primary' : 'secondary',
+        text: action.label,
+        onClick: () => onActionClick(action),
+      }),
+    );
+  });
+
+  return container;
 }
