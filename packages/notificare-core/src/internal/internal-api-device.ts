@@ -7,7 +7,7 @@ import {
 } from './utils';
 import { NotificareTransport } from '../models/notificare-transport';
 import { DeviceRegistration } from './network/payloads/device-registration';
-import { isReady, SDK_VERSION } from '../public-api';
+import { SDK_VERSION } from '../public-api';
 import { request } from './network/request';
 import { logger } from './logger';
 import { getOptions } from './options';
@@ -15,6 +15,7 @@ import { NotificareDevice } from '../models/notificare-device';
 import { EventSubscription } from '../event-subscription';
 import { NotificareNotReadyError } from '../errors/notificare-not-ready-error';
 import { NotificareDeviceUnavailableError } from '../errors/notificare-device-unavailable-error';
+import { isReady } from './launch-state';
 
 export function getCurrentDevice(): NotificareDevice | undefined {
   const deviceStr = localStorage.getItem('re.notifica.device');

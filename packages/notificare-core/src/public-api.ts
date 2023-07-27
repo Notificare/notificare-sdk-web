@@ -7,7 +7,13 @@ import {
 import { NotificareOptions } from './options';
 import { logger } from './internal/logger';
 import { getOptions, NotificareInternalOptionsServices, setOptions } from './internal/options';
-import { LaunchState } from './internal/launch-state';
+import {
+  getLaunchState,
+  LaunchState,
+  setLaunchState,
+  isConfigured as isConfiguredInternal,
+  isReady as isReadyInternal,
+} from './internal/launch-state';
 import { NotificareApplication } from './models/notificare-application';
 import { NotificareNotConfiguredError } from './errors/notificare-not-configured-error';
 import { components } from './internal/component-cache';
@@ -18,20 +24,18 @@ import {
   NetworkNotificationResponse,
 } from './internal/network/responses/notification-response';
 
-let launchState: LaunchState = LaunchState.NONE;
-
 export const SDK_VERSION = '3.0.0';
 
 export function isConfigured(): boolean {
-  return launchState >= LaunchState.CONFIGURED;
+  return isConfiguredInternal();
 }
 
 export function isReady(): boolean {
-  return launchState >= LaunchState.LAUNCHED;
+  return isReadyInternal();
 }
 
 export function configure(options: NotificareOptions) {
-  if (launchState >= LaunchState.CONFIGURED) {
+  if (getLaunchState() >= LaunchState.CONFIGURED) {
     logger.warning('Notificare has already been configured. Skipping...');
     return;
   }
@@ -79,25 +83,25 @@ export function configure(options: NotificareOptions) {
     component.configure();
   }
 
-  launchState = LaunchState.CONFIGURED;
+  setLaunchState(LaunchState.CONFIGURED);
 }
 
 export async function launch(): Promise<void> {
   // TODO: check is lib supported
   // TODO: load options from NOTIFICARE_PLUGIN_OPTIONS
 
-  if (launchState === LaunchState.LAUNCHING) {
+  if (getLaunchState() === LaunchState.LAUNCHING) {
     logger.warning('Cannot launch again while Notificare is launching.');
     // TODO: throw?
     return;
   }
 
-  if (launchState === LaunchState.LAUNCHED) {
+  if (getLaunchState() === LaunchState.LAUNCHED) {
     logger.warning('Notificare has already launched. Skipping...');
     return;
   }
 
-  if (launchState < LaunchState.CONFIGURED) {
+  if (getLaunchState() < LaunchState.CONFIGURED) {
     logger.debug('Notificare has not been configured before launching.');
 
     const response = await request('/config.json', { isAbsolutePath: true });
@@ -124,7 +128,7 @@ export async function launch(): Promise<void> {
     await component.launch();
   }
 
-  launchState = LaunchState.LAUNCHED;
+  setLaunchState(LaunchState.LAUNCHED);
   printLaunchSummary(application);
 
   onReadyCallback?.(application);

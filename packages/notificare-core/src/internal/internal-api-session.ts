@@ -1,8 +1,8 @@
-import { isReady } from '../public-api';
 import { logger } from './logger';
 import { logApplicationClose, logApplicationOpen } from './internal-api-events';
 import { randomUUID } from './utils';
 import { getSession, StoredSession, storeSession } from './internal-api-session-shared';
+import { isReady } from './launch-state';
 
 let sessionCloseTimeout: number | undefined;
 
