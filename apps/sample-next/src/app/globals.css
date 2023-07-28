@@ -1,7 +1,6 @@
-/*@import '@notificare/ui/css/notificare-core-ui.css';*/
-/*@import '@notificare/in-app-messaging/css/notificare-in-app-messaging.css';*/
-/*@import '@notificare/push/css/notificare-push.css';*/
-/*@import '@notificare/push-ui/css/notificare-push-ui.css';*/
+@import '@notificare/in-app-messaging/css/notificare-in-app-messaging.css';
+@import '@notificare/push/css/notificare-push.css';
+@import '@notificare/push-ui/css/notificare-push-ui.css';
 
 @tailwind base;
 @tailwind components;
