@@ -4,26 +4,153 @@
   "description": "The 'notificare' umbrella package.",
   "author": "Notificare <info@notificare.com> (https://notificare.com)",
   "license": "MIT",
-  "main": "dist/commonjs/index.js",
-  "browser": "dist/esm/index.js",
-  "module": "dist/esm/index.js",
-  "esm5": "dist/esm5/index.js",
-  "typings": "dist/commonjs/index.d.ts",
+  "typings": "empty.d.ts",
   "scripts": {
-    "build": "rollup -c",
+    "build": "rollup -c && gulp replaceCdnUrl",
     "lint": "eslint ."
   },
   "files": [
-    "dist"
+    "**/dist/",
+    "**/package.json"
   ],
+  "exports": {
+    "./core": {
+      "types": "./core/dist/core/index.d.ts",
+      "node": {
+        "require": "./core/dist/index.cjs.js",
+        "import": "./core/dist/index.mjs"
+      },
+      "browser": {
+        "require": "./core/dist/index.cjs.js",
+        "import": "./core/dist/esm/index.esm.js"
+      },
+      "default": "./core/dist/esm/index.esm.js"
+    },
+    "./assets": {
+      "types": "./assets/dist/assets/index.d.ts",
+      "node": {
+        "require": "./assets/dist/index.cjs.js",
+        "import": "./assets/dist/index.mjs"
+      },
+      "browser": {
+        "require": "./assets/dist/index.cjs.js",
+        "import": "./assets/dist/esm/index.esm.js"
+      },
+      "default": "./assets/dist/esm/index.esm.js"
+    },
+    "./geo": {
+      "types": "./geo/dist/geo/index.d.ts",
+      "node": {
+        "require": "./geo/dist/index.cjs.js",
+        "import": "./geo/dist/index.mjs"
+      },
+      "browser": {
+        "require": "./geo/dist/index.cjs.js",
+        "import": "./geo/dist/esm/index.esm.js"
+      },
+      "default": "./geo/dist/esm/index.esm.js"
+    },
+    "./in-app-messaging": {
+      "types": "./in-app-messaging/dist/in-app-messaging/index.d.ts",
+      "node": {
+        "require": "./in-app-messaging/dist/index.cjs.js",
+        "import": "./in-app-messaging/dist/index.mjs"
+      },
+      "browser": {
+        "require": "./in-app-messaging/dist/index.cjs.js",
+        "import": "./in-app-messaging/dist/esm/index.esm.js"
+      },
+      "default": "./in-app-messaging/dist/esm/index.esm.js"
+    },
+    "./inbox": {
+      "types": "./inbox/dist/inbox/index.d.ts",
+      "node": {
+        "require": "./inbox/dist/index.cjs.js",
+        "import": "./inbox/dist/index.mjs"
+      },
+      "browser": {
+        "require": "./inbox/dist/index.cjs.js",
+        "import": "./inbox/dist/esm/index.esm.js"
+      },
+      "default": "./inbox/dist/esm/index.esm.js"
+    },
+    "./push": {
+      "types": "./push/dist/push/index.d.ts",
+      "node": {
+        "require": "./push/dist/index.cjs.js",
+        "import": "./push/dist/index.mjs"
+      },
+      "browser": {
+        "require": "./push/dist/index.cjs.js",
+        "import": "./push/dist/esm/index.esm.js"
+      },
+      "default": "./push/dist/esm/index.esm.js"
+    },
+    "./push/sw": {
+      "types": "./push/sw/dist/push/sw/index.d.ts",
+      "node": {
+        "require": "./push/sw/dist/index.cjs.js",
+        "import": "./push/sw/dist/index.mjs"
+      },
+      "browser": {
+        "require": "./push/sw/dist/index.cjs.js",
+        "import": "./push/sw/dist/esm/index.esm.js"
+      },
+      "default": "./push/sw/dist/esm/index.esm.js"
+    },
+    "./push-ui": {
+      "types": "./push-ui/dist/push-ui/index.d.ts",
+      "node": {
+        "require": "./push-ui/dist/index.cjs.js",
+        "import": "./push-ui/dist/index.mjs"
+      },
+      "browser": {
+        "require": "./push-ui/dist/index.cjs.js",
+        "import": "./push-ui/dist/esm/index.esm.js"
+      },
+      "default": "./push-ui/dist/esm/index.esm.js"
+    },
+    "./user-inbox": {
+      "types": "./user-inbox/dist/user-inbox/index.d.ts",
+      "node": {
+        "require": "./user-inbox/dist/index.cjs.js",
+        "import": "./user-inbox/dist/index.mjs"
+      },
+      "browser": {
+        "require": "./user-inbox/dist/index.cjs.js",
+        "import": "./user-inbox/dist/esm/index.esm.js"
+      },
+      "default": "./user-inbox/dist/esm/index.esm.js"
+    }
+  },
   "dependencies": {
+    "@notificare/assets": "^3.0.0",
     "@notificare/core": "^3.0.0",
-    "@notificare/push": "^3.0.0"
+    "@notificare/geo": "^3.0.0",
+    "@notificare/in-app-messaging": "^3.0.0",
+    "@notificare/inbox": "^3.0.0",
+    "@notificare/push": "^3.0.0",
+    "@notificare/push-ui": "^3.0.0",
+    "@notificare/user-inbox": "^3.0.0"
   },
   "devDependencies": {
     "@notificare/eslint-config": "*",
     "@notificare/rollup": "*",
     "@notificare/tsconfig": "*",
+    "gulp": "^4.0.2",
+    "gulp-sourcemaps": "^3.0.0",
+    "gulp-replace": "^1.1.4",
     "typescript": "^4.9.4"
-  }
+  },
+  "components": [
+    "core",
+    "assets",
+    "geo",
+    "in-app-messaging",
+    "inbox",
+    "push",
+    "push/sw",
+    "push-ui",
+    "user-inbox"
+  ]
 }

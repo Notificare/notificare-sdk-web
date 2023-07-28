@@ -1,5 +1,5 @@
 import typescript from 'typescript';
-import { build } from '@notificare/rollup';
+import { buildUmbrella } from '@notificare/rollup';
 import pkg from './package.json' assert { type: 'json' };
 
-export default build(pkg, { typescript });
+export default buildUmbrella(pkg, { typescript, rootDirectory: import.meta.url });

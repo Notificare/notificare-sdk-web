@@ -1,4 +1,4 @@
-import { LogLevel } from '@notificare/logger';
+import { setLogLevel as setLogLevelInternal, LogLevel, LogLevelString } from '@notificare/logger';
 import { request } from './internal/network/request';
 import {
   convertNetworkApplicationToPublic,
@@ -35,6 +35,10 @@ import { NotificareDeviceUnavailableError } from './errors/notificare-device-una
 export const SDK_VERSION: string = SDK_VERSION_INTERNAL;
 
 export { onReady, onUnlaunched, onDeviceRegistered } from './internal/consumer-events';
+
+export function setLogLevel(logLevel: LogLevel | LogLevelString) {
+  setLogLevelInternal(logLevel);
+}
 
 export function isConfigured(): boolean {
   return isConfiguredInternal();
