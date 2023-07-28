@@ -1,6 +1,6 @@
 {
   "name": "@notificare/in-app-messaging",
-  "version": "3.0.0",
+  "version": "3.0.0-beta.1",
   "description": "The in-app messaging package for use in the Notificare Web SDK.",
   "author": "Notificare <info@notificare.com> (https://notificare.com)",
   "license": "MIT",
@@ -21,9 +21,9 @@
     "css"
   ],
   "dependencies": {
-    "@notificare/core": "^3.0.0",
-    "@notificare/logger": "^3.0.0",
-    "@notificare/ui": "^3.0.0",
+    "@notificare/core": "^3.0.0-beta.1",
+    "@notificare/logger": "^3.0.0-beta.1",
+    "@notificare/ui": "^3.0.0-beta.1",
     "tslib": "^2.5.0"
   },
   "devDependencies": {

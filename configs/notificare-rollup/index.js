@@ -19,7 +19,7 @@ export function build(pkg, options) {
    * CommonJS builds
    */
   const commonJsBuildPlugins = [
-    typescriptPlugin({
+    tsc({
       typescript: typescript,
       target: "es5",
       // noEmitOnError: true,
@@ -58,7 +58,7 @@ export function build(pkg, options) {
    * ESM builds
    */
   const esmBuildPlugins = [
-    typescriptPlugin({
+    tsc({
       typescript: typescript,
       target: "es2017",
       // noEmitOnError: true,

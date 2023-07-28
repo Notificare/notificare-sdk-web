@@ -1,6 +1,6 @@
 {
   "name": "notificare",
-  "version": "3.0.0",
+  "version": "3.0.0-beta.1",
   "description": "The 'notificare' umbrella package.",
   "author": "Notificare <info@notificare.com> (https://notificare.com)",
   "license": "MIT",
@@ -124,14 +124,14 @@
     }
   },
   "dependencies": {
-    "@notificare/assets": "^3.0.0",
-    "@notificare/core": "^3.0.0",
-    "@notificare/geo": "^3.0.0",
-    "@notificare/in-app-messaging": "^3.0.0",
-    "@notificare/inbox": "^3.0.0",
-    "@notificare/push": "^3.0.0",
-    "@notificare/push-ui": "^3.0.0",
-    "@notificare/user-inbox": "^3.0.0"
+    "@notificare/assets": "^3.0.0-beta.1",
+    "@notificare/core": "^3.0.0-beta.1",
+    "@notificare/geo": "^3.0.0-beta.1",
+    "@notificare/in-app-messaging": "^3.0.0-beta.1",
+    "@notificare/inbox": "^3.0.0-beta.1",
+    "@notificare/push": "^3.0.0-beta.1",
+    "@notificare/push-ui": "^3.0.0-beta.1",
+    "@notificare/user-inbox": "^3.0.0-beta.1"
   },
   "devDependencies": {
     "@notificare/eslint-config": "*",
