@@ -18,7 +18,7 @@
   },
   "files": [
     "dist",
-    "css/notificare-in-app-messaging.css"
+    "css"
   ],
   "dependencies": {
     "@notificare/core": "^3.0.0",

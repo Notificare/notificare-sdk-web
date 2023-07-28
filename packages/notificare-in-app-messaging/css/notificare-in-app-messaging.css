@@ -1,3 +1,5 @@
+@import "@notificare/ui/css/notificare-ui.css";
+
 @import "banner.css";
 @import "card.css";
 @import "fullscreen.css";
