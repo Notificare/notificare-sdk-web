@@ -7,9 +7,14 @@ import {
   useEffect,
   useState,
 } from "react";
-import { isReady, launch, onReady, onUnlaunched } from "@notificare/core";
-import { setLogLevel } from "@notificare/logger";
-import { onNotificationOpened } from "@notificare/push";
+import {
+  setLogLevel,
+  isReady,
+  launch,
+  onReady,
+  onUnlaunched,
+} from "notificare/core";
+import { onNotificationOpened } from "notificare/push";
 import {
   onActionExecuted,
   onActionFailedToExecute,
@@ -20,15 +25,15 @@ import {
   onNotificationPresented,
   onNotificationWillPresent,
   presentNotification,
-} from "@notificare/push-ui";
+} from "notificare/push-ui";
 
-import "@notificare/core";
-import "@notificare/assets";
-import "@notificare/geo";
-import "@notificare/inbox";
-import "@notificare/in-app-messaging";
-import "@notificare/push";
-import "@notificare/push-ui";
+import "notificare/core";
+import "notificare/assets";
+import "notificare/geo";
+import "notificare/inbox";
+import "notificare/in-app-messaging";
+import "notificare/push";
+import "notificare/push-ui";
 
 export type NotificareState = "idle" | "launched" | "failed";
 
