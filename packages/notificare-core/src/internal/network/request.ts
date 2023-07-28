@@ -16,7 +16,7 @@ export async function request(url: string, options?: RequestOptions): Promise<Re
 
   const headers = new Headers();
   headers.set('Accept', 'application/json');
-  headers.set('Content-Type', 'application/json');
+  if (options?.body) headers.set('Content-Type', 'application/json');
 
   const authorizationHeader = getAuthorizationHeader();
   if (authorizationHeader) headers.set('Authorization', authorizationHeader);
@@ -24,11 +24,15 @@ export async function request(url: string, options?: RequestOptions): Promise<Re
   for (let attempt = 0; attempt <= retries; attempt += 1) {
     let response: Response | undefined;
 
+    let body: BodyInit | undefined;
+    if (options?.body) body = JSON.stringify(options.body);
+    if (options?.formData) body = options.formData;
+
     try {
       // eslint-disable-next-line no-await-in-loop
       response = await fetch(completeUrl, {
         method,
-        body: JSON.stringify(options?.body),
+        body,
         headers,
       });
 
@@ -67,6 +71,7 @@ export interface RequestOptions {
   isAbsolutePath?: boolean;
   method?: 'GET' | 'POST' | 'PATCH' | 'PUT' | 'DELETE';
   body?: unknown;
+  formData?: FormData;
   retries?: number;
   retryDelay?: number | RetryDelayFn;
 }
