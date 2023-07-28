@@ -4,39 +4,3 @@
 @import "./notifications/url.css";
 @import "./notifications/video.css";
 @import "./notifications/webview.css";
-
-.notificare-notification-callback-video-container {
-
-}
-
-.notificare-notification-callback-video, .notificare-notification-callback-canvas {
-    display: none;
-    width: 100%;
-}
-
-.notificare-notification-callback-video.active, .notificare-notification-callback-canvas.active {
-    display: block;
-}
-
-.notificare-notification-callback-textarea {
-    margin-top: 16px;
-    border: none;
-    border-radius: 4px;
-    padding: 8px 12px;
-    resize: none;
-
-
-    --tw-ring-offset-width: 0px;
-    --tw-ring-offset-color: #fff;
-
-    --tw-ring-inset: inset;
-
-    --tw-ring-opacity: 1;
-    --tw-ring-color: rgb(209 213 219 / var(--tw-ring-opacity));
-
-    --tw-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-    --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
-    --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(1px + var(--tw-ring-offset-width)) var(--tw-ring-color);
-
-    box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
-}

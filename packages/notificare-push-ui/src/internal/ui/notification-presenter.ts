@@ -8,6 +8,7 @@ import {
 import { ensureCleanState } from './root';
 import { logger } from '../../logger';
 import { createNotificationModal } from './notifications/notification-modal';
+import { presentAction } from './action-presenter';
 
 class NotificationPresenter {
   private notification: NotificareNotification | undefined;
@@ -91,7 +92,10 @@ class NotificationPresenter {
     const ui = await createNotificationModal({
       notification,
       dismiss: () => this.dismiss(),
-      presentAction: (action) => {},
+      presentAction: (action) => {
+        this.dismiss();
+        presentAction(notification, action);
+      },
     });
 
     // Add the complete notification DOM to the page.
