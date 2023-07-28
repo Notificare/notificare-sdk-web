@@ -31,5 +31,8 @@
     "@notificare/rollup": "*",
     "@notificare/tsconfig": "*",
     "typescript": "^4.9.4"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
