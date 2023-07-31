@@ -7,11 +7,17 @@
   "typings": "empty.d.ts",
   "scripts": {
     "build": "rollup -c && gulp",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "prepack": "yarn docs:replace-symbolic-links",
+    "postpack": "yarn docs:create-symbolic-links",
+    "docs:create-symbolic-links": "rm README.md CHANGELOG.md MIGRATION.md; ln -s ../../README.md ../../CHANGELOG.md ../../MIGRATION.md .",
+    "docs:replace-symbolic-links": "rm README.md CHANGELOG.md MIGRATION.md; cp ../../README.md ../../CHANGELOG.md ../../MIGRATION.md ."
   },
   "files": [
     "**/dist/",
-    "**/package.json"
+    "**/package.json",
+    "CHANGELOG.md",
+    "MIGRATION.md"
   ],
   "exports": {
     "./core": {
