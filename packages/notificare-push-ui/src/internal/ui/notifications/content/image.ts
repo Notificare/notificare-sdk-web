@@ -5,6 +5,7 @@ export async function createImageContent(
 ): Promise<HTMLElement> {
   const allowedContentTypes = [
     're.notifica.content.JPEG',
+    're.notifica.content.JPG',
     're.notifica.content.PNG',
     're.notifica.content.GIF',
   ];
