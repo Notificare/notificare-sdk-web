@@ -5,7 +5,7 @@ import { arrayBufferToBase64Url, base64UrlToUint8Array } from '../utils';
 export async function registerServiceWorker(
   options: NotificareInternalOptions,
 ): Promise<ServiceWorkerRegistration> {
-  const workerLocation = getWorkerLocation(options);
+  const workerLocation = options.serviceWorker;
   if (!workerLocation) {
     throw new Error(
       'Missing service worker location. Please check your configurations (config.json).',
@@ -83,17 +83,6 @@ export async function createWebPushSubscription(
 
 function hasSupportedProtocol(applicationHost: string): boolean {
   return applicationHost.includes('localhost') || applicationHost.startsWith('https');
-}
-
-function getWorkerLocation(options: NotificareInternalOptions): string | undefined {
-  if (!options.serviceWorker) return undefined;
-
-  const workerAuthentication = new URLSearchParams({
-    're.notifica.application_key': options.applicationKey,
-    're.notifica.application_secret': options.applicationSecret,
-  });
-
-  return options.serviceWorker.concat('?', workerAuthentication.toString());
 }
 
 async function getActiveWorkerRegistration(
