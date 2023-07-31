@@ -41,7 +41,7 @@ export async function createNotificationModal({
   const content = modal.appendChild(createModalContent());
   content.appendChild(await createContentContainer(notification));
 
-  if (notification.actions.length && notification.type === 're.notifica.notification.Alert') {
+  if (notification.actions.length) {
     const footer = modal.appendChild(createModalFooter());
     footer.appendChild(createActionsContainer(notification, (action) => presentAction(action)));
   }
