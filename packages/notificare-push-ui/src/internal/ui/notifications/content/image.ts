@@ -3,7 +3,14 @@ import { NotificareNotification } from '@notificare/core';
 export async function createImageContent(
   notification: NotificareNotification,
 ): Promise<HTMLElement> {
-  const content = notification.content.filter(({ type }) => type === 're.notifica.content.Image');
+  const allowedContentTypes = [
+    're.notifica.content.JPEG',
+    're.notifica.content.JPG',
+    're.notifica.content.PNG',
+    're.notifica.content.GIF',
+  ];
+
+  const content = notification.content.filter(({ type }) => allowedContentTypes.includes(type));
   if (!content.length) throw new Error(`Invalid content for notification '${notification.type}'.`);
 
   const slider = document.createElement('div');
