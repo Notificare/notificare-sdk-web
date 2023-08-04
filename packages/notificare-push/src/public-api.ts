@@ -76,9 +76,7 @@ export async function enableRemoteNotifications(): Promise<void> {
     } catch (e) {
       logger.warning('Failed to send a message to the service worker.', e);
     }
-  }
-
-  if (hasSafariPushSupport()) {
+  } else if (hasSafariPushSupport()) {
     const token = await enableSafariPushNotifications();
 
     await registerPushDevice({
