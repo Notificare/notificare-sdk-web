@@ -3,9 +3,12 @@ import {
   getCurrentDevice,
   getOptions,
   isConfigured,
+  isReady,
+  NotificareApplicationUnavailableError,
   NotificareDeviceUnavailableError,
   NotificareNotConfiguredError,
   NotificareNotReadyError,
+  NotificareServiceUnavailableError,
   registerPushDevice,
   registerTemporaryDevice,
   request,
@@ -36,7 +39,7 @@ export function hasWebPushCapabilities(): boolean {
 }
 
 export async function enableRemoteNotifications(): Promise<void> {
-  // TODO: check prerequisites
+  checkPrerequisites();
 
   const options = getOptions();
   if (!options) throw new NotificareNotConfiguredError();
@@ -93,7 +96,7 @@ export async function enableRemoteNotifications(): Promise<void> {
 }
 
 export async function disableRemoteNotifications(): Promise<void> {
-  // TODO: check prerequisites
+  checkPrerequisites();
 
   const device = getCurrentDevice();
   if (!device) throw new NotificareDeviceUnavailableError();
@@ -103,6 +106,24 @@ export async function disableRemoteNotifications(): Promise<void> {
   }
 
   await registerTemporaryDevice();
+}
+
+function checkPrerequisites() {
+  if (!isReady()) {
+    logger.warning('Notificare is not ready yet.');
+    throw new NotificareNotReadyError();
+  }
+
+  const application = getApplication();
+  if (!application) {
+    logger.warning('Notificare application is not yet available.');
+    throw new NotificareApplicationUnavailableError();
+  }
+
+  if (!application.services.websitePush) {
+    logger.warning('Notificare website push functionality is not enabled.');
+    throw new NotificareServiceUnavailableError('websitePush');
+  }
 }
 
 async function updateNotificationSettings() {
