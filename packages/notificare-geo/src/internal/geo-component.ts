@@ -1,6 +1,7 @@
 import { Component } from '@notificare/core';
-import { setLocationServicesEnabled } from './storage/local-storage';
-import { clearLocation } from './internal-api';
+import { getLocationServicesEnabled, setLocationServicesEnabled } from './storage/local-storage';
+import { clearLocation, startLocationUpdates } from './internal-api';
+import { logger } from '../logger';
 
 /* eslint-disable class-methods-use-this */
 export class GeoComponent extends Component {
@@ -13,9 +14,10 @@ export class GeoComponent extends Component {
   }
 
   async launch(): Promise<void> {
-    // if (hasLocationServicesEnabled()) {
-    //   enableLocationUpdates();
-    // }
+    if (getLocationServicesEnabled()) {
+      logger.debug('Automatically starting location updates.');
+      startLocationUpdates();
+    }
   }
 
   async unlaunch(): Promise<void> {
