@@ -123,15 +123,15 @@ async function updateLocation(
   await request(`/api/device/${encodeURIComponent(device.id)}`, {
     method: 'PUT',
     body: {
-      latitude: position?.coords?.latitude,
-      longitude: position?.coords?.longitude,
-      altitude: position?.coords?.altitude,
-      course: position?.coords?.heading,
-      speed: position?.coords?.speed,
-      locationAccuracy: position?.coords?.accuracy,
-      country,
-      locationServicesAuthStatus: position ? 'use' : undefined,
-      locationServicesAccuracyAuth: position ? 'full' : undefined,
+      latitude: position?.coords?.latitude ?? null,
+      longitude: position?.coords?.longitude ?? null,
+      altitude: position?.coords?.altitude ?? null,
+      course: position?.coords?.heading ?? null,
+      speed: position?.coords?.speed ?? null,
+      locationAccuracy: position?.coords?.accuracy ?? null,
+      country: country ?? null,
+      locationServicesAuthStatus: position ? 'use' : null,
+      locationServicesAccuracyAuth: position ? 'full' : null,
     },
   });
 }
