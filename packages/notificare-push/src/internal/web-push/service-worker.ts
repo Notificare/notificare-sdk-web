@@ -5,12 +5,7 @@ import { arrayBufferToBase64Url, base64UrlToUint8Array } from '../utils';
 export async function registerServiceWorker(
   options: NotificareInternalOptions,
 ): Promise<ServiceWorkerRegistration> {
-  const workerLocation = options.serviceWorker;
-  if (!workerLocation) {
-    throw new Error(
-      'Missing service worker location. Please check your configurations (config.json).',
-    );
-  }
+  const workerLocation = options.serviceWorker ?? '/sw.js';
 
   if (!hasSupportedProtocol(options.applicationHost)) {
     throw new Error('Service workers are only available over HTTPS or localhost.');
