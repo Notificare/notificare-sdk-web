@@ -54,8 +54,11 @@ export function configure(options: NotificareOptions) {
     return;
   }
 
-  // TODO: validate the user input
   logger.debug('Configuring notificare.');
+
+  if (!options?.applicationKey || !options?.applicationSecret) {
+    throw new Error('Unable to configure Notificare without a valid set of application keys.');
+  }
 
   // Hidden property from the consumer options.
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -102,7 +105,6 @@ export function configure(options: NotificareOptions) {
 
 export async function launch(): Promise<void> {
   // TODO: check is lib supported
-  // TODO: load options from NOTIFICARE_PLUGIN_OPTIONS
 
   if (getLaunchState() === LaunchState.LAUNCHING) {
     logger.warning('Cannot launch again while Notificare is launching.');
