@@ -181,7 +181,9 @@ async function processCallbackResult(
       await callNotificationWebhook(notification, action);
     }
 
-    await createNotificationReply(notification, action, data);
+    if (requiresUserInteraction(action)) {
+      await createNotificationReply(notification, action, data);
+    }
 
     notifyActionExecuted(notification, action);
   } catch (e) {
