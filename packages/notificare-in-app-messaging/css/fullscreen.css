@@ -1,4 +1,4 @@
-.notificare__iam-fullscreen {
+.notificare .notificare__iam-fullscreen {
     position: fixed;
     top: 50%;
     left: 50%;
@@ -14,13 +14,13 @@
     overflow: hidden;
 }
 
-.notificare__iam-fullscreen-image {
+.notificare .notificare__iam-fullscreen-image {
     width: 100%;
     height: 100%;
     object-fit: cover;
 }
 
-.notificare__iam-fullscreen-content {
+.notificare .notificare__iam-fullscreen-content {
     position: absolute;
     bottom: 0;
 
@@ -32,7 +32,7 @@
     width: 100%;
 }
 
-.notificare__iam-fullscreen-content-title {
+.notificare .notificare__iam-fullscreen-content-title {
     font-size: 16px;
     font-weight: 600;
 
@@ -44,11 +44,11 @@
     margin-bottom: 4px;
 }
 
-.notificare__iam-fullscreen-content-message {
+.notificare .notificare__iam-fullscreen-content-message {
     /* TODO: max-lines 3 */
 }
 
-.notificare__iam-fullscreen .notificare__close-button {
+.notificare .notificare__iam-fullscreen .notificare__close-button {
     position: absolute;
     top: 8px;
     right: 8px;

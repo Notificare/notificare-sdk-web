@@ -1,4 +1,4 @@
-.notificare__iam-banner {
+.notificare .notificare__iam-banner {
     position: fixed;
     top: var(--notificare-modal-margin);
     left: 50%;
@@ -20,18 +20,18 @@
     padding: 16px;
 }
 
-.notificare__iam-banner-image {
+.notificare .notificare__iam-banner-image {
     width: 64px;
     height: 64px;
     object-fit: cover;
 }
 
-.notificare__iam-banner-content {
+.notificare .notificare__iam-banner-content {
     display: flex;
     flex-direction: column;
 }
 
-.notificare__iam-banner-content-title {
+.notificare .notificare__iam-banner-content-title {
     font-size: 16px;
     font-weight: 600;
 
@@ -43,6 +43,6 @@
     margin-bottom: 4px;
 }
 
-.notificare__iam-banner-content-message {
+.notificare .notificare__iam-banner-content-message {
     /* TODO: max-lines 3 */
 }

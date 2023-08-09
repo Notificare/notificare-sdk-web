@@ -1,25 +1,25 @@
-.notificare__notification[data-notification-type="re.notifica.notification.Map"] {
+.notificare .notificare__notification[data-notification-type="re.notifica.notification.Map"] {
     width: calc(100% - 2 * var(--notificare-modal-margin));
     max-width: calc(900px - 2 * var(--notificare-modal-margin));
 }
 
-.notificare__notification-map {
+.notificare .notificare__notification-map {
     width: 100%;
     height: 500px;
 }
 
-.notificare__notification-map-info-window {
+.notificare .notificare__notification-map-info-window {
     display: flex;
     flex-direction: column;
     gap: 8px;
     max-width: 400px;
 }
 
-.notificare__notification-map-info-window-title {
+.notificare .notificare__notification-map-info-window-title {
     font-size: 18px;
     font-weight: 500;
 }
 
-.notificare__notification-map-info-window-description {
+.notificare .notificare__notification-map-info-window-description {
     font-size: 14px;
 }

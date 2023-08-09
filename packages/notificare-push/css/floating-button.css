@@ -1,4 +1,4 @@
-.notificare-push-floating-button .notificare__floating-button {
+.notificare.notificare-push-floating-button .notificare__floating-button {
     position: fixed;
     margin: 32px;
     z-index: 2147483647;
@@ -18,55 +18,55 @@
     box-shadow: var(--notificare-elevation-1);
 }
 
-.notificare-push-floating-button .notificare__floating-button:active {
+.notificare.notificare-push-floating-button .notificare__floating-button:active {
     box-shadow: var(--notificare-elevation-2);
 }
 
-.notificare-push-floating-button .notificare__floating-button:focus {
+.notificare.notificare-push-floating-button .notificare__floating-button:focus {
     box-shadow: var(--notificare-elevation-3);
 }
 
-.notificare-push-floating-button .notificare__floating-button:hover {
+.notificare.notificare-push-floating-button .notificare__floating-button:hover {
     box-shadow: var(--notificare-elevation-4);
 }
 
-.notificare-push-floating-button .notificare__floating-button__top {
+.notificare.notificare-push-floating-button .notificare__floating-button__top {
     top: 0;
 }
 
-.notificare-push-floating-button .notificare__floating-button__vertical-center {
+.notificare.notificare-push-floating-button .notificare__floating-button__vertical-center {
     top: 0;
     bottom: 0;
     margin-top: auto;
     margin-bottom: auto;
 }
 
-.notificare-push-floating-button .notificare__floating-button__bottom {
+.notificare.notificare-push-floating-button .notificare__floating-button__bottom {
     bottom: 0;
 }
 
-.notificare-push-floating-button .notificare__floating-button__start {
+.notificare.notificare-push-floating-button .notificare__floating-button__start {
     left: 0;
 }
 
-.notificare-push-floating-button .notificare__floating-button__horizontal-center {
+.notificare.notificare-push-floating-button .notificare__floating-button__horizontal-center {
     left: 0;
     right: 0;
     margin-left: auto;
     margin-right: auto;
 }
 
-.notificare-push-floating-button .notificare__floating-button__end {
+.notificare.notificare-push-floating-button .notificare__floating-button__end {
     right: 0;
 }
 
-.notificare-push-floating-button .notificare__floating-button-icon {
+.notificare.notificare-push-floating-button .notificare__floating-button-icon {
     fill: var(--notificare-on-primary-container);
     width: 24px;
     height: 24px;
 }
 
-.notificare-push-floating-button .notificare__floating-button-tooltip {
+.notificare.notificare-push-floating-button .notificare__floating-button-tooltip {
     visibility: hidden;
     position: absolute;
     padding: 12px 24px;
@@ -83,31 +83,31 @@
     transition: opacity 0.3s;
 }
 
-.notificare-push-floating-button .notificare__floating-button__top .notificare__floating-button-tooltip {
+.notificare.notificare-push-floating-button .notificare__floating-button__top .notificare__floating-button-tooltip {
     top: calc(100% + 16px);
 }
 
-.notificare-push-floating-button .notificare__floating-button__vertical-center .notificare__floating-button-tooltip {
+.notificare.notificare-push-floating-button .notificare__floating-button__vertical-center .notificare__floating-button-tooltip {
 
 }
 
-.notificare-push-floating-button .notificare__floating-button__bottom .notificare__floating-button-tooltip {
+.notificare.notificare-push-floating-button .notificare__floating-button__bottom .notificare__floating-button-tooltip {
     bottom: calc(100% + 16px);
 }
 
-.notificare-push-floating-button .notificare__floating-button__start .notificare__floating-button-tooltip {
+.notificare.notificare-push-floating-button .notificare__floating-button__start .notificare__floating-button-tooltip {
     left: 0;
 }
 
-.notificare-push-floating-button .notificare__floating-button__vertical-center .notificare__floating-button-tooltip {
+.notificare.notificare-push-floating-button .notificare__floating-button__vertical-center .notificare__floating-button-tooltip {
 
 }
 
-.notificare-push-floating-button .notificare__floating-button__bottom .notificare__floating-button-tooltip {
+.notificare.notificare-push-floating-button .notificare__floating-button__bottom .notificare__floating-button-tooltip {
     right: 0;
 }
 
-.notificare-push-floating-button .notificare__floating-button:hover .notificare__floating-button-tooltip {
+.notificare.notificare-push-floating-button .notificare__floating-button:hover .notificare__floating-button-tooltip {
     visibility: visible;
     opacity: 1;
 }
