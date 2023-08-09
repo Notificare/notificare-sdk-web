@@ -119,15 +119,15 @@ export async function launch(): Promise<void> {
   if (getLaunchState() < LaunchState.CONFIGURED) {
     logger.debug('Fetching remote configuration.');
 
-    const response = await request('/config.json', { isAbsolutePath: true });
+    const response = await request('/notificare-services.json', { isAbsolutePath: true });
     const options = await response.json();
     configure(options);
 
-    logger.info('Successfully configured Notificare with config.json.');
+    logger.info('Successfully configured Notificare with notificare-services.json.');
   }
 
   const options = getOptions();
-  if (options == null) throw new Error('Unable to load options from /config.json.');
+  if (options == null) throw new Error('Unable to load options from /notificare-services.json.');
 
   // TODO: migrate from v2 legacy props
   // TODO: check ignoreNonWebPushDevices

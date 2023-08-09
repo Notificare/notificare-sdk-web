@@ -6,12 +6,12 @@ Using a module bundler like [webpack](https://webpack.js.org/) or [Rollup](https
 
 ## Configuration file
 
-Although the new library still loads the remote `config.json`, the contents have been adjusted.
+The new library reads from a different configuration file. The old `config.json` was replaced by the `notificare-services.json` file.
 
 Review the [implementation guide](https://docs.notifica.re/sdk/v3/html5/implementation/#configuration-file) for more information.
 
 It's possible to configure Notificare through Javascript. 
-However, the recommended configuration approach remains to be the remote `config.json`.
+However, the recommended configuration approach remains to be the remote `notificare-services.json`.
 
 ## Packages
 
