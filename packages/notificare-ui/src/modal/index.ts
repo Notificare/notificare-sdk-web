@@ -1,8 +1,9 @@
 import { createCloseButton } from '../buttons';
 
-export function createModal(): HTMLElement {
+export function createModal(params?: ModalParams): HTMLElement {
   const modal = document.createElement('div');
   modal.classList.add('notificare__modal');
+  if (params?.alignment === 'top') modal.classList.add('notificare__modal--top');
 
   modal.addEventListener('click', (e) => {
     // Prevent the backdrop from receiving events when content is clicked.
@@ -10,6 +11,10 @@ export function createModal(): HTMLElement {
   });
 
   return modal;
+}
+
+export interface ModalParams {
+  alignment?: 'top' | 'center';
 }
 
 export function createModalHeader({
