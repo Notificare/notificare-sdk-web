@@ -18,6 +18,11 @@
     z-index: var(--notificare-layer-highest);
 }
 
+.notificare__modal--top {
+    top: var(--notificare-modal-margin);
+    transform: translate(-50%, 0%);
+}
+
 /* header */
 
 .notificare__modal-header {
