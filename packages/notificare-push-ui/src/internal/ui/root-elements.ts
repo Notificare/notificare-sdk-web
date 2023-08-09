@@ -1,4 +1,4 @@
-import { NotificareApplication, NotificareInternalOptions } from '@notificare/core';
+import { NotificareApplication, NotificareInternalOptions } from '@notificare/web-core';
 
 export function createRootElement(): HTMLElement {
   const element = document.createElement('div');

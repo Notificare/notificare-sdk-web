@@ -15,11 +15,11 @@ However, the recommended configuration approach remains to be the remote `notifi
 
 ## Packages
 
-The new API breaks the monolithic approach into several modules, available through the [Notificare](https://www.npmjs.com/package/notificare/) package. You can interact with the SDK like the following.
+The new API breaks the monolithic approach into several modules, available through the [Notificare](https://www.npmjs.com/package/notificare-web/) package. You can interact with the SDK like the following.
 
 ```javascript
-import { launch } from 'notificare/core';
-import { enableRemoteNotifications } from 'notificare/push';
+import { launch } from 'notificare-web/core';
+import { enableRemoteNotifications } from 'notificare-web/push';
 
 await launch();
 await enableRemoteNotifications();

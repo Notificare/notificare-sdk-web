@@ -11,7 +11,7 @@
   "dependencies": {
     "@headlessui/react": "^1.7.14",
     "@heroicons/react": "^2.0.17",
-    "notificare": "^3.0.0-beta.1",
+    "notificare-web": "^3.0.0-beta.1",
     "date-fns": "^2.29.3",
     "next": "13.3.0",
     "next-pwa": "^5.6.0",

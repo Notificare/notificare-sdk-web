@@ -7,7 +7,7 @@ import {
   NotificareNotReadyError,
   NotificareServiceUnavailableError,
   request,
-} from '@notificare/core';
+} from '@notificare/web-core';
 import { logger } from './logger';
 import { NotificareAsset } from './models/notificare-asset';
 import {

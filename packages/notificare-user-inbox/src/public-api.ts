@@ -13,7 +13,7 @@ import {
   NotificareNotReadyError,
   NotificareServiceUnavailableError,
   request,
-} from '@notificare/core';
+} from '@notificare/web-core';
 import { logger } from './logger';
 import { NotificareUserInboxResponse } from './models/notificare-user-inbox-response';
 import { NotificareUserInboxItem } from './models/notificare-user-inbox-item';

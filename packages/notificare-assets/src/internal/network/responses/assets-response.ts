@@ -1,4 +1,4 @@
-import { getOptions } from '@notificare/core';
+import { getOptions } from '@notificare/web-core';
 import { NotificareAsset, NotificareAssetButton } from '../../../models/notificare-asset';
 
 export interface NetworkAssetsResponse {

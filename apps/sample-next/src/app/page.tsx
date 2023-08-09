@@ -3,7 +3,7 @@
 import { Inter } from "next/font/google";
 import { useNotificare } from "@/context/notificare";
 import { useCallback } from "react";
-import { launch, unlaunch } from "notificare/core";
+import { launch, unlaunch } from "notificare-web/core";
 
 const inter = Inter({ subsets: ["latin"] });
 

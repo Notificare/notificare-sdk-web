@@ -4,7 +4,7 @@ import {
   NotificareApplicationUnavailableError,
   NotificareNotReadyError,
   NotificareServiceUnavailableError,
-} from '@notificare/core';
+} from '@notificare/web-core';
 import { logger } from './logger';
 import {
   disableRemoteNotifications as disableRemoteNotificationsInternal,

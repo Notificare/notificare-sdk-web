@@ -10,11 +10,11 @@
   },
   "scripts": {
     "prepare": "husky install",
-    "build": "lerna run --scope @notificare/* --scope notificare build",
-    "clean": "lerna run --scope @notificare/* --scope notificare clean",
-    "dev": "lerna run --scope @notificare/* --scope notificare dev --parallel",
-    "lint": "lerna run --scope @notificare/* --scope notificare lint",
-    "typecheck": "lerna run --scope @notificare/* --scope notificare typecheck"
+    "build": "lerna run --scope @notificare/* --scope notificare-web build",
+    "clean": "lerna run --scope @notificare/* --scope notificare-web clean",
+    "dev": "lerna run --scope @notificare/* --scope notificare-web dev --parallel",
+    "lint": "lerna run --scope @notificare/* --scope notificare-web lint",
+    "typecheck": "lerna run --scope @notificare/* --scope notificare-web typecheck"
   },
   "devDependencies": {
     "husky": "^8.0.3",

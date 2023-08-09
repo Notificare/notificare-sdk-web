@@ -4,7 +4,7 @@ import {
   NotificareDeviceUnavailableError,
   NotificareNetworkRequestError,
   request,
-} from '@notificare/core';
+} from '@notificare/web-core';
 import { NotificareInAppMessage } from '../models/notificare-in-app-message';
 import {
   convertNetworkInAppMessageToPublic,

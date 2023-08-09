@@ -1,4 +1,4 @@
-import { NotificareInternalOptions } from '@notificare/core';
+import { NotificareInternalOptions } from '@notificare/web-core';
 import { logger } from '../../logger';
 import { arrayBufferToBase64Url, base64UrlToUint8Array } from '../utils';
 

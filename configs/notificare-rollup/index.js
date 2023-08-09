@@ -198,7 +198,7 @@ export function buildUmbrella(pkg, options) {
             }),
             replace,
           ],
-          external: ["@notificare/core"],
+          external: ["@notificare/web-core"],
         };
       }),
   ];

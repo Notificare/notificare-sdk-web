@@ -1,1 +1,1 @@
-export * from '@notificare/inbox';
+export * from '@notificare/web-inbox';

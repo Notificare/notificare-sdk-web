@@ -1,4 +1,4 @@
-import { NotificareNotification } from '@notificare/core';
+import { NotificareNotification } from '@notificare/web-core';
 
 export async function createWebViewContent(
   notification: NotificareNotification,

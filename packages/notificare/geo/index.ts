@@ -1,1 +1,1 @@
-export * from '@notificare/geo';
+export * from '@notificare/web-geo';

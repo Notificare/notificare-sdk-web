@@ -1,6 +1,6 @@
 [<img src="https://raw.githubusercontent.com/notificare/notificare-sdk-web/main/.assets/logo.png"/>](https://notificare.com)
 
-# @notificare/in-app-messaging
+# @notificare/web-in-app-messaging
 
 This is the Notificare In-App Messaging component for the Notificare Web SDK.
 

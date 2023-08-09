@@ -1,4 +1,8 @@
-import { broadcastComponentEvent, fetchNotification, logNotificationOpen } from '@notificare/core';
+import {
+  broadcastComponentEvent,
+  fetchNotification,
+  logNotificationOpen,
+} from '@notificare/web-core';
 import { logNotificationInfluenced } from './internal-api-events';
 import { notifyNotificationOpened } from './consumer-events';
 

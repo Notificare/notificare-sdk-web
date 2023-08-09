@@ -4,7 +4,7 @@ import {
   NotificareNotification,
   NotificareNotificationAction,
   NotificationReplyData,
-} from '@notificare/core';
+} from '@notificare/web-core';
 import { ensureCleanState } from './root';
 import { logger } from '../../logger';
 import { createKeyboardCallbackModal } from './actions/callback-keyboard';

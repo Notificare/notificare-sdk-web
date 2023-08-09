@@ -1,5 +1,5 @@
 {
-  "name": "notificare/push-ui",
+  "name": "notificare-web/push-ui",
   "main": "dist/index.cjs.js",
   "browser": "dist/esm/index.esm.js",
   "module": "dist/esm/index.esm.js",

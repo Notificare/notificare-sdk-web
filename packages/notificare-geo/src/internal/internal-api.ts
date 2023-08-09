@@ -3,7 +3,7 @@ import {
   getOptions,
   NotificareDeviceUnavailableError,
   request,
-} from '@notificare/core';
+} from '@notificare/web-core';
 import { getCurrentLocation, setCurrentLocation } from './storage/local-storage';
 import { logger } from '../logger';
 import { notifyLocationUpdated, notifyLocationUpdateError } from './consumer-events';

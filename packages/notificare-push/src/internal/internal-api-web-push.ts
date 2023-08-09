@@ -5,7 +5,7 @@ import {
   logNotificationOpen,
   NotificareApplication,
   NotificareInternalOptions,
-} from '@notificare/core';
+} from '@notificare/web-core';
 import { arrayBufferToBase64 } from './utils';
 import { logger } from '../logger';
 import { logNotificationInfluenced, logNotificationReceived } from './internal-api-events';

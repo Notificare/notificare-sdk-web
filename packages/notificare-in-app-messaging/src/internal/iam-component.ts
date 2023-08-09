@@ -1,4 +1,4 @@
-import { Component } from '@notificare/core';
+import { Component } from '@notificare/web-core';
 import { evaluateContext, handleDocumentVisibilityChanged } from './internal-api';
 
 /* eslint-disable class-methods-use-this */

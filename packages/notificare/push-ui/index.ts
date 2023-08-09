@@ -1,1 +1,1 @@
-export * from '@notificare/push-ui';
+export * from '@notificare/web-push-ui';
