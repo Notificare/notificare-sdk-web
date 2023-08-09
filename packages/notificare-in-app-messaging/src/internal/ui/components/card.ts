@@ -1,4 +1,4 @@
-import { createBackdrop, createButton, createCloseButton, createRoot } from '@notificare/ui';
+import { createBackdrop, createButton, createCloseButton, createRoot } from '@notificare/web-ui';
 import {
   NotificareInAppMessage,
   NotificareInAppMessageAction,

@@ -1,1 +1,1 @@
-export * from '@notificare/assets';
+export * from '@notificare/web-assets';

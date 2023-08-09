@@ -1,4 +1,4 @@
-import { Component } from '@notificare/core';
+import { Component } from '@notificare/web-core';
 import { getLocationServicesEnabled, setLocationServicesEnabled } from './storage/local-storage';
 import { clearLocation, startLocationUpdates } from './internal-api';
 import { logger } from '../logger';

@@ -1,4 +1,4 @@
-import { NotificareNotification } from '@notificare/core';
+import { NotificareNotification } from '@notificare/web-core';
 
 export async function createMapContent(notification: NotificareNotification): Promise<HTMLElement> {
   const content = notification.content.filter(({ type }) => type === 're.notifica.content.Marker');

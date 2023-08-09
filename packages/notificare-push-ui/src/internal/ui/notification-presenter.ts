@@ -1,4 +1,8 @@
-import { getOptions, NotificareInternalOptions, NotificareNotification } from '@notificare/core';
+import {
+  getOptions,
+  NotificareInternalOptions,
+  NotificareNotification,
+} from '@notificare/web-core';
 import {
   notifyNotificationFailedToPresent,
   notifyNotificationFinishedPresenting,

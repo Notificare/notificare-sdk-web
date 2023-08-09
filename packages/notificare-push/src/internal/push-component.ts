@@ -1,4 +1,4 @@
-import { Component, getApplication, getCurrentDevice } from '@notificare/core';
+import { Component, getApplication, getCurrentDevice } from '@notificare/web-core';
 import {
   disableWebPushNotifications,
   handleServiceWorkerMessage,

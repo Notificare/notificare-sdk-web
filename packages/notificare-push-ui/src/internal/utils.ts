@@ -1,4 +1,4 @@
-import { getApplication, getOptions } from '@notificare/core';
+import { getApplication, getOptions } from '@notificare/web-core';
 
 export function getEmailUrl(email: string): string {
   return prefixed(email, 'mailto:');

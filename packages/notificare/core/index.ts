@@ -1,1 +1,1 @@
-export * from '@notificare/core';
+export * from '@notificare/web-core';

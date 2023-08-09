@@ -13,8 +13,8 @@ import {
   launch,
   onReady,
   onUnlaunched,
-} from "notificare/core";
-import { onNotificationOpened } from "notificare/push";
+} from "notificare-web/core";
+import { onNotificationOpened } from "notificare-web/push";
 import {
   onActionExecuted,
   onActionFailedToExecute,
@@ -25,15 +25,15 @@ import {
   onNotificationPresented,
   onNotificationWillPresent,
   presentNotification,
-} from "notificare/push-ui";
+} from "notificare-web/push-ui";
 
-import "notificare/core";
-import "notificare/assets";
-import "notificare/geo";
-import "notificare/inbox";
-import "notificare/in-app-messaging";
-import "notificare/push";
-import "notificare/push-ui";
+import "notificare-web/core";
+import "notificare-web/assets";
+import "notificare-web/geo";
+import "notificare-web/inbox";
+import "notificare-web/in-app-messaging";
+import "notificare-web/push";
+import "notificare-web/push-ui";
 
 export type NotificareState = "idle" | "launched" | "failed";
 

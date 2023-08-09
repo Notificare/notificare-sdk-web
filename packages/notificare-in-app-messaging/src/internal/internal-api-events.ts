@@ -1,4 +1,4 @@
-import { logInternal } from '@notificare/core';
+import { logInternal } from '@notificare/web-core';
 import { NotificareInAppMessage } from '../models/notificare-in-app-message';
 import { ActionType } from './types/action-type';
 

@@ -6,8 +6,8 @@ import {
   createModalFooter,
   createModalHeader,
   createRoot,
-} from '@notificare/ui';
-import { NotificareNotification, NotificareNotificationAction } from '@notificare/core';
+} from '@notificare/web-ui';
+import { NotificareNotification, NotificareNotificationAction } from '@notificare/web-core';
 import { ROOT_ELEMENT_IDENTIFIER } from '../root';
 import { getApplicationIcon, getApplicationName } from '../../utils';
 import { createAlertContent } from './content/alert';

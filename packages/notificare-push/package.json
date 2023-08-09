@@ -1,7 +1,7 @@
 {
-  "name": "@notificare/push",
+  "name": "@notificare/web-push",
   "version": "3.0.0-beta.1",
-  "description": "The push package for the 'notificare' umbrella package.",
+  "description": "The push package for the 'notificare-web' umbrella package.",
   "author": "Notificare <info@notificare.com> (https://notificare.com)",
   "license": "MIT",
   "main": "dist/commonjs/index.js",
@@ -39,9 +39,9 @@
     "sw/package.json"
   ],
   "dependencies": {
-    "@notificare/core": "^3.0.0-beta.1",
-    "@notificare/logger": "^3.0.0-beta.1",
-    "@notificare/ui": "^3.0.0-beta.1",
+    "@notificare/web-core": "^3.0.0-beta.1",
+    "@notificare/web-logger": "^3.0.0-beta.1",
+    "@notificare/web-ui": "^3.0.0-beta.1",
     "tslib": "^2.5.0"
   },
   "devDependencies": {

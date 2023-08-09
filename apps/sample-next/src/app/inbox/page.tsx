@@ -7,9 +7,9 @@ import {
   NotificareInboxItem,
   onBadgeUpdated,
   openInboxItem,
-} from "notificare/inbox";
+} from "notificare-web/inbox";
 import { formatDistanceToNow, parseISO } from "date-fns";
-import { presentNotification } from "notificare/push-ui";
+import { presentNotification } from "notificare-web/push-ui";
 import { useNotificare } from "@/context/notificare";
 
 export default function Inbox() {

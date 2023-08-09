@@ -2,7 +2,7 @@ import {
   getOptions,
   NotificareApplication,
   NotificareWebsitePushConfigLaunchConfigAutoOnboardingOptions,
-} from '@notificare/core';
+} from '@notificare/web-core';
 import {
   createBackdrop,
   createDestructiveButton,
@@ -11,7 +11,7 @@ import {
   createModalFooter,
   createPrimaryButton,
   createRoot,
-} from '@notificare/ui';
+} from '@notificare/web-ui';
 
 export function showOnboarding({
   application,

@@ -1,4 +1,4 @@
-import { Component, getApplication } from '@notificare/core';
+import { Component, getApplication } from '@notificare/web-core';
 import { logger } from '../logger';
 import { clearInboxInternal, refreshBadgeInternal } from './internal-api';
 

@@ -2,7 +2,7 @@ import {
   EventSubscription,
   NotificareNotification,
   NotificareNotificationAction,
-} from '@notificare/core';
+} from '@notificare/web-core';
 import { logger } from '../logger';
 import { NotificareNotificationDeliveryMechanism } from '../models/notificare-notification-delivery-mechanism';
 import { NotificareSystemNotification } from '../models/notificare-system-notification';

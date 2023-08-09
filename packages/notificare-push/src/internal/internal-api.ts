@@ -12,7 +12,7 @@ import {
   registerPushDevice,
   registerTemporaryDevice,
   request,
-} from '@notificare/core';
+} from '@notificare/web-core';
 import { logger } from '../logger';
 import { sleep } from './utils';
 import { showOnboarding } from './ui/onboarding';

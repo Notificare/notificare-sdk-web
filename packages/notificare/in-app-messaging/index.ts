@@ -1,1 +1,1 @@
-export * from '@notificare/in-app-messaging';
+export * from '@notificare/web-in-app-messaging';

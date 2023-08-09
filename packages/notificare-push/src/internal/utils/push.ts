@@ -1,4 +1,4 @@
-import { getApplication } from '@notificare/core';
+import { getApplication } from '@notificare/web-core';
 import { hasWebPushSupport } from '../internal-api-web-push';
 import { hasSafariPushSupport } from '../internal-api-safari-push';
 

@@ -2,8 +2,8 @@ import {
   NotificareWebsitePushConfigLaunchConfigFloatingButtonHorizontalAlignment,
   NotificareWebsitePushConfigLaunchConfigFloatingButtonOptions,
   NotificareWebsitePushConfigLaunchConfigFloatingButtonVerticalAlignment,
-} from '@notificare/core';
-import { createRoot } from '@notificare/ui';
+} from '@notificare/web-core';
+import { createRoot } from '@notificare/web-ui';
 import { getPushPermissionStatus } from '../utils/push';
 
 let permissionCheckTimer: number | undefined;

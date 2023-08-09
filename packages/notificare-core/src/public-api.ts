@@ -1,4 +1,8 @@
-import { setLogLevel as setLogLevelInternal, LogLevel, LogLevelString } from '@notificare/logger';
+import {
+  setLogLevel as setLogLevelInternal,
+  LogLevel,
+  LogLevelString,
+} from '@notificare/web-logger';
 import { request } from './internal/network/request';
 import {
   convertNetworkApplicationToPublic,

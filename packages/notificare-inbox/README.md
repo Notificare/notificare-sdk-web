@@ -1,6 +1,6 @@
 [<img src="https://raw.githubusercontent.com/notificare/notificare-sdk-web/main/.assets/logo.png"/>](https://notificare.com)
 
-# @notificare/inbox
+# @notificare/web-inbox
 
 This is the Notificare Inbox component for the Notificare Web SDK.
 
