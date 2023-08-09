@@ -14,7 +14,7 @@
     "docs:replace-symbolic-links": "rm README.md CHANGELOG.md MIGRATION.md; cp ../../README.md ../../CHANGELOG.md ../../MIGRATION.md ."
   },
   "files": [
-    "**/dist/",
+    "**/dist/**",
     "**/in-app-messaging.css",
     "**/push.css",
     "**/push-ui.css",
