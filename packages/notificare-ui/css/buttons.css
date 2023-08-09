@@ -1,4 +1,4 @@
-.notificare__button {
+.notificare .notificare__button {
     /*--notificare-button-background-color: clear;*/
     /*--notificare-button-text-color: var(--notificare-primary);*/
 
@@ -19,12 +19,12 @@
     transition: background-color 300ms ease-in-out, color 300ms ease-in-out;
 }
 
-.notificare__button:hover {
+.notificare .notificare__button:hover {
     background-color: var(--notificare-button-background-color--hover);
     color: var(--notificare-button-text-color--hover);
 }
 
-.notificare__button--primary {
+.notificare .notificare__button--primary {
     --notificare-button-background-color: var(--notificare-primary);
     --notificare-button-text-color: white;
 
@@ -32,7 +32,7 @@
     --notificare-button-text-color--hover: var(--notificare-button-text-color);
 }
 
-.notificare__button--secondary {
+.notificare .notificare__button--secondary {
     --notificare-button-background-color: clear;
     --notificare-button-text-color: var(--notificare-primary);
 
@@ -40,7 +40,7 @@
     --notificare-button-text-color--hover: var(--notificare-button-text-color);
 }
 
-.notificare__button--destructive {
+.notificare .notificare__button--destructive {
     --notificare-button-background-color: clear;
     --notificare-button-text-color: #BA1A1A;
 
@@ -48,7 +48,7 @@
     --notificare-button-text-color--hover: var(--notificare-button-text-color);
 }
 
-.notificare__close-button {
+.notificare .notificare__close-button {
     width: 32px;
     height: 32px;
     /* TODO: use SVG in DOM */
@@ -60,17 +60,17 @@
     transition: background-color 300ms ease-in-out, border-radius 300ms ease-in-out;
 }
 
-.notificare__close-button--solid {
+.notificare .notificare__close-button--solid {
     background-color: #F4F5F9;
     border-radius: 16px;
 }
 
-.notificare__close-button:hover {
+.notificare .notificare__close-button:hover {
     background-color: #F4F5F9;
     border-radius: 4px;
 }
 
-.notificare__close-button--solid {
+.notificare .notificare__close-button--solid {
     background-color: #F4F5F9;
     border-radius: 16px;
 }

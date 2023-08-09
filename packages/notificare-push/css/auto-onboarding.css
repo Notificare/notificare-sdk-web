@@ -3,25 +3,25 @@
     max-width: 480px;
 }
 
-.notificare-push-onboarding .notificare__onboarding-content {
+.notificare.notificare-push-onboarding .notificare__onboarding-content {
     flex-direction: row;
     column-gap: 16px;
 }
 
-.notificare-push-onboarding .notificare__onboarding-icon {
+.notificare.notificare-push-onboarding .notificare__onboarding-icon {
     width: 64px;
     height: 64px;
     border-radius: 4px;
 }
 
-.notificare-push-onboarding .notificare__onboarding-text-content {
+.notificare.notificare-push-onboarding .notificare__onboarding-text-content {
     display: flex;
     flex-direction: column;
     row-gap: 4px;
     overflow: hidden;
 }
 
-.notificare-push-onboarding .notificare__onboarding-title {
+.notificare.notificare-push-onboarding .notificare__onboarding-title {
     font-size: 24px;
     line-height: 24px;
     font-weight: 400;
@@ -31,11 +31,11 @@
     text-overflow: ellipsis;
 }
 
-.notificare-push-onboarding .notificare__onboarding-text {
+.notificare.notificare-push-onboarding .notificare__onboarding-text {
 
 }
 
-.notificare-push-onboarding .notificare__onboarding-footer {
+.notificare.notificare-push-onboarding .notificare__onboarding-footer {
     display: flex;
     flex-direction: row;
     align-items: flex-end;
@@ -43,21 +43,21 @@
     margin-top: 16px;
 }
 
-.notificare-push-onboarding .notificare__onboarding-branding-content {
+.notificare.notificare-push-onboarding .notificare__onboarding-branding-content {
     display: flex;
     flex-direction: column;
     cursor: pointer;
 }
 
-.notificare-push-onboarding .notificare__onboarding-branding {
+.notificare.notificare-push-onboarding .notificare__onboarding-branding {
     font-size: 10px;
 }
 
-.notificare-push-onboarding .notificare__onboarding-branding-logo {
+.notificare.notificare-push-onboarding .notificare__onboarding-branding-logo {
     width: 80px;
 }
 
-.notificare-push-onboarding .notificare__onboarding-actions {
+.notificare.notificare-push-onboarding .notificare__onboarding-actions {
     display: flex;
     flex-direction: row;
     flex-grow: 1;

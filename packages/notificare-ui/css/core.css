@@ -1,10 +1,4 @@
 .notificare {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-    font-size: 14px;
-    line-height: 20px;
-    color: rgb(26, 32, 38);
-    box-sizing: border-box;
-
     --notificare-primary: #2B42F7;
     --notificare-on-primary: #FFFFFF;
     --notificare-primary-container: #DFE0FF;
@@ -27,4 +21,42 @@
     --notificare-layer-highest: 2147483647;
 
     --notificare-modal-margin: 64px;
+}
+
+/* CSS reset */
+
+.notificare * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+.notificare h1,
+.notificare h2,
+.notificare h3,
+.notificare h4,
+.notificare h5,
+.notificare h6,
+.notificare p,
+.notificare span,
+.notificare a,
+.notificare button {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    font-size: 14px;
+    font-weight: normal;
+    line-height: 20px;
+
+    background-color: transparent;
+    border: none;
+    color: rgb(26, 32, 38);
+    text-decoration: none;
+    text-transform: none;
+}
+
+.notificare a:hover,
+.notificare button:hover {
+    background-color: initial;
+    border: initial;
+    color: initial;
+    text-decoration: initial;
 }

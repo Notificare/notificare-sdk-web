@@ -1,35 +1,35 @@
-.notificare__notification[data-notification-type="re.notifica.notification.Alert"] {
+.notificare .notificare__notification[data-notification-type="re.notifica.notification.Alert"] {
     width: 500px;
 }
 
-.notificare__notification-alert {
+.notificare .notificare__notification-alert {
     display: flex;
     flex-direction: column;
 }
 
-.notificare__notification-alert-attachment {
+.notificare .notificare__notification-alert-attachment {
     aspect-ratio: 16 / 9;
     max-width: 100%;
     max-height: 250px;
     margin-bottom: 16px;
 }
 
-.notificare__notification-alert-title {
+.notificare .notificare__notification-alert-title {
     font-size: 16px;
     font-weight: 600;
     margin-bottom: 8px;
 }
 
-.notificare__notification-alert-subtitle {
+.notificare .notificare__notification-alert-subtitle {
     font-size: 14px;
     font-weight: 600;
     margin-bottom: 4px;
 }
 
-.notificare__notification-alert-message {
+.notificare .notificare__notification-alert-message {
 }
 
-.notificare__notification-actions {
+.notificare .notificare__notification-actions {
     display: flex;
     flex-direction: row-reverse;
     flex-wrap: wrap;
@@ -37,46 +37,46 @@
     row-gap: 8px;
 }
 
-.notificare__notification-actions__list {
+.notificare .notificare__notification-actions__list {
     flex-direction: column;
     flex-wrap: nowrap;
 }
 
-.notificare__notification-actions__list > * {
+.notificare .notificare__notification-actions__list > * {
     width: 100%;
 }
 
 /* Callback */
 
-.notificare__modal-footer__callback {
+.notificare .notificare__modal-footer__callback {
     display: flex;
     justify-content: right;
 }
 
 /* Callback: Camera */
 
-.notificare__camera-callback {
+.notificare .notificare__camera-callback {
     width: calc(100% - 2 * var(--notificare-modal-margin));
     max-width: calc(900px - 2 * var(--notificare-modal-margin));
 }
 
-.notificare__camera-callback-video {
+.notificare .notificare__camera-callback-video {
     aspect-ratio: 16 / 9;
     background-color: black;
 }
 
-.notificare__camera-callback-canvas {
+.notificare .notificare__camera-callback-canvas {
     aspect-ratio: 16 / 9;
 }
 
 /* Callback: Keyboard */
 
-.notificare__keyboard-callback {
+.notificare .notificare__keyboard-callback {
     width: calc(100% - 2 * var(--notificare-modal-margin));
     max-width: calc(700px - 2 * var(--notificare-modal-margin));
 }
 
-.notificare__keyboard-callback-textarea {
+.notificare .notificare__keyboard-callback-textarea {
     width: 100%;
     height: calc(6 * 1.4em + 16px);
 
