@@ -14,7 +14,10 @@
     "docs:replace-symbolic-links": "rm README.md CHANGELOG.md MIGRATION.md; cp ../../README.md ../../CHANGELOG.md ../../MIGRATION.md ."
   },
   "files": [
-    "**/dist/",
+    "**/dist/**",
+    "**/in-app-messaging.css",
+    "**/push.css",
+    "**/push-ui.css",
     "**/package.json",
     "CHANGELOG.md",
     "MIGRATION.md"
@@ -68,6 +71,9 @@
       },
       "default": "./in-app-messaging/dist/esm/index.esm.js"
     },
+    "./in-app-messaging/in-app-messaging.css": {
+      "default": "./in-app-messaging/in-app-messaging.css"
+    },
     "./inbox": {
       "types": "./inbox/dist/inbox/index.d.ts",
       "node": {
@@ -92,6 +98,9 @@
       },
       "default": "./push/dist/esm/index.esm.js"
     },
+    "./push/push.css": {
+      "default": "./push/push.css"
+    },
     "./push/sw": {
       "types": "./push/sw/dist/push/sw/index.d.ts",
       "node": {
@@ -115,6 +124,9 @@
         "import": "./push-ui/dist/esm/index.esm.js"
       },
       "default": "./push-ui/dist/esm/index.esm.js"
+    },
+    "./push-ui/push-ui.css": {
+      "default": "./push-ui/push-ui.css"
     },
     "./user-inbox": {
       "types": "./user-inbox/dist/user-inbox/index.d.ts",
