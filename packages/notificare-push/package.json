@@ -41,6 +41,7 @@
   "dependencies": {
     "@notificare/core": "^3.0.0-beta.1",
     "@notificare/logger": "^3.0.0-beta.1",
+    "@notificare/ui": "^3.0.0-beta.1",
     "tslib": "^2.5.0"
   },
   "devDependencies": {

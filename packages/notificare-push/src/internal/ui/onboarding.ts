@@ -3,6 +3,15 @@ import {
   NotificareApplication,
   NotificareWebsitePushConfigLaunchConfigAutoOnboardingOptions,
 } from '@notificare/core';
+import {
+  createBackdrop,
+  createDestructiveButton,
+  createModal,
+  createModalContent,
+  createModalFooter,
+  createPrimaryButton,
+  createRoot,
+} from '@notificare/ui';
 
 export function showOnboarding({
   application,
@@ -15,92 +24,88 @@ export function showOnboarding({
 
   ensureCleanState();
 
-  const backdrop = document.createElement('div');
-  backdrop.id = 'notificare-push-onboarding';
-  backdrop.classList.add('notificare', 'notificare__onboarding-backdrop');
+  const root = createRoot('notificare-push');
+  root.classList.add('notificare-push-onboarding');
 
-  const modal = document.createElement('div');
+  root.appendChild(
+    createBackdrop(() => {
+      ensureCleanState();
+      onCancelClicked();
+    }),
+  );
+
+  const modal = root.appendChild(createModal({ alignment: 'top' }));
   modal.classList.add('notificare__onboarding-modal');
-  backdrop.appendChild(modal);
 
-  const content = document.createElement('div');
+  const content = modal.appendChild(createModalContent());
   content.classList.add('notificare__onboarding-content');
-  modal.appendChild(content);
-
-  const icon = document.createElement('img');
-  icon.classList.add('notificare__onboarding-icon');
 
   if (application.websitePushConfig?.icon) {
+    const icon = content.appendChild(document.createElement('img'));
+    icon.classList.add('notificare__onboarding-icon');
+
     icon.setAttribute(
       'src',
       `${options.services.awsStorageHost}${application.websitePushConfig.icon}`,
     );
   }
 
-  content.appendChild(icon);
-
-  const textContent = document.createElement('div');
+  const textContent = content.appendChild(document.createElement('div'));
   textContent.classList.add('notificare__onboarding-text-content');
-  content.appendChild(textContent);
 
-  const title = document.createElement('p');
+  const title = textContent.appendChild(document.createElement('p'));
   title.classList.add('notificare__onboarding-title');
   title.innerHTML = application.name;
-  textContent.appendChild(title);
 
-  const text = document.createElement('p');
+  const text = textContent.appendChild(document.createElement('p'));
   text.classList.add('notificare__onboarding-text');
   text.innerHTML = autoOnboardingOptions.message;
-  textContent.appendChild(text);
 
-  const footer = document.createElement('div');
+  const footer = modal.appendChild(createModalFooter());
   footer.classList.add('notificare__onboarding-footer');
-  modal.appendChild(footer);
 
   if (application.branding) {
-    const brandingContainer = document.createElement('a');
+    const brandingContainer = footer.appendChild(document.createElement('a'));
     brandingContainer.classList.add('notificare__onboarding-branding-content');
     brandingContainer.setAttribute('href', 'https://notificare.com');
     brandingContainer.setAttribute('target', '_blank');
-    footer.appendChild(brandingContainer);
 
-    const brandingText = document.createElement('p');
+    const brandingText = brandingContainer.appendChild(document.createElement('p'));
     brandingText.classList.add('notificare__onboarding-branding');
     brandingText.innerHTML = 'powered by';
-    brandingContainer.appendChild(brandingText);
 
-    const brandingLogo = document.createElement('a');
+    const brandingLogo = brandingContainer.appendChild(document.createElement('a'));
     brandingLogo.classList.add('notificare__onboarding-branding-logo');
     brandingLogo.innerHTML = NotificareLogo;
-    brandingContainer.appendChild(brandingLogo);
   }
 
-  const footerButtons = document.createElement('div');
+  const footerButtons = footer.appendChild(document.createElement('div'));
   footerButtons.classList.add('notificare__onboarding-actions');
-  footer.appendChild(footerButtons);
 
-  const cancelButton = document.createElement('a');
+  const cancelButton = footerButtons.appendChild(
+    createDestructiveButton({
+      text: autoOnboardingOptions.cancelButton,
+      onClick: () => {
+        ensureCleanState();
+        onCancelClicked();
+      },
+    }),
+  );
   cancelButton.classList.add('notificare__onboarding-cancel-button');
-  cancelButton.innerHTML = autoOnboardingOptions.cancelButton;
-  cancelButton.addEventListener('click', (e) => {
-    e.preventDefault();
-    ensureCleanState();
-    onCancelClicked();
-  });
-  footerButtons.appendChild(cancelButton);
 
-  const acceptButton = document.createElement('a');
+  const acceptButton = footerButtons.appendChild(
+    createPrimaryButton({
+      text: autoOnboardingOptions.acceptButton,
+      onClick: () => {
+        ensureCleanState();
+        onAcceptClicked();
+      },
+    }),
+  );
   acceptButton.classList.add('notificare__onboarding-accept-button');
-  acceptButton.innerHTML = autoOnboardingOptions.acceptButton;
-  acceptButton.addEventListener('click', (e) => {
-    e.preventDefault();
-    ensureCleanState();
-    onAcceptClicked();
-  });
-  footerButtons.appendChild(acceptButton);
 
   // Add the complete onboarding DOM to the page.
-  document.body.appendChild(backdrop);
+  document.body.appendChild(root);
 }
 
 export interface ShowAutoBoardingOptions {
@@ -111,7 +116,7 @@ export interface ShowAutoBoardingOptions {
 }
 
 function ensureCleanState() {
-  const root = document.getElementById('notificare-push-onboarding');
+  const root = document.getElementById('notificare-push');
   if (root) root.remove();
 }
 
