@@ -2,6 +2,7 @@ import {
   broadcastComponentEvent,
   fetchApplication,
   fetchNotification,
+  isReady,
   logNotificationOpen,
   NotificareApplication,
   NotificareInternalOptions,
@@ -59,27 +60,24 @@ export async function disableWebPushNotifications() {
   await subscription.unsubscribe();
 }
 
-export function postMessageToServiceWorker(message: unknown): Promise<void> {
-  return new Promise((resolve, reject) => {
-    const channel = new MessageChannel();
+export async function postMessageToServiceWorker(message: unknown): Promise<void> {
+  const registration = await navigator.serviceWorker.ready;
+  if (!registration.active) throw new Error('Service worker is not active.');
 
-    // This sends the message data as well as transferring messageChannel.port2 to the service worker.
-    // The service worker can then use the transferred port to reply via postMessage(), which
-    // will in turn trigger the onmessage handler on messageChannel.port1.
-    // See https://html.spec.whatwg.org/multipage/workers.html#dom-worker-postmessage
-
-    const { controller } = navigator.serviceWorker;
-    if (!controller) {
-      reject(new Error('Unable to acquire the service worker controller.'));
-      return;
-    }
-
-    controller.postMessage(message, [channel.port2]);
-    resolve();
-  });
+  registration.active.postMessage(message);
 }
 
 export async function handleServiceWorkerMessage(event: MessageEvent) {
+  if (isReady()) {
+    try {
+      await postMessageToServiceWorker({
+        action: 're.notifica.ready',
+      });
+    } catch (e) {
+      logger.warning('Failed to send a message to the service worker.', e);
+    }
+  }
+
   if (!event.data) return;
 
   switch (event.data.cmd) {
