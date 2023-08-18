@@ -1,6 +1,5 @@
 import { Component } from '../component';
 import {
-  getCurrentDevice,
   registerDeviceInternal,
   registerTemporaryDevice,
   registerTestDevice,
@@ -13,6 +12,7 @@ import {
   logApplicationUpgrade,
 } from '../internal-api-events';
 import { launch as launchSession } from '../internal-api-session';
+import { getCurrentDevice } from '../storage/local-storage';
 
 /* eslint-disable class-methods-use-this */
 export class DeviceComponent extends Component {
