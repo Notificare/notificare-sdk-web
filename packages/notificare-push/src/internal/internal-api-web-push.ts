@@ -81,19 +81,19 @@ export async function handleServiceWorkerMessage(event: MessageEvent) {
   if (!event.data) return;
 
   switch (event.data.cmd) {
-    case 'notificationreceive':
+    case 're.notifica.push.sw.notification_received':
       await handleServiceWorkerNotificationReceived(event);
       break;
-    case 'notificationclick':
+    case 're.notifica.push.sw.notification_clicked':
       await handleServiceWorkerNotificationClicked(event);
       break;
-    case 'notificationreply':
+    case 're.notifica.push.sw.notification_reply':
       await handleServiceWorkerNotificationReply(event);
       break;
-    case 'system':
+    case 're.notifica.push.sw.system_notification_received':
       await handleServiceWorkerSystemNotificationReceived(event);
       break;
-    case 'unknownpush':
+    case 're.notifica.push.sw.unknown_notification_received':
       await handleServiceWorkerUnknownNotificationReceived(event);
       break;
     default:
