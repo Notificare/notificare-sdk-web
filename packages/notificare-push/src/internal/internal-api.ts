@@ -119,7 +119,8 @@ export async function handleAutoOnboarding(
     return;
   }
 
-  if (permission === 'granted') return;
+  const device = getCurrentDevice();
+  if (device && device.transport !== 'Notificare' && permission === 'granted') return;
 
   const retryAfterMillis = (autoOnboardingOptions.retryAfterHours ?? 24) * 60 * 60 * 1000;
   const lastAttemptMillis = getOnboardingLastAttempt();
