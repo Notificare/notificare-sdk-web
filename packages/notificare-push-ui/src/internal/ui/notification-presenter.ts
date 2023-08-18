@@ -131,7 +131,7 @@ function presentInAppBrowser(notification: NotificareNotification) {
   const content = notification.content.find(({ type }) => type === 're.notifica.content.URL');
   if (!content) throw new Error('Invalid notification content.');
 
-  window.open(content.data);
+  window.location.href = content.data;
 }
 
 function presentPassbook(options: NotificareInternalOptions, notification: NotificareNotification) {
@@ -143,9 +143,7 @@ function presentPassbook(options: NotificareInternalOptions, notification: Notif
   if (!components.length) throw new Error('Invalid notification content.');
 
   const id = components[components.length - 1];
-  const url = `${options.services.pushHost}/pass/web/${id}?showWebVersion=1`;
-
-  window.open(url);
+  window.location.href = `${options.services.pushHost}/pass/web/${id}?showWebVersion=1`;
 }
 
 function presentUrlScheme(notification: NotificareNotification) {
