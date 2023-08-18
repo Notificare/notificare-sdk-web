@@ -213,14 +213,16 @@ export async function unlaunch(): Promise<void> {
       }
     }
 
-    logger.debug('Clearing device tags.');
-    await clearTags();
+    if (getCurrentDevice()) {
+      logger.debug('Clearing device tags.');
+      await clearTags();
 
-    logger.debug('Registering a temporary device.');
-    await registerTemporaryDevice();
+      logger.debug('Registering a temporary device.');
+      await registerTemporaryDevice();
 
-    logger.debug('Removing device.');
-    await deleteDevice();
+      logger.debug('Removing device.');
+      await deleteDevice();
+    }
 
     logger.info('Un-launched Notificare.');
     setLaunchState(LaunchState.CONFIGURED);

@@ -13,6 +13,7 @@ import {
 } from '../internal-api-events';
 import { launch as launchSession } from '../internal-api-session';
 import { getCurrentDevice } from '../storage/local-storage';
+import { getOptions } from '../options';
 
 /* eslint-disable class-methods-use-this */
 export class DeviceComponent extends Component {
@@ -26,6 +27,7 @@ export class DeviceComponent extends Component {
 
   async launch(): Promise<void> {
     const device = getCurrentDevice();
+    const options = getOptions();
 
     if (device) {
       // Having a stored device, we can safely launch the session module.
@@ -44,7 +46,7 @@ export class DeviceComponent extends Component {
         userId: device.userId,
         userName: device.userName,
       });
-    } else {
+    } else if (!options?.ignoreTemporaryDevices) {
       logger.debug('New install detected.');
 
       try {

@@ -1,4 +1,4 @@
-import { Component, getApplication } from '@notificare/web-core';
+import { Component, getApplication, getCurrentDevice, getOptions } from '@notificare/web-core';
 import { logger } from '../logger';
 import { clearInboxInternal, refreshBadgeInternal } from './internal-api';
 
@@ -32,10 +32,16 @@ export class InboxComponent extends Component {
       );
     }
 
+    const options = getOptions();
+    const device = getCurrentDevice();
+    if (options?.ignoreTemporaryDevices && !device) return;
+
     await refreshBadgeInternal();
   }
 
   async unlaunch(): Promise<void> {
+    if (!getCurrentDevice()) return;
+
     await clearInboxInternal();
   }
 

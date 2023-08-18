@@ -1,4 +1,5 @@
 import {
+  deleteDevice,
   getApplication,
   getCurrentDevice,
   getOptions,
@@ -97,7 +98,12 @@ export async function disableRemoteNotifications(): Promise<void> {
     await disableWebPushNotifications();
   }
 
-  await registerTemporaryDevice();
+  const options = getOptions();
+  if (options?.ignoreTemporaryDevices) {
+    await deleteDevice();
+  } else {
+    await registerTemporaryDevice();
+  }
 
   setRemoteNotificationsEnabled(false);
 }
