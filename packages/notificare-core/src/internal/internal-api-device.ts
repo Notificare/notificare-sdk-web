@@ -108,8 +108,6 @@ export async function registerDeviceInternal(options: InternalRegisterDeviceOpti
 }
 
 export async function deleteDevice(): Promise<void> {
-  checkPrerequisites();
-
   const device = getCurrentDevice();
   if (!device) throw new NotificareDeviceUnavailableError();
 
