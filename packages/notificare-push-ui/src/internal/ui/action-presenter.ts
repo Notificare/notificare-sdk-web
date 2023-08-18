@@ -205,7 +205,7 @@ async function presentCustom(
 async function presentInAppBrowser(action: NotificareNotificationAction): Promise<void> {
   if (!action.target) throw new Error('Invalid action target.');
 
-  window.open(action.target);
+  window.location.href = action.target;
 }
 
 async function presentMail(action: NotificareNotificationAction): Promise<void> {
