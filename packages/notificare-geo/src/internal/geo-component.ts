@@ -9,6 +9,15 @@ export class GeoComponent extends Component {
     super('geo');
   }
 
+  migrate() {
+    if (localStorage.getItem('notificarePosition')) {
+      setLocationServicesEnabled(true);
+    }
+
+    localStorage.removeItem('notificarePosition');
+    localStorage.removeItem('notificareRegions');
+  }
+
   configure() {
     //
   }

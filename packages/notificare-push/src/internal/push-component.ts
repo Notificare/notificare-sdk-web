@@ -23,6 +23,35 @@ export class PushComponent extends Component {
     super('push');
   }
 
+  migrate() {
+    const lastAttemptStr = localStorage.getItem('notificareOnboardingLastAttempt');
+    if (lastAttemptStr) {
+      const lastAttempt = parseInt(lastAttemptStr, 10);
+      if (!Number.isNaN(lastAttempt)) {
+        localStorage.setItem('re.notifica.push.onboarding_last_attempt', lastAttempt.toString());
+      }
+    }
+
+    const deviceStr = localStorage.getItem('notificareDevice');
+    if (deviceStr) {
+      try {
+        const device = JSON.parse(deviceStr);
+
+        if (device.transport !== 'Notificare' || device.allowedUI) {
+          setRemoteNotificationsEnabled(true);
+        }
+
+        if (device.allowedUI) {
+          localStorage.setItem('re.notifica.push.first_registration', 'false');
+        }
+      } catch (e) {
+        logger.error('Unable to decode the legacy device.', e);
+      }
+    }
+
+    localStorage.removeItem('notificareOnboardingLastAttempt');
+  }
+
   configure() {
     if (hasWebPushSupport()) {
       navigator.serviceWorker.onmessage = handleServiceWorkerMessage;
