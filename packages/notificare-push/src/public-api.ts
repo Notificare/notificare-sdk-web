@@ -11,6 +11,7 @@ import {
   enableRemoteNotifications as enableRemoteNotificationsInternal,
 } from './internal/internal-api';
 import { getRemoteNotificationsEnabled } from './internal/storage/local-storage';
+import { getPushPermissionStatus } from './internal/utils/push';
 
 export {
   onNotificationReceived,
@@ -24,6 +25,10 @@ export { hasWebPushCapabilities } from './internal/internal-api';
 
 export function hasRemoteNotificationsEnabled(): boolean {
   return getRemoteNotificationsEnabled();
+}
+
+export function getAllowedUI(): boolean {
+  return getRemoteNotificationsEnabled() && getPushPermissionStatus() === 'granted';
 }
 
 export async function enableRemoteNotifications(): Promise<void> {
