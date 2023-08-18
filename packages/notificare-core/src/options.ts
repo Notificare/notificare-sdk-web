@@ -2,6 +2,7 @@ export interface NotificareOptions {
   applicationKey: string;
   applicationSecret: string;
   applicationVersion?: string;
+  ignoreTemporaryDevices?: boolean;
   ignoreUnsupportedWebPushDevices?: boolean;
   language?: string;
   serviceWorker?: string;
