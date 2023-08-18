@@ -15,6 +15,8 @@ export interface NotificareInternalOptions {
   applicationSecret: string;
   applicationHost: string;
   applicationVersion: string;
+  ignoreTemporaryDevices?: boolean;
+  ignoreUnsupportedWebPushDevices?: boolean;
   language?: string;
   serviceWorker?: string;
   serviceWorkerScope?: string;

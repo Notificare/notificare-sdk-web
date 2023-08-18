@@ -88,6 +88,14 @@ export class PushComponent extends Component {
     setRemoteNotificationsEnabled(false);
   }
 
+  async executeCommand(command: string, data?: unknown): Promise<unknown> {
+    if (command === 'hasWebPushSupport') {
+      return hasWebPushSupport();
+    }
+
+    throw new Error(`Unsupported command '${command}' in '${this.name}' component.`);
+  }
+
   private handleOnboarding() {
     const application = getApplication();
     if (!application?.websitePushConfig?.launchConfig) return;

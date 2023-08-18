@@ -1,10 +1,8 @@
 import {
   checkPrerequisites,
-  getCurrentDevice,
   getDeviceLanguage,
   getDeviceRegion,
   registerDeviceInternal,
-  storeCurrentDevice,
 } from './internal/internal-api-device';
 import { NotificareNotReadyError } from './errors/notificare-not-ready-error';
 import { NotificareDoNotDisturb } from './models/notificare-do-not-disturb';
@@ -14,8 +12,9 @@ import { NetworkDeviceTagsResponse } from './internal/network/responses/device-t
 import { DeviceDoNotDisturbResponse } from './internal/network/responses/device-do-not-disturb-response';
 import { NotificareUserData } from './models/notificare-user-data';
 import { DeviceUserDataResponse } from './internal/network/responses/device-user-data-response';
+import { getCurrentDevice, storeCurrentDevice } from './internal/storage/local-storage';
 
-export { getCurrentDevice } from './internal/internal-api-device';
+export { getCurrentDevice } from './internal/storage/local-storage';
 
 export async function registerDevice(options: RegisterDeviceOptions): Promise<void> {
   checkPrerequisites();

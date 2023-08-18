@@ -42,6 +42,12 @@ export function setMessagesSuppressed(suppressed: boolean, evaluate?: boolean) {
 export function evaluateContext(context: ApplicationContext) {
   logger.debug(`Checking in-app message for context '${context}'.`);
 
+  const device = getCurrentDevice();
+  if (!device) {
+    logger.warning('Cannot process in-app messages before the device is made available.');
+    return;
+  }
+
   fetchInAppMessage(context)
     .then((message) => processMessage(message))
     .catch((error) => {

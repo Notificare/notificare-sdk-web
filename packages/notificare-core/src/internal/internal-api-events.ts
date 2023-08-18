@@ -1,8 +1,8 @@
-import { getCurrentDevice } from './internal-api-device';
 import { request } from './network/request';
-import { isConfigured } from '../public-api';
 import { logger } from './logger';
 import { getSession } from './internal-api-session-shared';
+import { getCurrentDevice } from './storage/local-storage';
+import { isConfigured } from './launch-state';
 
 export async function logApplicationInstall() {
   await logInternal({ type: 're.notifica.event.application.Install' });

@@ -1,7 +1,7 @@
 import { logger } from './logger';
 import { components } from './component-cache';
 import { NotificareDevice } from '../models/notificare-device';
-import { storeCurrentDevice } from './internal-api-device';
+import { storeCurrentDevice } from './storage/local-storage';
 
 export function isLatestStorageStructure(): boolean {
   return localStorage.getItem('re.notifica.migrated') === 'true';

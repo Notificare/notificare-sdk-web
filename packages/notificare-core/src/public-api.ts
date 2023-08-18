@@ -36,6 +36,7 @@ import { SDK_VERSION as SDK_VERSION_INTERNAL } from './internal/version';
 import { deleteDevice, registerTemporaryDevice } from './internal/internal-api-device';
 import { NotificareDeviceUnavailableError } from './errors/notificare-device-unavailable-error';
 import { isLatestStorageStructure, migrate } from './internal/migration-flow';
+import { hasWebPushSupport } from './internal/utils';
 
 export const SDK_VERSION: string = SDK_VERSION_INTERNAL;
 
@@ -96,6 +97,8 @@ export function configure(options: NotificareOptions) {
     applicationKey: options.applicationKey,
     applicationSecret: options.applicationSecret,
     applicationVersion: options.applicationVersion ?? '1.0.0',
+    ignoreTemporaryDevices: options.ignoreTemporaryDevices,
+    ignoreUnsupportedWebPushDevices: options.ignoreUnsupportedWebPushDevices,
     applicationHost: `${window.location.protocol}//${window.location.host}`,
     language: options.language,
     serviceWorker: options.serviceWorker,
@@ -138,12 +141,33 @@ export async function launch(): Promise<void> {
   const options = getOptions();
   if (options == null) throw new Error('Unable to load options from /notificare-services.json.');
 
-  // TODO: migrate from v2 legacy props
-  // TODO: check ignoreNonWebPushDevices
-  // TODO: check allowOnlyWebPushSupportedDevices
+  if (options.ignoreUnsupportedWebPushDevices) {
+    let isWebPushCapable = false;
+
+    try {
+      logger.debug('Checking for web push support.');
+      isWebPushCapable = await hasWebPushSupport();
+    } catch (e) {
+      logger.warning('Failed to check for web push support.', e);
+    }
+
+    if (!isWebPushCapable)
+      throw new Error('Unable to launch Notificare when the device is not capable of Web Push.');
+  }
 
   try {
     setLaunchState(LaunchState.LAUNCHING);
+
+    if (options.ignoreTemporaryDevices) {
+      const device = getCurrentDevice();
+      if (device && device.transport === 'Notificare') {
+        try {
+          await deleteDevice();
+        } catch (e) {
+          logger.error('Failed to clean up temporary device.', e);
+        }
+      }
+    }
 
     const application = await fetchApplication();
 
@@ -189,14 +213,16 @@ export async function unlaunch(): Promise<void> {
       }
     }
 
-    logger.debug('Clearing device tags.');
-    await clearTags();
+    if (getCurrentDevice()) {
+      logger.debug('Clearing device tags.');
+      await clearTags();
 
-    logger.debug('Registering a temporary device.');
-    await registerTemporaryDevice();
+      logger.debug('Registering a temporary device.');
+      await registerTemporaryDevice();
 
-    logger.debug('Removing device.');
-    await deleteDevice();
+      logger.debug('Removing device.');
+      await deleteDevice();
+    }
 
     logger.info('Un-launched Notificare.');
     setLaunchState(LaunchState.CONFIGURED);
