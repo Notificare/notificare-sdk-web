@@ -158,6 +158,17 @@ export async function launch(): Promise<void> {
   try {
     setLaunchState(LaunchState.LAUNCHING);
 
+    if (options.ignoreTemporaryDevices) {
+      const device = getCurrentDevice();
+      if (device && device.transport === 'Notificare') {
+        try {
+          await deleteDevice();
+        } catch (e) {
+          logger.error('Failed to clean up temporary device.', e);
+        }
+      }
+    }
+
     const application = await fetchApplication();
 
     // eslint-disable-next-line no-restricted-syntax
