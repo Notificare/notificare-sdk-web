@@ -2,6 +2,7 @@ export interface NotificareOptions {
   applicationKey: string;
   applicationSecret: string;
   applicationVersion?: string;
+  ignoreUnsupportedWebPushDevices?: boolean;
   language?: string;
   serviceWorker?: string;
   serviceWorkerScope?: string;
@@ -13,8 +14,3 @@ export interface NotificareGeolocationOptions {
   enableHighAccuracy?: boolean;
   maximumAge?: number;
 }
-
-// {
-//   "ignoreNonWebPushDevices": false, /* Set to true to prevent registering non-webpush devices */
-//   "allowOnlyWebPushSupportedDevices": false,
-// }
