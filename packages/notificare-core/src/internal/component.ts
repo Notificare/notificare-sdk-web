@@ -1,6 +1,9 @@
 export abstract class Component {
   protected constructor(readonly name: string) {}
 
+  // eslint-disable-next-line class-methods-use-this,@typescript-eslint/no-unused-vars
+  migrate(): void {}
+
   abstract configure(): void;
 
   abstract launch(): Promise<void>;

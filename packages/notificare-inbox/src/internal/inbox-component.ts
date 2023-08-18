@@ -8,6 +8,18 @@ export class InboxComponent extends Component {
     super('inbox');
   }
 
+  migrate() {
+    const badgeStr = localStorage.getItem('notificareBadge');
+    if (badgeStr) {
+      const badge = parseInt(badgeStr, 10);
+      if (!Number.isNaN(badge)) {
+        localStorage.setItem('re.notifica.inbox.badge', badge.toString());
+      }
+    }
+
+    localStorage.removeItem('notificareBadge');
+  }
+
   configure() {
     //
   }

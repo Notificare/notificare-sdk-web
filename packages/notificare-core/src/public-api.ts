@@ -35,6 +35,7 @@ import { clearTags, getCurrentDevice } from './public-api-device';
 import { SDK_VERSION as SDK_VERSION_INTERNAL } from './internal/version';
 import { deleteDevice, registerTemporaryDevice } from './internal/internal-api-device';
 import { NotificareDeviceUnavailableError } from './errors/notificare-device-unavailable-error';
+import { isLatestStorageStructure, migrate } from './internal/migration-flow';
 
 export const SDK_VERSION: string = SDK_VERSION_INTERNAL;
 
@@ -62,6 +63,10 @@ export function configure(options: NotificareOptions) {
 
   if (!options?.applicationKey || !options?.applicationSecret) {
     throw new Error('Unable to configure Notificare without a valid set of application keys.');
+  }
+
+  if (!isLatestStorageStructure()) {
+    migrate();
   }
 
   // Hidden property from the consumer options.
