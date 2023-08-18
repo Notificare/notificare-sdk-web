@@ -27,6 +27,7 @@ export async function launch() {
 
   if (unloadTimestamp >= tenSecondsAgo) {
     logger.debug('Resuming previous session.');
+    localStorage.removeItem('re.notifica.unload_timestamp');
     return;
   }
 
