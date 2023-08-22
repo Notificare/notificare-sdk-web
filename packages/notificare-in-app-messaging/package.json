@@ -10,15 +10,18 @@
   "esm5": "dist/esm5/index.js",
   "typings": "dist/commonjs/index.d.ts",
   "scripts": {
-    "build": "rollup -c",
+    "build": "yarn build:sources && yarn build:styles",
+    "build:sources": "rollup -c",
+    "build:styles": "postcss css/notificare-in-app-messaging.css --dir dist",
     "clean": "rm -rf dist/",
-    "dev": "rollup -c -w",
+    "dev": "yarn dev:sources & yarn dev:styles",
+    "dev:sources": "rollup -c -w",
+    "dev:styles": "postcss css/notificare-in-app-messaging.css --dir dist -w",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit"
   },
   "files": [
-    "dist",
-    "css"
+    "dist"
   ],
   "dependencies": {
     "@notificare/web-core": "^3.0.0-beta.1",

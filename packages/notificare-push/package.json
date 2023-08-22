@@ -18,8 +18,8 @@
       "module": "./dist/esm/index.js",
       "default": "./dist/commonjs/index.js"
     },
-    "./css/notificare-push.css": {
-      "default": "./css/notificare-push.css"
+    "./dist/notificare-push.css": {
+      "default": "./dist/notificare-push.css"
     },
     "./sw": {
       "node": "./dist/sw/commonjs/index.js",
@@ -27,15 +27,18 @@
     }
   },
   "scripts": {
-    "build": "rollup -c",
+    "build": "yarn build:sources && yarn build:styles",
+    "build:sources": "rollup -c",
+    "build:styles": "postcss css/notificare-push.css --dir dist",
     "clean": "rm -rf dist/",
-    "dev": "rollup -c -w",
+    "dev": "yarn dev:sources & yarn dev:styles",
+    "dev:sources": "rollup -c -w",
+    "dev:styles": "postcss css/notificare-push.css --dir dist -w",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit"
   },
   "files": [
     "dist",
-    "css",
     "sw/package.json"
   ],
   "dependencies": {
