@@ -40,4 +40,4 @@ public/worker-development.js
 public/workbox*
 
 # Notificare configuration file
-public/config.json
+public/notificare-services.json

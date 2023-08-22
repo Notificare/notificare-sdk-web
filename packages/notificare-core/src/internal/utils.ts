@@ -1,4 +1,6 @@
 import { getOptions } from './options';
+import { components } from './component-cache';
+import { logger } from './logger';
 
 export function randomUUID(): string {
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -44,4 +46,15 @@ export function getBrowserRegion(): string {
   if (parts.length > 1) return parts[1].toUpperCase();
 
   return language;
+}
+
+export async function hasWebPushSupport(): Promise<boolean> {
+  const pushComponent = components.get('push');
+  if (!pushComponent) {
+    logger.debug('Cannot determine web push support. Push component not found.');
+    return false;
+  }
+
+  const result = await pushComponent.executeCommand('hasWebPushSupport');
+  return result === true;
 }

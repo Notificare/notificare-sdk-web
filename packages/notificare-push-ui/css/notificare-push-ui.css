@@ -1,4 +1,4 @@
-@import "@notificare/ui/css/notificare-ui.css";
+@import "@notificare/web-ui/dist/notificare-ui.css";
 
 @import "./notifications/alert.css";
 @import "./notifications/image.css";

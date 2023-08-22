@@ -2,7 +2,8 @@ import {
   NotificareWebsitePushConfigLaunchConfigFloatingButtonHorizontalAlignment,
   NotificareWebsitePushConfigLaunchConfigFloatingButtonOptions,
   NotificareWebsitePushConfigLaunchConfigFloatingButtonVerticalAlignment,
-} from '@notificare/core';
+} from '@notificare/web-core';
+import { createRoot } from '@notificare/web-ui';
 import { getPushPermissionStatus } from '../utils/push';
 
 let permissionCheckTimer: number | undefined;
@@ -13,11 +14,13 @@ export function showFloatingButton({
 }: ShowFloatingButtonOptions) {
   ensureCleanState();
 
-  const floatingButton = document.createElement('div');
+  const root = createRoot('notificare-push');
+  root.classList.add('notificare-push-floating-button');
+
+  const floatingButton = root.appendChild(document.createElement('div'));
   floatingButton.id = 'notificare-push-floating-button';
   floatingButton.setAttribute('data-permission-status', getPushPermissionStatus());
   floatingButton.classList.add(
-    'notificare',
     'notificare__floating-button',
     FloatingButtonHorizontalAlignmentCssClasses[floatingButtonOptions.alignment.horizontal],
     FloatingButtonVerticalAlignmentCssClasses[floatingButtonOptions.alignment.vertical],
@@ -44,7 +47,7 @@ export function showFloatingButton({
   );
 
   // Add the complete onboarding DOM to the page.
-  document.body.appendChild(floatingButton);
+  document.body.appendChild(root);
 }
 
 export interface ShowFloatingButtonOptions {
@@ -53,7 +56,7 @@ export interface ShowFloatingButtonOptions {
 }
 
 function ensureCleanState() {
-  const root = document.getElementById('notificare-push-floating-button');
+  const root = document.getElementById('notificare-push');
   if (root) root.remove();
 
   const timer = permissionCheckTimer;

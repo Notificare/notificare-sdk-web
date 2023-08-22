@@ -6,20 +6,20 @@ Using a module bundler like [webpack](https://webpack.js.org/) or [Rollup](https
 
 ## Configuration file
 
-Although the new library still loads the remote `config.json`, the contents have been adjusted.
+The new library reads from a different configuration file. The old `config.json` was replaced by the `notificare-services.json` file.
 
 Review the [implementation guide](https://docs.notifica.re/sdk/v3/html5/implementation/#configuration-file) for more information.
 
 It's possible to configure Notificare through Javascript. 
-However, the recommended configuration approach remains to be the remote `config.json`.
+However, the recommended configuration approach remains to be the remote `notificare-services.json`.
 
 ## Packages
 
-The new API breaks the monolithic approach into several modules, available through the [Notificare](https://www.npmjs.com/package/notificare/) package. You can interact with the SDK like the following.
+The new API breaks the monolithic approach into several modules, available through the [Notificare](https://www.npmjs.com/package/notificare-web/) package. You can interact with the SDK like the following.
 
 ```javascript
-import { launch } from 'notificare/core';
-import { enableRemoteNotifications } from 'notificare/push';
+import { launch } from 'notificare-web/core';
+import { enableRemoteNotifications } from 'notificare-web/push';
 
 await launch();
 await enableRemoteNotifications();

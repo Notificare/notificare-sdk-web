@@ -1,3 +1,3 @@
-import { Logger } from '@notificare/logger';
+import { Logger } from '@notificare/web-logger';
 
 export const serviceWorkerLogger = new Logger('notificare/push/sw');

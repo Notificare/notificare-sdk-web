@@ -1,6 +1,6 @@
 {
-  "name": "@notificare/logger",
-  "version": "3.0.0-beta.1",
+  "name": "@notificare/web-logger",
+  "version": "3.0.0-beta.2",
   "description": "A logger package for use in the Notificare Web SDK.",
   "author": "Notificare <info@notificare.com> (https://notificare.com)",
   "license": "MIT",
@@ -26,7 +26,7 @@
     "@notificare/eslint-config": "*",
     "@notificare/rollup": "*",
     "@notificare/tsconfig": "*",
-    "typescript": "^4.9.4"
+    "typescript": "^5.1.6"
   },
   "publishConfig": {
     "access": "public"

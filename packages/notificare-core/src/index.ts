@@ -3,7 +3,11 @@ import { registerComponents } from './register-components';
 export * from './internal/network/request';
 export * from './internal/component';
 export { registerComponent, broadcastComponentEvent } from './internal/component-cache';
-export { registerTemporaryDevice, registerPushDevice } from './internal/internal-api-device';
+export {
+  registerTemporaryDevice,
+  registerPushDevice,
+  deleteDevice,
+} from './internal/internal-api-device';
 export { getOptions, NotificareInternalOptions } from './internal/options';
 export { logInternal, logNotificationOpen } from './internal/internal-api-events';
 export {

@@ -2,7 +2,7 @@ import {
   EventSubscription,
   NotificareNotification,
   NotificareNotificationAction,
-} from '@notificare/core';
+} from '@notificare/web-core';
 import { logger } from '../logger';
 
 let notificationWillPresentCallback: OnNotificationWillPresentCallback | undefined;

@@ -1,3 +1,3 @@
 importScripts(
-  "https://cdn.notifica.re/libs/html5/internal/3.0.0-beta.1/notificare-push-sw.js"
+  "https://cdn.notifica.re/libs/web/internal/3.0.0-beta.2/notificare-push-sw.js"
 );

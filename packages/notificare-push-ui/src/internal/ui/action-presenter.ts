@@ -4,7 +4,7 @@ import {
   NotificareNotification,
   NotificareNotificationAction,
   NotificationReplyData,
-} from '@notificare/core';
+} from '@notificare/web-core';
 import { ensureCleanState } from './root';
 import { logger } from '../../logger';
 import { createKeyboardCallbackModal } from './actions/callback-keyboard';
@@ -181,7 +181,9 @@ async function processCallbackResult(
       await callNotificationWebhook(notification, action);
     }
 
-    await createNotificationReply(notification, action, data);
+    if (requiresUserInteraction(action)) {
+      await createNotificationReply(notification, action, data);
+    }
 
     notifyActionExecuted(notification, action);
   } catch (e) {
@@ -203,7 +205,7 @@ async function presentCustom(
 async function presentInAppBrowser(action: NotificareNotificationAction): Promise<void> {
   if (!action.target) throw new Error('Invalid action target.');
 
-  window.open(action.target);
+  window.location.href = action.target;
 }
 
 async function presentMail(action: NotificareNotificationAction): Promise<void> {

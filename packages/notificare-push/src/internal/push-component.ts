@@ -1,17 +1,55 @@
-import { Component, getApplication, getCurrentDevice } from '@notificare/core';
+import { Component, getApplication, getCurrentDevice } from '@notificare/web-core';
 import {
   disableWebPushNotifications,
   handleServiceWorkerMessage,
   hasWebPushSupport,
 } from './internal-api-web-push';
-import { handleAutoOnboarding, handleFloatingButton } from './internal-api';
+import {
+  enableRemoteNotifications,
+  handleAutoOnboarding,
+  handleFloatingButton,
+  hasWebPushCapabilities,
+} from './internal-api';
 import { logger } from '../logger';
 import { handleNotificationOpened } from './internal-api-shared';
+import {
+  getRemoteNotificationsEnabled,
+  setRemoteNotificationsEnabled,
+} from './storage/local-storage';
 
 /* eslint-disable class-methods-use-this */
 export class PushComponent extends Component {
   constructor() {
     super('push');
+  }
+
+  migrate() {
+    const lastAttemptStr = localStorage.getItem('notificareOnboardingLastAttempt');
+    if (lastAttemptStr) {
+      const lastAttempt = parseInt(lastAttemptStr, 10);
+      if (!Number.isNaN(lastAttempt)) {
+        localStorage.setItem('re.notifica.push.onboarding_last_attempt', lastAttempt.toString());
+      }
+    }
+
+    const deviceStr = localStorage.getItem('notificareDevice');
+    if (deviceStr) {
+      try {
+        const device = JSON.parse(deviceStr);
+
+        if (device.transport !== 'Notificare' || device.allowedUI) {
+          setRemoteNotificationsEnabled(true);
+        }
+
+        if (device.allowedUI) {
+          localStorage.setItem('re.notifica.push.first_registration', 'false');
+        }
+      } catch (e) {
+        logger.error('Unable to decode the legacy device.', e);
+      }
+    }
+
+    localStorage.removeItem('notificareOnboardingLastAttempt');
   }
 
   configure() {
@@ -21,6 +59,15 @@ export class PushComponent extends Component {
   }
 
   async launch(): Promise<void> {
+    if (getRemoteNotificationsEnabled()) {
+      try {
+        logger.debug('Automatically enabling remote notification.');
+        await enableRemoteNotifications();
+      } catch (e) {
+        logger.error('Failed to automatically enable remote notifications.');
+      }
+    }
+
     this.handleOnboarding();
     this.handleSafariWebPushNotification();
   }
@@ -37,14 +84,25 @@ export class PushComponent extends Component {
     if (device && device.transport === 'WebPush') {
       await disableWebPushNotifications();
     }
+
+    setRemoteNotificationsEnabled(false);
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  async executeCommand(command: string, data?: unknown): Promise<unknown> {
+    if (command === 'hasWebPushSupport') {
+      return hasWebPushSupport();
+    }
+
+    throw new Error(`Unsupported command '${command}' in '${this.name}' component.`);
   }
 
   private handleOnboarding() {
     const application = getApplication();
-    if (!application) return;
+    if (!application?.websitePushConfig?.launchConfig) return;
 
-    if (!application.websitePushConfig?.launchConfig) {
-      logger.debug('Push component running in manual mode.');
+    if (!hasWebPushCapabilities()) {
+      logger.info('The browser does not support remote notifications.');
       return;
     }
 
@@ -52,7 +110,7 @@ export class PushComponent extends Component {
     if (autoOnboardingOptions) {
       logger.debug('Handling the automatic onboarding.');
       handleAutoOnboarding(application, autoOnboardingOptions).catch((error) =>
-        logger.error(`Unable to automatically enable remote notifications: ${error}`),
+        logger.error(`Failed to handle the automatic onboarding: ${error}`),
       );
 
       return;
@@ -62,7 +120,7 @@ export class PushComponent extends Component {
     if (floatingButtonOptions) {
       logger.debug('Handling the floating button.');
       handleFloatingButton(application, floatingButtonOptions).catch((error) =>
-        logger.error(`Unable to handle the floating button: ${error}`),
+        logger.error(`Failed to handle the floating button: ${error}`),
       );
     }
   }

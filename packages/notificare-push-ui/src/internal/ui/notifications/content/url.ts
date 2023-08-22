@@ -1,4 +1,4 @@
-import { NotificareNotification } from '@notificare/core';
+import { NotificareNotification } from '@notificare/web-core';
 
 export async function createUrlContent(notification: NotificareNotification): Promise<HTMLElement> {
   const content = notification.content.find(({ type }) => type === 're.notifica.content.URL');

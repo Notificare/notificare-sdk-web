@@ -1,6 +1,6 @@
 [<img src="https://raw.githubusercontent.com/notificare/notificare-sdk-web/main/.assets/logo.png"/>](https://notificare.com)
 
-# @notificare/logger
+# @notificare/web-logger
 
 This is the Notificare Logger component for the Notificare Web SDK.
 

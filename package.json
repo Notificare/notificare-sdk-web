@@ -10,15 +10,27 @@
   },
   "scripts": {
     "prepare": "husky install",
-    "build": "lerna run --scope @notificare/* --scope notificare build",
-    "clean": "lerna run --scope @notificare/* --scope notificare clean",
-    "dev": "lerna run --scope @notificare/* --scope notificare dev --parallel",
-    "lint": "lerna run --scope @notificare/* --scope notificare lint",
-    "typecheck": "lerna run --scope @notificare/* --scope notificare typecheck"
+    "build": "lerna run --scope @notificare/* --scope notificare-web build",
+    "clean": "lerna run --scope @notificare/* --scope notificare-web clean",
+    "dev": "lerna run --scope @notificare/* --scope notificare-web dev --parallel",
+    "lint": "lerna run --scope @notificare/* --scope notificare-web lint",
+    "typecheck": "lerna run --scope @notificare/* --scope notificare-web typecheck"
   },
   "devDependencies": {
+    "autoprefixer": "^10.4.15",
+    "cssnano": "^6.0.1",
+    "gulp": "^4.0.2",
+    "gulp-postcss": "^9.0.1",
+    "gulp-rename": "^2.0.0",
+    "gulp-replace": "^1.1.4",
+    "gulp-s3-upload": "^1.7.3",
+    "gulp-sourcemaps": "^3.0.0",
     "husky": "^8.0.3",
-    "lerna": "^6.4.0",
-    "lint-staged": "^13.1.0"
+    "lerna": "^7.1.5",
+    "lint-staged": "^14.0.1",
+    "postcss": "^8.4.28",
+    "postcss-cli": "^10.1.0",
+    "postcss-import": "^15.1.0",
+    "postcss-preset-env": "^9.1.1"
   }
 }

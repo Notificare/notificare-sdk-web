@@ -3,6 +3,8 @@ import { logApplicationClose, logApplicationOpen } from './internal-api-events';
 import { randomUUID } from './utils';
 import { getSession, StoredSession, storeSession } from './internal-api-session-shared';
 import { isReady } from './launch-state';
+import { getOptions } from './options';
+import { getCurrentDevice } from './storage/local-storage';
 
 let sessionCloseTimeout: number | undefined;
 
@@ -25,6 +27,7 @@ export async function launch() {
 
   if (unloadTimestamp >= tenSecondsAgo) {
     logger.debug('Resuming previous session.');
+    localStorage.removeItem('re.notifica.unload_timestamp');
     return;
   }
 
@@ -34,8 +37,9 @@ export async function launch() {
 
 export async function unlaunch() {
   const currentSession = getSession();
+  const currentDevice = getCurrentDevice();
 
-  if (!currentSession) {
+  if (!currentSession || !currentDevice) {
     return;
   }
 
@@ -44,6 +48,10 @@ export async function unlaunch() {
 
 export async function handleDocumentVisibilityChanged() {
   if (!isReady()) return;
+
+  const options = getOptions();
+  const device = getCurrentDevice();
+  if (options?.ignoreTemporaryDevices && !device) return;
 
   const session = getSession();
   const { visibilityState } = document;
@@ -70,6 +78,8 @@ export async function handleDocumentVisibilityChanged() {
 }
 
 export function handleDocumentBeforeUnload() {
+  if (!getSession()) return;
+
   localStorage.setItem('re.notifica.unload_timestamp', Date.now().toString(10));
 }
 

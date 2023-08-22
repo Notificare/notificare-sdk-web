@@ -1,13 +1,13 @@
-.notificare__notification[data-notification-type="re.notifica.notification.WebView"] {
+.notificare .notificare__notification[data-notification-type="re.notifica.notification.WebView"] {
     width: 100%;
     height: 100%;
 }
 
-.notificare__notification[data-notification-type="re.notifica.notification.WebView"] .notificare__modal-content {
+.notificare .notificare__notification[data-notification-type="re.notifica.notification.WebView"] .notificare__modal-content {
     flex-grow: 1;
 }
 
-.notificare__notification-webview-iframe {
+.notificare .notificare__notification-webview-iframe {
     flex-grow: 1;
     border: none;
 }

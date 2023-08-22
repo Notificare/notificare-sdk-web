@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useNotificare } from "@/context/notificare";
-import { fetchAssets, NotificareAsset } from "notificare/assets";
+import { fetchAssets, NotificareAsset } from "notificare-web/assets";
 
 export default function Storage() {
   const notificareState = useNotificare();

@@ -3,7 +3,6 @@ import json from "@rollup/plugin-json";
 import terser from "@rollup/plugin-terser";
 import nodeResolve from "@rollup/plugin-node-resolve";
 import commonjs from "@rollup/plugin-commonjs";
-import replace from "@rollup/plugin-replace";
 import { emitModulePackageFile } from "./plugins/emit-module-package-file.js";
 import { resolve } from "node:path";
 import { readFileSync } from "node:fs";
@@ -126,82 +125,66 @@ export function buildUmbrella(pkg, options) {
     declaration: false,
   });
 
-  const componentBuilds = pkg.components
-    // .filter((component) => component !== "core")
-    .flatMap((component) => {
-      const pkg = JSON.parse(
-        readFileSync(new URL(`${component}/package.json`, rootDirectory))
-      );
+  const componentBuilds = pkg.components.flatMap((component) => {
+    const pkg = JSON.parse(
+      readFileSync(new URL(`${component}/package.json`, rootDirectory))
+    );
 
-      return [
-        {
-          input: `${component}/index.ts`,
-          output: [
-            {
-              file: resolve(component, pkg.browser),
-              format: "es",
-              sourcemap: true,
-            },
-          ],
-          external: (dependency) => externals.some((d) => dependency === d),
-          plugins: [...plugins, typescriptPlugin, emitModulePackageFile()],
-        },
-        {
-          input: `${component}/index.ts`,
-          output: [
-            {
-              file: resolve(component, pkg.main),
-              format: "cjs",
-              sourcemap: true,
-            },
-            {
-              file: resolve(component, pkg.main.replace(".cjs.js", ".mjs")),
-              format: "es",
-              sourcemap: true,
-            },
-          ],
-          external: (dependency) => externals.some((d) => dependency === d),
-          plugins: [...plugins, typescriptPlugin],
-        },
-      ];
-    });
+    return [
+      {
+        input: `${component}/index.ts`,
+        output: [
+          {
+            file: resolve(component, pkg.browser),
+            format: "es",
+            sourcemap: true,
+          },
+        ],
+        external: (dependency) => externals.some((d) => dependency === d),
+        plugins: [...plugins, typescriptPlugin, emitModulePackageFile()],
+      },
+      {
+        input: `${component}/index.ts`,
+        output: [
+          {
+            file: resolve(component, pkg.main),
+            format: "cjs",
+            sourcemap: true,
+          },
+          {
+            file: resolve(component, pkg.main.replace(".cjs.js", ".mjs")),
+            format: "es",
+            sourcemap: true,
+          },
+        ],
+        external: (dependency) => externals.some((d) => dependency === d),
+        plugins: [...plugins, typescriptPlugin],
+      },
+    ];
+  });
 
-  const cdnBuilds = [
-    {
-      input: "core/index.ts",
+  const cdnBuilds = pkg.components.map((component) => {
+    const componentName = component.replace("/", "-");
+
+    return {
+      input: `${component}/index.ts`,
       output: {
-        file: ".build/min/notificare-core.js",
+        file: `.build/min/notificare-${componentName}.js`,
         sourcemap: true,
         format: "es",
       },
-      plugins: [...plugins, typescriptPluginCdn],
-    },
-    ...pkg.components
-      .filter((component) => component !== "core")
-      .map((component) => {
-        const componentName = component.replace("/", "-");
-
-        return {
-          input: `${component}/index.ts`,
-          output: {
-            file: `.build/min/notificare-${componentName}.js`,
-            sourcemap: true,
-            format: "es",
-          },
-          plugins: [
-            ...plugins,
-            typescriptPluginCdn,
-            terser({
-              // keep_classnames: true,
-              // keep_fnames: true,
-              // mangle: false,
-            }),
-            replace,
-          ],
-          external: ["@notificare/core"],
-        };
-      }),
-  ];
+      plugins: [
+        ...plugins,
+        typescriptPluginCdn,
+        terser({
+          // keep_classnames: true,
+          // keep_fnames: true,
+          // mangle: false,
+        }),
+      ],
+      external: component === "core" ? [] : ["@notificare/web-core"],
+    };
+  });
 
   return [...componentBuilds, ...cdnBuilds];
 }

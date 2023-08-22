@@ -35,20 +35,16 @@ export async function onPush(event: PushEvent) {
     workerNotification = event.data.json();
   } catch (e) {
     serviceWorkerLogger.error('Unable to parse the push event data.');
-    // TODO: Consider preserving the v2 'workerpush' post message.
     return;
   }
 
-  serviceWorkerLogger.info(workerNotification);
-
   if (workerNotification['x-sender'] !== 'notificare') {
     serviceWorkerLogger.debug('Processing an unknown notification.');
-    // TODO: consider sending the event to the worker instead.
 
     const clients = await self.clients.matchAll();
     clients.forEach((client) => {
       client.postMessage({
-        cmd: 'unknownpush',
+        cmd: 're.notifica.push.sw.unknown_notification_received',
         message: workerNotification,
       });
     });
@@ -60,12 +56,11 @@ export async function onPush(event: PushEvent) {
 
   if (notification.system) {
     serviceWorkerLogger.debug('Processing a system notification.', notification);
-    // TODO: consider sending the event to the worker instead.
 
     const clients = await self.clients.matchAll();
     clients.forEach((client) => {
       client.postMessage({
-        cmd: 'system',
+        cmd: 're.notifica.push.sw.system_notification_received',
         message: workerNotification,
       });
     });
@@ -76,7 +71,7 @@ export async function onPush(event: PushEvent) {
   const clients = await self.clients.matchAll();
   clients.forEach((client) => {
     client.postMessage({
-      cmd: 'notificationreceive',
+      cmd: 're.notifica.push.sw.notification_received',
       message: workerNotification,
     });
   });
@@ -134,13 +129,13 @@ export async function onNotificationClick(event: NotificationEvent) {
 
   if (event.action) {
     client.postMessage({
-      cmd: 'notificationreply',
+      cmd: 're.notifica.push.sw.notification_reply',
       notification: event.notification.data,
       action: event.action,
     });
   } else {
     client.postMessage({
-      cmd: 'notificationclick',
+      cmd: 're.notifica.push.sw.notification_clicked',
       notification: event.notification.data,
     });
   }

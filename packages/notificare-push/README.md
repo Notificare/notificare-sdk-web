@@ -1,6 +1,6 @@
 [<img src="https://raw.githubusercontent.com/notificare/notificare-sdk-web/main/.assets/logo.png"/>](https://notificare.com)
 
-# @notificare/push
+# @notificare/web-push
 
 This is the Notificare Push component for the Notificare Web SDK.
 

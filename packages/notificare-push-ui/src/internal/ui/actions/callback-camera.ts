@@ -7,7 +7,7 @@ import {
   createPrimaryButton,
   createRoot,
   createSecondaryButton,
-} from '@notificare/ui';
+} from '@notificare/web-ui';
 import { ROOT_ELEMENT_IDENTIFIER } from '../root';
 import { getApplicationIcon, getApplicationName } from '../../utils';
 import { logger } from '../../../logger';

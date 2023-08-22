@@ -1,7 +1,10 @@
 "use client";
 
 import { useNotificare } from "@/context/notificare";
-import { disableLocationUpdates, enableLocationUpdates } from "notificare/geo";
+import {
+  disableLocationUpdates,
+  enableLocationUpdates,
+} from "notificare-web/geo";
 
 export default function Locations() {
   const notificareState = useNotificare();

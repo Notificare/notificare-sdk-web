@@ -1,4 +1,4 @@
-import { logInternal } from '@notificare/core';
+import { logInternal } from '@notificare/web-core';
 
 export async function logPushRegistration() {
   await logInternal({ type: 're.notifica.event.push.Registration' });

@@ -1,7 +1,7 @@
 {
-  "name": "@notificare/push-ui",
-  "version": "3.0.0-beta.1",
-  "description": "The user inbox package for the 'notificare' umbrella package.",
+  "name": "@notificare/web-push-ui",
+  "version": "3.0.0-beta.2",
+  "description": "The push ui package for the 'notificare-web' umbrella package.",
   "author": "Notificare <info@notificare.com> (https://notificare.com)",
   "license": "MIT",
   "main": "dist/commonjs/index.js",
@@ -10,20 +10,23 @@
   "esm5": "dist/esm5/index.js",
   "typings": "dist/commonjs/index.d.ts",
   "scripts": {
-    "build": "rollup -c",
+    "build": "yarn build:sources && yarn build:styles",
+    "build:sources": "rollup -c",
+    "build:styles": "postcss css/notificare-push-ui.css --dir dist",
     "clean": "rm -rf dist/",
-    "dev": "rollup -c -w",
+    "dev": "yarn dev:sources & yarn dev:styles",
+    "dev:sources": "rollup -c -w",
+    "dev:styles": "postcss css/notificare-push-ui.css --dir dist -w",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit"
   },
   "files": [
-    "dist",
-    "css"
+    "dist"
   ],
   "dependencies": {
-    "@notificare/core": "^3.0.0-beta.1",
-    "@notificare/logger": "^3.0.0-beta.1",
-    "@notificare/ui": "^3.0.0-beta.1",
+    "@notificare/web-core": "^3.0.0-beta.2",
+    "@notificare/web-logger": "^3.0.0-beta.2",
+    "@notificare/web-ui": "^3.0.0-beta.2",
     "tslib": "^2.5.0"
   },
   "devDependencies": {
@@ -31,7 +34,7 @@
     "@notificare/rollup": "*",
     "@notificare/tsconfig": "*",
     "@types/google.maps": "^3.52.6",
-    "typescript": "^4.9.4"
+    "typescript": "^5.1.6"
   },
   "publishConfig": {
     "access": "public"

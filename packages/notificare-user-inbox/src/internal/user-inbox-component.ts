@@ -1,4 +1,4 @@
-import { Component, getApplication } from '@notificare/core';
+import { Component, getApplication } from '@notificare/web-core';
 import { logger } from '../logger';
 
 /* eslint-disable class-methods-use-this */

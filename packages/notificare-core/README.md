@@ -1,6 +1,6 @@
 [<img src="https://raw.githubusercontent.com/notificare/notificare-sdk-web/main/.assets/logo.png"/>](https://notificare.com)
 
-# @notificare/core
+# @notificare/web-core
 
 This is the Notificare Core component for the Notificare Web SDK.
 

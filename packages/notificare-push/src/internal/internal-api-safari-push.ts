@@ -3,7 +3,7 @@ import {
   getOptions,
   NotificareApplicationUnavailableError,
   NotificareNotConfiguredError,
-} from '@notificare/core';
+} from '@notificare/web-core';
 import { requestSafariPermission } from './utils/safari-push';
 
 export function hasSafariPushSupport(): boolean {

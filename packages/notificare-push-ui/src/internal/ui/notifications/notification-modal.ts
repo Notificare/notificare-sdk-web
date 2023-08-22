@@ -6,8 +6,8 @@ import {
   createModalFooter,
   createModalHeader,
   createRoot,
-} from '@notificare/ui';
-import { NotificareNotification, NotificareNotificationAction } from '@notificare/core';
+} from '@notificare/web-ui';
+import { NotificareNotification, NotificareNotificationAction } from '@notificare/web-core';
 import { ROOT_ELEMENT_IDENTIFIER } from '../root';
 import { getApplicationIcon, getApplicationName } from '../../utils';
 import { createAlertContent } from './content/alert';
@@ -41,7 +41,7 @@ export async function createNotificationModal({
   const content = modal.appendChild(createModalContent());
   content.appendChild(await createContentContainer(notification));
 
-  if (notification.actions.length && notification.type === 're.notifica.notification.Alert') {
+  if (notification.actions.length) {
     const footer = modal.appendChild(createModalFooter());
     footer.appendChild(createActionsContainer(notification, (action) => presentAction(action)));
   }

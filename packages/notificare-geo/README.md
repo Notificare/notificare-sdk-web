@@ -1,6 +1,6 @@
 [<img src="https://raw.githubusercontent.com/notificare/notificare-sdk-web/main/.assets/logo.png"/>](https://notificare.com)
 
-# @notificare/geo
+# @notificare/web-geo
 
 This is the Notificare Geo component for the Notificare Web SDK.
 

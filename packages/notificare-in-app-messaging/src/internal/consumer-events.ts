@@ -1,4 +1,4 @@
-import { EventSubscription } from '@notificare/core';
+import { EventSubscription } from '@notificare/web-core';
 import { logger } from '../logger';
 import {
   NotificareInAppMessage,

@@ -1,4 +1,4 @@
-import { Component } from '@notificare/core';
+import { Component, getCurrentDevice, getOptions } from '@notificare/web-core';
 import { evaluateContext, handleDocumentVisibilityChanged } from './internal-api';
 
 /* eslint-disable class-methods-use-this */
@@ -15,6 +15,10 @@ export class IamComponent extends Component {
   }
 
   async launch(): Promise<void> {
+    const options = getOptions();
+    const device = getCurrentDevice();
+    if (options?.ignoreTemporaryDevices && !device) return;
+
     evaluateContext('launch');
   }
 

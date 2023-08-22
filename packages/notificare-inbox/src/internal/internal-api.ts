@@ -4,7 +4,7 @@ import {
   NotificareApplicationUnavailableError,
   NotificareDeviceUnavailableError,
   request,
-} from '@notificare/core';
+} from '@notificare/web-core';
 import { logger } from '../logger';
 import { NotificareAutoBadgeUnavailableError } from '../errors/notificare-auto-badge-unavailable-error';
 import { NetworkInboxResponse } from './network/responses/inbox-response';

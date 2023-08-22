@@ -1,4 +1,4 @@
-import { NotificareNotificationAttachment } from '@notificare/core';
+import { NotificareNotificationAttachment } from '@notificare/web-core';
 import { NotificareUserInboxItem } from '../../../models/notificare-user-inbox-item';
 
 export interface NetworkUserInboxResponse {

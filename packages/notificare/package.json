@@ -1,12 +1,13 @@
 {
-  "name": "notificare",
-  "version": "3.0.0-beta.1",
+  "name": "notificare-web",
+  "version": "3.0.0-beta.2",
   "description": "The official Notificare JS library.",
   "author": "Notificare <info@notificare.com> (https://notificare.com)",
   "license": "MIT",
   "typings": "empty.d.ts",
   "scripts": {
     "build": "rollup -c && gulp",
+    "clean": "rm -rf .build **/dist",
     "lint": "eslint .",
     "prepack": "yarn docs:replace-symbolic-links",
     "postpack": "yarn docs:create-symbolic-links",
@@ -14,7 +15,10 @@
     "docs:replace-symbolic-links": "rm README.md CHANGELOG.md MIGRATION.md; cp ../../README.md ../../CHANGELOG.md ../../MIGRATION.md ."
   },
   "files": [
-    "**/dist/",
+    "**/dist/**",
+    "**/in-app-messaging.css",
+    "**/push.css",
+    "**/push-ui.css",
     "**/package.json",
     "CHANGELOG.md",
     "MIGRATION.md"
@@ -68,6 +72,9 @@
       },
       "default": "./in-app-messaging/dist/esm/index.esm.js"
     },
+    "./in-app-messaging/in-app-messaging.css": {
+      "default": "./in-app-messaging/in-app-messaging.css"
+    },
     "./inbox": {
       "types": "./inbox/dist/inbox/index.d.ts",
       "node": {
@@ -91,6 +98,9 @@
         "import": "./push/dist/esm/index.esm.js"
       },
       "default": "./push/dist/esm/index.esm.js"
+    },
+    "./push/push.css": {
+      "default": "./push/push.css"
     },
     "./push/sw": {
       "types": "./push/sw/dist/push/sw/index.d.ts",
@@ -116,6 +126,9 @@
       },
       "default": "./push-ui/dist/esm/index.esm.js"
     },
+    "./push-ui/push-ui.css": {
+      "default": "./push-ui/push-ui.css"
+    },
     "./user-inbox": {
       "types": "./user-inbox/dist/user-inbox/index.d.ts",
       "node": {
@@ -130,28 +143,20 @@
     }
   },
   "dependencies": {
-    "@notificare/assets": "^3.0.0-beta.1",
-    "@notificare/core": "^3.0.0-beta.1",
-    "@notificare/geo": "^3.0.0-beta.1",
-    "@notificare/in-app-messaging": "^3.0.0-beta.1",
-    "@notificare/inbox": "^3.0.0-beta.1",
-    "@notificare/push": "^3.0.0-beta.1",
-    "@notificare/push-ui": "^3.0.0-beta.1",
-    "@notificare/user-inbox": "^3.0.0-beta.1"
+    "@notificare/web-assets": "^3.0.0-beta.2",
+    "@notificare/web-core": "^3.0.0-beta.2",
+    "@notificare/web-geo": "^3.0.0-beta.2",
+    "@notificare/web-in-app-messaging": "^3.0.0-beta.2",
+    "@notificare/web-inbox": "^3.0.0-beta.2",
+    "@notificare/web-push": "^3.0.0-beta.2",
+    "@notificare/web-push-ui": "^3.0.0-beta.2",
+    "@notificare/web-user-inbox": "^3.0.0-beta.2"
   },
   "devDependencies": {
     "@notificare/eslint-config": "*",
     "@notificare/rollup": "*",
     "@notificare/tsconfig": "*",
-    "gulp": "^4.0.2",
-    "gulp-sourcemaps": "^3.0.0",
-    "gulp-postcss": "^9.0.1",
-    "gulp-replace": "^1.1.4",
-    "postcss": "^8.4.27",
-    "autoprefixer": "^10.4.14",
-    "cssnano": "^6.0.1",
-    "postcss-import": "^15.1.0",
-    "typescript": "^4.9.4"
+    "typescript": "^5.1.6"
   },
   "components": [
     "core",

@@ -47,14 +47,14 @@ npm install notificare
 Import the necessary functions from each sub-package.
 
 ```javascript
-import { } from 'notificare/core';
-import { } from 'notificare/assets';
-import { } from 'notificare/geo';
-import { } from 'notificare/in-app-messaging';
-import { } from 'notificare/inbox';
-import { } from 'notificare/push';
-import { } from 'notificare/push-ui';
-import { } from 'notificare/user-inbox';
+import { } from 'notificare-web/core';
+import { } from 'notificare-web/assets';
+import { } from 'notificare-web/geo';
+import { } from 'notificare-web/in-app-messaging';
+import { } from 'notificare-web/inbox';
+import { } from 'notificare-web/push';
+import { } from 'notificare-web/push-ui';
+import { } from 'notificare-web/user-inbox';
 ```
 
 

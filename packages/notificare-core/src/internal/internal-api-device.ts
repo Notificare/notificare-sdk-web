@@ -16,31 +16,9 @@ import { NotificareDeviceUnavailableError } from '../errors/notificare-device-un
 import { isReady } from './launch-state';
 import { SDK_VERSION } from './version';
 import { notifyDeviceRegistered } from './consumer-events';
-
-export function getCurrentDevice(): NotificareDevice | undefined {
-  const deviceStr = localStorage.getItem('re.notifica.device');
-  if (!deviceStr) return undefined;
-
-  try {
-    return JSON.parse(deviceStr);
-  } catch (e) {
-    logger.warning('Failed to decode the stored device.', e);
-
-    // Remove the corrupted device from local storage.
-    storeCurrentDevice(undefined);
-
-    return undefined;
-  }
-}
-
-export function storeCurrentDevice(device: NotificareDevice | undefined) {
-  if (!device) {
-    localStorage.removeItem('re.notifica.device');
-    return;
-  }
-
-  localStorage.setItem('re.notifica.device', JSON.stringify(device));
-}
+import { getCurrentDevice, storeCurrentDevice } from './storage/local-storage';
+import { logApplicationInstall, logApplicationRegistration } from './internal-api-events';
+import { launch as launchSession } from './internal-api-session';
 
 export async function registerTemporaryDevice() {
   const device = getCurrentDevice();
@@ -66,6 +44,14 @@ export async function registerPushDevice(options: InternalRegisterPushDeviceOpti
     userId: device?.userId,
     userName: device?.userName,
   });
+
+  // Launch the session and registration events when there was no device registered
+  // due to the temporary devices flag.
+  if (getOptions()?.ignoreTemporaryDevices && !device) {
+    await launchSession();
+    await logApplicationInstall();
+    await logApplicationRegistration();
+  }
 }
 
 export async function registerTestDevice(nonce: string) {
@@ -122,8 +108,6 @@ export async function registerDeviceInternal(options: InternalRegisterDeviceOpti
 }
 
 export async function deleteDevice(): Promise<void> {
-  checkPrerequisites();
-
   const device = getCurrentDevice();
   if (!device) throw new NotificareDeviceUnavailableError();
 

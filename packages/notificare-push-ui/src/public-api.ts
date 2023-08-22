@@ -1,4 +1,4 @@
-import { NotificareNotification, NotificareNotificationAction } from '@notificare/core';
+import { NotificareNotification, NotificareNotificationAction } from '@notificare/web-core';
 import { notificationPresenter } from './internal/ui/notification-presenter';
 import { presentAction as presentActionInternal } from './internal/ui/action-presenter';
 

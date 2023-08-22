@@ -1,0 +1,113 @@
+.notificare.notificare-push-floating-button .notificare__floating-button {
+    position: fixed;
+    margin: 32px;
+    z-index: 2147483647;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 56px;
+    height: 56px;
+    border-radius: 16px;
+    cursor: pointer;
+    user-select: none;
+
+    background-color: var(--notificare-primary-container);
+    color: var(--notificare-on-primary-container);
+    box-shadow: var(--notificare-elevation-1);
+}
+
+.notificare.notificare-push-floating-button .notificare__floating-button:active {
+    box-shadow: var(--notificare-elevation-2);
+}
+
+.notificare.notificare-push-floating-button .notificare__floating-button:focus {
+    box-shadow: var(--notificare-elevation-3);
+}
+
+.notificare.notificare-push-floating-button .notificare__floating-button:hover {
+    box-shadow: var(--notificare-elevation-4);
+}
+
+.notificare.notificare-push-floating-button .notificare__floating-button__top {
+    top: 0;
+}
+
+.notificare.notificare-push-floating-button .notificare__floating-button__vertical-center {
+    top: 0;
+    bottom: 0;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+.notificare.notificare-push-floating-button .notificare__floating-button__bottom {
+    bottom: 0;
+}
+
+.notificare.notificare-push-floating-button .notificare__floating-button__start {
+    left: 0;
+}
+
+.notificare.notificare-push-floating-button .notificare__floating-button__horizontal-center {
+    left: 0;
+    right: 0;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.notificare.notificare-push-floating-button .notificare__floating-button__end {
+    right: 0;
+}
+
+.notificare.notificare-push-floating-button .notificare__floating-button-icon {
+    fill: var(--notificare-on-primary-container);
+    width: 24px;
+    height: 24px;
+}
+
+.notificare.notificare-push-floating-button .notificare__floating-button-tooltip {
+    visibility: hidden;
+    position: absolute;
+    padding: 12px 24px;
+    z-index: 2147483647;
+
+    background-color: var(--notificare-surface);
+    color: var(--notificare-on-surface);
+    border-radius: 8px;
+    box-shadow: var(--notificare-elevation-4);
+    white-space: nowrap;
+
+    /* Fade in tooltip */
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.notificare.notificare-push-floating-button .notificare__floating-button__top .notificare__floating-button-tooltip {
+    top: calc(100% + 16px);
+}
+
+.notificare.notificare-push-floating-button .notificare__floating-button__vertical-center .notificare__floating-button-tooltip {
+
+}
+
+.notificare.notificare-push-floating-button .notificare__floating-button__bottom .notificare__floating-button-tooltip {
+    bottom: calc(100% + 16px);
+}
+
+.notificare.notificare-push-floating-button .notificare__floating-button__start .notificare__floating-button-tooltip {
+    left: 0;
+}
+
+.notificare.notificare-push-floating-button .notificare__floating-button__vertical-center .notificare__floating-button-tooltip {
+
+}
+
+.notificare.notificare-push-floating-button .notificare__floating-button__bottom .notificare__floating-button-tooltip {
+    right: 0;
+}
+
+.notificare.notificare-push-floating-button .notificare__floating-button:hover .notificare__floating-button-tooltip {
+    visibility: visible;
+    opacity: 1;
+}

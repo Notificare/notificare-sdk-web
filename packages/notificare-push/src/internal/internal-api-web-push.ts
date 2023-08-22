@@ -2,10 +2,11 @@ import {
   broadcastComponentEvent,
   fetchApplication,
   fetchNotification,
+  isReady,
   logNotificationOpen,
   NotificareApplication,
   NotificareInternalOptions,
-} from '@notificare/core';
+} from '@notificare/web-core';
 import { arrayBufferToBase64 } from './utils';
 import { logger } from '../logger';
 import { logNotificationInfluenced, logNotificationReceived } from './internal-api-events';
@@ -59,43 +60,40 @@ export async function disableWebPushNotifications() {
   await subscription.unsubscribe();
 }
 
-export function postMessageToServiceWorker(message: unknown): Promise<void> {
-  return new Promise((resolve, reject) => {
-    const channel = new MessageChannel();
+export async function postMessageToServiceWorker(message: unknown): Promise<void> {
+  const registration = await navigator.serviceWorker.ready;
+  if (!registration.active) throw new Error('Service worker is not active.');
 
-    // This sends the message data as well as transferring messageChannel.port2 to the service worker.
-    // The service worker can then use the transferred port to reply via postMessage(), which
-    // will in turn trigger the onmessage handler on messageChannel.port1.
-    // See https://html.spec.whatwg.org/multipage/workers.html#dom-worker-postmessage
-
-    const { controller } = navigator.serviceWorker;
-    if (!controller) {
-      reject(new Error('Unable to acquire the service worker controller.'));
-      return;
-    }
-
-    controller.postMessage(message, [channel.port2]);
-    resolve();
-  });
+  registration.active.postMessage(message);
 }
 
 export async function handleServiceWorkerMessage(event: MessageEvent) {
+  if (isReady()) {
+    try {
+      await postMessageToServiceWorker({
+        action: 're.notifica.ready',
+      });
+    } catch (e) {
+      logger.warning('Failed to send a message to the service worker.', e);
+    }
+  }
+
   if (!event.data) return;
 
   switch (event.data.cmd) {
-    case 'notificationreceive':
+    case 're.notifica.push.sw.notification_received':
       await handleServiceWorkerNotificationReceived(event);
       break;
-    case 'notificationclick':
+    case 're.notifica.push.sw.notification_clicked':
       await handleServiceWorkerNotificationClicked(event);
       break;
-    case 'notificationreply':
+    case 're.notifica.push.sw.notification_reply':
       await handleServiceWorkerNotificationReply(event);
       break;
-    case 'system':
+    case 're.notifica.push.sw.system_notification_received':
       await handleServiceWorkerSystemNotificationReceived(event);
       break;
-    case 'unknownpush':
+    case 're.notifica.push.sw.unknown_notification_received':
       await handleServiceWorkerUnknownNotificationReceived(event);
       break;
     default:
