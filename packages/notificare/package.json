@@ -1,6 +1,6 @@
 {
   "name": "notificare-web",
-  "version": "3.0.0-beta.1",
+  "version": "3.0.0-beta.2",
   "description": "The official Notificare JS library.",
   "author": "Notificare <info@notificare.com> (https://notificare.com)",
   "license": "MIT",
@@ -143,14 +143,14 @@
     }
   },
   "dependencies": {
-    "@notificare/web-assets": "^3.0.0-beta.1",
-    "@notificare/web-core": "^3.0.0-beta.1",
-    "@notificare/web-geo": "^3.0.0-beta.1",
-    "@notificare/web-in-app-messaging": "^3.0.0-beta.1",
-    "@notificare/web-inbox": "^3.0.0-beta.1",
-    "@notificare/web-push": "^3.0.0-beta.1",
-    "@notificare/web-push-ui": "^3.0.0-beta.1",
-    "@notificare/web-user-inbox": "^3.0.0-beta.1"
+    "@notificare/web-assets": "^3.0.0-beta.2",
+    "@notificare/web-core": "^3.0.0-beta.2",
+    "@notificare/web-geo": "^3.0.0-beta.2",
+    "@notificare/web-in-app-messaging": "^3.0.0-beta.2",
+    "@notificare/web-inbox": "^3.0.0-beta.2",
+    "@notificare/web-push": "^3.0.0-beta.2",
+    "@notificare/web-push-ui": "^3.0.0-beta.2",
+    "@notificare/web-user-inbox": "^3.0.0-beta.2"
   },
   "devDependencies": {
     "@notificare/eslint-config": "*",

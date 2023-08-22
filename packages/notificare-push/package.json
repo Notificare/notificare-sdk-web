@@ -1,6 +1,6 @@
 {
   "name": "@notificare/web-push",
-  "version": "3.0.0-beta.1",
+  "version": "3.0.0-beta.2",
   "description": "The push package for the 'notificare-web' umbrella package.",
   "author": "Notificare <info@notificare.com> (https://notificare.com)",
   "license": "MIT",
@@ -42,9 +42,9 @@
     "sw/package.json"
   ],
   "dependencies": {
-    "@notificare/web-core": "^3.0.0-beta.1",
-    "@notificare/web-logger": "^3.0.0-beta.1",
-    "@notificare/web-ui": "^3.0.0-beta.1",
+    "@notificare/web-core": "^3.0.0-beta.2",
+    "@notificare/web-logger": "^3.0.0-beta.2",
+    "@notificare/web-ui": "^3.0.0-beta.2",
     "tslib": "^2.5.0"
   },
   "devDependencies": {
