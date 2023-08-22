@@ -88,6 +88,7 @@ export class PushComponent extends Component {
     setRemoteNotificationsEnabled(false);
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async executeCommand(command: string, data?: unknown): Promise<unknown> {
     if (command === 'hasWebPushSupport') {
       return hasWebPushSupport();

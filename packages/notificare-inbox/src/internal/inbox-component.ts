@@ -45,6 +45,7 @@ export class InboxComponent extends Component {
     await clearInboxInternal();
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   processBroadcast(event: string, data?: unknown) {
     if (event === 'notification_received' || event === 'notification_opened') {
       refreshBadgeInternal().catch((error) => logger.error('Failed to refresh the badge.', error));
