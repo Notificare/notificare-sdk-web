@@ -27,7 +27,7 @@
     "@notificare/eslint-config": "*",
     "@notificare/rollup": "*",
     "@notificare/tsconfig": "*",
-    "typescript": "^4.9.4"
+    "typescript": "^5.1.6"
   },
   "publishConfig": {
     "access": "public"
