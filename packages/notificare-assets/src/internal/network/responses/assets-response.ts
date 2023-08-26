@@ -42,7 +42,7 @@ export function convertNetworkAssetToPublic(asset: NetworkAsset): NotificareAsse
 
 function createAssetUrl({ key }: NetworkAsset): string | undefined {
   const options = getOptions();
-  if (!options) return undefined;
+  if (!options || !key) return undefined;
 
   const host = options.services.pushHost;
   return `${host}/asset/file/${key}`;
