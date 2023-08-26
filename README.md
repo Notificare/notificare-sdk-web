@@ -41,7 +41,7 @@ We understand that not every app will take advantage of every bit of functionali
 Install the Notificare library through NPM.
 
 ```shell
-npm install notificare
+npm install notificare-web
 ```
 
 Import the necessary functions from each sub-package.
