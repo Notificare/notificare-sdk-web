@@ -3,6 +3,7 @@
 ## Upcoming release
 
 - Fix user registration for Web Push devices
+- Prevent undefined string in asset url
 
 ## 3.0.0-beta.2
 
