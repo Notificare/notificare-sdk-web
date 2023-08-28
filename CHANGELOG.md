@@ -3,6 +3,8 @@
 ## Upcoming release
 
 - Fix user registration for Web Push devices
+- Prevent undefined string in asset url
+- Fix launch flow for disabled auto-badge apps
 - Add `onInboxUpdated` event
 
 ## 3.0.0-beta.2

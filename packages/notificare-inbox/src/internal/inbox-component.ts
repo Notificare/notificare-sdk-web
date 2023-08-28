@@ -37,7 +37,9 @@ export class InboxComponent extends Component {
     const device = getCurrentDevice();
     if (options?.ignoreTemporaryDevices && !device) return;
 
-    await refreshBadgeInternal();
+    if (application?.inboxConfig?.autoBadge) {
+      await refreshBadgeInternal();
+    }
   }
 
   async unlaunch(): Promise<void> {
