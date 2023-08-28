@@ -1,6 +1,7 @@
 import { Component, getApplication, getCurrentDevice, getOptions } from '@notificare/web-core';
 import { logger } from '../logger';
 import { clearInboxInternal, refreshBadgeInternal } from './internal-api';
+import { notifyInboxUpdated } from './consumer-events';
 
 /* eslint-disable class-methods-use-this */
 export class InboxComponent extends Component {
@@ -50,7 +51,14 @@ export class InboxComponent extends Component {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   processBroadcast(event: string, data?: unknown) {
     if (event === 'notification_received' || event === 'notification_opened') {
-      refreshBadgeInternal().catch((error) => logger.error('Failed to refresh the badge.', error));
+      notifyInboxUpdated();
+
+      const application = getApplication();
+      if (application?.inboxConfig?.autoBadge) {
+        refreshBadgeInternal().catch((error) =>
+          logger.error('Failed to refresh the badge.', error),
+        );
+      }
     }
   }
 }
