@@ -52,7 +52,13 @@ export class InboxComponent extends Component {
   processBroadcast(event: string, data?: unknown) {
     if (event === 'notification_received' || event === 'notification_opened') {
       notifyInboxUpdated();
-      refreshBadgeInternal().catch((error) => logger.error('Failed to refresh the badge.', error));
+
+      const application = getApplication();
+      if (application?.inboxConfig?.autoBadge) {
+        refreshBadgeInternal().catch((error) =>
+          logger.error('Failed to refresh the badge.', error),
+        );
+      }
     }
   }
 }
