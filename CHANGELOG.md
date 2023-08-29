@@ -1,5 +1,14 @@
 # CHANGELOG
 
+## 3.0.0-beta.3
+
+Check our [migration guide](./MIGRATION.md) before adopting the v3.x generation.
+
+- Fix user registration for Web Push devices
+- Prevent undefined string in asset url
+- Fix launch flow for disabled auto-badge apps
+- Add `onInboxUpdated` event
+
 ## 3.0.0-beta.2
 
 Check our [migration guide](./MIGRATION.md) before adopting the v3.x generation.

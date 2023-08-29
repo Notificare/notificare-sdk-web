@@ -19,8 +19,9 @@ import {
 import { NotificareInboxResponse } from './models/notificare-inbox-response';
 import { NotificareInboxItem } from './models/notificare-inbox-item';
 import { refreshBadgeInternal } from './internal/internal-api';
+import { notifyInboxUpdated } from './internal/consumer-events';
 
-export { onBadgeUpdated } from './internal/consumer-events';
+export { onInboxUpdated, onBadgeUpdated } from './internal/consumer-events';
 
 export function getBadge(): number {
   const application = getApplication();
@@ -89,6 +90,10 @@ export async function openInboxItem(item: NotificareInboxItem): Promise<Notifica
   }
 
   await markInboxItemAsRead(item);
+
+  if (!item.opened) {
+    notifyInboxUpdated();
+  }
 
   return notification;
 }

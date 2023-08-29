@@ -25,6 +25,7 @@ export async function registerDevice(options: RegisterDeviceOptions): Promise<vo
   await registerDeviceInternal({
     transport: device.transport,
     token: device.id,
+    keys: device.keys,
     userId: options.userId ?? undefined,
     userName: options.userName ?? undefined,
   });

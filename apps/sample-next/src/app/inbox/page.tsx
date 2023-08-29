@@ -7,6 +7,7 @@ import {
   NotificareInboxItem,
   onBadgeUpdated,
   openInboxItem,
+  onInboxUpdated,
 } from "notificare-web/inbox";
 import { formatDistanceToNow, parseISO } from "date-fns";
 import { presentNotification } from "notificare-web/push-ui";
@@ -14,12 +15,17 @@ import { useNotificare } from "@/context/notificare";
 
 export default function Inbox() {
   const notificareState = useNotificare();
+  const [inboxFetchTimestamp, setInboxFetchTimestamp] = useState<number>(0);
   const [badge, setBadge] = useState<number>(0);
   const [items, setItems] = useState<NotificareInboxItem[]>([]);
 
   useEffect(function setupListeners() {
-    const subscription = onBadgeUpdated((badge) => setBadge(badge));
-    return () => subscription.remove();
+    const subscriptions = [
+      onBadgeUpdated((badge) => setBadge(badge)),
+      onInboxUpdated(() => setInboxFetchTimestamp(Date.now())),
+    ];
+
+    return () => subscriptions.forEach((sub) => sub.remove());
   }, []);
 
   useEffect(
@@ -36,7 +42,7 @@ export default function Inbox() {
         .then(({ items }) => setItems(items))
         .catch((e) => console.error(`Something went wrong: ${e}`));
     },
-    [notificareState, badge]
+    [notificareState, inboxFetchTimestamp],
   );
 
   const onInboxItemClicked = async (item: NotificareInboxItem) => {
