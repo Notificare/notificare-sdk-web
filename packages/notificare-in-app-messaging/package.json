@@ -1,6 +1,6 @@
 {
   "name": "@notificare/web-in-app-messaging",
-  "version": "3.0.0-beta.2",
+  "version": "3.0.0-beta.3",
   "description": "The in-app messaging package for the 'notificare-web' umbrella package.",
   "author": "Notificare <info@notificare.com> (https://notificare.com)",
   "license": "MIT",
@@ -24,9 +24,9 @@
     "dist"
   ],
   "dependencies": {
-    "@notificare/web-core": "^3.0.0-beta.2",
-    "@notificare/web-logger": "^3.0.0-beta.2",
-    "@notificare/web-ui": "^3.0.0-beta.2",
+    "@notificare/web-core": "^3.0.0-beta.3",
+    "@notificare/web-logger": "^3.0.0-beta.3",
+    "@notificare/web-ui": "^3.0.0-beta.3",
     "tslib": "^2.5.0"
   },
   "devDependencies": {
