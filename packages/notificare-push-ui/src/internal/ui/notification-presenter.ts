@@ -2,6 +2,7 @@ import {
   getOptions,
   NotificareInternalOptions,
   NotificareNotification,
+  fetchDynamicLink,
 } from '@notificare/web-core';
 import {
   notifyNotificationFailedToPresent,
@@ -82,7 +83,7 @@ class NotificationPresenter {
         return;
 
       case 're.notifica.notification.URLScheme':
-        presentUrlScheme(notification);
+        await presentUrlScheme(notification);
         return;
 
       case 're.notifica.notification.Passbook':
@@ -146,9 +147,26 @@ function presentPassbook(options: NotificareInternalOptions, notification: Notif
   window.location.href = `${options.services.pushHost}/pass/web/${id}?showWebVersion=1`;
 }
 
-function presentUrlScheme(notification: NotificareNotification) {
+async function presentUrlScheme(notification: NotificareNotification) {
   const content = notification.content.find(({ type }) => type === 're.notifica.content.URL');
   if (!content) throw new Error('Invalid notification content.');
 
-  window.location.href = content.data;
+  const urlStr: string = content.data;
+  let url: URL;
+
+  try {
+    url = new URL(urlStr);
+  } catch (e) {
+    logger.error(`Unable to parse URL string '${urlStr}'.`, e);
+    window.location.href = urlStr;
+    return;
+  }
+
+  if (!url.host.endsWith('ntc.re')) {
+    window.location.href = urlStr;
+    return;
+  }
+
+  const link = await fetchDynamicLink(urlStr);
+  window.location.href = link.target;
 }
