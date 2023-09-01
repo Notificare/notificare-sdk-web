@@ -14,6 +14,8 @@ import { ensureCleanState } from './root';
 import { logger } from '../../logger';
 import { createNotificationModal } from './notifications/notification-modal';
 import { presentAction } from './action-presenter';
+import { fetchPass, fetchPassSaveLinks } from '../internal-api';
+import { isAppleDevice, isSafariBrowser } from '../utils/device';
 
 class NotificationPresenter {
   private notification: NotificareNotification | undefined;
@@ -87,7 +89,7 @@ class NotificationPresenter {
         return;
 
       case 're.notifica.notification.Passbook':
-        presentPassbook(options, notification);
+        await presentPassbook(options, notification);
         return;
 
       default:
@@ -135,7 +137,10 @@ function presentInAppBrowser(notification: NotificareNotification) {
   window.location.href = content.data;
 }
 
-function presentPassbook(options: NotificareInternalOptions, notification: NotificareNotification) {
+async function presentPassbook(
+  options: NotificareInternalOptions,
+  notification: NotificareNotification,
+) {
   const content = notification.content.find(({ type }) => type === 're.notifica.content.PKPass');
   if (!content) throw new Error('Invalid notification content.');
 
@@ -144,6 +149,22 @@ function presentPassbook(options: NotificareInternalOptions, notification: Notif
   if (!components.length) throw new Error('Invalid notification content.');
 
   const id = components[components.length - 1];
+  const pass = await fetchPass(id);
+
+  if (pass.version === 2) {
+    const saveLinks = await fetchPassSaveLinks(id);
+
+    if (isAppleDevice() && isSafariBrowser() && saveLinks?.appleWallet) {
+      window.location.href = saveLinks.appleWallet;
+      return;
+    }
+
+    if (saveLinks?.googlePay) {
+      window.location.href = saveLinks.googlePay;
+      return;
+    }
+  }
+
   window.location.href = `${options.services.pushHost}/pass/web/${id}?showWebVersion=1`;
 }
 
