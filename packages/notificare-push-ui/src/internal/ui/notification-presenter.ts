@@ -165,6 +165,11 @@ async function presentPassbook(
     }
   }
 
+  if (isAppleDevice() && isSafariBrowser()) {
+    window.location.href = `${options.services.pushHost}/pass/pkpass/${id}`;
+    return;
+  }
+
   window.location.href = `${options.services.pushHost}/pass/web/${id}?showWebVersion=1`;
 }
 
