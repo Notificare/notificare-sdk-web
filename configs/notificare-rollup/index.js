@@ -4,7 +4,7 @@ import terser from "@rollup/plugin-terser";
 import nodeResolve from "@rollup/plugin-node-resolve";
 import commonjs from "@rollup/plugin-commonjs";
 import { emitModulePackageFile } from "./plugins/emit-module-package-file.js";
-import { resolve } from "node:path";
+import { dirname, resolve } from "node:path";
 import { readFileSync } from "node:fs";
 
 export function build(pkg, options) {
@@ -119,7 +119,6 @@ export function buildUmbrella(pkg, options) {
   const externals = Object.keys(pkg.dependencies || {});
   const plugins = [nodeResolve(), commonjs(), json()];
 
-  const typescriptPlugin = tsc({ typescript });
   const typescriptPluginCdn = tsc({
     typescript,
     declaration: false,
@@ -127,7 +126,7 @@ export function buildUmbrella(pkg, options) {
 
   const componentBuilds = pkg.components.flatMap((component) => {
     const pkg = JSON.parse(
-      readFileSync(new URL(`${component}/package.json`, rootDirectory))
+      readFileSync(new URL(`${component}/package.json`, rootDirectory)),
     );
 
     return [
@@ -141,7 +140,14 @@ export function buildUmbrella(pkg, options) {
           },
         ],
         external: (dependency) => externals.some((d) => dependency === d),
-        plugins: [...plugins, typescriptPlugin, emitModulePackageFile()],
+        plugins: [
+          ...plugins,
+          emitModulePackageFile(),
+          tsc({
+            typescript,
+            declarationDir: dirname(resolve(component, pkg.browser)),
+          }),
+        ],
       },
       {
         input: `${component}/index.ts`,
@@ -158,7 +164,13 @@ export function buildUmbrella(pkg, options) {
           },
         ],
         external: (dependency) => externals.some((d) => dependency === d),
-        plugins: [...plugins, typescriptPlugin],
+        plugins: [
+          ...plugins,
+          tsc({
+            typescript,
+            declarationDir: dirname(resolve(component, pkg.main)),
+          }),
+        ],
       },
     ];
   });

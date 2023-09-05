@@ -1,6 +1,6 @@
 {
   "name": "@notificare/web-push-sw",
-  "version": "3.0.0-beta.3",
+  "version": "3.0.0",
   "description": "The push service worker package for the 'notificare-web' umbrella package.",
   "author": "Notificare <info@notificare.com> (https://notificare.com)",
   "license": "MIT",

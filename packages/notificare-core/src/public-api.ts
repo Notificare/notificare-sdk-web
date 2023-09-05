@@ -1,7 +1,7 @@
 import {
-  setLogLevel as setLogLevelInternal,
   LogLevel,
   LogLevelString,
+  setLogLevel as setLogLevelInternal,
 } from '@notificare/web-logger';
 import { request } from './internal/network/request';
 import {
@@ -37,6 +37,11 @@ import { deleteDevice, registerTemporaryDevice } from './internal/internal-api-d
 import { NotificareDeviceUnavailableError } from './errors/notificare-device-unavailable-error';
 import { isLatestStorageStructure, migrate } from './internal/migration-flow';
 import { hasWebPushSupport } from './internal/utils';
+import { NotificareDynamicLink } from './models/notificare-dynamic-link';
+import {
+  convertNetworkDynamicLinkToPublic,
+  NetworkDynamicLinkResponse,
+} from './internal/network/responses/dynamic-link-response';
 
 export const SDK_VERSION: string = SDK_VERSION_INTERNAL;
 
@@ -281,6 +286,22 @@ export async function fetchNotification(id: string): Promise<NotificareNotificat
 
   const { notification }: NetworkNotificationResponse = await response.json();
   return convertNetworkNotificationToPublic(notification);
+}
+
+export async function fetchDynamicLink(url: string): Promise<NotificareDynamicLink> {
+  if (!isConfigured()) throw new NotificareNotConfiguredError();
+
+  const searchParams = new URLSearchParams();
+  searchParams.set('platform', 'Web');
+
+  const device = getCurrentDevice();
+  if (device) searchParams.set('deviceID', device.id);
+  if (device?.userId) searchParams.set('userID', device.userId);
+
+  const response = await request(`/api/link/dynamic/${encodeURIComponent(url)}?${searchParams}`);
+
+  const { link }: NetworkDynamicLinkResponse = await response.json();
+  return convertNetworkDynamicLinkToPublic(link);
 }
 
 export async function createNotificationReply(

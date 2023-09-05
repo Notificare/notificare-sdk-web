@@ -2,6 +2,7 @@ import {
   getOptions,
   NotificareInternalOptions,
   NotificareNotification,
+  fetchDynamicLink,
 } from '@notificare/web-core';
 import {
   notifyNotificationFailedToPresent,
@@ -13,6 +14,8 @@ import { ensureCleanState } from './root';
 import { logger } from '../../logger';
 import { createNotificationModal } from './notifications/notification-modal';
 import { presentAction } from './action-presenter';
+import { fetchPass, fetchPassSaveLinks } from '../internal-api';
+import { isAppleDevice, isSafariBrowser } from '../utils/device';
 
 class NotificationPresenter {
   private notification: NotificareNotification | undefined;
@@ -82,11 +85,11 @@ class NotificationPresenter {
         return;
 
       case 're.notifica.notification.URLScheme':
-        presentUrlScheme(notification);
+        await presentUrlScheme(notification);
         return;
 
       case 're.notifica.notification.Passbook':
-        presentPassbook(options, notification);
+        await presentPassbook(options, notification);
         return;
 
       default:
@@ -134,7 +137,10 @@ function presentInAppBrowser(notification: NotificareNotification) {
   window.location.href = content.data;
 }
 
-function presentPassbook(options: NotificareInternalOptions, notification: NotificareNotification) {
+async function presentPassbook(
+  options: NotificareInternalOptions,
+  notification: NotificareNotification,
+) {
   const content = notification.content.find(({ type }) => type === 're.notifica.content.PKPass');
   if (!content) throw new Error('Invalid notification content.');
 
@@ -143,12 +149,50 @@ function presentPassbook(options: NotificareInternalOptions, notification: Notif
   if (!components.length) throw new Error('Invalid notification content.');
 
   const id = components[components.length - 1];
+  const pass = await fetchPass(id);
+
+  if (pass.version === 2) {
+    const saveLinks = await fetchPassSaveLinks(id);
+
+    if (isAppleDevice() && isSafariBrowser() && saveLinks?.appleWallet) {
+      window.location.href = saveLinks.appleWallet;
+      return;
+    }
+
+    if (saveLinks?.googlePay) {
+      window.location.href = saveLinks.googlePay;
+      return;
+    }
+  }
+
+  if (isAppleDevice() && isSafariBrowser()) {
+    window.location.href = `${options.services.pushHost}/pass/pkpass/${id}`;
+    return;
+  }
+
   window.location.href = `${options.services.pushHost}/pass/web/${id}?showWebVersion=1`;
 }
 
-function presentUrlScheme(notification: NotificareNotification) {
+async function presentUrlScheme(notification: NotificareNotification) {
   const content = notification.content.find(({ type }) => type === 're.notifica.content.URL');
   if (!content) throw new Error('Invalid notification content.');
 
-  window.location.href = content.data;
+  const urlStr: string = content.data;
+  let url: URL;
+
+  try {
+    url = new URL(urlStr);
+  } catch (e) {
+    logger.error(`Unable to parse URL string '${urlStr}'.`, e);
+    window.location.href = urlStr;
+    return;
+  }
+
+  if (!url.host.endsWith('ntc.re')) {
+    window.location.href = urlStr;
+    return;
+  }
+
+  const link = await fetchDynamicLink(urlStr);
+  window.location.href = link.target;
 }
