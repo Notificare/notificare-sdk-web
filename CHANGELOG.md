@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## 3.0.0
+
+Check our [migration guide](./MIGRATION.md) before adopting the v3.x generation.
+
+- Explicitly resolve Notificare Links
+- Show passes natively whenever possible
+- Fix exported definition files
+
 ## 3.0.0-beta.3
 
 Check our [migration guide](./MIGRATION.md) before adopting the v3.x generation.
