@@ -7,7 +7,7 @@
   "typings": "empty.d.ts",
   "scripts": {
     "build": "rollup -c && gulp",
-    "clean": "rm -rf .build **/dist",
+    "clean": "rm -rf .build **/dist **/**/dist",
     "lint": "eslint .",
     "prepack": "yarn docs:replace-symbolic-links",
     "postpack": "yarn docs:create-symbolic-links",
