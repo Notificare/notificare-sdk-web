@@ -5,6 +5,23 @@
   "author": "Notificare <info@notificare.com> (https://notificare.com)",
   "license": "MIT",
   "typings": "empty.d.ts",
+  "homepage": "https://notificare.com/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/notificare/notificare-sdk-web.git"
+  },
+  "keywords": [
+    "Notificare",
+    "notificare",
+    "contextual-marketing",
+    "actionable-analytics",
+    "web-push",
+    "remote-notifications",
+    "in-app-messaging",
+    "geo-targeting",
+    "contextual-storage",
+    "inbox"
+  ],
   "scripts": {
     "build": "rollup -c && gulp",
     "clean": "rm -rf .build **/dist **/**/dist",
