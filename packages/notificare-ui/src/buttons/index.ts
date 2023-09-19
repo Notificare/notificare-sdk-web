@@ -1,3 +1,5 @@
+import createCloseIcon from '../assets/close-icon.svg';
+
 export function createPrimaryButton(params: InvariantButtonParams): ButtonElement {
   return createButton({
     variant: 'primary',
@@ -50,9 +52,13 @@ const ButtonVariantCssClassMap: Record<ButtonVariant, string> = {
 };
 
 export function createCloseButton({ variant, onClick }: CloseButtonParams): ButtonElement {
+  const closeIcon = createCloseIcon();
+  closeIcon.classList.add('notificare__close-button-icon');
+
   const button = document.createElement('button');
   button.classList.add('notificare__close-button');
   if (variant === 'solid') button.classList.add('notificare__close-button--solid');
+  button.appendChild(closeIcon);
 
   button.addEventListener('click', (e) => {
     e.preventDefault();

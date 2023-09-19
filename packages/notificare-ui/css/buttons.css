@@ -49,6 +49,22 @@
 }
 
 .notificare .notificare__close-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 300ms ease-in-out, border-radius 300ms ease-in-out;
+}
+
+.notificare .notificare__close-button .notificare__close-button-icon {
+    width: 24px;
+    height: 24px;
+    fill: black;
+}
+
     width: 32px;
     height: 32px;
     /* TODO: use SVG in DOM */
