@@ -4,8 +4,8 @@
     --notificare-primary-container: #DFE0FF;
     --notificare-on-primary-container: #000A64;
 
-    --notificare-surface: #FFFBFF;
-    --notificare-on-surface: #1B1B1F;
+    --notificare-surface: #FFFFFF;
+    --notificare-on-surface: rgba(0, 0, 0, 0.87);
 
     --notificare-shadow-rgb: 0 0 0;
 
@@ -48,7 +48,7 @@
 
     background-color: transparent;
     border: none;
-    color: rgb(26, 32, 38);
+    color: var(--notificare-on-surface);
     text-decoration: none;
     text-transform: none;
 }

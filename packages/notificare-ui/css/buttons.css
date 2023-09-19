@@ -65,17 +65,6 @@
     fill: black;
 }
 
-    width: 32px;
-    height: 32px;
-    /* TODO: use SVG in DOM */
-    background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGhlaWdodD0iNDgiIHdpZHRoPSI0OCI+PHBhdGggZD0ibTEyLjQ1IDM3LjY1LTIuMS0yLjFMMjEuOSAyNCAxMC4zNSAxMi40NWwyLjEtMi4xTDI0IDIxLjlsMTEuNTUtMTEuNTUgMi4xIDIuMUwyNi4xIDI0bDExLjU1IDExLjU1LTIuMSAyLjFMMjQgMjYuMVoiLz48L3N2Zz4=");
-    background-size: 24px 24px;
-    background-position: center;
-    cursor: pointer;
-    border-radius: 4px;
-    transition: background-color 300ms ease-in-out, border-radius 300ms ease-in-out;
-}
-
 .notificare .notificare__close-button--solid {
     background-color: #F4F5F9;
     border-radius: 16px;
