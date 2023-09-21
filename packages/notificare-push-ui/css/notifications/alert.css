@@ -80,6 +80,8 @@
     width: 100%;
     height: calc(6 * 1.4em + 16px);
 
+    background: var(--notificare-surface);
+    color: var(--notificare-on-surface);
     font-size: 14px;
     line-height: 1.4em;
     padding: 8px;
