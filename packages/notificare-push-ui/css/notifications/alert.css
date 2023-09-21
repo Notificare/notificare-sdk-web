@@ -67,6 +67,7 @@
 
 .notificare .notificare__camera-callback-canvas {
     aspect-ratio: 16 / 9;
+    background-color: black;
 }
 
 /* Callback: Keyboard */
