@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## Upcoming release
+
+- Add support for dark mode
+
 ## 3.0.0
 
 Check our [migration guide](./MIGRATION.md) before adopting the v3.x generation.
