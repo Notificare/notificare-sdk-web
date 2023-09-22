@@ -51,6 +51,7 @@
 .notificare .notificare__modal-footer__callback {
     display: flex;
     justify-content: right;
+    column-gap: 8px;
 }
 
 /* Callback: Camera */
@@ -67,6 +68,7 @@
 
 .notificare .notificare__camera-callback-canvas {
     aspect-ratio: 16 / 9;
+    background-color: black;
 }
 
 /* Callback: Keyboard */
@@ -80,6 +82,8 @@
     width: 100%;
     height: calc(6 * 1.4em + 16px);
 
+    background: var(--notificare-surface);
+    color: var(--notificare-on-surface);
     font-size: 14px;
     line-height: 1.4em;
     padding: 8px;

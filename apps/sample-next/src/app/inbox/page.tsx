@@ -61,7 +61,7 @@ export default function Inbox() {
       ) : (
         <>
           {items.length === 0 && (
-            <div className="max-w-md mx-auto bg-white dark:bg-black rounded shadow-md overflow-hidden md:max-w-2xl p-3">
+            <div className="max-w-md mx-auto bg-white dark:bg-neutral-900 rounded shadow-md overflow-hidden md:max-w-2xl p-3">
               <p className="text-lg font-medium text-gray-900 truncate dark:text-white">
                 No items.
               </p>
@@ -70,7 +70,7 @@ export default function Inbox() {
 
           {items.length !== 0 && (
             <>
-              <div className="mb-6 max-w-md mx-auto bg-white dark:bg-black rounded shadow-md overflow-hidden md:max-w-2xl p-3">
+              <div className="mb-6 max-w-md mx-auto bg-white dark:bg-neutral-900 rounded shadow-md overflow-hidden md:max-w-2xl p-3">
                 <p className="text-lg font-medium text-gray-900 truncate dark:text-white">
                   Current badge: {badge}
                 </p>
@@ -96,7 +96,7 @@ export default function Inbox() {
 export function InboxItem({ item, onClick }: InboxItemProps) {
   return (
     <div
-      className="max-w-md mx-auto bg-white dark:bg-black rounded shadow-md overflow-hidden md:max-w-2xl p-3 cursor-pointer"
+      className="max-w-md mx-auto bg-white dark:bg-neutral-900 rounded shadow-md overflow-hidden md:max-w-2xl p-3 cursor-pointer"
       onClick={onClick}
     >
       <div className="flex items-center space-x-4">
@@ -115,11 +115,11 @@ export function InboxItem({ item, onClick }: InboxItemProps) {
             </p>
           )}
 
-          <p className="text-sm text-gray-500 truncate dark:text-gray-400">
+          <p className="text-sm text-gray-500 truncate dark:text-gray-200">
             {item.notification.message}
           </p>
 
-          <p className="text-xs text-gray-500 truncate dark:text-gray-400">
+          <p className="text-xs text-gray-500 truncate dark:text-gray-200">
             {item.notification.type}
           </p>
         </div>
@@ -154,7 +154,9 @@ function InboxItemImage({ item }: InboxItemImageProps) {
         />
       )}
 
-      {!attachment && <div className="w-32 h-24 rounded bg-gray-100" />}
+      {!attachment && (
+        <div className="w-32 h-24 rounded bg-gray-100 dark:bg-neutral-800" />
+      )}
     </div>
   );
 }

@@ -1,10 +1,4 @@
 .notificare .notificare__button {
-    /*--notificare-button-background-color: clear;*/
-    /*--notificare-button-text-color: var(--notificare-primary);*/
-
-    /*--notificare-button-background-color--hover: #F4F5F9;*/
-    /*--notificare-button-text-color--hover: var(--notificare-primary);*/
-
     background-color: var(--notificare-button-background-color);
     border-radius: 4px;
     color: var(--notificare-button-text-color);
@@ -26,51 +20,61 @@
 
 .notificare .notificare__button--primary {
     --notificare-button-background-color: var(--notificare-primary);
-    --notificare-button-text-color: white;
+    --notificare-button-text-color: var(--notificare-on-primary);
 
-    --notificare-button-background-color--hover: #071CC3;
-    --notificare-button-text-color--hover: var(--notificare-button-text-color);
+    --notificare-button-background-color--hover: var(--notificare-primary-hover);
+    --notificare-button-text-color--hover: var(--notificare-on-primary);
 }
 
 .notificare .notificare__button--secondary {
     --notificare-button-background-color: clear;
     --notificare-button-text-color: var(--notificare-primary);
 
-    --notificare-button-background-color--hover: #F4F5F9;
-    --notificare-button-text-color--hover: var(--notificare-button-text-color);
+    --notificare-button-background-color--hover: var(--notificare-surface-hover);
+    --notificare-button-text-color--hover: var(--notificare-primary);
 }
 
 .notificare .notificare__button--destructive {
     --notificare-button-background-color: clear;
-    --notificare-button-text-color: #BA1A1A;
+    --notificare-button-text-color: var(--notificare-error);
 
-    --notificare-button-background-color--hover: #FFDAD6;
-    --notificare-button-text-color--hover: var(--notificare-button-text-color);
+    --notificare-button-background-color--hover: rgba(255, 218, 214, 0.6);
+    --notificare-button-text-color--hover: var(--notificare-error);
 }
 
 .notificare .notificare__close-button {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
     width: 32px;
     height: 32px;
-    /* TODO: use SVG in DOM */
-    background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGhlaWdodD0iNDgiIHdpZHRoPSI0OCI+PHBhdGggZD0ibTEyLjQ1IDM3LjY1LTIuMS0yLjFMMjEuOSAyNCAxMC4zNSAxMi40NWwyLjEtMi4xTDI0IDIxLjlsMTEuNTUtMTEuNTUgMi4xIDIuMUwyNi4xIDI0bDExLjU1IDExLjU1LTIuMSAyLjFMMjQgMjYuMVoiLz48L3N2Zz4=");
-    background-size: 24px 24px;
-    background-position: center;
     cursor: pointer;
     border-radius: 4px;
     transition: background-color 300ms ease-in-out, border-radius 300ms ease-in-out;
 }
 
+.notificare .notificare__close-button:hover {
+    background-color: var(--notificare-surface-hover);
+}
+
 .notificare .notificare__close-button--solid {
-    background-color: #F4F5F9;
+    background-color: var(--notificare-surface-hover);
     border-radius: 16px;
 }
 
-.notificare .notificare__close-button:hover {
-    background-color: #F4F5F9;
+.notificare .notificare__close-button--solid:hover {
     border-radius: 4px;
 }
 
-.notificare .notificare__close-button--solid {
-    background-color: #F4F5F9;
-    border-radius: 16px;
+.notificare .notificare__close-button .notificare__close-button-icon {
+    width: 24px;
+    height: 24px;
+    fill: var(--notificare-on-surface);
+}
+
+@media (prefers-color-scheme: dark) {
+    .notificare .notificare__button--destructive {
+        --notificare-button-background-color--hover: rgba(255, 218, 214, 0.2);
+    }
 }

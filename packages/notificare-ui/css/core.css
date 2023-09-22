@@ -1,11 +1,16 @@
 .notificare {
     --notificare-primary: #2B42F7;
-    --notificare-on-primary: #FFFFFF;
+    --notificare-primary-hover: #071CC3;
+    --notificare-on-primary: rgba(255, 255, 255, 0.87);
+
     --notificare-primary-container: #DFE0FF;
     --notificare-on-primary-container: #000A64;
 
-    --notificare-surface: #FFFBFF;
-    --notificare-on-surface: #1B1B1F;
+    --notificare-error: #BA1A1A;
+
+    --notificare-surface: #FFFFFF;
+    --notificare-surface-hover: #F4F5F9;
+    --notificare-on-surface: rgba(0, 0, 0, 0.87);
 
     --notificare-shadow-rgb: 0 0 0;
 
@@ -21,6 +26,20 @@
     --notificare-layer-highest: 2147483647;
 
     --notificare-modal-margin: 64px;
+}
+
+@media (prefers-color-scheme: dark) {
+    .notificare {
+        --notificare-primary: #A392FD;
+        --notificare-primary-hover: #927EFD;
+        --notificare-on-primary: rgba(0, 0, 0, 0.87);
+
+        --notificare-error: #EF4444;
+
+        --notificare-surface: #27282B;
+        --notificare-surface-hover: #3D3D40;
+        --notificare-on-surface: rgba(255, 255, 255, 0.87);
+    }
 }
 
 /* CSS reset */
@@ -48,7 +67,7 @@
 
     background-color: transparent;
     border: none;
-    color: rgb(26, 32, 38);
+    color: var(--notificare-on-surface);
     text-decoration: none;
     text-transform: none;
 }

@@ -7,7 +7,7 @@
     max-height: calc(100vh - var(--notificare-modal-margin));
     z-index: var(--notificare-layer-highest);
 
-    background: white;
+    background: var(--notificare-surface);
     border-radius: 4px;
     box-shadow: 0 0 32px -8px rgba(0, 0, 0, 0.52);
     cursor: pointer;

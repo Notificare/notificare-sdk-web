@@ -10,6 +10,7 @@
     "@rollup/plugin-node-resolve": "^15.0.1",
     "@rollup/plugin-terser": "^0.4.3",
     "@rollup/plugin-typescript": "^11.0.0",
-    "rollup": "^3.10.0"
+    "rollup": "^3.10.0",
+    "rollup-plugin-svg-import": "^2.1.0"
   }
 }
