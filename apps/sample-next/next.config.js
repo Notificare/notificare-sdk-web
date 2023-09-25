@@ -1,9 +1,5 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {
-  experimental: {
-    appDir: true,
-  },
-};
+const nextConfig = {};
 
 const withPWA = require("next-pwa")({
   dest: "public",
