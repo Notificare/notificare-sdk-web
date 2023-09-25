@@ -58,3 +58,19 @@ export async function hasWebPushSupport(): Promise<boolean> {
   const result = await pushComponent.executeCommand('hasWebPushSupport');
   return result === true;
 }
+
+export function loadStylesheet(url: string) {
+  const head = document.head ?? document.getElementsByTagName('head')[0];
+
+  if (!head) {
+    logger.warning('The document head is not defined.');
+    return;
+  }
+
+  const link = document.createElement('link');
+  link.rel = 'stylesheet';
+  link.type = 'text/css';
+  link.href = url;
+
+  head.appendChild(link);
+}
