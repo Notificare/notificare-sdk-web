@@ -3,6 +3,7 @@
 ## Upcoming release
 
 - Add support for dark mode
+- Add utility to load external stylesheets
 
 ## 3.0.0
 
