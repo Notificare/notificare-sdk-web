@@ -14,6 +14,7 @@
     "clean": "lerna run --scope @notificare/* --scope notificare-web clean",
     "dev": "lerna run --scope @notificare/* --scope notificare-web dev --parallel",
     "lint": "lerna run --scope @notificare/* --scope notificare-web lint",
+    "sample-app": "lerna run --scope sample-next dev",
     "typecheck": "lerna run --scope @notificare/* --scope notificare-web typecheck"
   },
   "devDependencies": {
