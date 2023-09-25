@@ -36,4 +36,6 @@ export * from './public-api';
 export * from './public-api-device';
 export * from './public-api-events';
 
+export { loadStylesheet } from './internal/utils';
+
 registerComponents();
