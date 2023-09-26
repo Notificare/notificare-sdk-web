@@ -44,7 +44,7 @@ export default function Storage() {
   );
 }
 
-export function Asset({ asset }: InboxItemProps) {
+function Asset({ asset }: InboxItemProps) {
   return (
     <div className="max-w-md mx-auto bg-white dark:bg-black rounded shadow-md overflow-hidden md:max-w-2xl p-3 cursor-pointer">
       <textarea

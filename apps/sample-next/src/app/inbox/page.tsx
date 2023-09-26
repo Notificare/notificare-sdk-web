@@ -94,7 +94,7 @@ export default function Inbox() {
   );
 }
 
-export function InboxItem({ item, onClick }: InboxItemProps) {
+function InboxItem({ item, onClick }: InboxItemProps) {
   return (
     <div
       className="max-w-md mx-auto bg-white dark:bg-neutral-900 rounded shadow-md overflow-hidden md:max-w-2xl p-3 cursor-pointer"
