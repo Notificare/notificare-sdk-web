@@ -149,6 +149,8 @@ function InboxItemImage({ item }: InboxItemImageProps) {
     <div className="flex-shrink-0">
       {attachment && (
         <Image
+          width={128}
+          height={96}
           className="w-32 h-24 rounded object-cover"
           src={attachment.uri}
           alt="Notification attachment"
