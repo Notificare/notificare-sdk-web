@@ -15,6 +15,9 @@ export const metadata = {
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" className="h-full bg-gray-100">
+      <head>
+        <link rel="manifest" href="/manifest.json" />
+      </head>
       <body className="h-full">
         <div className="min-h-full">
           <NotificareProvider>
