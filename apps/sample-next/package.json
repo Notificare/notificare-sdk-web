@@ -9,11 +9,11 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@ducanh2912/next-pwa": "^9.7.1",
     "@headlessui/react": "^1.7.14",
     "@heroicons/react": "^2.0.17",
     "date-fns": "^2.29.3",
     "next": "13.5.2",
-    "next-pwa": "^5.6.0",
     "notificare-web": "^3.0.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
