@@ -5,6 +5,7 @@ import { Disclosure } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 
 const navigation = [
   { name: "Home", href: "/", current: false },
@@ -22,10 +23,11 @@ export function NavigationBar() {
             <div className="flex h-16 items-center justify-between">
               <div className="flex items-center">
                 <div className="flex-shrink-0">
-                  <img
-                    className="h-8 w-8"
-                    src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
-                    alt="Notificare BV"
+                  <Image
+                    src="notificare-logo-dark.svg"
+                    alt="Notificare"
+                    width={172}
+                    height={34}
                   />
                 </div>
 

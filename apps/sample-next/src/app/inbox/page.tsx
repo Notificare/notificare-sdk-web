@@ -12,6 +12,7 @@ import {
 import { formatDistanceToNow, parseISO } from "date-fns";
 import { presentNotification } from "notificare-web/push-ui";
 import { useNotificare } from "@/context/notificare";
+import Image from "next/image";
 
 export default function Inbox() {
   const notificareState = useNotificare();
@@ -147,7 +148,7 @@ function InboxItemImage({ item }: InboxItemImageProps) {
   return (
     <div className="flex-shrink-0">
       {attachment && (
-        <img
+        <Image
           className="w-32 h-24 rounded object-cover"
           src={attachment.uri}
           alt="Notification attachment"
