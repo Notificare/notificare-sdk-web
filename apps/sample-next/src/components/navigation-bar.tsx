@@ -24,7 +24,7 @@ export function NavigationBar() {
               <div className="flex items-center">
                 <div className="flex-shrink-0">
                   <Image
-                    src="/notificare-logo-dark.svg"
+                    src="/assets/notificare-logo-dark.svg"
                     alt="Notificare"
                     width={172}
                     height={34}
