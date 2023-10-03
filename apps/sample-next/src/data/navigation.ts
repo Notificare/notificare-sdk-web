@@ -2,6 +2,7 @@ import { ComponentType, PropsWithoutRef, SVGProps } from "react";
 import {
   ChartPieIcon,
   CircleStackIcon,
+  Cog6ToothIcon,
   HomeIcon,
   InboxIcon,
   TagIcon,
@@ -21,4 +22,5 @@ export const sideBarNavigationItems: SideBarNavigationItem[] = [
   { label: "Segmentation", href: "/segmentation", icon: TagIcon },
   { label: "Analytics", href: "/analytics", icon: ChartPieIcon },
   { label: "Storage", href: "/storage", icon: CircleStackIcon },
+  { label: "Settings", href: "/settings", icon: Cog6ToothIcon },
 ];

@@ -4,6 +4,7 @@ export function InputField({
   id,
   label,
   type = "text",
+  disabled = false,
   placeholder,
   value,
   onChange,
@@ -23,6 +24,7 @@ export function InputField({
         placeholder={placeholder}
         value={value}
         onChange={onChange}
+        disabled={disabled}
       />
     </div>
   );
@@ -32,6 +34,7 @@ export interface InputFieldProps {
   id: string;
   label?: string;
   type?: HTMLInputTypeAttribute;
+  disabled?: boolean;
   placeholder?: string;
   value?: string | number;
   onChange?: ChangeEventHandler<HTMLInputElement>;
