@@ -4,11 +4,15 @@ import { MobileSidebar } from "@/components/navigation/mobile-sidebar";
 import { StickyNavigation } from "@/components/navigation/sticky-navigation";
 import { NavigationProvider } from "@/context/navigation";
 import { LaunchFlowProvider } from "@/context/launch-flow";
-import { AutoLauncher } from "@/components/auto-launcher";
+import { NotificareAutoLauncher } from "@/components/notificare/notificare-auto-launcher";
+import { NotificareEventListener } from "@/components/notificare/notificare-event-listener";
 
 export default function ApplicationLayout({ children }: PropsWithChildren) {
   return (
     <LaunchFlowProvider>
+      <NotificareAutoLauncher />
+      <NotificareEventListener />
+
       <NavigationProvider>
         <MobileSidebar />
 
@@ -23,8 +27,6 @@ export default function ApplicationLayout({ children }: PropsWithChildren) {
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">{children}</div>
           </main>
         </div>
-
-        <AutoLauncher />
       </NavigationProvider>
     </LaunchFlowProvider>
   );

@@ -19,13 +19,25 @@ export function Alert({ variant = "info", message, action }: AlertProps) {
 
           {action && (
             <p className="mt-3 text-sm md:ml-6 md:mt-0">
-              <Link
-                href={action.url}
-                className={cx("whitespace-nowrap font-medium", AlertLinkTextColor[variant])}
-              >
-                {action.label}
-                <span> &rarr;</span>
-              </Link>
+              {action.url && (
+                <Link
+                  href={action.url}
+                  className={cx("whitespace-nowrap font-medium", AlertLinkTextColor[variant])}
+                >
+                  {action.label}
+                  <span> &rarr;</span>
+                </Link>
+              )}
+
+              {action.onClick && (
+                <button
+                  onClick={action.onClick}
+                  className={cx("whitespace-nowrap font-medium", AlertLinkTextColor[variant])}
+                >
+                  {action.label}
+                  <span> &rarr;</span>
+                </button>
+              )}
             </p>
           )}
         </div>
@@ -39,7 +51,8 @@ export interface AlertProps {
   message: string;
   action?: {
     label: string;
-    url: string;
+    url?: string;
+    onClick?: () => void;
   };
 }
 

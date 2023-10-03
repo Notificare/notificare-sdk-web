@@ -6,7 +6,7 @@ import Image from "next/image";
 export function InboxItem({ item, onClick }: InboxItemProps) {
   return (
     <div
-      className="max-w-md mx-auto bg-white dark:bg-neutral-900 rounded shadow-md overflow-hidden md:max-w-2xl p-3 cursor-pointer"
+      className="bg-white dark:bg-neutral-900 rounded shadow-md overflow-hidden md:max-w-2xl p-3 cursor-pointer"
       onClick={onClick}
     >
       <div className="flex items-center space-x-4">
@@ -61,6 +61,7 @@ function InboxItemImage({ attachment }: InboxItemImageProps) {
           className="w-32 h-24 rounded object-cover"
           src={attachment.uri}
           alt="Notification attachment"
+          priority
         />
       )}
 

@@ -10,18 +10,18 @@ import {
 } from "react";
 import { launch, unlaunch } from "notificare-web/core";
 
-type TaggedState<T extends string> = { tag: T };
+type State<T extends string> = { status: T };
 
-export type IdleState = TaggedState<"idle">;
+export type IdleState = State<"idle">;
 
-export type LaunchingState = TaggedState<"launching">;
-export type LaunchedState = TaggedState<"launched">;
-export type LaunchFailedState = TaggedState<"launch-failed"> & {
+export type LaunchingState = State<"launching">;
+export type LaunchedState = State<"launched">;
+export type LaunchFailedState = State<"launch-failed"> & {
   error: Error;
 };
 
-export type UnlaunchingState = TaggedState<"unlaunching">;
-export type UnlaunchFailedState = TaggedState<"unlaunch-failed"> & {
+export type UnlaunchingState = State<"unlaunching">;
+export type UnlaunchFailedState = State<"unlaunch-failed"> & {
   error: Error;
 };
 
@@ -42,22 +42,22 @@ export interface LaunchFlow {
 const LaunchFlowContext = createContext<LaunchFlow | undefined>(undefined);
 
 export function LaunchFlowProvider({ children }: PropsWithChildren) {
-  const [state, setState] = useState<LaunchState>({ tag: "idle" });
+  const [state, setState] = useState<LaunchState>({ status: "idle" });
 
   const launchFn = useCallback(() => {
-    setState({ tag: "launching" });
+    setState({ status: "launching" });
 
     launch()
-      .then(() => setState({ tag: "launched" }))
-      .catch((e) => setState({ tag: "launch-failed", error: e }));
+      .then(() => setState({ status: "launched" }))
+      .catch((e) => setState({ status: "launch-failed", error: e }));
   }, []);
 
   const unlaunchFn = useCallback(() => {
-    setState({ tag: "unlaunching" });
+    setState({ status: "unlaunching" });
 
     unlaunch()
-      .then(() => setState({ tag: "idle" }))
-      .catch((e) => setState({ tag: "unlaunch-failed", error: e }));
+      .then(() => setState({ status: "idle" }))
+      .catch((e) => setState({ status: "unlaunch-failed", error: e }));
   }, []);
 
   const launchFlow = useMemo<LaunchFlow>(

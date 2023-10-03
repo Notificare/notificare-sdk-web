@@ -1,7 +1,12 @@
+"use client";
+
 import { PageHeader } from "@/components/page-header";
 import { LaunchFlowCard } from "@/components/launch-flow-card";
+import { useLaunchFlow } from "@/context/launch-flow";
 
 export default function Home() {
+  const { state } = useLaunchFlow();
+
   return (
     <>
       <PageHeader
@@ -12,10 +17,14 @@ export default function Home() {
       <div className="grid grid-flow-row grid-cols-1 md:grid-cols-2 gap-8">
         <LaunchFlowCard />
 
-        <div className="h-40 bg-slate-200"></div>
-        <div className="h-96 bg-slate-200"></div>
-        <div className="h-96 bg-slate-200"></div>
-        <div className="h-96 bg-slate-200"></div>
+        {state.status === "launched" && (
+          <>
+            <div className="h-40 bg-slate-200"></div>
+            <div className="h-96 bg-slate-200"></div>
+            <div className="h-96 bg-slate-200"></div>
+            <div className="h-96 bg-slate-200"></div>
+          </>
+        )}
       </div>
     </>
   );

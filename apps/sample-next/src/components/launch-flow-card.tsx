@@ -27,11 +27,11 @@ export function LaunchFlowCard() {
         <div className="flex items-center justify-between">
           <p className="text-base text-gray-900">Ready</p>
 
-          {state.tag === "launched" && (
+          {state.status === "launched" && (
             <CheckCircleIcon className="flex-shrink-0 h-6 w-6 text-green-700" />
           )}
 
-          {state.tag !== "launched" && (
+          {state.status !== "launched" && (
             <XCircleIcon className="flex-shrink-0 h-6 w-6 text-red-700" />
           )}
         </div>
@@ -39,13 +39,13 @@ export function LaunchFlowCard() {
         <div className="flex items-center justify-between">
           <p className="text-base text-gray-900">Current state</p>
 
-          <p className="text-sm font-mono lowercase text-gray-400">{state.tag}</p>
+          <p className="text-sm font-mono lowercase text-gray-400">{state.status}</p>
         </div>
       </div>
 
       <div className="flex flex-row justify-end gap-6 p-6 border-t border-gray-200">
-        <Button text="Launch" disabled={state.tag !== "idle"} onClick={launch} />
-        <Button text="Unlaunch" disabled={state.tag !== "launched"} onClick={unlaunch} />
+        <Button text="Launch" disabled={state.status !== "idle"} onClick={launch} />
+        <Button text="Unlaunch" disabled={state.status !== "launched"} onClick={unlaunch} />
       </div>
     </div>
   );
