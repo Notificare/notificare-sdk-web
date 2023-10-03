@@ -4,12 +4,13 @@ import { PropsWithChildren } from "react";
 import { Alert } from "@/components/alert";
 import { useLaunchFlow } from "@/context/launch-flow";
 import { ProgressIndicator } from "@/components/progress-indicator";
+import { NotificareConfigurationBlocker } from "@/components/notificare/notificare-configuration-blocker";
 
 export function NotificareLaunchBlocker({ children }: PropsWithChildren) {
   const { state, launch } = useLaunchFlow();
 
   return (
-    <>
+    <NotificareConfigurationBlocker>
       {state.status === "idle" && (
         <Alert
           variant="warning"
@@ -36,6 +37,6 @@ export function NotificareLaunchBlocker({ children }: PropsWithChildren) {
           message="Wait a moment while Notificare finishes unlaunching."
         />
       )}
-    </>
+    </NotificareConfigurationBlocker>
   );
 }

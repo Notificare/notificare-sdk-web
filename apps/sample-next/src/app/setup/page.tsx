@@ -26,10 +26,6 @@ export default function Setup() {
       const response = await fetch("/notificare-services.json");
       let config: NotificareOptions = await response.json();
 
-      if (state.debugLoggingEnabled) {
-        setLogLevel("debug");
-      }
-
       config.applicationVersion = state.applicationVersion.trim() || undefined;
       config.language = state.language.trim() || undefined;
       config.ignoreTemporaryDevices = state.ignoreTemporaryDevices;
@@ -48,7 +44,13 @@ export default function Setup() {
       const timeout = parseInt(state.geolocationTimeout);
       if (!isNaN(timeout)) config.geolocation.timeout = timeout;
 
-      localStorage.setItem("app_configuration", JSON.stringify(config));
+      localStorage.setItem(
+        "app_configuration",
+        JSON.stringify({
+          debugLoggingEnabled: state.debugLoggingEnabled,
+          ...config,
+        }),
+      );
       window.location.href = "/";
     } catch (e) {
       console.log(`Something went wrong: ${e}`);
