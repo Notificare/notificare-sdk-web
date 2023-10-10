@@ -4,7 +4,11 @@ import { getBadge, onBadgeUpdated } from "notificare-web/inbox";
 import { BellIcon } from "@heroicons/react/24/outline";
 
 export function InboxBell() {
-  const [badge, setBadge] = useState<number>(getBadge());
+  const [badge, setBadge] = useState<number>();
+
+  useEffect(function loadBadge() {
+    setBadge(getBadge());
+  }, []);
 
   useEffect(function setupListener() {
     const subscription = onBadgeUpdated((badge) => setBadge(badge));
@@ -17,7 +21,7 @@ export function InboxBell() {
       <div className="relative">
         <BellIcon className="h-6 w-6" aria-hidden="true" />
 
-        {badge > 0 && (
+        {!!badge && badge > 0 && (
           <span className="absolute top-0 right-0 inline-block w-2 h-2 bg-indigo-400 rounded-full transform -translate-x-1/4 group-hover:bg-indigo-600" />
         )}
       </div>
