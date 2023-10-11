@@ -1,6 +1,6 @@
-import { serviceWorkerLogger } from '../logger';
+import { logger } from '../logger';
 import { NotificareWorkerNotification, WorkerNotification } from './internal-types';
-import { sleep } from '../../internal/utils';
+import { sleep } from './utils';
 
 // Let TS know this is scoped to a service worker.
 declare const self: ServiceWorkerGlobalScope;
@@ -16,16 +16,16 @@ export function onMessage(event: ExtendableMessageEvent) {
         hasReadyClients = true;
         break;
       default:
-        serviceWorkerLogger.warning('Unknown service worker message event: ', event);
+        logger.warning('Unknown service worker message event: ', event);
     }
   } catch (e) {
-    serviceWorkerLogger.error('Failed to process a service worker message event: ', e);
+    logger.error('Failed to process a service worker message event: ', e);
   }
 }
 
 export async function onPush(event: PushEvent) {
   if (!event.data) {
-    serviceWorkerLogger.warning('The push event contained no data. Skipping...');
+    logger.warning('The push event contained no data. Skipping...');
     return;
   }
 
@@ -34,12 +34,12 @@ export async function onPush(event: PushEvent) {
   try {
     workerNotification = event.data.json();
   } catch (e) {
-    serviceWorkerLogger.error('Unable to parse the push event data.');
+    logger.error('Unable to parse the push event data.');
     return;
   }
 
   if (workerNotification['x-sender'] !== 'notificare') {
-    serviceWorkerLogger.debug('Processing an unknown notification.');
+    logger.debug('Processing an unknown notification.');
 
     const clients = await self.clients.matchAll();
     clients.forEach((client) => {
@@ -55,7 +55,7 @@ export async function onPush(event: PushEvent) {
   const notification: NotificareWorkerNotification = workerNotification;
 
   if (notification.system) {
-    serviceWorkerLogger.debug('Processing a system notification.', notification);
+    logger.debug('Processing a system notification.', notification);
 
     const clients = await self.clients.matchAll();
     clients.forEach((client) => {
@@ -121,7 +121,7 @@ export async function onNotificationClick(event: NotificationEvent) {
 
   const clients = await self.clients.matchAll({ type: 'window' });
   if (!clients.length) {
-    serviceWorkerLogger.error('Unable to process the notification click without an active client.');
+    logger.error('Unable to process the notification click without an active client.');
     throw new Error('Unable to process the notification click without an active client.');
   }
 
@@ -143,7 +143,7 @@ export async function onNotificationClick(event: NotificationEvent) {
   try {
     await client.focus();
   } catch (e) {
-    serviceWorkerLogger.error('Failed to focus client: ', client, e);
+    logger.error('Failed to focus client: ', client, e);
   }
 }
 
