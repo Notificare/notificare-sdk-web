@@ -5,19 +5,18 @@ import { XCircleIcon } from "@heroicons/react/20/solid";
 import { Button } from "@/components/button";
 import { useLaunchFlow } from "@/context/launch-flow";
 import { isConfigured } from "notificare-web/core";
+import { Card, CardActions, CardContent, CardHeader } from "@/components/card";
 
 export function LaunchFlowCard() {
   const { state, launch, unlaunch } = useLaunchFlow();
 
   return (
-    <div className="bg-white rounded-lg shadow dark:bg-slate-900">
-      <div className="p-6 border-b border-gray-200">
-        <h5 className="text-base font-semibold leading-6 text-gray-900">Launch flow</h5>
-      </div>
+    <Card>
+      <CardHeader title="Launch flow" />
 
-      <div className="flex flex-col gap-6 p-6">
+      <CardContent>
         <div className="flex items-center justify-between">
-          <p className="text-base text-gray-900">Configured</p>
+          <p className="text-sm font-medium leading-6 text-gray-900">Configured</p>
 
           {isConfigured() && <CheckCircleIcon className="flex-shrink-0 h-6 w-6 text-green-700" />}
 
@@ -25,7 +24,7 @@ export function LaunchFlowCard() {
         </div>
 
         <div className="flex items-center justify-between">
-          <p className="text-base text-gray-900">Ready</p>
+          <p className="text-sm font-medium leading-6 text-gray-900">Ready</p>
 
           {state.status === "launched" && (
             <CheckCircleIcon className="flex-shrink-0 h-6 w-6 text-green-700" />
@@ -37,16 +36,16 @@ export function LaunchFlowCard() {
         </div>
 
         <div className="flex items-center justify-between">
-          <p className="text-base text-gray-900">Current state</p>
+          <p className="text-sm font-medium leading-6 text-gray-900">Current state</p>
 
           <p className="text-sm font-mono lowercase text-gray-400">{state.status}</p>
         </div>
-      </div>
+      </CardContent>
 
-      <div className="flex flex-row justify-end gap-6 p-6 border-t border-gray-200">
+      <CardActions>
         <Button text="Launch" disabled={state.status !== "idle"} onClick={launch} />
         <Button text="Unlaunch" disabled={state.status !== "launched"} onClick={unlaunch} />
-      </div>
-    </div>
+      </CardActions>
+    </Card>
   );
 }

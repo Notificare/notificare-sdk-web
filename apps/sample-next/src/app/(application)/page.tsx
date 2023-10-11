@@ -4,6 +4,7 @@ import { PageHeader } from "@/components/page-header";
 import { LaunchFlowCard } from "@/components/launch-flow-card";
 import { useLaunchFlow } from "@/context/launch-flow";
 import { NotificareConfigurationBlocker } from "@/components/notificare/notificare-configuration-blocker";
+import { DeviceRegistrationCard } from "@/components/home/device-registration-card";
 
 export default function Home() {
   const { state } = useLaunchFlow();
@@ -21,10 +22,7 @@ export default function Home() {
 
           {state.status === "launched" && (
             <>
-              <div className="h-40 bg-slate-200"></div>
-              <div className="h-96 bg-slate-200"></div>
-              <div className="h-96 bg-slate-200"></div>
-              <div className="h-96 bg-slate-200"></div>
+              <DeviceRegistrationCard />
             </>
           )}
         </div>

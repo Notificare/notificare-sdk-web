@@ -15,7 +15,7 @@
     "@tailwindcss/forms": "^0.5.6",
     "classnames": "^2.3.2",
     "date-fns": "^2.29.3",
-    "next": "13.5.2",
+    "next": "13.5.4",
     "notificare-web": "^3.0.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",

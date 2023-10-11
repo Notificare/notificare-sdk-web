@@ -1,14 +1,13 @@
 import { InputField } from "@/components/input-field";
+import { Card, CardContent, CardHeader } from "@/components/card";
 import { ConfigurationFormState } from "@/components/configuration/configuration-form-state";
 
 export function ServiceWorkerSettingsCard({ state, onChange }: ServiceWorkerSettingsCardProps) {
   return (
-    <div className="bg-white rounded-lg shadow dark:bg-slate-900">
-      <div className="p-6 border-b border-gray-200">
-        <h5 className="text-base font-semibold leading-6 text-gray-900">Service worker settings</h5>
-      </div>
+    <Card>
+      <CardHeader title="Service worker settings" />
 
-      <div className="flex flex-col gap-6 p-6">
+      <CardContent>
         <InputField
           id="service-worker-location"
           label="Service worker location"
@@ -35,8 +34,8 @@ export function ServiceWorkerSettingsCard({ state, onChange }: ServiceWorkerSett
             });
           }}
         />
-      </div>
-    </div>
+      </CardContent>
+    </Card>
   );
 }
 
