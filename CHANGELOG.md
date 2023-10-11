@@ -4,6 +4,7 @@
 
 - Add support for dark mode
 - Add utility to load external stylesheets
+- Export `NotificareOptions`
 
 ## 3.0.0
 

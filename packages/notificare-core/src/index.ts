@@ -35,6 +35,7 @@ export * from './models/notificare-user-data';
 export * from './public-api';
 export * from './public-api-device';
 export * from './public-api-events';
+export * from './options';
 
 export { loadStylesheet } from './internal/utils';
 
