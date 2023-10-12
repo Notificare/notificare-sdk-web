@@ -1,14 +1,6 @@
 import { logger } from './logger';
 import { onMessage, onNotificationClick, onPush } from './internal/sw-handlers';
 
-declare global {
-  // noinspection JSUnusedGlobalSymbols
-  interface WorkerNavigator {
-    setAppBadge?: (badge: number) => void;
-    setClientBadge?: (badge: number) => void;
-  }
-}
-
 // Let TS know this is scoped to a service worker.
 declare const self: ServiceWorkerGlobalScope;
 
