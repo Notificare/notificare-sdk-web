@@ -1,5 +1,9 @@
+import { NotificareNotification } from '@notificare/web-core';
 import { logger } from '../../logger';
 import { NotificareWorkerNotification, WorkerNotification } from '../internal-types';
+import { fetchNotification, logNotificationReceived } from '../network/cloud-api';
+import { parseWorkerConfiguration } from '../configuration/parser';
+import { createPartialNotification } from '../create-partial-notification';
 
 // Let TS know this is scoped to a service worker.
 declare const self: ServiceWorkerGlobalScope;
@@ -59,15 +63,45 @@ async function handleSystemNotification(workerNotification: NotificareWorkerNoti
 }
 
 async function handleNotification(workerNotification: NotificareWorkerNotification) {
-  logger.debug('Service worker has no configuration. Falling back to legacy behaviour.');
+  const workerConfiguration = parseWorkerConfiguration();
+
+  if (!workerConfiguration) {
+    logger.debug('Service worker has no configuration. Falling back to legacy behaviour.');
+    await updateApplicationBadge(workerNotification);
+    await showNotificationPreview(workerNotification);
+
+    const clients = await self.clients.matchAll();
+    clients.forEach((client) => {
+      client.postMessage({
+        cmd: 're.notifica.push.sw.notification_received',
+        message: workerNotification,
+      });
+    });
+
+    return;
+  }
+
+  await logNotificationReceived(workerNotification.notificationId);
   await updateApplicationBadge(workerNotification);
   await showNotificationPreview(workerNotification);
+
+  let notification: NotificareNotification;
+
+  try {
+    notification = await fetchNotification(workerNotification.id);
+  } catch (e) {
+    logger.error('Failed to fetch notification.', e);
+    notification = createPartialNotification(workerNotification);
+  }
 
   const clients = await self.clients.matchAll();
   clients.forEach((client) => {
     client.postMessage({
       cmd: 're.notifica.push.sw.notification_received',
-      message: workerNotification,
+      content: {
+        message: workerNotification,
+        notification,
+      },
     });
   });
 }
