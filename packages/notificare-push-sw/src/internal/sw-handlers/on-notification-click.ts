@@ -8,15 +8,7 @@ declare const self: ServiceWorkerGlobalScope;
 export async function onNotificationClick(event: NotificationEvent) {
   event.notification.close();
 
-  await ensureOpenWindowClient();
-
-  const clients = await self.clients.matchAll({ type: 'window' });
-  if (!clients.length) {
-    logger.error('Unable to process the notification click without an active client.');
-    throw new Error('Unable to process the notification click without an active client.');
-  }
-
-  const client = clients[0];
+  const client = await ensureOpenWindowClient();
 
   if (event.action) {
     client.postMessage({
@@ -38,13 +30,14 @@ export async function onNotificationClick(event: NotificationEvent) {
   }
 }
 
-async function ensureOpenWindowClient() {
+async function ensureOpenWindowClient(): Promise<WindowClient> {
   const clients = await self.clients.matchAll({ type: 'window' });
   if (clients.length) {
-    if (getClientState() === 'ready') return;
+    if (getClientState() === 'ready') {
+      return clients[0];
+    }
 
-    await waitForOpenWindowClient();
-    return;
+    return waitForOpenWindowClient();
   }
 
   // Reset the readiness state in case the service worker instance is reused across
@@ -53,13 +46,13 @@ async function ensureOpenWindowClient() {
 
   // const url = event.notification.data.urlFormatString.replace("%@", event.notification.tag);
   await self.clients.openWindow('/');
-  await waitForOpenWindowClient();
+  return waitForOpenWindowClient();
 }
 
-async function waitForOpenWindowClient() {
+async function waitForOpenWindowClient(): Promise<WindowClient> {
   const clients = await self.clients.matchAll({ type: 'window' });
-  if (clients.length && getClientState() === 'ready') return;
+  if (clients.length && getClientState() === 'ready') return clients[0];
 
   await sleep(1000);
-  await waitForOpenWindowClient();
+  return waitForOpenWindowClient();
 }
