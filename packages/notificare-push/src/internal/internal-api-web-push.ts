@@ -13,12 +13,12 @@ import { logger } from '../logger';
 import { logNotificationInfluenced, logNotificationReceived } from './internal-api-events';
 import {
   notifyNotificationActionOpened,
+  notifyNotificationOpened,
   notifyNotificationReceived,
   notifySystemNotificationReceived,
   notifyUnknownNotificationReceived,
 } from './consumer-events';
 import { createWebPushSubscription, registerServiceWorker } from './web-push/service-worker';
-import { handleNotificationOpened } from './internal-api-shared';
 import { NotificareNotificationDeliveryMechanism } from '../models/notificare-notification-delivery-mechanism';
 
 export function hasWebPushSupport(): boolean {
@@ -153,7 +153,17 @@ async function handleServiceWorkerNotificationReceived(event: MessageEvent) {
 }
 
 async function handleServiceWorkerNotificationClicked(event: MessageEvent) {
-  await handleNotificationOpened(event.data.notification.id);
+  const notificationId = event.data.notification.id;
+
+  // Log the notification open event.
+  await logNotificationOpen(notificationId);
+  await logNotificationInfluenced(notificationId);
+
+  // Notify the inbox to update itself.
+  broadcastComponentEvent('notification_opened');
+
+  const notification = await fetchNotification(notificationId);
+  notifyNotificationOpened(notification);
 }
 
 async function handleServiceWorkerNotificationReply(event: MessageEvent) {
