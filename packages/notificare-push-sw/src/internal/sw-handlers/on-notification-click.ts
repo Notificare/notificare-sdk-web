@@ -10,18 +10,13 @@ export async function onNotificationClick(event: NotificationEvent) {
 
   const client = await ensureOpenWindowClient();
 
-  if (event.action) {
-    client.postMessage({
-      cmd: 're.notifica.push.sw.notification_reply',
-      notification: event.notification.data,
-      action: event.action,
-    });
-  } else {
-    client.postMessage({
-      cmd: 're.notifica.push.sw.notification_clicked',
-      notification: event.notification.data,
-    });
-  }
+  client.postMessage({
+    cmd: event.action
+      ? 're.notifica.push.sw.notification_reply'
+      : 're.notifica.push.sw.notification_clicked',
+    notification: event.notification.data,
+    action: event.action,
+  });
 
   try {
     await client.focus();
