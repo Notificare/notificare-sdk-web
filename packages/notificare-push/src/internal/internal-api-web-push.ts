@@ -6,6 +6,7 @@ import {
   logNotificationOpen,
   NotificareApplication,
   NotificareInternalOptions,
+  NotificareNotification,
 } from '@notificare/web-core';
 import { arrayBufferToBase64 } from './utils';
 import { logger } from '../logger';
@@ -18,6 +19,7 @@ import {
 } from './consumer-events';
 import { createWebPushSubscription, registerServiceWorker } from './web-push/service-worker';
 import { handleNotificationOpened } from './internal-api-shared';
+import { NotificareNotificationDeliveryMechanism } from '../models/notificare-notification-delivery-mechanism';
 
 export function hasWebPushSupport(): boolean {
   // The navigator.standalone check ensures that iOS Safari with WebPush
@@ -132,10 +134,22 @@ function getPushTokenFromPushSubscription(subscription: PushSubscription): PushT
 async function handleServiceWorkerNotificationReceived(event: MessageEvent) {
   broadcastComponentEvent('notification_received');
 
-  await logNotificationReceived(event.data.message.notificationId);
+  let notification: NotificareNotification;
+  let deliveryMechanism: NotificareNotificationDeliveryMechanism;
 
-  const notification = await fetchNotification(event.data.message.id);
-  notifyNotificationReceived(notification, event.data.message.push ? 'standard' : 'silent');
+  if (event.data.content) {
+    // Standard format
+    notification = event.data.content.notification;
+    deliveryMechanism = event.data.content.message.push ? 'standard' : 'silent';
+  } else {
+    // Legacy format
+    await logNotificationReceived(event.data.message.notificationId);
+
+    notification = await fetchNotification(event.data.message.id);
+    deliveryMechanism = event.data.message.push ? 'standard' : 'silent';
+  }
+
+  notifyNotificationReceived(notification, deliveryMechanism);
 }
 
 async function handleServiceWorkerNotificationClicked(event: MessageEvent) {
