@@ -85,6 +85,9 @@ async function handleNotification(workerNotification: NotificareWorkerNotificati
   await updateApplicationBadge(workerNotification);
   await showNotificationPreview(workerNotification);
 
+  const clients = await self.clients.matchAll();
+  if (!clients.length) return;
+
   let notification: NotificareNotification;
 
   try {
@@ -94,7 +97,6 @@ async function handleNotification(workerNotification: NotificareWorkerNotificati
     notification = createPartialNotification(workerNotification);
   }
 
-  const clients = await self.clients.matchAll();
   clients.forEach((client) => {
     client.postMessage({
       cmd: 're.notifica.push.sw.notification_received',
