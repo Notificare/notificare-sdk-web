@@ -29,6 +29,7 @@ export interface NetworkNotificationContent {
 }
 
 export interface NetworkNotificationAction {
+  readonly _id: string;
   readonly type: string;
   readonly label?: string;
   readonly target?: string;
@@ -97,6 +98,8 @@ export function convertNetworkNotificationActionToPublic(
   }
 
   return {
+    // eslint-disable-next-line no-underscore-dangle
+    id: action._id,
     type: action.type,
     label: action.label,
     target: action.target,
