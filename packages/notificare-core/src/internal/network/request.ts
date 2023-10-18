@@ -40,7 +40,7 @@ export async function request(url: string, options?: RequestOptions): Promise<Re
       // Otherwise, don't retry and throw immediately.
       if (response.ok) return response;
     } catch (e) {
-      logger.error(`Request attempt #${attempt + 1} failed.`, e);
+      logger.warning(`Request attempt #${attempt + 1} failed.`, e);
 
       const retryDelay = options?.retryDelay ?? defaults.retryDelay;
       let retryDelayMilliseconds: number;
@@ -64,6 +64,7 @@ export async function request(url: string, options?: RequestOptions): Promise<Re
     if (response) throw new NotificareNetworkRequestError(response);
   }
 
+  logger.error('Request exceeded maximum retries.');
   throw new Error('Request exceeded maximum retries.');
 }
 
