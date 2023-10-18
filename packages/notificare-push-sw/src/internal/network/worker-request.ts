@@ -1,6 +1,6 @@
 import { NotificareNetworkRequestError } from '@notificare/web-core';
 import { WorkerConfiguration } from '../configuration/worker-configuration';
-import { base64Encode, sleep } from '../utils';
+import { base64Encode, getCloudApiUrl, sleep } from '../utils';
 import { logger } from '../../logger';
 
 export async function workerRequest(params: WorkerRequestParams) {
@@ -57,9 +57,7 @@ interface WorkerRequestParams {
 function getRequestUrl({ config, url }: WorkerRequestParams): string {
   if (url.startsWith('http')) return url;
 
-  const baseUrl = config.useTestEnvironment
-    ? 'https://cloud-test.notifica.re'
-    : 'https://cloud.notifica.re';
+  const baseUrl = getCloudApiUrl(config);
 
   return url.startsWith('/') ? `${baseUrl}${url}` : `${baseUrl}/${url}`;
 }

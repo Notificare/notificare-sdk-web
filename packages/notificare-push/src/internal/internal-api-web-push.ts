@@ -153,6 +153,21 @@ async function handleServiceWorkerNotificationReceived(event: MessageEvent) {
 }
 
 async function handleServiceWorkerNotificationClicked(event: MessageEvent) {
+  if (event.data.content) {
+    // Notify the inbox to update itself.
+    broadcastComponentEvent('notification_opened');
+
+    const { notification, action } = event.data.content;
+
+    if (action) {
+      notifyNotificationActionOpened(notification, action);
+    } else {
+      notifyNotificationOpened(notification);
+    }
+
+    return;
+  }
+
   const notificationId = event.data.notification.id;
 
   // Log the notification open event.
@@ -175,7 +190,7 @@ async function handleServiceWorkerNotificationReply(event: MessageEvent) {
   // InboxIntegration.markItemAsRead(message)
 
   const notification = await fetchNotification(event.data.notification.id);
-  const action = notification.actions.find((element) => element.label === event.data.action);
+  const action = notification.actions.find((element) => element.id === event.data.action);
 
   if (!action) {
     logger.warning('Cannot find the action clicked to process the event.');

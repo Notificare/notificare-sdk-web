@@ -1,13 +1,29 @@
+import { NotificareNotification, NotificareNotificationAction } from '@notificare/web-core';
 import { logger } from '../../logger';
-import { sleep } from '../utils';
-import { getClientState, setClientState } from '../client-state';
-
-// Let TS know this is scoped to a service worker.
-declare const self: ServiceWorkerGlobalScope;
+import { parseWorkerConfiguration } from '../configuration/parser';
+import {
+  createNotificationReply,
+  fetchNotification,
+  logNotificationInfluenced,
+  logNotificationOpen,
+} from '../network/cloud-api';
+import { ensureOpenWindowClient } from '../ui/window-client';
+import { presentNotification } from '../ui/notifications';
+import { presentNotificationAction } from '../ui/notification-actions';
 
 export async function onNotificationClick(event: NotificationEvent) {
   event.notification.close();
 
+  const workerConfiguration = parseWorkerConfiguration();
+
+  if (workerConfiguration) {
+    await handleStandardClick(event);
+  } else {
+    await handleLegacyClick(event);
+  }
+}
+
+async function handleLegacyClick(event: NotificationEvent) {
   const client = await ensureOpenWindowClient();
 
   client.postMessage({
@@ -25,29 +41,42 @@ export async function onNotificationClick(event: NotificationEvent) {
   }
 }
 
-async function ensureOpenWindowClient(): Promise<WindowClient> {
-  const clients = await self.clients.matchAll({ type: 'window' });
-  if (clients.length) {
-    if (getClientState() === 'ready') {
-      return clients[0];
-    }
+async function handleStandardClick(event: NotificationEvent) {
+  await logNotificationOpen(event.notification.data.notificationId);
+  await logNotificationInfluenced(event.notification.data.notificationId);
 
-    return waitForOpenWindowClient();
+  let notification: NotificareNotification;
+  let action: NotificareNotificationAction | undefined;
+
+  try {
+    notification = await fetchNotification(event.notification.data.id);
+
+    if (event.action) {
+      action = notification.actions.find((element) => element.id === event.action);
+
+      if (!action) {
+        logger.warning('Cannot find the action clicked to process the event.');
+        return;
+      }
+    }
+  } catch (e) {
+    logger.error('Failed to fetch notification.', e);
+    return;
   }
 
-  // Reset the readiness state in case the service worker instance is reused across
-  // application restarts, when it used to be ready.
-  setClientState('unready');
+  if (!action) {
+    await presentNotification(notification);
+    return;
+  }
 
-  // const url = event.notification.data.urlFormatString.replace("%@", event.notification.tag);
-  await self.clients.openWindow('/');
-  return waitForOpenWindowClient();
-}
+  const isQuickResponse =
+    action.type === 're.notifica.action.Callback' && !action.camera && !action.keyboard;
 
-async function waitForOpenWindowClient(): Promise<WindowClient> {
-  const clients = await self.clients.matchAll({ type: 'window' });
-  if (clients.length && getClientState() === 'ready') return clients[0];
+  if (isQuickResponse) {
+    await createNotificationReply({ notification, action });
+    return;
+  }
 
-  await sleep(1000);
-  return waitForOpenWindowClient();
+  await presentNotificationAction(notification, action);
+  await createNotificationReply({ notification, action });
 }
