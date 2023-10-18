@@ -25,7 +25,7 @@ export async function workerRequest(params: WorkerRequestParams) {
       // Otherwise, don't retry and throw immediately.
       if (response.ok) return response;
     } catch (e) {
-      logger.error(`Request attempt #${attempt + 1} failed.`, e);
+      logger.warning(`Request attempt #${attempt + 1} failed.`, e);
 
       if (attempt < retries) {
         const delay = calculateRetryDelayInMilliseconds(attempt, params);
@@ -41,6 +41,7 @@ export async function workerRequest(params: WorkerRequestParams) {
     if (response) throw new NotificareNetworkRequestError(response);
   }
 
+  logger.error('Request exceeded maximum retries.');
   throw new Error('Request exceeded maximum retries.');
 }
 
