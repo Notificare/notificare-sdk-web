@@ -9,11 +9,13 @@ export * from './models/user-data';
 
 export * from './payloads/device-registration';
 export * from './payloads/device-update';
+export * from './payloads/event';
 
 export * from './requests/application';
 export * from './requests/assets';
 export * from './requests/device';
 export * from './requests/dynamic-links';
+export * from './requests/events';
 export * from './requests/in-app-messages';
 export * from './requests/inbox';
 export * from './requests/notifications';
