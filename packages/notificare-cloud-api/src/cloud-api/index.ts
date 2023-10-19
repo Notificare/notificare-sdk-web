@@ -12,6 +12,7 @@ export * from './requests/application';
 export * from './requests/assets';
 export * from './requests/device';
 export * from './requests/dynamic-links';
+export * from './requests/notifications';
 
 export * from './responses/application';
 export * from './responses/assets';
