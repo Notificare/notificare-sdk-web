@@ -5,8 +5,10 @@ export * from './models/notification';
 export * from './models/user-data';
 
 export * from './payloads/device-registration';
+export * from './payloads/device-update';
 
 export * from './requests/application';
+export * from './requests/device';
 
 export * from './responses/application';
 export * from './responses/device-do-not-disturb';
