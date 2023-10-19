@@ -5,13 +5,14 @@ export async function fetchApplication(
   params: FetchApplicationParams,
 ): Promise<CloudApplicationResponse> {
   const { language, ...rest } = params;
+  const searchParams = new URLSearchParams();
+
+  if (language) searchParams.set('language', language);
 
   const response = await cloudRequest({
     ...rest,
     path: '/api/application/info',
-    searchParams: new URLSearchParams({
-      language: params.language ?? '',
-    }),
+    searchParams,
   });
 
   return response.json();
