@@ -1,4 +1,4 @@
-export interface CloudInboxItem {
+export interface CloudDeviceInboxItem {
   readonly _id: string;
   readonly notification: string;
   readonly type: string;
@@ -6,16 +6,16 @@ export interface CloudInboxItem {
   readonly title?: string;
   readonly subtitle?: string;
   readonly message: string;
-  readonly attachment?: CloudInboxItemAttachment;
-  readonly extra?: CloudInboxItemExtra;
+  readonly attachment?: CloudDeviceInboxItemAttachment;
+  readonly extra?: CloudDeviceInboxItemExtra;
   readonly opened?: boolean;
   readonly visible?: boolean;
   readonly expires?: string;
 }
 
-export interface CloudInboxItemAttachment {
+export interface CloudDeviceInboxItemAttachment {
   readonly mimeType: string;
   readonly uri: string;
 }
 
-export type CloudInboxItemExtra = Record<string, unknown>;
+export type CloudDeviceInboxItemExtra = Record<string, unknown>;

@@ -1,7 +1,9 @@
-import { CloudInboxResponse } from '../responses/inbox';
+import { CloudDeviceInboxResponse } from '../responses/device-inbox';
 import { cloudRequest, CloudRequestParams } from '../request';
 
-export async function fetchInbox(params: FetchInboxParams): Promise<CloudInboxResponse> {
+export async function fetchDeviceInbox(
+  params: FetchDeviceInboxParams,
+): Promise<CloudDeviceInboxResponse> {
   const { deviceId, skip, limit, since, ...rest } = params;
 
   const searchParams = new URLSearchParams({
@@ -20,7 +22,7 @@ export async function fetchInbox(params: FetchInboxParams): Promise<CloudInboxRe
   return response.json();
 }
 
-export interface FetchInboxParams extends CloudRequestParams {
+export interface FetchDeviceInboxParams extends CloudRequestParams {
   deviceId: string;
   skip?: number;
   limit?: number;
