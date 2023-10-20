@@ -19,6 +19,7 @@ export * from './requests/dynamic-links';
 export * from './requests/events';
 export * from './requests/in-app-messages';
 export * from './requests/notifications';
+export * from './requests/user-inbox';
 
 export * from './responses/application';
 export * from './responses/assets';
@@ -29,3 +30,4 @@ export * from './responses/device-user-data';
 export * from './responses/dynamic-link';
 export * from './responses/in-app-message';
 export * from './responses/notification';
+export * from './responses/user-inbox';
