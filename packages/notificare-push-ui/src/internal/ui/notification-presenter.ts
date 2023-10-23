@@ -1,8 +1,10 @@
+import { fetchCloudPass, fetchCloudPassSaveLinks } from '@notificare/web-cloud-api';
 import {
   getOptions,
   NotificareInternalOptions,
   NotificareNotification,
   fetchDynamicLink,
+  getCloudApiEnvironment,
 } from '@notificare/web-core';
 import {
   notifyNotificationFailedToPresent,
@@ -14,7 +16,6 @@ import { ensureCleanState } from './root';
 import { logger } from '../../logger';
 import { createNotificationModal } from './notifications/notification-modal';
 import { presentAction } from './action-presenter';
-import { fetchPass, fetchPassSaveLinks } from '../internal-api';
 import { isAppleDevice, isSafariBrowser } from '../utils/device';
 
 class NotificationPresenter {
@@ -149,10 +150,16 @@ async function presentPassbook(
   if (!components.length) throw new Error('Invalid notification content.');
 
   const id = components[components.length - 1];
-  const pass = await fetchPass(id);
+  const { pass } = await fetchCloudPass({
+    environment: getCloudApiEnvironment(),
+    serial: id,
+  });
 
   if (pass.version === 2) {
-    const saveLinks = await fetchPassSaveLinks(id);
+    const { saveLinks } = await fetchCloudPassSaveLinks({
+      environment: getCloudApiEnvironment(),
+      serial: id,
+    });
 
     if (isAppleDevice() && isSafariBrowser() && saveLinks?.appleWallet) {
       window.location.href = saveLinks.appleWallet;

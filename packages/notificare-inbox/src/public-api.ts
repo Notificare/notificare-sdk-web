@@ -1,25 +1,28 @@
 import {
+  fetchNotification,
   getApplication,
+  getCloudApiEnvironment,
   getCurrentDevice,
   isReady,
+  logNotificationOpen,
   NotificareApplicationUnavailableError,
   NotificareDeviceUnavailableError,
+  NotificareNotification,
   NotificareNotReadyError,
   NotificareServiceUnavailableError,
-  request,
-  logNotificationOpen,
-  NotificareNotification,
-  fetchNotification,
 } from '@notificare/web-core';
-import { logger } from './logger';
 import {
-  convertNetworkInboxItemToPublic,
-  NetworkInboxResponse,
-} from './internal/network/responses/inbox-response';
+  clearCloudDeviceInbox,
+  fetchCloudDeviceInbox,
+  markCloudDeviceInboxAsRead,
+  removeCloudDeviceInboxItem,
+} from '@notificare/web-cloud-api';
+import { logger } from './logger';
 import { NotificareInboxResponse } from './models/notificare-inbox-response';
 import { NotificareInboxItem } from './models/notificare-inbox-item';
 import { refreshBadgeInternal } from './internal/internal-api';
 import { notifyInboxUpdated } from './internal/consumer-events';
+import { convertCloudInboxItemToPublic } from './internal/cloud-api/inbox-converter';
 
 export { onInboxUpdated, onBadgeUpdated } from './internal/consumer-events';
 
@@ -52,21 +55,16 @@ export async function fetchInbox(options?: FetchInboxOptions): Promise<Notificar
   const device = getCurrentDevice();
   if (!device) throw new NotificareDeviceUnavailableError();
 
-  const queryParameters = new URLSearchParams({
-    skip: options?.skip?.toString() ?? '0',
-    limit: options?.limit?.toString() ?? '100',
+  const { inboxItems, count, unread } = await fetchCloudDeviceInbox({
+    environment: getCloudApiEnvironment(),
+    deviceId: device.id,
+    skip: options?.skip ?? 0,
+    limit: options?.limit ?? 100,
+    since: options?.since,
   });
 
-  if (options?.since) queryParameters.set('since', options.since);
-
-  const response = await request(
-    `/api/notification/inbox/fordevice/${encodeURIComponent(device.id)}?${queryParameters}`,
-  );
-
-  const { inboxItems, count, unread }: NetworkInboxResponse = await response.json();
-
   return {
-    items: inboxItems.map(convertNetworkInboxItemToPublic),
+    items: inboxItems.map(convertCloudInboxItemToPublic),
     count,
     unread,
   };
@@ -111,8 +109,9 @@ export async function markAllInboxItemsAsRead(): Promise<void> {
   const device = getCurrentDevice();
   if (!device) throw new NotificareDeviceUnavailableError();
 
-  await request(`/api/notification/inbox/fordevice/${encodeURIComponent(device.id)}`, {
-    method: 'PUT',
+  await markCloudDeviceInboxAsRead({
+    environment: getCloudApiEnvironment(),
+    deviceId: device.id,
   });
 
   await refreshBadge();
@@ -124,8 +123,9 @@ export async function removeInboxItem(item: NotificareInboxItem): Promise<void> 
   const device = getCurrentDevice();
   if (!device) throw new NotificareDeviceUnavailableError();
 
-  await request(`/api/notification/inbox/${encodeURIComponent(item.id)}`, {
-    method: 'DELETE',
+  await removeCloudDeviceInboxItem({
+    environment: getCloudApiEnvironment(),
+    id: item.id,
   });
 
   await refreshBadge();
@@ -137,8 +137,9 @@ export async function clearInbox(): Promise<void> {
   const device = getCurrentDevice();
   if (!device) throw new NotificareDeviceUnavailableError();
 
-  await request(`/api/notification/inbox/fordevice/${encodeURIComponent(device.id)}`, {
-    method: 'DELETE',
+  await clearCloudDeviceInbox({
+    environment: getCloudApiEnvironment(),
+    deviceId: device.id,
   });
 
   await refreshBadge();

@@ -1,6 +1,6 @@
 import { registerComponents } from './register-components';
 
-export * from './internal/network/request';
+export * from './internal/cloud-api/environment';
 export * from './internal/component';
 export { registerComponent, broadcastComponentEvent } from './internal/component-cache';
 export {
@@ -10,12 +10,9 @@ export {
 } from './internal/internal-api-device';
 export { getOptions, NotificareInternalOptions } from './internal/options';
 export { logInternal, logNotificationOpen } from './internal/internal-api-events';
-export {
-  NetworkNotificationResponse,
-  convertNetworkNotificationToPublic,
-} from './internal/network/responses/notification-response';
+export { convertCloudNotificationToPublic } from './internal/cloud-api/converters/notification-converter';
 
-export * from './errors/notificare-network-request-error';
+export { NotificareNetworkRequestError } from '@notificare/web-cloud-api';
 export * from './errors/notificare-not-configured-error';
 export * from './errors/notificare-application-unavailable-error';
 export * from './errors/notificare-device-unavailable-error';
