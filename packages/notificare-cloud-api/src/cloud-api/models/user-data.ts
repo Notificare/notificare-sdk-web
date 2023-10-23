@@ -1,1 +1,1 @@
-export type CloudUserData = Record<string, unknown>;
+export type CloudUserData = Record<string, string>;

@@ -1,33 +1,10 @@
 import { NotificareNotificationAttachment } from '@notificare/web-core';
-import { NotificareInboxItem } from '../../../models/notificare-inbox-item';
+import { CloudDeviceInboxItem, CloudDeviceInboxItemAttachment } from '@notificare/web-cloud-api';
+import { NotificareInboxItem } from '../../models/notificare-inbox-item';
 
-export interface NetworkInboxResponse {
-  readonly inboxItems: NetworkInboxItem[];
-  readonly count: number;
-  readonly unread: number;
-}
-
-export interface NetworkInboxItem {
-  readonly _id: string;
-  readonly notification: string;
-  readonly type: string;
-  readonly time: string;
-  readonly title?: string;
-  readonly subtitle?: string;
-  readonly message: string;
-  readonly attachment?: NetworkInboxItemAttachment;
-  readonly extra?: Record<string, unknown>;
-  readonly opened?: boolean;
-  readonly visible?: boolean;
-  readonly expires?: string;
-}
-
-export interface NetworkInboxItemAttachment {
-  readonly mimeType: string;
-  readonly uri: string;
-}
-
-export function convertNetworkInboxItemToPublic(inboxItem: NetworkInboxItem): NotificareInboxItem {
+export function convertCloudInboxItemToPublic(
+  inboxItem: CloudDeviceInboxItem,
+): NotificareInboxItem {
   return {
     // eslint-disable-next-line no-underscore-dangle
     id: inboxItem._id,
@@ -53,7 +30,7 @@ export function convertNetworkInboxItemToPublic(inboxItem: NetworkInboxItem): No
 }
 
 function convertNetworkInboxItemAttachmentToPublic(
-  attachment: NetworkInboxItemAttachment,
+  attachment: CloudDeviceInboxItemAttachment,
 ): NotificareNotificationAttachment {
   return {
     mimeType: attachment.mimeType,

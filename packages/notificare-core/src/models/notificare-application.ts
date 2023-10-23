@@ -1,5 +1,3 @@
-import { NotificareNotificationAction } from './notificare-notification';
-
 export interface NotificareApplication {
   readonly id: string;
   readonly name: string;
@@ -70,12 +68,14 @@ export interface NotificareWebsitePushConfigLaunchConfigFloatingButtonOptions {
 export type NotificareWebsitePushConfigLaunchConfigFloatingButtonHorizontalAlignment =
   | 'start'
   | 'center'
-  | 'end';
+  | 'end'
+  | string;
 
 export type NotificareWebsitePushConfigLaunchConfigFloatingButtonVerticalAlignment =
   | 'top'
   | 'center'
-  | 'bottom';
+  | 'bottom'
+  | string;
 
 export interface NotificareWebsitePushConfigLaunchConfigFloatingButtonPermissionTexts {
   readonly default: string;
@@ -93,5 +93,22 @@ export interface NotificareActionCategory {
   readonly type: string;
   readonly name: string;
   readonly description?: string;
-  readonly actions: NotificareNotificationAction[];
+  readonly actions: NotificareActionCategoryAction[];
+}
+
+export interface NotificareActionCategoryAction {
+  readonly id: string;
+  readonly type: string;
+  readonly label: string;
+  readonly target?: string;
+  readonly keyboard: boolean;
+  readonly camera: boolean;
+  readonly destructive?: boolean;
+  readonly icon?: NotificareActionCategoryActionIcon;
+}
+
+export interface NotificareActionCategoryActionIcon {
+  readonly android?: string;
+  readonly ios?: string;
+  readonly web?: string;
 }

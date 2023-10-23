@@ -10,6 +10,7 @@ export function setOptions(options: NotificareInternalOptions) {
 }
 
 export interface NotificareInternalOptions {
+  useTestEnvironment?: boolean;
   services: NotificareInternalOptionsServices;
   applicationKey: string;
   applicationSecret: string;

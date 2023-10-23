@@ -1,8 +1,9 @@
-import { request } from './network/request';
+import { createCloudEvent } from '@notificare/web-cloud-api';
 import { logger } from './logger';
 import { getSession } from './internal-api-session-shared';
 import { getCurrentDevice } from './storage/local-storage';
 import { isConfigured } from './launch-state';
+import { getCloudApiEnvironment } from './cloud-api/environment';
 
 export async function logApplicationInstall() {
   await logInternal({ type: 're.notifica.event.application.Install' });
@@ -55,9 +56,9 @@ export async function logInternal(options: InternalLogEventOptions) {
 
   const currentDevice = getCurrentDevice();
 
-  await request('/api/event', {
-    method: 'POST',
-    body: {
+  await createCloudEvent({
+    environment: getCloudApiEnvironment(),
+    payload: {
       type: options.type,
       timestamp: Date.now(),
       deviceID: currentDevice?.id,

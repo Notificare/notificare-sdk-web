@@ -85,6 +85,12 @@ export interface CloudApplicationActionCategory {
 }
 
 export interface CloudApplicationActionCategoryAction {
+  readonly _id: string;
+  readonly type: string;
+  readonly label?: string;
+  readonly target?: string;
+  readonly camera?: boolean;
+  readonly keyboard?: boolean;
   readonly destructive?: boolean;
   readonly icon?: CloudApplicationActionCategoryActionIcon;
 }

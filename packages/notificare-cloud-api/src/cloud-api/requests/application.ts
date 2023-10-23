@@ -1,8 +1,8 @@
 import { CloudApplicationResponse } from '../responses/application';
 import { cloudRequest, CloudRequestParams } from '../request';
 
-export async function fetchApplication(
-  params: FetchApplicationParams,
+export async function fetchCloudApplication(
+  params: FetchCloudApplicationParams,
 ): Promise<CloudApplicationResponse> {
   const { language, ...rest } = params;
   const searchParams = new URLSearchParams();
@@ -18,6 +18,6 @@ export async function fetchApplication(
   return response.json();
 }
 
-export interface FetchApplicationParams extends CloudRequestParams {
+export interface FetchCloudApplicationParams extends CloudRequestParams {
   language?: string;
 }

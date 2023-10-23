@@ -1,7 +1,9 @@
 import { CloudAssetsResponse } from '../responses/assets';
 import { cloudRequest, CloudRequestParams } from '../request';
 
-export async function fetchAssetGroup(params: FetchAssetGroupParams): Promise<CloudAssetsResponse> {
+export async function fetchCloudAssetGroup(
+  params: FetchCloudAssetGroupParams,
+): Promise<CloudAssetsResponse> {
   const { deviceId, userId, group, ...rest } = params;
 
   const searchParams = new URLSearchParams({ deviceID: deviceId });
@@ -16,7 +18,7 @@ export async function fetchAssetGroup(params: FetchAssetGroupParams): Promise<Cl
   return response.json();
 }
 
-export interface FetchAssetGroupParams extends CloudRequestParams {
+export interface FetchCloudAssetGroupParams extends CloudRequestParams {
   deviceId: string;
   userId?: string; // TODO: remove when the API stop processing this property.
   group: string;

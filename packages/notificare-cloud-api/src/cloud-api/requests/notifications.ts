@@ -1,8 +1,8 @@
 import { CloudNotificationResponse } from '../responses/notification';
 import { cloudRequest, CloudRequestParams } from '../request';
 
-export async function fetchNotification(
-  params: FetchNotificationParams,
+export async function fetchCloudNotification(
+  params: FetchCloudNotificationParams,
 ): Promise<CloudNotificationResponse> {
   const { id, ...rest } = params;
 
@@ -14,6 +14,6 @@ export async function fetchNotification(
   return response.json();
 }
 
-export interface FetchNotificationParams extends CloudRequestParams {
+export interface FetchCloudNotificationParams extends CloudRequestParams {
   id: string;
 }

@@ -17,6 +17,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@notificare/web-cloud-api": "^3.0.0",
     "@notificare/web-logger": "^3.0.0",
     "tslib": "^2.5.0"
   },

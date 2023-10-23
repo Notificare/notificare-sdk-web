@@ -7,7 +7,7 @@ import { CloudDeviceTagsResponse } from '../responses/device-tags';
 import { CloudDeviceUpdatePayload } from '../payloads/device-update';
 import { CloudDeviceRegistrationPayload } from '../payloads/device-registration';
 
-export async function registerDevice(params: RegisterDeviceParams): Promise<void> {
+export async function registerCloudDevice(params: RegisterCloudDeviceParams): Promise<void> {
   const { payload, ...rest } = params;
 
   await cloudRequest({
@@ -18,11 +18,11 @@ export async function registerDevice(params: RegisterDeviceParams): Promise<void
   });
 }
 
-export interface RegisterDeviceParams extends CloudRequestParams {
+export interface RegisterCloudDeviceParams extends CloudRequestParams {
   payload: CloudDeviceRegistrationPayload;
 }
 
-export async function updateDevice(params: UpdateDeviceParams): Promise<void> {
+export async function updateCloudDevice(params: UpdateCloudDeviceParams): Promise<void> {
   const { deviceId, payload, ...rest } = params;
 
   await cloudRequest({
@@ -33,12 +33,12 @@ export async function updateDevice(params: UpdateDeviceParams): Promise<void> {
   });
 }
 
-export interface UpdateDeviceParams extends CloudRequestParams {
+export interface UpdateCloudDeviceParams extends CloudRequestParams {
   deviceId: string;
   payload: CloudDeviceUpdatePayload;
 }
 
-export async function deleteDevice(params: DeleteDeviceParams): Promise<void> {
+export async function deleteCloudDevice(params: DeleteCloudDeviceParams): Promise<void> {
   const { deviceId, ...rest } = params;
 
   await cloudRequest({
@@ -48,12 +48,12 @@ export async function deleteDevice(params: DeleteDeviceParams): Promise<void> {
   });
 }
 
-export interface DeleteDeviceParams extends CloudRequestParams {
+export interface DeleteCloudDeviceParams extends CloudRequestParams {
   deviceId: string;
 }
 
-export async function fetchDeviceTags(
-  params: FetchDeviceTagsParams,
+export async function fetchCloudDeviceTags(
+  params: FetchCloudDeviceTagsParams,
 ): Promise<CloudDeviceTagsResponse> {
   const { deviceId, ...rest } = params;
 
@@ -65,11 +65,11 @@ export async function fetchDeviceTags(
   return response.json();
 }
 
-export interface FetchDeviceTagsParams extends CloudRequestParams {
+export interface FetchCloudDeviceTagsParams extends CloudRequestParams {
   deviceId: string;
 }
 
-export async function addDeviceTags(params: UpdateDeviceTagsParams): Promise<void> {
+export async function addCloudDeviceTags(params: UpdateCloudDeviceTagsParams): Promise<void> {
   const { deviceId, tags, ...rest } = params;
 
   await cloudRequest({
@@ -80,12 +80,12 @@ export async function addDeviceTags(params: UpdateDeviceTagsParams): Promise<voi
   });
 }
 
-export interface UpdateDeviceTagsParams extends CloudRequestParams {
+export interface UpdateCloudDeviceTagsParams extends CloudRequestParams {
   deviceId: string;
   tags: string[];
 }
 
-export async function removeDeviceTags(params: RemoveDeviceTagsParams): Promise<void> {
+export async function removeCloudDeviceTags(params: RemoveCloudDeviceTagsParams): Promise<void> {
   const { deviceId, tags, ...rest } = params;
 
   await cloudRequest({
@@ -96,12 +96,12 @@ export async function removeDeviceTags(params: RemoveDeviceTagsParams): Promise<
   });
 }
 
-export interface RemoveDeviceTagsParams extends CloudRequestParams {
+export interface RemoveCloudDeviceTagsParams extends CloudRequestParams {
   deviceId: string;
   tags: string[];
 }
 
-export async function clearDeviceTags(params: ClearDeviceTagsParams): Promise<void> {
+export async function clearCloudDeviceTags(params: ClearCloudDeviceTagsParams): Promise<void> {
   const { deviceId, ...rest } = params;
 
   await cloudRequest({
@@ -111,12 +111,12 @@ export async function clearDeviceTags(params: ClearDeviceTagsParams): Promise<vo
   });
 }
 
-export interface ClearDeviceTagsParams extends CloudRequestParams {
+export interface ClearCloudDeviceTagsParams extends CloudRequestParams {
   deviceId: string;
 }
 
-export async function fetchDeviceDoNotDisturb(
-  params: FetchDeviceDoNotDisturbParams,
+export async function fetchCloudDeviceDoNotDisturb(
+  params: FetchCloudDeviceDoNotDisturbParams,
 ): Promise<CloudDeviceDoNotDisturbResponse> {
   const { deviceId, ...rest } = params;
 
@@ -128,12 +128,12 @@ export async function fetchDeviceDoNotDisturb(
   return response.json();
 }
 
-export interface FetchDeviceDoNotDisturbParams extends CloudRequestParams {
+export interface FetchCloudDeviceDoNotDisturbParams extends CloudRequestParams {
   deviceId: string;
 }
 
-export async function updateDeviceDoNotDisturb(
-  params: UpdateDeviceDoNotDisturbParams,
+export async function updateCloudDeviceDoNotDisturb(
+  params: UpdateCloudDeviceDoNotDisturbParams,
 ): Promise<void> {
   const { deviceId, dnd, ...rest } = params;
 
@@ -145,13 +145,13 @@ export async function updateDeviceDoNotDisturb(
   });
 }
 
-export interface UpdateDeviceDoNotDisturbParams extends CloudRequestParams {
+export interface UpdateCloudDeviceDoNotDisturbParams extends CloudRequestParams {
   deviceId: string;
   dnd: CloudDoNotDisturb;
 }
 
-export async function clearDeviceDoNotDisturb(
-  params: ClearDeviceDoNotDisturbParams,
+export async function clearCloudDeviceDoNotDisturb(
+  params: ClearCloudDeviceDoNotDisturbParams,
 ): Promise<void> {
   const { deviceId, ...rest } = params;
 
@@ -162,12 +162,12 @@ export async function clearDeviceDoNotDisturb(
   });
 }
 
-export interface ClearDeviceDoNotDisturbParams extends CloudRequestParams {
+export interface ClearCloudDeviceDoNotDisturbParams extends CloudRequestParams {
   deviceId: string;
 }
 
-export async function fetchDeviceUserData(
-  params: FetchDeviceUserDataParams,
+export async function fetchCloudDeviceUserData(
+  params: FetchCloudDeviceUserDataParams,
 ): Promise<CloudDeviceUserDataResponse> {
   const { deviceId, ...rest } = params;
 
@@ -179,11 +179,13 @@ export async function fetchDeviceUserData(
   return response.json();
 }
 
-export interface FetchDeviceUserDataParams extends CloudRequestParams {
+export interface FetchCloudDeviceUserDataParams extends CloudRequestParams {
   deviceId: string;
 }
 
-export async function updateDeviceUserData(params: UpdateDeviceUserDataParams): Promise<void> {
+export async function updateCloudDeviceUserData(
+  params: UpdateCloudDeviceUserDataParams,
+): Promise<void> {
   const { deviceId, userData, ...rest } = params;
 
   await cloudRequest({
@@ -194,7 +196,23 @@ export async function updateDeviceUserData(params: UpdateDeviceUserDataParams): 
   });
 }
 
-export interface UpdateDeviceUserDataParams extends CloudRequestParams {
+export interface UpdateCloudDeviceUserDataParams extends CloudRequestParams {
   deviceId: string;
   userData: CloudUserData;
+}
+
+export async function registerCloudTestDevice(params: RegisterCloudTestDevice): Promise<void> {
+  const { deviceId, nonce, ...rest } = params;
+
+  await cloudRequest({
+    ...rest,
+    method: 'PUT',
+    path: `/api/support/testdevice/${encodeURIComponent(nonce)}`,
+    body: { deviceID: deviceId },
+  });
+}
+
+export interface RegisterCloudTestDevice extends CloudRequestParams {
+  deviceId: string;
+  nonce: string;
 }

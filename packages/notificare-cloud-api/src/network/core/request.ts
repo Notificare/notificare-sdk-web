@@ -1,4 +1,4 @@
-import { NetworkRequestError } from './errors';
+import { NotificareNetworkRequestError } from './errors';
 import { base64Encode, sleep } from '../../utils';
 import { logger } from '../../logger';
 
@@ -36,7 +36,7 @@ export async function request(params: RequestParams): Promise<Response> {
 
     // Having a response after the try catch means the request completed successfully
     // but there's something wrong with it (ie bad request).
-    if (response) throw new NetworkRequestError(response);
+    if (response) throw new NotificareNetworkRequestError(response);
   }
 
   logger.error('Request exceeded maximum retries.');
@@ -45,7 +45,7 @@ export async function request(params: RequestParams): Promise<Response> {
 
 export interface RequestParams {
   method?: 'GET' | 'POST' | 'PATCH' | 'PUT' | 'DELETE';
-  url: URL;
+  url: URL | string;
   authorization?: RequestAuthorization;
   body?: unknown;
   formData?: FormData;

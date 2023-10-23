@@ -1,7 +1,7 @@
 import { CloudCreateEventPayload } from '../payloads/event';
 import { cloudRequest, CloudRequestParams } from '../request';
 
-export async function createEvent(params: CreateEventParams): Promise<void> {
+export async function createCloudEvent(params: CreateCloudEventParams): Promise<void> {
   const { payload, ...rest } = params;
 
   await cloudRequest({
@@ -12,6 +12,6 @@ export async function createEvent(params: CreateEventParams): Promise<void> {
   });
 }
 
-export interface CreateEventParams extends CloudRequestParams {
+export interface CreateCloudEventParams extends CloudRequestParams {
   payload: CloudCreateEventPayload;
 }

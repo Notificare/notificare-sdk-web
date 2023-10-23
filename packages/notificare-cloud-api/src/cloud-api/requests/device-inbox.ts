@@ -1,8 +1,8 @@
 import { CloudDeviceInboxResponse } from '../responses/device-inbox';
 import { cloudRequest, CloudRequestParams } from '../request';
 
-export async function fetchDeviceInbox(
-  params: FetchDeviceInboxParams,
+export async function fetchCloudDeviceInbox(
+  params: FetchCloudDeviceInboxParams,
 ): Promise<CloudDeviceInboxResponse> {
   const { deviceId, skip, limit, since, ...rest } = params;
 
@@ -22,14 +22,16 @@ export async function fetchDeviceInbox(
   return response.json();
 }
 
-export interface FetchDeviceInboxParams extends CloudRequestParams {
+export interface FetchCloudDeviceInboxParams extends CloudRequestParams {
   deviceId: string;
   skip?: number;
   limit?: number;
   since?: string;
 }
 
-export async function removeDeviceInboxItem(params: RemoveDeviceInboxItemParams): Promise<void> {
+export async function removeCloudDeviceInboxItem(
+  params: RemoveCloudDeviceInboxItemParams,
+): Promise<void> {
   const { id, ...rest } = params;
 
   await cloudRequest({
@@ -39,11 +41,13 @@ export async function removeDeviceInboxItem(params: RemoveDeviceInboxItemParams)
   });
 }
 
-export interface RemoveDeviceInboxItemParams extends CloudRequestParams {
+export interface RemoveCloudDeviceInboxItemParams extends CloudRequestParams {
   id: string;
 }
 
-export async function markDeviceInboxAsRead(params: MarkDeviceInboxAsReadParams): Promise<void> {
+export async function markCloudDeviceInboxAsRead(
+  params: MarkCloudDeviceInboxAsReadParams,
+): Promise<void> {
   const { deviceId, ...rest } = params;
 
   await cloudRequest({
@@ -53,11 +57,11 @@ export async function markDeviceInboxAsRead(params: MarkDeviceInboxAsReadParams)
   });
 }
 
-export interface MarkDeviceInboxAsReadParams extends CloudRequestParams {
+export interface MarkCloudDeviceInboxAsReadParams extends CloudRequestParams {
   deviceId: string;
 }
 
-export async function clearDeviceInbox(params: ClearDeviceInboxParams): Promise<void> {
+export async function clearCloudDeviceInbox(params: ClearCloudDeviceInboxParams): Promise<void> {
   const { deviceId, ...rest } = params;
 
   await cloudRequest({
@@ -67,6 +71,6 @@ export async function clearDeviceInbox(params: ClearDeviceInboxParams): Promise<
   });
 }
 
-export interface ClearDeviceInboxParams extends CloudRequestParams {
+export interface ClearCloudDeviceInboxParams extends CloudRequestParams {
   deviceId: string;
 }

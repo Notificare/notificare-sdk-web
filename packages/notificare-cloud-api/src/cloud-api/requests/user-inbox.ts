@@ -1,8 +1,8 @@
 import { cloudRequest, CloudRequestParams } from '../request';
 import { CloudUserInboxNotificationResponse } from '../responses/user-inbox';
 
-export async function fetchUserInboxNotification(
-  params: FetchUserInboxNotificationParams,
+export async function fetchCloudUserInboxNotification(
+  params: FetchCloudUserInboxNotificationParams,
 ): Promise<CloudUserInboxNotificationResponse> {
   const { id, deviceId, ...rest } = params;
 
@@ -17,12 +17,14 @@ export async function fetchUserInboxNotification(
   return response.json();
 }
 
-export interface FetchUserInboxNotificationParams extends CloudRequestParams {
+export interface FetchCloudUserInboxNotificationParams extends CloudRequestParams {
   deviceId: string;
   id: string;
 }
 
-export async function removeUserInboxItem(params: RemoveUserInboxItemParams): Promise<void> {
+export async function removeCloudUserInboxItem(
+  params: RemoveCloudUserInboxItemParams,
+): Promise<void> {
   const { id, deviceId, ...rest } = params;
 
   const encodedId = encodeURIComponent(id);
@@ -35,7 +37,7 @@ export async function removeUserInboxItem(params: RemoveUserInboxItemParams): Pr
   });
 }
 
-export interface RemoveUserInboxItemParams extends CloudRequestParams {
+export interface RemoveCloudUserInboxItemParams extends CloudRequestParams {
   deviceId: string;
   id: string;
 }
