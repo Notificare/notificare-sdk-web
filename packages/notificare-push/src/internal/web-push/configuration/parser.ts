@@ -22,7 +22,6 @@ export function parseWorkerConfiguration(encoded: string): WorkerConfiguration |
     applicationKey,
     applicationSecret,
     useTestEnvironment: config.useTestEnvironment,
-    standalone: config.standalone,
   };
 }
 

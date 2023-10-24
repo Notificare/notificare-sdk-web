@@ -133,7 +133,6 @@ function getWorkerConfiguration(): WorkerConfiguration {
     applicationKey: options.applicationKey,
     applicationSecret: options.applicationSecret,
     useTestEnvironment: options.useTestEnvironment ? true : undefined,
-    standalone: navigator.standalone ? true : undefined,
   };
 }
 
@@ -144,8 +143,7 @@ function areSameWorkerConfiguration(
   return (
     expectedConfig.applicationKey === config.applicationKey &&
     expectedConfig.applicationSecret === config.applicationSecret &&
-    expectedConfig.useTestEnvironment === config.useTestEnvironment &&
-    expectedConfig.standalone === config.standalone
+    expectedConfig.useTestEnvironment === config.useTestEnvironment
   );
 }
 
