@@ -101,7 +101,6 @@ export function configure(options: NotificareOptions) {
   setOptions({
     useTestEnvironment,
     services,
-    useTestEnvironment: useTestEnvironment === undefined ? undefined : useTestEnvironment,
     applicationKey: options.applicationKey,
     applicationSecret: options.applicationSecret,
     applicationVersion: options.applicationVersion ?? '1.0.0',

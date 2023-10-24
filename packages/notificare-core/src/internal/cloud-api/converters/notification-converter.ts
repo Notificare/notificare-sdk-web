@@ -50,6 +50,8 @@ function convertNotificationActionToPublic(
   if (!action.label) return undefined;
 
   return {
+    // eslint-disable-next-line no-underscore-dangle
+    id: action._id,
     type: action.type,
     label: action.label,
     target: action.target,
