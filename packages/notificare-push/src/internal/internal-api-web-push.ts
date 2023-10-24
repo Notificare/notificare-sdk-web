@@ -98,6 +98,9 @@ export async function handleServiceWorkerMessage(event: MessageEvent) {
     case 're.notifica.push.sw.unknown_notification_received':
       await handleServiceWorkerUnknownNotificationReceived(event);
       break;
+    case 're.notifica.push.sw.update_inbox':
+      await handleServiceWorkerUpdateInbox();
+      break;
     default:
       logger.warning('Unknown service worker message event: ', event);
   }
@@ -241,4 +244,9 @@ async function handleServiceWorkerSystemNotificationReceived(event: MessageEvent
 
 async function handleServiceWorkerUnknownNotificationReceived(event: MessageEvent) {
   notifyUnknownNotificationReceived(event.data.message);
+}
+
+async function handleServiceWorkerUpdateInbox() {
+  // Notify the inbox to update itself.
+  broadcastComponentEvent('notification_opened');
 }

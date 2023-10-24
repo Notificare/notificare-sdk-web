@@ -1,6 +1,8 @@
 import { NotificareNotification, NotificareNotificationAction } from '@notificare/web-core';
-import { getEmailUrl, getSmsUrl, getTelephoneUrl } from '../utils';
+import { createCloudNotificationReply } from '@notificare/web-cloud-api';
+import { getCurrentPushToken, getEmailUrl, getSmsUrl, getTelephoneUrl } from '../utils';
 import { presentWindowClient } from './window-client';
+import { getCloudApiEnvironment } from '../cloud-api/environment';
 
 // Let TS know this is scoped to a service worker.
 declare const self: ServiceWorkerGlobalScope;
@@ -30,7 +32,10 @@ export async function presentNotificationAction(
       break;
     default:
       await presentWindowClient(notification, action);
+      return;
   }
+
+  await createNotificationReply(notification, action);
 }
 
 async function presentAppNotificationAction(action: NotificareNotificationAction): Promise<void> {
@@ -93,4 +98,24 @@ async function presentTelephoneNotificationAction(
     // The promise fails when opening a deep link
     // even when it succeeds in processing it.
   }
+}
+
+export async function createNotificationReply(
+  notification: NotificareNotification,
+  action: NotificareNotificationAction,
+) {
+  const deviceId = await getCurrentPushToken();
+  if (!deviceId) throw new Error('Unable to acquire the device id.');
+
+  await createCloudNotificationReply({
+    environment: await getCloudApiEnvironment(),
+    payload: {
+      notification: notification.id,
+      label: action.label,
+      deviceID: deviceId,
+      data: {
+        target: action.target,
+      },
+    },
+  });
 }
