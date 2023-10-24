@@ -1,10 +1,15 @@
 import { NotificareNotification } from '@notificare/web-core';
-import { fetchDynamicLink, fetchPass, fetchPassSaveLinks } from '../network/cloud-api';
-import { getCloudApiUrl, isAppleDevice, isSafariBrowser } from '../utils';
+import {
+  fetchCloudDynamicLink,
+  fetchCloudPass,
+  fetchCloudPassSaveLinks,
+} from '@notificare/web-cloud-api';
+import { getCloudApiUrl, getCurrentPushToken, isAppleDevice, isSafariBrowser } from '../utils';
 import { parseWorkerConfiguration } from '../configuration/parser';
 import { InvalidWorkerConfigurationError } from '../configuration/errors';
 import { presentWindowClient } from './window-client';
 import { logger } from '../../logger';
+import { getCloudApiEnvironment } from '../cloud-api/environment';
 
 // Let TS know this is scoped to a service worker.
 declare const self: ServiceWorkerGlobalScope;
@@ -41,10 +46,16 @@ async function presentPassbookNotification(notification: NotificareNotification)
   if (!components.length) throw new Error('Invalid notification content.');
 
   const id = components[components.length - 1];
-  const pass = await fetchPass(id);
+  const { pass } = await fetchCloudPass({
+    environment: await getCloudApiEnvironment(),
+    serial: id,
+  });
 
   if (pass.version === 2) {
-    const saveLinks = await fetchPassSaveLinks(id);
+    const { saveLinks } = await fetchCloudPassSaveLinks({
+      environment: await getCloudApiEnvironment(),
+      serial: id,
+    });
 
     if (isAppleDevice() && isSafariBrowser() && saveLinks?.appleWallet) {
       await self.clients.openWindow(saveLinks.appleWallet);
@@ -103,7 +114,11 @@ async function presentUrlSchemeNotification(notification: NotificareNotification
     return;
   }
 
-  const link = await fetchDynamicLink(urlStr);
+  const { link } = await fetchCloudDynamicLink({
+    environment: await getCloudApiEnvironment(),
+    deviceId: await getCurrentPushToken(),
+    url: urlStr,
+  });
 
   try {
     await self.clients.openWindow(link.target);

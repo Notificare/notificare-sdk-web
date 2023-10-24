@@ -1,9 +1,12 @@
 import { NotificareNotification } from '@notificare/web-core';
+import { fetchCloudNotification } from '@notificare/web-cloud-api';
 import { logger } from '../../logger';
 import { NotificareWorkerNotification, WorkerNotification } from '../internal-types';
-import { fetchNotification, logNotificationReceived } from '../network/cloud-api';
 import { parseWorkerConfiguration } from '../configuration/parser';
 import { createPartialNotification } from '../create-partial-notification';
+import { convertCloudNotificationToPublic } from '../cloud-api/converters/notification-converter';
+import { getCloudApiEnvironment } from '../cloud-api/environment';
+import { logNotificationReceived } from '../cloud-api/requests/events';
 
 // Let TS know this is scoped to a service worker.
 declare const self: ServiceWorkerGlobalScope;
@@ -91,7 +94,12 @@ async function handleNotification(workerNotification: NotificareWorkerNotificati
   let notification: NotificareNotification;
 
   try {
-    notification = await fetchNotification(workerNotification.id);
+    const response = await fetchCloudNotification({
+      environment: await getCloudApiEnvironment(),
+      id: workerNotification.id,
+    });
+
+    notification = convertCloudNotificationToPublic(response.notification);
   } catch (e) {
     logger.error('Failed to fetch notification.', e);
     notification = createPartialNotification(workerNotification);
