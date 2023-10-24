@@ -24,6 +24,7 @@
     "dist"
   ],
   "dependencies": {
+    "@notificare/web-cloud-api": "^3.0.0",
     "@notificare/web-core": "^3.0.0",
     "@notificare/web-logger": "^3.0.0",
     "@notificare/web-ui": "^3.0.0",

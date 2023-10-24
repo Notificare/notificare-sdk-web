@@ -1,4 +1,10 @@
 import {
+  CloudDeviceRegistrationPayload,
+  deleteCloudDevice,
+  registerCloudDevice,
+  registerCloudTestDevice,
+} from '@notificare/web-cloud-api';
+import {
   getApplicationVersion,
   getBrowserLanguage,
   getBrowserRegion,
@@ -6,8 +12,6 @@ import {
   randomUUID,
 } from './utils';
 import { NotificareTransport } from '../models/notificare-transport';
-import { DeviceRegistration } from './network/payloads/device-registration';
-import { request } from './network/request';
 import { logger } from './logger';
 import { getOptions } from './options';
 import { NotificareDevice } from '../models/notificare-device';
@@ -19,6 +23,7 @@ import { notifyDeviceRegistered } from './consumer-events';
 import { getCurrentDevice, storeCurrentDevice } from './storage/local-storage';
 import { logApplicationInstall, logApplicationRegistration } from './internal-api-events';
 import { launch as launchSession } from './internal-api-session';
+import { getCloudApiEnvironment } from './cloud-api/environment';
 
 export async function registerTemporaryDevice() {
   const device = getCurrentDevice();
@@ -58,10 +63,10 @@ export async function registerTestDevice(nonce: string) {
   const device = getCurrentDevice();
   if (!device) throw new NotificareDeviceUnavailableError();
 
-  const encodedNonce = encodeURIComponent(nonce);
-  await request(`/api/support/testdevice/${encodedNonce}`, {
-    method: 'PUT',
-    body: { deviceID: device.id },
+  await registerCloudTestDevice({
+    environment: getCloudApiEnvironment(),
+    deviceId: device.id,
+    nonce,
   });
 }
 
@@ -72,7 +77,7 @@ export async function registerDeviceInternal(options: InternalRegisterDeviceOpti
     let oldDeviceId: string | undefined;
     if (currentDevice?.id && currentDevice.id !== options.token) oldDeviceId = currentDevice.id;
 
-    const deviceRegistration: DeviceRegistration = {
+    const registration: CloudDeviceRegistrationPayload = {
       deviceID: options.token,
       oldDeviceID: oldDeviceId,
       userID: options.userId,
@@ -92,12 +97,12 @@ export async function registerDeviceInternal(options: InternalRegisterDeviceOpti
       allowedUI: options.transport === 'Notificare' ? false : undefined,
     };
 
-    await request('/api/device', {
-      method: 'POST',
-      body: deviceRegistration,
+    await registerCloudDevice({
+      environment: getCloudApiEnvironment(),
+      payload: registration,
     });
 
-    const device = convertRegistrationToStoredDevice(deviceRegistration, currentDevice);
+    const device = convertRegistrationToStoredDevice(registration, currentDevice);
     storeCurrentDevice(device);
   } else {
     logger.info('Skipping device registration, nothing changed.');
@@ -111,8 +116,9 @@ export async function deleteDevice(): Promise<void> {
   const device = getCurrentDevice();
   if (!device) throw new NotificareDeviceUnavailableError();
 
-  await request(`/api/device/${encodeURIComponent(device.id)}`, {
-    method: 'DELETE',
+  await deleteCloudDevice({
+    environment: getCloudApiEnvironment(),
+    deviceId: device.id,
   });
 
   storeCurrentDevice(undefined);
@@ -202,7 +208,7 @@ export function getDeviceRegion(): string {
 }
 
 function convertRegistrationToStoredDevice(
-  registration: DeviceRegistration,
+  registration: CloudDeviceRegistrationPayload,
   previousDevice: NotificareDevice | undefined,
 ): NotificareDevice {
   return {
@@ -214,7 +220,7 @@ function convertRegistrationToStoredDevice(
     appVersion: registration.appVersion,
     language: registration.language,
     region: registration.region,
-    transport: registration.transport,
+    transport: registration.transport as NotificareTransport,
     keys:
       registration.transport === 'Notificare'
         ? undefined
