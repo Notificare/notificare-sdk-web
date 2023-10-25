@@ -3,6 +3,9 @@ import { createCloudNotificationReply } from '@notificare/web-cloud-api';
 import { getCurrentPushToken, getEmailUrl, getSmsUrl, getTelephoneUrl } from '../utils';
 import { presentWindowClient } from './window-client';
 import { getCloudApiEnvironment } from '../cloud-api/environment';
+import { parseWorkerConfiguration } from '../configuration/parser';
+import { InvalidWorkerConfigurationError } from '../configuration/errors';
+import { logger } from '../../logger';
 
 // Let TS know this is scoped to a service worker.
 declare const self: ServiceWorkerGlobalScope;
@@ -11,6 +14,15 @@ export async function presentNotificationAction(
   notification: NotificareNotification,
   action: NotificareNotificationAction,
 ) {
+  const config = parseWorkerConfiguration();
+  if (!config) throw new InvalidWorkerConfigurationError();
+
+  if (config.standalone) {
+    logger.debug('Presenting a notification action in standalone mode.');
+    await presentWindowClient(notification, action);
+    return;
+  }
+
   switch (action.type) {
     case 're.notifica.action.App':
       await presentAppNotificationAction(action);

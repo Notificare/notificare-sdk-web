@@ -15,6 +15,15 @@ import { getCloudApiEnvironment } from '../cloud-api/environment';
 declare const self: ServiceWorkerGlobalScope;
 
 export async function presentNotification(notification: NotificareNotification) {
+  const config = parseWorkerConfiguration();
+  if (!config) throw new InvalidWorkerConfigurationError();
+
+  if (config.standalone) {
+    logger.debug('Presenting a notification in standalone mode.');
+    await presentWindowClient(notification);
+    return;
+  }
+
   switch (notification.type) {
     case 're.notifica.notification.InAppBrowser':
       await presentInAppBrowserNotification(notification);
