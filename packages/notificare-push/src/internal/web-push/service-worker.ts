@@ -7,6 +7,7 @@ import { logger } from '../../logger';
 import { arrayBufferToBase64Url, base64UrlToUint8Array } from '../utils';
 import { WorkerConfiguration } from './configuration/worker-configuration';
 import { encodeWorkerConfiguration, parseWorkerConfiguration } from './configuration/parser';
+import { isStandaloneMode } from '../utils/device';
 
 export async function registerServiceWorker(
   options: NotificareInternalOptions,
@@ -133,7 +134,7 @@ function getWorkerConfiguration(): WorkerConfiguration {
     applicationKey: options.applicationKey,
     applicationSecret: options.applicationSecret,
     useTestEnvironment: options.useTestEnvironment ? true : undefined,
-    standalone: navigator.standalone ? true : undefined,
+    standalone: isStandaloneMode() ? true : undefined,
   };
 }
 
