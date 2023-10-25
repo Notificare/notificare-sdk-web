@@ -9,7 +9,7 @@ import {
   NotificareNotificationAction,
   NotificareNotificationAttachment,
   NotificareNotificationContent,
-} from '../../../models/notificare-notification';
+} from '@notificare/web-core';
 
 export function convertCloudNotificationToPublic(
   notification: CloudNotification,

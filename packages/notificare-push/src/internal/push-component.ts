@@ -1,4 +1,11 @@
-import { Component, getApplication, getCurrentDevice } from '@notificare/web-core';
+import {
+  broadcastComponentEvent,
+  Component,
+  fetchNotification,
+  getApplication,
+  getCurrentDevice,
+  logNotificationOpen,
+} from '@notificare/web-core';
 import {
   disableWebPushNotifications,
   handleServiceWorkerMessage,
@@ -11,11 +18,12 @@ import {
   hasWebPushCapabilities,
 } from './internal-api';
 import { logger } from '../logger';
-import { handleNotificationOpened } from './internal-api-shared';
 import {
   getRemoteNotificationsEnabled,
   setRemoteNotificationsEnabled,
 } from './storage/local-storage';
+import { logNotificationInfluenced } from './internal-api-events';
+import { notifyNotificationOpened } from './consumer-events';
 
 /* eslint-disable class-methods-use-this */
 export class PushComponent extends Component {
@@ -141,7 +149,7 @@ export class PushComponent extends Component {
 
     if (!notificationId) return;
 
-    handleNotificationOpened(notificationId).catch((error) =>
+    this.handleSafariNotificationOpened(notificationId).catch((error) =>
       logger.error(`Unable to handle the notification open: ${error}`),
     );
   }
@@ -184,5 +192,17 @@ export class PushComponent extends Component {
     if (!notificationId) return undefined;
 
     return notificationId;
+  }
+
+  private async handleSafariNotificationOpened(notificationId: string) {
+    // Log the notification open event.
+    await logNotificationOpen(notificationId);
+    await logNotificationInfluenced(notificationId);
+
+    // Notify the inbox to update itself.
+    broadcastComponentEvent('notification_opened');
+
+    const notification = await fetchNotification(notificationId);
+    notifyNotificationOpened(notification);
   }
 }

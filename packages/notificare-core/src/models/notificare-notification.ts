@@ -19,6 +19,7 @@ export interface NotificareNotificationContent {
 }
 
 export interface NotificareNotificationAction {
+  readonly id: string;
   readonly type: string;
   readonly label: string;
   readonly target?: string;
