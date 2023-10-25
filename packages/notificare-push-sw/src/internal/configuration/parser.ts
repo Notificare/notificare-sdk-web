@@ -39,5 +39,6 @@ export function parseWorkerConfiguration(): WorkerConfiguration | undefined {
     applicationKey,
     applicationSecret,
     useTestEnvironment: config.useTestEnvironment,
+    standalone: config.standalone,
   };
 }
