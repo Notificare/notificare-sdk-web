@@ -68,7 +68,7 @@ function getRequestHeaders(params: RequestParams): Headers {
   headers.set('Accept', 'application/json');
 
   if (params.body) headers.set('Content-Type', 'application/json');
-  if (params.formData) headers.set('Content-Type', 'application/form-data');
+  // if (params.formData) headers.set('Content-Type', 'multipart/form-data');
 
   const authorizationHeader = getAuthorizationHeader(params);
   if (authorizationHeader) headers.set('Authorization', authorizationHeader);
