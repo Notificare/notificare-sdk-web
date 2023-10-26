@@ -87,6 +87,7 @@ function shouldTrackReplyBeforePresenting(action: NotificareNotificationAction):
   switch (action.type) {
     case 're.notifica.action.App':
     case 're.notifica.action.Browser':
+    case 're.notifica.action.InAppBrowser':
       return true;
     default:
       return false;
