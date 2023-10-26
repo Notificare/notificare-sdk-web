@@ -20,6 +20,7 @@ import {
 } from './consumer-events';
 import { createWebPushSubscription, registerServiceWorker } from './web-push/service-worker';
 import { NotificareNotificationDeliveryMechanism } from '../models/notificare-notification-delivery-mechanism';
+import { isStandaloneMode, isSafariDesktopBrowser } from './utils/device';
 
 export function hasWebPushSupport(): boolean {
   // The navigator.standalone check ensures that iOS Safari with WebPush
@@ -29,7 +30,7 @@ export function hasWebPushSupport(): boolean {
     'serviceWorker' in navigator &&
     'PushManager' in window &&
     'showNotification' in ServiceWorkerRegistration.prototype &&
-    (navigator.standalone === undefined || navigator.standalone)
+    (navigator.standalone === undefined || isStandaloneMode() || isSafariDesktopBrowser())
   );
 }
 
