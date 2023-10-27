@@ -1,19 +1,22 @@
 import {
-  convertNetworkNotificationToPublic,
   getApplication,
+  getCloudApiEnvironment,
   getCurrentDevice,
   isConfigured,
   isReady,
   logNotificationOpen,
-  NetworkNotificationResponse,
   NotificareApplicationUnavailableError,
   NotificareDeviceUnavailableError,
   NotificareNotConfiguredError,
   NotificareNotification,
   NotificareNotReadyError,
   NotificareServiceUnavailableError,
-  request,
+  convertCloudNotificationToPublic,
 } from '@notificare/web-core';
+import {
+  fetchCloudUserInboxNotification,
+  removeCloudUserInboxItem,
+} from '@notificare/web-cloud-api';
 import { logger } from './logger';
 import { NotificareUserInboxResponse } from './models/notificare-user-inbox-response';
 import { NotificareUserInboxItem } from './models/notificare-user-inbox-item';
@@ -66,11 +69,10 @@ export async function removeInboxItem(item: NotificareUserInboxItem): Promise<vo
   const device = getCurrentDevice();
   if (!device) throw new NotificareDeviceUnavailableError();
 
-  const encodedItemId = encodeURIComponent(item.id);
-  const encodedDeviceId = encodeURIComponent(device.id);
-
-  await request(`/api/notification/userinbox/${encodedItemId}/fordevice/${encodedDeviceId}`, {
-    method: 'DELETE',
+  await removeCloudUserInboxItem({
+    environment: getCloudApiEnvironment(),
+    deviceId: device.id,
+    id: item.id,
   });
 }
 
@@ -102,7 +104,7 @@ function checkPrerequisites() {
   }
 }
 
-export async function fetchUserInboxNotification(
+async function fetchUserInboxNotification(
   item: NotificareUserInboxItem,
 ): Promise<NotificareNotification> {
   if (!isConfigured()) throw new NotificareNotConfiguredError();
@@ -110,13 +112,11 @@ export async function fetchUserInboxNotification(
   const device = getCurrentDevice();
   if (!device) throw new NotificareDeviceUnavailableError();
 
-  const encodedItemId = encodeURIComponent(item.id);
-  const encodedDeviceId = encodeURIComponent(device.id);
+  const { notification } = await fetchCloudUserInboxNotification({
+    environment: getCloudApiEnvironment(),
+    deviceId: device.id,
+    id: item.id,
+  });
 
-  const response = await request(
-    `/api/notification/userinbox/${encodedItemId}/fordevice/${encodedDeviceId}`,
-  );
-
-  const { notification }: NetworkNotificationResponse = await response.json();
-  return convertNetworkNotificationToPublic(notification);
+  return convertCloudNotificationToPublic(notification);
 }

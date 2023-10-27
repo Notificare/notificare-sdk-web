@@ -1,19 +1,17 @@
 import {
   getApplication,
+  getCloudApiEnvironment,
   getCurrentDevice,
   isReady,
   NotificareApplicationUnavailableError,
   NotificareDeviceUnavailableError,
   NotificareNotReadyError,
   NotificareServiceUnavailableError,
-  request,
 } from '@notificare/web-core';
+import { fetchCloudAssetGroup } from '@notificare/web-cloud-api';
 import { logger } from './logger';
 import { NotificareAsset } from './models/notificare-asset';
-import {
-  convertNetworkAssetToPublic,
-  NetworkAssetsResponse,
-} from './internal/network/responses/assets-response';
+import { convertCloudAssetToPublic } from './internal/cloud-api/assets-converter';
 
 export async function fetchAssets(group: string): Promise<NotificareAsset[]> {
   checkPrerequisites();
@@ -21,15 +19,14 @@ export async function fetchAssets(group: string): Promise<NotificareAsset[]> {
   const device = getCurrentDevice();
   if (!device) throw new NotificareDeviceUnavailableError();
 
-  const queryParameters = new URLSearchParams({ deviceID: device.id });
-  if (device.userId) queryParameters.set('userID', device.userId);
+  const { assets } = await fetchCloudAssetGroup({
+    environment: getCloudApiEnvironment(),
+    deviceId: device.id,
+    userId: device.userId,
+    group,
+  });
 
-  const response = await request(
-    `/api/asset/forgroup/${encodeURIComponent(group)}?${queryParameters}`,
-  );
-
-  const { assets }: NetworkAssetsResponse = await response.json();
-  return assets.map((asset) => convertNetworkAssetToPublic(asset));
+  return assets.map((asset) => convertCloudAssetToPublic(asset));
 }
 
 function checkPrerequisites() {

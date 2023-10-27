@@ -3,6 +3,7 @@ import json from "@rollup/plugin-json";
 import terser from "@rollup/plugin-terser";
 import nodeResolve from "@rollup/plugin-node-resolve";
 import commonjs from "@rollup/plugin-commonjs";
+import svg from "rollup-plugin-svg-import";
 import { emitModulePackageFile } from "./plugins/emit-module-package-file.js";
 import { dirname, resolve } from "node:path";
 import { readFileSync } from "node:fs";
@@ -24,6 +25,7 @@ export function build(pkg, options) {
       // noEmitOnError: true,
     }),
     json(),
+    svg(),
   ];
 
   const commonJsBuilds = [
@@ -63,6 +65,7 @@ export function build(pkg, options) {
       // noEmitOnError: true,
     }),
     json({ preferConst: true }),
+    svg(),
   ];
 
   const esmBuilds = [

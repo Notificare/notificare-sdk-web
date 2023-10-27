@@ -1,20 +1,27 @@
-import { NotificareInternalOptions } from '@notificare/web-core';
+import {
+  getOptions,
+  NotificareInternalOptions,
+  NotificareNotConfiguredError,
+} from '@notificare/web-core';
 import { logger } from '../../logger';
 import { arrayBufferToBase64Url, base64UrlToUint8Array } from '../utils';
+import { WorkerConfiguration } from './configuration/worker-configuration';
+import { encodeWorkerConfiguration, parseWorkerConfiguration } from './configuration/parser';
+import { isStandaloneMode } from '../utils/device';
 
 export async function registerServiceWorker(
   options: NotificareInternalOptions,
 ): Promise<ServiceWorkerRegistration> {
-  const workerLocation = options.serviceWorker ?? '/sw.js';
+  const workerPathname = options.serviceWorker ?? '/sw.js';
 
   if (!hasSupportedProtocol(options.applicationHost)) {
     throw new Error('Service workers are only available over HTTPS or localhost.');
   }
 
-  const activeRegistration = await getActiveWorkerRegistration(workerLocation);
+  const activeRegistration = await getActiveWorkerRegistration(workerPathname);
   if (activeRegistration) {
     logger.debug('Using previously registered service worker.');
-    return navigator.serviceWorker.ready;
+    return activeRegistration;
   }
 
   logger.debug('Registering new service worker.');
@@ -26,7 +33,9 @@ export async function registerServiceWorker(
     };
   }
 
-  await navigator.serviceWorker.register(workerLocation, registrationOptions);
+  const url = getConfiguredWorkerUrl(workerPathname);
+  await navigator.serviceWorker.register(url, registrationOptions);
+
   return navigator.serviceWorker.ready;
 }
 
@@ -81,10 +90,64 @@ function hasSupportedProtocol(applicationHost: string): boolean {
 }
 
 async function getActiveWorkerRegistration(
-  workerLocation: string,
+  workerPathname: string,
 ): Promise<ServiceWorkerRegistration | undefined> {
   const registrations = await navigator.serviceWorker.getRegistrations();
-  return registrations.find((r) => r.active?.scriptURL?.includes(workerLocation));
+  return registrations.find((r) => isValidWorkerRegistration(r, workerPathname));
+}
+
+function isValidWorkerRegistration(
+  registration: ServiceWorkerRegistration,
+  workerPathname: string,
+) {
+  const worker = registration.active;
+  if (!worker) return true;
+
+  const workerUrl = new URL(worker.scriptURL);
+  if (workerUrl.pathname !== workerPathname) return false;
+
+  const workerEncodedConfig = workerUrl.searchParams.get('notificareConfig');
+  if (!workerEncodedConfig) return false;
+
+  const workerConfig = parseWorkerConfiguration(workerEncodedConfig);
+  if (!workerConfig) return false;
+
+  const expectedConfig = getWorkerConfiguration();
+  return areSameWorkerConfiguration(workerConfig, expectedConfig);
+}
+
+function getConfiguredWorkerUrl(location: string): string {
+  const config = getWorkerConfiguration();
+  const encoded = encodeWorkerConfiguration(config);
+
+  const url = new URL(location, window.location.origin);
+  url.searchParams.set('notificareConfig', encoded);
+
+  return url.href.replace(window.location.origin, '');
+}
+
+function getWorkerConfiguration(): WorkerConfiguration {
+  const options = getOptions();
+  if (!options) throw new NotificareNotConfiguredError();
+
+  return {
+    applicationKey: options.applicationKey,
+    applicationSecret: options.applicationSecret,
+    useTestEnvironment: options.useTestEnvironment ? true : undefined,
+    standalone: isStandaloneMode() ? true : undefined,
+  };
+}
+
+function areSameWorkerConfiguration(
+  config: WorkerConfiguration,
+  expectedConfig: WorkerConfiguration,
+) {
+  return (
+    expectedConfig.applicationKey === config.applicationKey &&
+    expectedConfig.applicationSecret === config.applicationSecret &&
+    expectedConfig.useTestEnvironment === config.useTestEnvironment &&
+    expectedConfig.standalone === config.standalone
+  );
 }
 
 function subscriptionAboutToExpire(subscription: PushSubscription): boolean {

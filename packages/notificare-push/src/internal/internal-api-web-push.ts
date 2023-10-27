@@ -6,18 +6,21 @@ import {
   logNotificationOpen,
   NotificareApplication,
   NotificareInternalOptions,
+  NotificareNotification,
 } from '@notificare/web-core';
 import { arrayBufferToBase64 } from './utils';
 import { logger } from '../logger';
 import { logNotificationInfluenced, logNotificationReceived } from './internal-api-events';
 import {
   notifyNotificationActionOpened,
+  notifyNotificationOpened,
   notifyNotificationReceived,
   notifySystemNotificationReceived,
   notifyUnknownNotificationReceived,
 } from './consumer-events';
 import { createWebPushSubscription, registerServiceWorker } from './web-push/service-worker';
-import { handleNotificationOpened } from './internal-api-shared';
+import { NotificareNotificationDeliveryMechanism } from '../models/notificare-notification-delivery-mechanism';
+import { isStandaloneMode, isSafariDesktopBrowser } from './utils/device';
 
 export function hasWebPushSupport(): boolean {
   // The navigator.standalone check ensures that iOS Safari with WebPush
@@ -27,7 +30,7 @@ export function hasWebPushSupport(): boolean {
     'serviceWorker' in navigator &&
     'PushManager' in window &&
     'showNotification' in ServiceWorkerRegistration.prototype &&
-    (navigator.standalone === undefined || navigator.standalone)
+    (navigator.standalone === undefined || isStandaloneMode() || isSafariDesktopBrowser())
   );
 }
 
@@ -96,6 +99,9 @@ export async function handleServiceWorkerMessage(event: MessageEvent) {
     case 're.notifica.push.sw.unknown_notification_received':
       await handleServiceWorkerUnknownNotificationReceived(event);
       break;
+    case 're.notifica.push.sw.update_inbox':
+      await handleServiceWorkerUpdateInbox();
+      break;
     default:
       logger.warning('Unknown service worker message event: ', event);
   }
@@ -132,14 +138,51 @@ function getPushTokenFromPushSubscription(subscription: PushSubscription): PushT
 async function handleServiceWorkerNotificationReceived(event: MessageEvent) {
   broadcastComponentEvent('notification_received');
 
-  await logNotificationReceived(event.data.message.notificationId);
+  let notification: NotificareNotification;
+  let deliveryMechanism: NotificareNotificationDeliveryMechanism;
 
-  const notification = await fetchNotification(event.data.message.id);
-  notifyNotificationReceived(notification, event.data.message.push ? 'standard' : 'silent');
+  if (event.data.content) {
+    // Standard format
+    notification = event.data.content.notification;
+    deliveryMechanism = event.data.content.message.push ? 'standard' : 'silent';
+  } else {
+    // Legacy format
+    await logNotificationReceived(event.data.message.notificationId);
+
+    notification = await fetchNotification(event.data.message.id);
+    deliveryMechanism = event.data.message.push ? 'standard' : 'silent';
+  }
+
+  notifyNotificationReceived(notification, deliveryMechanism);
 }
 
 async function handleServiceWorkerNotificationClicked(event: MessageEvent) {
-  await handleNotificationOpened(event.data.notification.id);
+  if (event.data.content) {
+    // Notify the inbox to update itself.
+    broadcastComponentEvent('notification_opened');
+
+    const { notification, action } = event.data.content;
+
+    if (action) {
+      notifyNotificationActionOpened(notification, action);
+    } else {
+      notifyNotificationOpened(notification);
+    }
+
+    return;
+  }
+
+  const notificationId = event.data.notification.id;
+
+  // Log the notification open event.
+  await logNotificationOpen(notificationId);
+  await logNotificationInfluenced(notificationId);
+
+  // Notify the inbox to update itself.
+  broadcastComponentEvent('notification_opened');
+
+  const notification = await fetchNotification(notificationId);
+  notifyNotificationOpened(notification);
 }
 
 async function handleServiceWorkerNotificationReply(event: MessageEvent) {
@@ -151,7 +194,7 @@ async function handleServiceWorkerNotificationReply(event: MessageEvent) {
   // InboxIntegration.markItemAsRead(message)
 
   const notification = await fetchNotification(event.data.notification.id);
-  const action = notification.actions.find((element) => element.label === event.data.action);
+  const action = notification.actions.find((element) => element.id === event.data.action);
 
   if (!action) {
     logger.warning('Cannot find the action clicked to process the event.');
@@ -202,4 +245,9 @@ async function handleServiceWorkerSystemNotificationReceived(event: MessageEvent
 
 async function handleServiceWorkerUnknownNotificationReceived(event: MessageEvent) {
   notifyUnknownNotificationReceived(event.data.message);
+}
+
+async function handleServiceWorkerUpdateInbox() {
+  // Notify the inbox to update itself.
+  broadcastComponentEvent('notification_opened');
 }

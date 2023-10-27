@@ -1,6 +1,7 @@
 import {
   deleteDevice,
   getApplication,
+  getCloudApiEnvironment,
   getCurrentDevice,
   getOptions,
   isConfigured,
@@ -12,8 +13,8 @@ import {
   NotificareWebsitePushConfigLaunchConfigFloatingButtonOptions,
   registerPushDevice,
   registerTemporaryDevice,
-  request,
 } from '@notificare/web-core';
+import { updateCloudDevice } from '@notificare/web-cloud-api';
 import { logger } from '../logger';
 import { sleep } from './utils';
 import { showOnboarding } from './ui/onboarding';
@@ -178,9 +179,10 @@ async function updateNotificationSettings() {
 
   const allowedUI = device.transport !== 'Notificare' && hasWebPushCapabilities();
 
-  await request(`/api/device/${encodeURIComponent(device.id)}`, {
-    method: 'PUT',
-    body: {
+  await updateCloudDevice({
+    environment: getCloudApiEnvironment(),
+    deviceId: device.id,
+    payload: {
       allowedUI,
       webPushCapable: hasWebPushCapabilities(),
     },

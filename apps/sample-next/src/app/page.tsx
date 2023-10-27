@@ -2,13 +2,19 @@
 
 import { Inter } from "next/font/google";
 import { useNotificare } from "@/context/notificare";
-import { useCallback } from "react";
-import { launch, unlaunch } from "notificare-web/core";
+import { useCallback, useEffect } from "react";
+import { launch, unlaunch, loadStylesheet } from "notificare-web/core";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
   const state = useNotificare();
+
+  useEffect(function loadExternalStylesheet() {
+    loadStylesheet(
+      "https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css",
+    );
+  }, []);
 
   const onLaunchClick = useCallback(() => {
     launch()

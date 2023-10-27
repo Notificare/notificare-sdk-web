@@ -1,5 +1,15 @@
 # CHANGELOG
 
+## 3.1.0-beta.1
+
+- Add support for dark mode
+- Add utility to load external stylesheets
+- Process notifications in the service worker when possible
+- Fix standalone mode detection in Safari Desktop & Chrome Mobile
+- Fix open notification in Chrome Mobile
+- Fix in-app browser action reply tracker
+- Export `NotificareOptions`
+
 ## 3.0.0
 
 Check our [migration guide](./MIGRATION.md) before adopting the v3.x generation.

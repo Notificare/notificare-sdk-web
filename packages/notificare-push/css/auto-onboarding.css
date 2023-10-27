@@ -55,6 +55,31 @@
 
 .notificare.notificare-push-onboarding .notificare__onboarding-branding-logo {
     width: 80px;
+    height: 16px;
+}
+
+.notificare.notificare-push-onboarding .notificare__onboarding-branding-logo #ring,
+.notificare.notificare-push-onboarding .notificare__onboarding-branding-logo #leg-ring-background,
+.notificare.notificare-push-onboarding .notificare__onboarding-branding-logo #lettering {
+    fill: black;
+}
+
+.notificare.notificare-push-onboarding .notificare__onboarding-branding-logo #leg,
+.notificare.notificare-push-onboarding .notificare__onboarding-branding-logo #leg-overlay {
+    fill: #10D1C4;
+}
+
+@media (prefers-color-scheme: dark) {
+    .notificare.notificare-push-onboarding .notificare__onboarding-branding-logo #ring,
+    .notificare.notificare-push-onboarding .notificare__onboarding-branding-logo #lettering,
+    .notificare.notificare-push-onboarding .notificare__onboarding-branding-logo #leg,
+    .notificare.notificare-push-onboarding .notificare__onboarding-branding-logo #leg-overlay {
+        fill: white;
+    }
+
+    .notificare.notificare-push-onboarding .notificare__onboarding-branding-logo #leg-ring-background {
+        fill: transparent;
+    }
 }
 
 .notificare.notificare-push-onboarding .notificare__onboarding-actions {

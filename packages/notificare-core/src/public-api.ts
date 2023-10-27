@@ -3,11 +3,16 @@ import {
   LogLevelString,
   setLogLevel as setLogLevelInternal,
 } from '@notificare/web-logger';
-import { request } from './internal/network/request';
 import {
-  convertNetworkApplicationToPublic,
-  NetworkApplicationResponse,
-} from './internal/network/responses/application-response';
+  callCloudNotificationWebhook,
+  CloudNotificationWebhookPayload,
+  createCloudNotificationReply,
+  fetchCloudApplication,
+  fetchCloudDynamicLink,
+  fetchCloudNotification,
+  request,
+  uploadCloudNotificationReplyMedia,
+} from '@notificare/web-cloud-api';
 import { NotificareOptions } from './options';
 import { logger } from './internal/logger';
 import { getOptions, NotificareInternalOptionsServices, setOptions } from './internal/options';
@@ -25,10 +30,6 @@ import {
   NotificareNotification,
   NotificareNotificationAction,
 } from './models/notificare-notification';
-import {
-  convertNetworkNotificationToPublic,
-  NetworkNotificationResponse,
-} from './internal/network/responses/notification-response';
 import { notifyOnReady, notifyUnlaunched } from './internal/consumer-events';
 import { NotificareNotReadyError } from './errors/notificare-not-ready-error';
 import { clearTags, getCurrentDevice } from './public-api-device';
@@ -38,10 +39,10 @@ import { NotificareDeviceUnavailableError } from './errors/notificare-device-una
 import { isLatestStorageStructure, migrate } from './internal/migration-flow';
 import { hasWebPushSupport } from './internal/utils';
 import { NotificareDynamicLink } from './models/notificare-dynamic-link';
-import {
-  convertNetworkDynamicLinkToPublic,
-  NetworkDynamicLinkResponse,
-} from './internal/network/responses/dynamic-link-response';
+import { getCloudApiEnvironment } from './internal/cloud-api/environment';
+import { convertCloudApplicationToPublic } from './internal/cloud-api/converters/application-converter';
+import { convertCloudDynamicLinkToPublic } from './internal/cloud-api/converters/dynamic-link-converter';
+import { convertCloudNotificationToPublic } from './internal/cloud-api/converters/notification-converter';
 
 export const SDK_VERSION: string = SDK_VERSION_INTERNAL;
 
@@ -98,6 +99,7 @@ export function configure(options: NotificareOptions) {
   }
 
   setOptions({
+    useTestEnvironment,
     services,
     applicationKey: options.applicationKey,
     applicationSecret: options.applicationSecret,
@@ -136,7 +138,7 @@ export async function launch(): Promise<void> {
   if (getLaunchState() < LaunchState.CONFIGURED) {
     logger.debug('Fetching remote configuration.');
 
-    const response = await request('/notificare-services.json', { isAbsolutePath: true });
+    const response = await request({ url: '/notificare-services.json' });
     const options = await response.json();
     configure(options);
 
@@ -260,19 +262,12 @@ export async function fetchApplication(): Promise<NotificareApplication> {
   const options = getOptions();
   if (!options) throw new NotificareNotConfiguredError();
 
-  const queryParameters = new URLSearchParams();
-  if (options.language) queryParameters.set('language', options.language);
+  const { application: cloudApplication } = await fetchCloudApplication({
+    environment: getCloudApiEnvironment(),
+    language: options.language,
+  });
 
-  const encodedQueryParameters = queryParameters.toString();
-  let url = '/api/application/info';
-  if (encodedQueryParameters) {
-    url = url.concat('?', encodedQueryParameters);
-  }
-
-  const response = await request(url);
-
-  const { application: networkApplication }: NetworkApplicationResponse = await response.json();
-  const application = convertNetworkApplicationToPublic(networkApplication);
+  const application = convertCloudApplicationToPublic(cloudApplication);
 
   localStorage.setItem('re.notifica.application', JSON.stringify(application));
 
@@ -282,26 +277,26 @@ export async function fetchApplication(): Promise<NotificareApplication> {
 export async function fetchNotification(id: string): Promise<NotificareNotification> {
   if (!isConfigured()) throw new NotificareNotConfiguredError();
 
-  const response = await request(`/api/notification/${encodeURIComponent(id)}`);
+  const { notification } = await fetchCloudNotification({
+    environment: getCloudApiEnvironment(),
+    id,
+  });
 
-  const { notification }: NetworkNotificationResponse = await response.json();
-  return convertNetworkNotificationToPublic(notification);
+  return convertCloudNotificationToPublic(notification);
 }
 
 export async function fetchDynamicLink(url: string): Promise<NotificareDynamicLink> {
   if (!isConfigured()) throw new NotificareNotConfiguredError();
 
-  const searchParams = new URLSearchParams();
-  searchParams.set('platform', 'Web');
-
   const device = getCurrentDevice();
-  if (device) searchParams.set('deviceID', device.id);
-  if (device?.userId) searchParams.set('userID', device.userId);
 
-  const response = await request(`/api/link/dynamic/${encodeURIComponent(url)}?${searchParams}`);
+  const { link } = await fetchCloudDynamicLink({
+    environment: getCloudApiEnvironment(),
+    deviceId: device?.id,
+    url,
+  });
 
-  const { link }: NetworkDynamicLinkResponse = await response.json();
-  return convertNetworkDynamicLinkToPublic(link);
+  return convertCloudDynamicLinkToPublic(link);
 }
 
 export async function createNotificationReply(
@@ -320,25 +315,21 @@ export async function createNotificationReply(
   let mediaUrl: string | undefined;
 
   if (data?.media && data?.mimeType) {
-    const formData = new FormData();
-    formData.append('file', data.media);
-
-    const response = await request(`/api/upload/reply`, {
-      method: 'POST',
-      formData,
+    const { filename } = await uploadCloudNotificationReplyMedia({
+      environment: getCloudApiEnvironment(),
+      media: data.media,
     });
 
-    const { filename } = await response.json();
     mediaUrl = `${options.services.awsStorageHost}${filename}`;
   }
 
-  await request('/api/reply', {
-    method: 'POST',
-    body: {
+  await createCloudNotificationReply({
+    environment: getCloudApiEnvironment(),
+    payload: {
       notification: notification.id,
+      label: action.label,
       deviceID: device.id,
       userID: device.userId,
-      label: action.label,
       data: {
         target: action.target,
         message: data?.message,
@@ -362,25 +353,25 @@ export async function callNotificationWebhook(
   if (!action.target) throw new Error('Unable to execute webhook without a target for the action.');
 
   const url = new URL(action.target);
-
   const device = getCurrentDevice();
-  const data: Record<string, string> = {};
+
+  const data: CloudNotificationWebhookPayload = {
+    target: url.origin,
+    label: action.label,
+    notificationID: notification.id,
+    deviceID: device?.id,
+    userID: device?.userId,
+  };
 
   // Populate the data with the target's query parameters.
   url.searchParams.forEach((key) => {
     const value = url.searchParams.get(key);
-    if (value) data[key] = value;
+    if (value !== null) data[key] = value;
   });
 
-  data.target = url.origin;
-  data.label = action.label;
-  data.notificationID = notification.id;
-  if (device?.id) data.deviceID = device.id;
-  if (device?.userId) data.userID = device.userId;
-
-  await request('/api/reply/webhook', {
-    method: 'POST',
-    body: data,
+  await callCloudNotificationWebhook({
+    environment: getCloudApiEnvironment(),
+    payload: data,
   });
 }
 
