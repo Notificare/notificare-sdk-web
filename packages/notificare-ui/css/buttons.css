@@ -73,6 +73,10 @@
     fill: var(--notificare-on-surface);
 }
 
+[data-notificare-theme="dark"] .notificare .notificare__button--destructive {
+    --notificare-button-background-color--hover: rgba(255, 218, 214, 0.2);
+}
+
 @media (prefers-color-scheme: dark) {
     .notificare .notificare__button--destructive {
         --notificare-button-background-color--hover: rgba(255, 218, 214, 0.2);

@@ -1,4 +1,5 @@
-.notificare .notificare__iam-fullscreen {
+.notificare .notificare__iam-fullscreen,
+[data-notificare-theme="light"] .notificare .notificare__iam-fullscreen {
     position: fixed;
     top: 50%;
     left: 50%;
@@ -14,6 +15,11 @@
 
     --notificare-iam-fullscreen-gradient-start: rgba(255, 255, 255, 0);
     --notificare-iam-fullscreen-gradient-end: rgba(255, 255, 255, 1)
+}
+
+[data-notificare-theme="dark"] .notificare .notificare__iam-fullscreen {
+    --notificare-iam-fullscreen-gradient-start: rgba(0, 0, 0, 0);
+    --notificare-iam-fullscreen-gradient-end: rgba(0, 0, 0, 1)
 }
 
 @media (prefers-color-scheme: dark) {
