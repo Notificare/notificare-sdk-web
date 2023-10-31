@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## Upcoming release
+
+- Prevent click outside to dismiss the auto-onboarding prompt
+
 ## 3.1.0-beta.1
 
 - Add support for dark mode
