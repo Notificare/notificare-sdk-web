@@ -1,6 +1,6 @@
 {
   "name": "@notificare/web-ui",
-  "version": "3.1.0-beta.1",
+  "version": "3.1.0-beta.2",
   "description": "The core UI package for use in the Notificare Web SDK.",
   "author": "Notificare <info@notificare.com> (https://notificare.com)",
   "license": "MIT",

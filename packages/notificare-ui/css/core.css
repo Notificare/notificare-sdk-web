@@ -1,4 +1,5 @@
-.notificare {
+.notificare,
+[data-notificare-theme="light"] .notificare {
     --notificare-primary: #2B42F7;
     --notificare-primary-hover: #071CC3;
     --notificare-on-primary: rgba(255, 255, 255, 0.87);
@@ -26,6 +27,18 @@
     --notificare-layer-highest: 2147483647;
 
     --notificare-modal-margin: 64px;
+}
+
+[data-notificare-theme="dark"] .notificare {
+    --notificare-primary: #A392FD;
+    --notificare-primary-hover: #927EFD;
+    --notificare-on-primary: rgba(0, 0, 0, 0.87);
+
+    --notificare-error: #EF4444;
+
+    --notificare-surface: #27282B;
+    --notificare-surface-hover: #3D3D40;
+    --notificare-on-surface: rgba(255, 255, 255, 0.87);
 }
 
 @media (prefers-color-scheme: dark) {

@@ -28,12 +28,7 @@ export function showOnboarding({
   const root = createRoot('notificare-push');
   root.classList.add('notificare-push-onboarding');
 
-  root.appendChild(
-    createBackdrop(() => {
-      ensureCleanState();
-      onCancelClicked();
-    }),
-  );
+  root.appendChild(createBackdrop(() => {}));
 
   const modal = root.appendChild(createModal({ alignment: 'top' }));
   modal.classList.add('notificare__onboarding-modal');
