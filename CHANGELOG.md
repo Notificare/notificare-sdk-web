@@ -1,7 +1,8 @@
 # CHANGELOG
 
-## Upcoming release
+## 3.1.0-beta.2
 
+- Add `data-notificare-theme` attribute to override the default theme
 - Prevent click outside to dismiss the auto-onboarding prompt
 
 ## 3.1.0-beta.1
