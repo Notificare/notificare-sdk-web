@@ -1,5 +1,19 @@
 # CHANGELOG
 
+## 3.1.0
+
+#### Important changes since 3.0.0
+
+- Add support for dark mode
+- Add `data-notificare-theme` attribute to override the default theme
+- Add utility to load external stylesheets
+- Prevent click outside to dismiss the auto-onboarding prompt
+- Process notifications in the service worker when possible
+- Fix standalone mode detection in Safari Desktop & Chrome Mobile
+- Fix open notification in Chrome Mobile
+- Fix in-app browser action reply tracker
+- Export `NotificareOptions`
+
 ## 3.1.0-beta.2
 
 - Add `data-notificare-theme` attribute to override the default theme
