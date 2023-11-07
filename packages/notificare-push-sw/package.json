@@ -1,6 +1,6 @@
 {
   "name": "@notificare/web-push-sw",
-  "version": "3.1.0-beta.2",
+  "version": "3.1.0",
   "description": "The push service worker package for the 'notificare-web' umbrella package.",
   "author": "Notificare <info@notificare.com> (https://notificare.com)",
   "license": "MIT",
@@ -19,9 +19,9 @@
     "dist"
   ],
   "dependencies": {
-    "@notificare/web-cloud-api": "^3.1.0-beta.2",
-    "@notificare/web-core": "^3.1.0-beta.2",
-    "@notificare/web-logger": "^3.1.0-beta.2",
+    "@notificare/web-cloud-api": "^3.1.0",
+    "@notificare/web-core": "^3.1.0",
+    "@notificare/web-logger": "^3.1.0",
     "tslib": "^2.5.0"
   },
   "devDependencies": {
