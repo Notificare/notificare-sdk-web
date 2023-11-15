@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 3.1.1
+
+- Update JS target to ES6 for CommonJS builds
+
 ## 3.1.0
 
 #### Important changes since 3.0.0
