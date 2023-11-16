@@ -9,8 +9,7 @@ export interface NotificareNotification {
   readonly content: NotificareNotificationContent[];
   readonly actions: NotificareNotificationAction[];
   readonly attachments: NotificareNotificationAttachment[];
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  readonly extra: Record<string, any>;
+  readonly extra: NotificareNotificationExtra;
 }
 
 export interface NotificareNotificationContent {
@@ -20,22 +19,18 @@ export interface NotificareNotificationContent {
 }
 
 export interface NotificareNotificationAction {
+  readonly id: string;
   readonly type: string;
   readonly label: string;
   readonly target?: string;
   readonly keyboard: boolean;
   readonly camera: boolean;
-  readonly destructive?: boolean;
-  readonly icon?: NotificareNotificationActionIcon;
-}
-
-export interface NotificareNotificationActionIcon {
-  readonly android?: string;
-  readonly ios?: string;
-  readonly web?: string;
 }
 
 export interface NotificareNotificationAttachment {
   readonly mimeType: string;
   readonly uri: string;
 }
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type NotificareNotificationExtra = Record<string, any>;

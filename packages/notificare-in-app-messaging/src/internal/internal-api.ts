@@ -1,21 +1,19 @@
 import {
+  getCloudApiEnvironment,
   getCurrentDevice,
   isReady,
   NotificareDeviceUnavailableError,
   NotificareNetworkRequestError,
-  request,
 } from '@notificare/web-core';
+import { fetchCloudInAppMessage } from '@notificare/web-cloud-api';
 import { NotificareInAppMessage } from '../models/notificare-in-app-message';
-import {
-  convertNetworkInAppMessageToPublic,
-  NetworkInAppMessageResponse,
-} from './network/responses/in-app-message-response';
 import { logger } from '../logger';
 import { ApplicationContext } from './types/application-context';
 import { ApplicationState } from './types/application-state';
 import { dismissMessage, isShowingMessage, showMessage } from './ui/message-presenter';
 import { notifyMessageFailedToPresent, notifyMessagePresented } from './consumer-events';
 import { logInAppMessageViewed } from './internal-api-events';
+import { convertCloudInAppMessageToPublic } from './cloud-api/in-app-message-converter';
 
 const DEFAULT_BACKGROUND_GRACE_PERIOD_MILLIS = 5 * 60 * 1000;
 
@@ -108,11 +106,13 @@ async function fetchInAppMessage(context: ApplicationContext): Promise<Notificar
   const device = getCurrentDevice();
   if (!device) throw new NotificareDeviceUnavailableError();
 
-  const queryParameters = new URLSearchParams({ deviceID: device.id });
-  const response = await request(`/api/inappmessage/forcontext/${context}?${queryParameters}`);
+  const { message } = await fetchCloudInAppMessage({
+    environment: getCloudApiEnvironment(),
+    deviceId: device.id,
+    context,
+  });
 
-  const { message }: NetworkInAppMessageResponse = await response.json();
-  return convertNetworkInAppMessageToPublic(message);
+  return convertCloudInAppMessageToPublic(message);
 }
 
 export function handleDocumentVisibilityChanged(visibilityState: DocumentVisibilityState) {

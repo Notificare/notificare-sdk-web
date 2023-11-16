@@ -21,7 +21,7 @@ export function build(pkg, options) {
   const commonJsBuildPlugins = [
     tsc({
       typescript: typescript,
-      target: "es5",
+      target: "ES6",
       // noEmitOnError: true,
     }),
     json(),

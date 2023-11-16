@@ -11,6 +11,7 @@ const s3 = s3Upload();
 const NOTIFICARE_CORE_URL = `https://cdn.notifica.re/libs/web/v3/${pkg.version}/notificare-core.js`;
 const NOTIFICARE_LATEST_CORE_URL = `https://cdn.notifica.re/libs/web/v3/latest/notificare-core.js`;
 const NOTIFICARE_INTERNAL_CORE_URL = `https://cdn.notifica.re/libs/web/internal/${pkg.version}/notificare-core.js`;
+const STABLE_VERSION_REGEX = /^\d+\.\d+\.\d+$/;
 
 function bundleSources(variant) {
   const { coreUrl, destination } = getVariantInfo(variant);
@@ -100,11 +101,16 @@ export function buildInternalRelease(done) {
 }
 
 export function build(done) {
-  return gulp.series(
+  const tasks = [
     buildVersionRelease,
-    buildLatestRelease,
     buildInternalRelease
-  )(done);
+  ];
+
+  if (pkg.version.match(STABLE_VERSION_REGEX)) {
+    tasks.push(buildLatestRelease);
+  }
+
+  return gulp.series(tasks)(done);
 }
 
 export function uploadVersionRelease() {
@@ -142,12 +148,17 @@ export function uploadInternalRelease() {
 }
 
 export function publish(done) {
-  return gulp.series(
+  const tasks = [
     build,
     uploadVersionRelease,
-    uploadLatestRelease,
     uploadInternalRelease
-  )(done);
+  ];
+
+  if (pkg.version.match(STABLE_VERSION_REGEX)) {
+    tasks.push(uploadLatestRelease);
+  }
+
+  return gulp.series(tasks)(done);
 }
 
 export default build;

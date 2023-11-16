@@ -2,8 +2,9 @@ import {
   getCurrentDevice,
   getOptions,
   NotificareDeviceUnavailableError,
-  request,
+  getCloudApiEnvironment,
 } from '@notificare/web-core';
+import { updateCloudDevice } from '@notificare/web-cloud-api';
 import { getCurrentLocation, setCurrentLocation } from './storage/local-storage';
 import { logger } from '../logger';
 import { notifyLocationUpdated, notifyLocationUpdateError } from './consumer-events';
@@ -103,9 +104,10 @@ async function updateLocation(
   const device = getCurrentDevice();
   if (!device) throw new NotificareDeviceUnavailableError();
 
-  await request(`/api/device/${encodeURIComponent(device.id)}`, {
-    method: 'PUT',
-    body: {
+  await updateCloudDevice({
+    environment: getCloudApiEnvironment(),
+    deviceId: device.id,
+    payload: {
       latitude: position?.coords?.latitude ?? null,
       longitude: position?.coords?.longitude ?? null,
       altitude: position?.coords?.altitude ?? null,
