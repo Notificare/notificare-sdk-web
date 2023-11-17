@@ -20,7 +20,11 @@ export default function Storage() {
 
     try {
       const assets = await fetchAssets(search);
-      setState({ status: "success", assets });
+      if (assets.length) {
+        setState({ status: "success", assets });
+      } else {
+        setState({ status: "empty" });
+      }
     } catch (e) {
       if (e instanceof NotificareNetworkRequestError && e.response.status === 404) {
         setState({ status: "not-found" });
