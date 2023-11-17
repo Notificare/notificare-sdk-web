@@ -4,6 +4,7 @@ import { SideBarNavigationItem, sideBarNavigationItems } from "@/data/navigation
 import { usePathname } from "next/navigation";
 import { useMemo } from "react";
 import { classNames } from "@/utils/css";
+import Link from "next/link";
 
 export function Sidebar() {
   return (
@@ -37,7 +38,7 @@ function NavigationItem({ item }: NavigationItemProps) {
 
   return (
     <li>
-      <a
+      <Link
         href={href}
         className={classNames(
           isActive
@@ -54,7 +55,7 @@ function NavigationItem({ item }: NavigationItemProps) {
           aria-hidden="true"
         />
         {label}
-      </a>
+      </Link>
     </li>
   );
 }
