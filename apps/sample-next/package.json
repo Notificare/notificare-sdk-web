@@ -15,6 +15,7 @@
     "@tailwindcss/forms": "^0.5.7",
     "classnames": "^2.3.2",
     "date-fns": "^2.29.3",
+    "lodash": "^4.17.21",
     "next": "14.0.3",
     "notificare-web": "^3.0.0",
     "react": "18.2.0",
@@ -22,6 +23,7 @@
     "tailwindcss": "3.3.5"
   },
   "devDependencies": {
+    "@types/lodash": "^4.14.201",
     "@types/node": "20.9.1",
     "@types/react": "18.2.37",
     "@types/react-dom": "18.2.15",
