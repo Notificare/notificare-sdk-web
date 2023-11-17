@@ -8,9 +8,10 @@ export function InputField({
   placeholder,
   value,
   onChange,
+  className,
 }: InputFieldProps) {
   return (
-    <div>
+    <div className={className}>
       {label && (
         <label htmlFor={id} className="block text-sm font-medium leading-6 text-gray-900 mb-2">
           {label}
@@ -38,4 +39,5 @@ export interface InputFieldProps {
   placeholder?: string;
   value?: string | number;
   onChange?: ChangeEventHandler<HTMLInputElement>;
+  className?: string;
 }
