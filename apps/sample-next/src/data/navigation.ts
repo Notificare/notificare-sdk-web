@@ -3,6 +3,7 @@ import {
   ChartPieIcon,
   CircleStackIcon,
   Cog6ToothIcon,
+  ComputerDesktopIcon,
   HomeIcon,
   InboxIcon,
   TagIcon,
@@ -18,6 +19,7 @@ export interface SideBarNavigationItem {
 
 export const sideBarNavigationItems: SideBarNavigationItem[] = [
   { label: "Home", href: "/", icon: HomeIcon },
+  { label: "Device", href: "/device", icon: ComputerDesktopIcon },
   { label: "Inbox", href: "/inbox", icon: InboxIcon },
   { label: "Segmentation", href: "/segmentation", icon: TagIcon },
   { label: "Analytics", href: "/analytics", icon: ChartPieIcon },
