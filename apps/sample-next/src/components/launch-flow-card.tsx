@@ -3,12 +3,12 @@
 import { CheckCircleIcon } from "@heroicons/react/24/solid";
 import { XCircleIcon } from "@heroicons/react/20/solid";
 import { Button } from "@/components/button";
-import { useLaunchFlow } from "@/context/launch-flow";
 import { isConfigured } from "notificare-web/core";
 import { Card, CardActions, CardContent, CardHeader } from "@/components/card";
+import { useNotificareLaunchFlow } from "@/notificare/hooks/notificare-launch-flow";
 
 export function LaunchFlowCard() {
-  const { state, launch, unlaunch } = useLaunchFlow();
+  const { state, launch, unlaunch } = useNotificareLaunchFlow();
 
   return (
     <Card>

@@ -1,11 +1,11 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { useLaunchFlow } from "@/context/launch-flow";
 import { configure, setLogLevel } from "notificare-web/core";
+import { useNotificareLaunchFlow } from "@/notificare/hooks/notificare-launch-flow";
 
 export function NotificareAutoLauncher() {
-  const { launch } = useLaunchFlow();
+  const { launch } = useNotificareLaunchFlow();
   const autoLaunched = useRef(false);
 
   useEffect(() => {

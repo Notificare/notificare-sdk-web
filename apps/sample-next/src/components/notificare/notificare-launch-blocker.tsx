@@ -2,12 +2,12 @@
 
 import { PropsWithChildren } from "react";
 import { Alert } from "@/components/alert";
-import { useLaunchFlow } from "@/context/launch-flow";
 import { ProgressIndicator } from "@/components/progress-indicator";
 import { NotificareConfigurationBlocker } from "@/components/notificare/notificare-configuration-blocker";
+import { useNotificareLaunchFlow } from "@/notificare/hooks/notificare-launch-flow";
 
 export function NotificareLaunchBlocker({ children }: PropsWithChildren) {
-  const { state, launch } = useLaunchFlow();
+  const { state, launch } = useNotificareLaunchFlow();
 
   return (
     <NotificareConfigurationBlocker>

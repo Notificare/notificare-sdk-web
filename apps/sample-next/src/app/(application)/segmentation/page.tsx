@@ -8,11 +8,11 @@ import { Button } from "@/components/button";
 import { ProgressIndicator } from "@/components/progress-indicator";
 import { Alert } from "@/components/alert";
 import { TagIcon, XMarkIcon } from "@heroicons/react/24/outline";
-import { useLaunchFlow } from "@/context/launch-flow";
 import { addTag, fetchTags, removeTag } from "notificare-web/core";
+import { useNotificareState } from "@/notificare/hooks/notificare-state";
 
 export default function Segmentation() {
-  const { state } = useLaunchFlow();
+  const state = useNotificareState();
   const [reloadTrigger, setReloadTrigger] = useState<number>(0);
   const [segmentationState, setSegmentationState] = useState<SegmentationState>({ status: "idle" });
   const [tag, setTag] = useState("");

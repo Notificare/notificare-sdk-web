@@ -2,12 +2,14 @@
 
 import { PageHeader } from "@/components/page-header";
 import { LaunchFlowCard } from "@/components/launch-flow-card";
-import { useLaunchFlow } from "@/context/launch-flow";
 import { NotificareConfigurationBlocker } from "@/components/notificare/notificare-configuration-blocker";
 import { DeviceRegistrationCard } from "@/components/home/device-registration-card";
+import { NotificationsCard } from "@/components/home/notifications-card";
+import { DoNotDisturbCard } from "@/components/home/do-not-disturb-card";
+import { useNotificareState } from "@/notificare/hooks/notificare-state";
 
 export default function Home() {
-  const { state } = useLaunchFlow();
+  const state = useNotificareState();
 
   return (
     <>
@@ -23,6 +25,8 @@ export default function Home() {
           {state.status === "launched" && (
             <>
               <DeviceRegistrationCard />
+              <NotificationsCard />
+              <DoNotDisturbCard />
             </>
           )}
         </div>

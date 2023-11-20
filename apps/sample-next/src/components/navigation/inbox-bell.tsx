@@ -1,19 +1,13 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
-import { getBadge, onBadgeUpdated } from "notificare-web/inbox";
+import { getBadge } from "notificare-web/inbox";
 import { BellIcon } from "@heroicons/react/24/outline";
+import { useOnBadgeUpdated } from "@/notificare/hooks/events/inbox/badge-updated";
 
 export function InboxBell() {
-  const [badge, setBadge] = useState<number>();
+  const [badge, setBadge] = useState<number>(getBadge);
 
-  useEffect(function loadBadge() {
-    setBadge(getBadge());
-  }, []);
-
-  useEffect(function setupListener() {
-    const subscription = onBadgeUpdated((badge) => setBadge(badge));
-    return () => subscription.remove();
-  }, []);
+  useOnBadgeUpdated((badge) => setBadge(badge));
 
   return (
     <Link href="/inbox" className="group p-2.5 text-gray-400 hover:text-gray-500">

@@ -2,24 +2,24 @@
 
 import { PageHeader, PageHeaderAction } from "@/components/page-header";
 import { EnvelopeOpenIcon, TrashIcon } from "@heroicons/react/24/solid";
-import { useLaunchFlow } from "@/context/launch-flow";
 import { NotificareLaunchBlocker } from "@/components/notificare/notificare-launch-blocker";
 import { useCallback, useEffect, useState } from "react";
-import { NotificareInboxItem } from "notificare-web/inbox";
 import {
-  fetchInbox,
-  openInboxItem,
-  markAllInboxItemsAsRead,
   clearInbox,
-  onInboxUpdated,
+  fetchInbox,
+  markAllInboxItemsAsRead,
+  NotificareInboxItem,
+  openInboxItem,
 } from "notificare-web/inbox";
 import { presentNotification } from "notificare-web/push-ui";
 import { ProgressIndicator } from "@/components/progress-indicator";
 import { Alert } from "@/components/alert";
 import { InboxItem } from "@/components/inbox";
+import { useNotificareState } from "@/notificare/hooks/notificare-state";
+import { useOnInboxUpdated } from "@/notificare/hooks/events/inbox/inbox-updated";
 
 export default function Inbox() {
-  const { state } = useLaunchFlow();
+  const state = useNotificareState();
   const [reloadTrigger, setReloadTrigger] = useState<number>(0);
   const [inboxState, setInboxState] = useState<InboxState>({ status: "loading" });
 
@@ -38,13 +38,7 @@ export default function Inbox() {
     setReloadTrigger((prevState) => prevState + 1);
   }, []);
 
-  useEffect(
-    function listenToInboxChanges() {
-      const subscription = onInboxUpdated(() => forceInboxReload());
-      return () => subscription.remove();
-    },
-    [forceInboxReload],
-  );
+  useOnInboxUpdated(() => forceInboxReload());
 
   const openItem = useCallback((item: NotificareInboxItem) => {
     openInboxItem(item)

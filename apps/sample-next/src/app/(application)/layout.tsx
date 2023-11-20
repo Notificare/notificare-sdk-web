@@ -3,15 +3,17 @@ import { Sidebar } from "@/components/navigation/sidebar";
 import { MobileSidebar } from "@/components/navigation/mobile-sidebar";
 import { StickyNavigation } from "@/components/navigation/sticky-navigation";
 import { NavigationProvider } from "@/context/navigation";
-import { LaunchFlowProvider } from "@/context/launch-flow";
 import { NotificareAutoLauncher } from "@/components/notificare/notificare-auto-launcher";
-import { NotificareEventListener } from "@/components/notificare/notificare-event-listener";
+import { NotificareEventLogger } from "@/components/notificare/notificare-event-logger";
+import { NotificareProvider } from "@/notificare/notificare-context";
+import { NotificareEventHandler } from "@/components/notificare/notificare-event-handler";
 
 export default function ApplicationLayout({ children }: PropsWithChildren) {
   return (
-    <LaunchFlowProvider>
+    <NotificareProvider>
       <NotificareAutoLauncher />
-      <NotificareEventListener />
+      <NotificareEventLogger />
+      <NotificareEventHandler />
 
       <NavigationProvider>
         <MobileSidebar />
@@ -28,6 +30,6 @@ export default function ApplicationLayout({ children }: PropsWithChildren) {
           </main>
         </div>
       </NavigationProvider>
-    </LaunchFlowProvider>
+    </NotificareProvider>
   );
 }
