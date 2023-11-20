@@ -34,7 +34,7 @@ export default function Segmentation() {
     [state, reloadTrigger],
   );
 
-  const createTag = useCallback(async () => {
+  const createTagCallback = useCallback(async () => {
     try {
       setSegmentationState({ status: "loading" });
       await addTag(tag);
@@ -45,7 +45,7 @@ export default function Segmentation() {
     }
   }, [tag]);
 
-  const removeTagCallback = async (tag: string) => {
+  const removeTagCallback = useCallback(async (tag: string) => {
     try {
       setSegmentationState({ status: "loading" });
       await removeTag(tag);
@@ -53,7 +53,7 @@ export default function Segmentation() {
     } catch (e) {
       setSegmentationState({ status: "failure" });
     }
-  };
+  }, []);
 
   return (
     <>
@@ -75,7 +75,7 @@ export default function Segmentation() {
               onChange={(event) => setTag(event.target.value)}
             />
 
-            <Button text="Create" onClick={createTag} />
+            <Button text="Create" onClick={createTagCallback} />
           </div>
 
           {segmentationState.status === "loading" && (
