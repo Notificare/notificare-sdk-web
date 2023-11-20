@@ -6,14 +6,9 @@ import {
 } from "notificare-web/push";
 import { Card, CardContent, CardHeader } from "@/components/card";
 import { Switch } from "@/components/switch";
-import { useOnDeviceRegistered } from "@/notificare/hooks/events/core/device-registered";
 
 export function NotificationsCard() {
   const [enabled, setEnabled] = useState(false);
-
-  useOnDeviceRegistered((device) => {
-    console.log("device registered: notifications card");
-  });
 
   useEffect(() => {
     const enabled = hasRemoteNotificationsEnabled();
