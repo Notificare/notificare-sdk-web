@@ -7,6 +7,8 @@ import { DeviceRegistrationCard } from "@/components/home/device-registration-ca
 import { NotificationsCard } from "@/components/home/notifications-card";
 import { DoNotDisturbCard } from "@/components/home/do-not-disturb-card";
 import { useNotificareState } from "@/notificare/hooks/notificare-state";
+import { LocationCard } from "@/components/home/location-card";
+import { InAppMessagingCard } from "@/components/home/in-app-messaging-card";
 
 export default function Home() {
   const state = useNotificareState();
@@ -27,6 +29,8 @@ export default function Home() {
               <DeviceRegistrationCard />
               <NotificationsCard />
               <DoNotDisturbCard />
+              <LocationCard />
+              <InAppMessagingCard />
             </>
           )}
         </div>
