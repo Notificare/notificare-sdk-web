@@ -1,11 +1,13 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { getBadge } from "notificare-web/inbox";
 import { BellIcon } from "@heroicons/react/24/outline";
 import { useOnBadgeUpdated } from "@/notificare/hooks/events/inbox/badge-updated";
 
 export function InboxBell() {
-  const [badge, setBadge] = useState<number>(getBadge);
+  const [badge, setBadge] = useState<number>(0);
+
+  useEffect(() => setBadge(getBadge()), []);
 
   useOnBadgeUpdated((badge) => setBadge(badge));
 
