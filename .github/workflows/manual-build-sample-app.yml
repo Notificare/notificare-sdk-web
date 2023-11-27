@@ -1,70 +1,46 @@
-name: Update the preview environments
-on:
-  workflow_dispatch
+name: Update preview environments
 
-permissions:
-  id-token: write   # This is required for requesting the JWT
-  contents: read    # This is required for actions/checkout
+on:
+  workflow_dispatch:
+    inputs:
+      update_test_environment:
+        description: Update test environment
+        type: boolean
+        required: true
+        default: false
+      update_production_environment:
+        description: Update production environment
+        type: boolean
+        required: true
+        default: false
 
 jobs:
   build:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Setup Node
-        uses: actions/setup-node@v3
-        with:
-          node-version: 20.x
-          cache: yarn
-      - name: Setup Next.js cache
-        uses: actions/cache@v3
-        with:
-          path: ${{ github.workspace }}/apps/sample-next/.next/cache
-          key: ${{ runner.os }}-nextjs-${{ hashFiles('**/yarn.lock') }}-${{ hashFiles('**/*.js', '**/*.jsx', '**/*.ts', '**/*.tsx') }}
-          restore-keys: ${{ runner.os }}-nextjs-${{ hashFiles('**/yarn.lock') }}-
-      - name: Install dependencies
-        run: yarn install --frozen-lockfile
-      - name: Build the libraries
-        run: yarn build
-      - name: Build the sample app
-        run: yarn build:sample-app
-      - name: Upload binaries
-        uses: actions/upload-artifact@v3
-        with:
-          name: sample-app
-          path: ${{ github.workspace }}/apps/sample-next/out
+    name: Build
+    uses: ./.github/workflows/build-sample-app.yml
 
-  upload:
-    runs-on: ubuntu-latest
+  upload_test_environment:
+    name: Test
     needs:
       - build
-    steps:
-      - name: Authenticate with AWS
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          role-to-assume: ${{ env.AWS_IAM_ROLE }}
-          aws-region: ${{ env.AWS_REGION }}
-      - name: Download binaries
-        uses: actions/download-artifact@v3
-        with:
-          name: sample-app
-          path: build
-      - name: Deploy to the production environment
-        uses: reggionick/s3-deploy@v4
-        with:
-          folder: build
-          bucket: ${{ secrets.SAMPLE_APP_BUCKET_NAME }}
-          bucket-region: ${{ secrets.AWS_REGION }}
-          delete-removed: true
-          dist-id: ${{ secrets.SAMPLE_APP_DISTRIBUTION_ID }}
-          invalidation: /
-      - name: Deploy to the test environment
-        uses: reggionick/s3-deploy@v4
-        with:
-          folder: build
-          bucket: ${{ secrets.SAMPLE_APP_TEST_BUCKET_NAME }}
-          bucket-region: ${{ secrets.AWS_REGION }}
-          delete-removed: true
-          dist-id: ${{ secrets.SAMPLE_APP_TEST_DISTRIBUTION_ID }}
-          invalidation: /
+    if: ${{ inputs.update_test_environment }}
+    uses: ./.github/workflows/upload-sample-app.yml
+    secrets:
+      notificare_services: ${{ secrets.SAMPLE_APP_TEST_NOTIFICARE_SERVICES }}
+      aws_iam_role: ${{ secrets.AWS_IAM_ROLE }}
+      aws_region: ${{ secrets.AWS_REGION }}
+      bucket_name: ${{ secrets.SAMPLE_APP_TEST_BUCKET_NAME }}
+      distribution_id: ${{ secrets.SAMPLE_APP_TEST_DISTRIBUTION_ID }}
+
+  upload_production_environment:
+    if: ${{ inputs.update_production_environment }}
+    name: Production
+    needs:
+      - build
+    uses: ./.github/workflows/upload-sample-app.yml
+    secrets:
+      notificare_services: ${{ secrets.SAMPLE_APP_NOTIFICARE_SERVICES }}
+      aws_iam_role: ${{ secrets.AWS_IAM_ROLE }}
+      aws_region: ${{ secrets.AWS_REGION }}
+      bucket_name: ${{ secrets.SAMPLE_APP_BUCKET_NAME }}
+      distribution_id: ${{ secrets.SAMPLE_APP_DISTRIBUTION_ID }}

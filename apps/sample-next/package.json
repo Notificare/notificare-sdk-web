@@ -9,24 +9,30 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@ducanh2912/next-pwa": "^9.7.2",
     "@headlessui/react": "^1.7.14",
     "@heroicons/react": "^2.0.17",
+    "@tailwindcss/forms": "^0.5.7",
+    "classnames": "^2.3.2",
     "date-fns": "^2.29.3",
-    "next": "13.3.0",
-    "next-pwa": "^5.6.0",
-    "notificare-web": "^3.1.1",
+    "lodash": "^4.17.21",
+    "next": "14.0.3",
+    "notificare-web": "^3.0.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "tailwindcss": "3.3.3"
+    "tailwindcss": "3.3.5",
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
-    "@types/node": "20.5.2",
-    "@types/react": "18.2.20",
-    "@types/react-dom": "18.2.7",
-    "autoprefixer": "10.4.15",
-    "eslint": "8.47.0",
-    "eslint-config-next": "13.4.19",
-    "postcss": "8.4.28",
+    "@types/lodash": "^4.14.201",
+    "@types/node": "20.9.1",
+    "@types/react": "18.2.37",
+    "@types/react-dom": "18.2.15",
+    "@types/uuid": "^9.0.7",
+    "autoprefixer": "10.4.16",
+    "eslint": "8.53.0",
+    "eslint-config-next": "14.0.3",
+    "postcss": "8.4.31",
     "typescript": "5.1.6"
   }
 }

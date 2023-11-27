@@ -1,0 +1,46 @@
+name: Upload sample app
+
+on:
+  workflow_call:
+    secrets:
+      notificare_services:
+        required: true
+      aws_iam_role:
+        required: true
+      aws_region:
+        required: true
+      bucket_name:
+        required: true
+      distribution_id:
+        required: true
+
+permissions:
+  id-token: write   # This is required for requesting the JWT
+  contents: read    # This is required for actions/checkout
+
+jobs:
+  upload:
+    name: Upload
+    runs-on: ubuntu-latest
+    steps:
+      - name: Authenticate with AWS
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.aws_iam_role }}
+          aws-region: ${{ secrets.aws_region }}
+      - name: Download binaries
+        uses: actions/download-artifact@v3
+        with:
+          name: sample-app
+          path: build
+      - name: Prepare notificare-services.json
+        run: echo '${{ secrets.notificare_services }}' > build/notificare-services.json
+      - name: Upload to S3
+        uses: reggionick/s3-deploy@v4
+        with:
+          folder: build
+          bucket: ${{ secrets.bucket_name }}
+          bucket-region: ${{ secrets.aws_region }}
+          delete-removed: true
+          dist-id: ${{ secrets.distribution_id }}
+          invalidation: /*

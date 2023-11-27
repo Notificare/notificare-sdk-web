@@ -4,8 +4,8 @@ import { logger } from '../logger';
 let inboxUpdatedCallback: OnInboxUpdatedCallback | undefined;
 let badgeUpdatedCallback: OnBadgeUpdatedCallback | undefined;
 
-type OnInboxUpdatedCallback = () => void;
-type OnBadgeUpdatedCallback = (badge: number) => void;
+export type OnInboxUpdatedCallback = () => void;
+export type OnBadgeUpdatedCallback = (badge: number) => void;
 
 export function onInboxUpdated(callback: OnInboxUpdatedCallback): EventSubscription {
   inboxUpdatedCallback = callback;

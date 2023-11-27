@@ -1,0 +1,40 @@
+name: Preview PR changes
+
+on:
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - synchronize
+      - labeled
+
+jobs:
+  build:
+    name: Build
+    uses: ./.github/workflows/build-sample-app.yml
+
+  upload_test_environment:
+    name: Test
+    needs:
+      - build
+    if: contains(github.event.pull_request.labels.*.name, 'preview:test')
+    uses: ./.github/workflows/upload-sample-app.yml
+    secrets:
+      notificare_services: ${{ secrets.SAMPLE_APP_TEST_NOTIFICARE_SERVICES }}
+      aws_iam_role: ${{ secrets.AWS_IAM_ROLE }}
+      aws_region: ${{ secrets.AWS_REGION }}
+      bucket_name: ${{ secrets.SAMPLE_APP_TEST_BUCKET_NAME }}
+      distribution_id: ${{ secrets.SAMPLE_APP_TEST_DISTRIBUTION_ID }}
+
+  upload_production_environment:
+    if: contains(github.event.pull_request.labels.*.name, 'preview:production')
+    name: Production
+    needs:
+      - build
+    uses: ./.github/workflows/upload-sample-app.yml
+    secrets:
+      notificare_services: ${{ secrets.SAMPLE_APP_NOTIFICARE_SERVICES }}
+      aws_iam_role: ${{ secrets.AWS_IAM_ROLE }}
+      aws_region: ${{ secrets.AWS_REGION }}
+      bucket_name: ${{ secrets.SAMPLE_APP_BUCKET_NAME }}
+      distribution_id: ${{ secrets.SAMPLE_APP_DISTRIBUTION_ID }}
