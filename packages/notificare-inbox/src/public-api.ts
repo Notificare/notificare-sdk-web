@@ -24,7 +24,12 @@ import { refreshBadgeInternal } from './internal/internal-api';
 import { notifyInboxUpdated } from './internal/consumer-events';
 import { convertCloudInboxItemToPublic } from './internal/cloud-api/inbox-converter';
 
-export { onInboxUpdated, onBadgeUpdated } from './internal/consumer-events';
+export {
+  onInboxUpdated,
+  onBadgeUpdated,
+  OnInboxUpdatedCallback,
+  OnBadgeUpdatedCallback,
+} from './internal/consumer-events';
 
 export function getBadge(): number {
   const application = getApplication();

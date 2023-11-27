@@ -5,8 +5,8 @@ import { NotificareLocation } from '../models/notificare-location';
 let locationUpdatedCallback: OnLocationUpdatedCallback | undefined;
 let locationUpdateErrorCallback: OnLocationUpdateErrorCallback | undefined;
 
-type OnLocationUpdatedCallback = (location: NotificareLocation) => void;
-type OnLocationUpdateErrorCallback = (error: GeolocationPositionError) => void;
+export type OnLocationUpdatedCallback = (location: NotificareLocation) => void;
+export type OnLocationUpdateErrorCallback = (error: GeolocationPositionError) => void;
 
 export function onLocationUpdated(callback: OnLocationUpdatedCallback): EventSubscription {
   locationUpdatedCallback = callback;

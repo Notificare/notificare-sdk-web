@@ -13,17 +13,19 @@ let notificationActionOpenedCallback: OnNotificationActionOpenedCallback | undef
 let systemNotificationReceivedCallback: OnSystemNotificationReceivedCallback | undefined;
 let unknownNotificationReceivedCallback: OnUnknownNotificationReceivedCallback | undefined;
 
-type OnNotificationReceivedCallback = (
+export type OnNotificationReceivedCallback = (
   notification: NotificareNotification,
   deliveryMechanism: NotificareNotificationDeliveryMechanism,
 ) => void;
-type OnNotificationOpenedCallback = (notification: NotificareNotification) => void;
-type OnNotificationActionOpenedCallback = (
+export type OnNotificationOpenedCallback = (notification: NotificareNotification) => void;
+export type OnNotificationActionOpenedCallback = (
   notification: NotificareNotification,
   action: NotificareNotificationAction,
 ) => void;
-type OnSystemNotificationReceivedCallback = (notification: NotificareSystemNotification) => void;
-type OnUnknownNotificationReceivedCallback = (notification: unknown) => void;
+export type OnSystemNotificationReceivedCallback = (
+  notification: NotificareSystemNotification,
+) => void;
+export type OnUnknownNotificationReceivedCallback = (notification: unknown) => void;
 
 export function onNotificationReceived(
   callback: OnNotificationReceivedCallback,
