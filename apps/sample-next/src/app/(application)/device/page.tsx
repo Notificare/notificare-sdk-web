@@ -2,15 +2,16 @@
 
 import { PageHeader } from "@/components/page-header";
 import { NotificareLaunchBlocker } from "@/components/notificare/notificare-launch-blocker";
-import { useCallback, useState } from "react";
-import { getCurrentDevice } from "notificare-web/core";
+import { useCallback, useEffect, useState } from "react";
+import { getCurrentDevice, NotificareDevice } from "notificare-web/core";
 import { useOnDeviceRegistered } from "@/notificare/hooks/events/core/device-registered";
 import { Button } from "@/components/button";
 import { Alert } from "@/components/alert";
-import { ca } from "date-fns/locale";
 
 export default function Device() {
-  const [device, setDevice] = useState(getCurrentDevice);
+  const [device, setDevice] = useState<NotificareDevice>();
+
+  useEffect(() => setDevice(getCurrentDevice()), []);
 
   useOnDeviceRegistered((device) => setDevice(device));
 
