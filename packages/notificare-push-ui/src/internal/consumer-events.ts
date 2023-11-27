@@ -14,23 +14,25 @@ let actionExecutedCallback: OnActionExecutedCallback | undefined;
 let actionFailedToExecuteCallback: OnActionFailedToExecuteCallback | undefined;
 let customActionReceivedCallback: OnCustomActionReceivedCallback | undefined;
 
-type OnNotificationWillPresentCallback = (notification: NotificareNotification) => void;
-type OnNotificationPresentedCallback = (notification: NotificareNotification) => void;
-type OnNotificationFinishedPresentingCallback = (notification: NotificareNotification) => void;
-type OnNotificationFailedToPresentCallback = (notification: NotificareNotification) => void;
-type OnActionWillExecuteCallback = (
+export type OnNotificationWillPresentCallback = (notification: NotificareNotification) => void;
+export type OnNotificationPresentedCallback = (notification: NotificareNotification) => void;
+export type OnNotificationFinishedPresentingCallback = (
+  notification: NotificareNotification,
+) => void;
+export type OnNotificationFailedToPresentCallback = (notification: NotificareNotification) => void;
+export type OnActionWillExecuteCallback = (
   notification: NotificareNotification,
   action: NotificareNotificationAction,
 ) => void;
-type OnActionExecutedCallback = (
+export type OnActionExecutedCallback = (
   notification: NotificareNotification,
   action: NotificareNotificationAction,
 ) => void;
-type OnActionFailedToExecuteCallback = (
+export type OnActionFailedToExecuteCallback = (
   notification: NotificareNotification,
   action: NotificareNotificationAction,
 ) => void;
-type OnCustomActionReceivedCallback = (
+export type OnCustomActionReceivedCallback = (
   notification: NotificareNotification,
   action: NotificareNotificationAction,
   target: string,

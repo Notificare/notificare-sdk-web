@@ -7,9 +7,9 @@ let onReadyCallback: OnReadyCallback | undefined;
 let unlaunchedCallback: OnUnlaunchedCallback | undefined;
 let deviceRegisteredCallback: OnDeviceRegisteredCallback | undefined;
 
-type OnReadyCallback = (application: NotificareApplication) => void;
-type OnUnlaunchedCallback = () => void;
-type OnDeviceRegisteredCallback = (device: NotificareDevice) => void;
+export type OnReadyCallback = (application: NotificareApplication) => void;
+export type OnUnlaunchedCallback = () => void;
+export type OnDeviceRegisteredCallback = (device: NotificareDevice) => void;
 
 export function onReady(callback: OnReadyCallback): EventSubscription {
   onReadyCallback = callback;
