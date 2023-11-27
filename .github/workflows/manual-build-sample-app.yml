@@ -2,12 +2,9 @@ name: Update the preview environments
 on:
   workflow_dispatch
 
-permissions:
-  id-token: write   # This is required for requesting the JWT
-  contents: read    # This is required for actions/checkout
-
 jobs:
   build:
+    name: Build
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -35,36 +32,30 @@ jobs:
           name: sample-app
           path: ${{ github.workspace }}/apps/sample-next/out
 
-  upload:
+  upload_test_environment:
+    name: Upload to the test environment
     runs-on: ubuntu-latest
     needs:
       - build
     steps:
-      - name: Authenticate with AWS
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          role-to-assume: ${{ secrets.AWS_IAM_ROLE }}
-          aws-region: ${{ secrets.AWS_REGION }}
-      - name: Download binaries
-        uses: actions/download-artifact@v3
-        with:
-          name: sample-app
-          path: build
-      - name: Deploy to the production environment
-        uses: reggionick/s3-deploy@v4
-        with:
-          folder: build
-          bucket: ${{ secrets.SAMPLE_APP_BUCKET_NAME }}
-          bucket-region: ${{ secrets.AWS_REGION }}
-          delete-removed: true
-          dist-id: ${{ secrets.SAMPLE_APP_DISTRIBUTION_ID }}
-          invalidation: /
-      - name: Deploy to the test environment
-        uses: reggionick/s3-deploy@v4
-        with:
-          folder: build
-          bucket: ${{ secrets.SAMPLE_APP_TEST_BUCKET_NAME }}
-          bucket-region: ${{ secrets.AWS_REGION }}
-          delete-removed: true
-          dist-id: ${{ secrets.SAMPLE_APP_TEST_DISTRIBUTION_ID }}
-          invalidation: /
+      - uses: ./.github/workflows/upload-sample-app.yml
+        secrets:
+          notificare_services: ${{ secrets.SAMPLE_APP_TEST_NOTIFICARE_SERVICES }}
+          aws_iam_role: ${{ secrets.AWS_IAM_ROLE }}
+          aws_region: ${{ secrets.AWS_REGION }}
+          bucket_name: ${{ secrets.SAMPLE_APP_TEST_BUCKET_NAME }}
+          distribution_id: ${{ secrets.SAMPLE_APP_TEST_DISTRIBUTION_ID }}
+
+  upload_production_environment:
+    name: Upload to the production environment
+    runs-on: ubuntu-latest
+    needs:
+      - build
+    steps:
+      - uses: ./.github/workflows/upload-sample-app.yml
+        secrets:
+          notificare_services: ${{ secrets.SAMPLE_APP_NOTIFICARE_SERVICES }}
+          aws_iam_role: ${{ secrets.AWS_IAM_ROLE }}
+          aws_region: ${{ secrets.AWS_REGION }}
+          bucket_name: ${{ secrets.SAMPLE_APP_BUCKET_NAME }}
+          distribution_id: ${{ secrets.SAMPLE_APP_DISTRIBUTION_ID }}
