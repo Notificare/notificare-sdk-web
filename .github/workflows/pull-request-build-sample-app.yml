@@ -1,18 +1,12 @@
-name: Update preview environments
+name: Preview PR changes
 
 on:
-  workflow_dispatch:
-    inputs:
-      update_test_environment:
-        description: Update test environment
-        type: boolean
-        required: true
-        default: false
-      update_production_environment:
-        description: Update production environment
-        type: boolean
-        required: true
-        default: false
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - synchronize
+      - labeled
 
 jobs:
   build:
@@ -23,7 +17,7 @@ jobs:
     name: Test
     needs:
       - build
-    if: ${{ inputs.update_test_environment }}
+    if: contains(github.event.pull_request.labels.*.name, 'preview:test')
     uses: ./.github/workflows/upload-sample-app.yml
     secrets:
       notificare_services: ${{ secrets.SAMPLE_APP_TEST_NOTIFICARE_SERVICES }}
@@ -33,7 +27,7 @@ jobs:
       distribution_id: ${{ secrets.SAMPLE_APP_TEST_DISTRIBUTION_ID }}
 
   upload_production_environment:
-    if: ${{ inputs.update_production_environment }}
+    if: contains(github.event.pull_request.labels.*.name, 'preview:production')
     name: Production
     needs:
       - build
