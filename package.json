@@ -11,6 +11,7 @@
   "scripts": {
     "prepare": "husky install",
     "build": "lerna run --scope @notificare/* --scope notificare-web build",
+    "build:sample-app": "lerna run --scope sample-next build",
     "clean": "lerna run --scope @notificare/* --scope notificare-web clean",
     "dev": "lerna run --scope @notificare/* --scope notificare-web dev --parallel",
     "lint": "lerna run --scope @notificare/* --scope notificare-web lint",
