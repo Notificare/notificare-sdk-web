@@ -34,7 +34,7 @@ jobs:
           name: sample-app
           path: build
       - name: Prepare notificare-services.json
-        run: echo ${{ secrets.notificare_services }} > build/notificare-services.json
+        run: echo "${{ secrets.notificare_services }}" > build/notificare-services.json
       - name: Upload to S3
         uses: reggionick/s3-deploy@v4
         with:

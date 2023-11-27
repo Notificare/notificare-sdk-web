@@ -33,7 +33,7 @@ jobs:
           path: ${{ github.workspace }}/apps/sample-next/out
 
   upload_test_environment:
-    name: Upload / Test
+    name: Test
     needs:
       - build
     uses: ./.github/workflows/upload-sample-app.yml
@@ -45,7 +45,7 @@ jobs:
       distribution_id: ${{ secrets.SAMPLE_APP_TEST_DISTRIBUTION_ID }}
 
   upload_production_environment:
-    name: Upload / Production
+    name: Production
     needs:
       - build
     uses: ./.github/workflows/upload-sample-app.yml
