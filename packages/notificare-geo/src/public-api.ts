@@ -12,7 +12,12 @@ import {
 } from './internal/storage/local-storage';
 import { startLocationUpdates, stopLocationUpdates } from './internal/internal-api';
 
-export { onLocationUpdated } from './internal/consumer-events';
+export {
+  onLocationUpdated,
+  onLocationUpdateError,
+  OnLocationUpdatedCallback,
+  OnLocationUpdateErrorCallback,
+} from './internal/consumer-events';
 
 export function hasLocationServicesEnabled(): boolean {
   return getLocationServicesEnabled();

@@ -19,6 +19,11 @@ export {
   onNotificationActionOpened,
   onSystemNotificationReceived,
   onUnknownNotificationReceived,
+  OnNotificationReceivedCallback,
+  OnSystemNotificationReceivedCallback,
+  OnNotificationActionOpenedCallback,
+  OnNotificationOpenedCallback,
+  OnUnknownNotificationReceivedCallback,
 } from './internal/consumer-events';
 
 export { hasWebPushCapabilities } from './internal/internal-api';

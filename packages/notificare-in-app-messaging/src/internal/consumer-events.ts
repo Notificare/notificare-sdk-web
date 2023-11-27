@@ -11,14 +11,14 @@ let messageFailedToPresentCallback: OnMessageFailedToPresentCallback | undefined
 let actionExecutedCallback: OnActionExecutedCallback | undefined;
 let actionFailedToExecuteCallback: OnActionFailedToExecuteCallback | undefined;
 
-type OnMessagePresentedCallback = (message: NotificareInAppMessage) => void;
-type OnMessageFinishedPresentingCallback = (message: NotificareInAppMessage) => void;
-type OnMessageFailedToPresentCallback = (message: NotificareInAppMessage) => void;
-type OnActionExecutedCallback = (
+export type OnMessagePresentedCallback = (message: NotificareInAppMessage) => void;
+export type OnMessageFinishedPresentingCallback = (message: NotificareInAppMessage) => void;
+export type OnMessageFailedToPresentCallback = (message: NotificareInAppMessage) => void;
+export type OnActionExecutedCallback = (
   message: NotificareInAppMessage,
   action: NotificareInAppMessageAction,
 ) => void;
-type OnActionFailedToExecuteCallback = (
+export type OnActionFailedToExecuteCallback = (
   message: NotificareInAppMessage,
   action: NotificareInAppMessageAction,
 ) => void;

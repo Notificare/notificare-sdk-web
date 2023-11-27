@@ -46,7 +46,14 @@ import { convertCloudNotificationToPublic } from './internal/cloud-api/converter
 
 export const SDK_VERSION: string = SDK_VERSION_INTERNAL;
 
-export { onReady, onUnlaunched, onDeviceRegistered } from './internal/consumer-events';
+export {
+  onReady,
+  onUnlaunched,
+  onDeviceRegistered,
+  OnDeviceRegisteredCallback,
+  OnReadyCallback,
+  OnUnlaunchedCallback,
+} from './internal/consumer-events';
 
 export function setLogLevel(logLevel: LogLevel | LogLevelString) {
   setLogLevelInternal(logLevel);
