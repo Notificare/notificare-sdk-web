@@ -15,6 +15,7 @@
     "@tailwindcss/forms": "^0.5.7",
     "classnames": "^2.3.2",
     "date-fns": "^2.29.3",
+    "js-sha256": "^0.10.1",
     "lodash": "^4.17.21",
     "next": "14.0.3",
     "notificare-web": "^3.0.0",
