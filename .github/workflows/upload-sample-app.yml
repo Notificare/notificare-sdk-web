@@ -43,4 +43,4 @@ jobs:
           bucket-region: ${{ secrets.aws_region }}
           delete-removed: true
           dist-id: ${{ secrets.distribution_id }}
-          invalidation: /
+          invalidation: /*
