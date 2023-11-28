@@ -5,12 +5,17 @@ import { usePathname } from "next/navigation";
 import { useMemo } from "react";
 import { classNames } from "@/utils/css";
 import Link from "next/link";
+import Image from "next/image";
+import NotificareLogo from "@/../public/assets/notificare-logo.svg";
+import NotificareLogoDark from "@/../public/assets/notificare-logo-dark.svg";
+import { useNavigation } from "@/context/navigation";
 
 export function Sidebar() {
   return (
-    <div className="flex grow flex-col gap-y-5 overflow-y-auto border-r border-gray-200 bg-white px-6 pb-4">
+    <div className="flex grow flex-col gap-y-5 overflow-y-auto border-r border-gray-200 dark:border-none bg-white px-6 pb-4 dark:bg-neutral-900">
       <div className="flex h-16 shrink-0 items-center">
-        <img className="h-8 w-auto" src="/assets/notificare-logo.svg" alt="Notificare" />
+        <Image className="h-8 w-auto dark:hidden" src={NotificareLogo} alt="Notificare" />
+        <Image className="h-8 w-auto hidden dark:block" src={NotificareLogoDark} alt="Notificare" />
       </div>
       <nav className="flex flex-1 flex-col">
         <ul role="list" className="flex flex-1 flex-col gap-y-7">
@@ -29,6 +34,7 @@ export function Sidebar() {
 
 function NavigationItem({ item }: NavigationItemProps) {
   const { label, href, icon: Icon } = item;
+  const { sidebar } = useNavigation();
 
   const pathname = usePathname();
   const isActive = useMemo(
@@ -40,17 +46,18 @@ function NavigationItem({ item }: NavigationItemProps) {
     <li>
       <Link
         href={href}
+        onClick={() => sidebar.setOpen(false)}
         className={classNames(
           isActive
-            ? "bg-gray-50 text-indigo-600"
-            : "text-gray-700 hover:text-indigo-600 hover:bg-gray-50",
+            ? "bg-gray-50 text-indigo-600 dark:bg-neutral-800 dark:text-indigo-400"
+            : "text-gray-700 hover:text-indigo-600 hover:bg-gray-50 dark:text-gray-100 hover:dark:bg-neutral-800 hover:dark:text-indigo-400",
           "group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold",
         )}
       >
         <Icon
           className={classNames(
-            isActive ? "text-indigo-600" : "text-gray-400 group-hover:text-indigo-600",
-            "h-6 w-6 shrink-0",
+            isActive ? "text-indigo-600 dark:text-indigo-400 " : "text-gray-400 dark:text-gray-200",
+            "h-6 w-6 shrink-0 group-hover:text-indigo-600 group-hover:dark:text-indigo-400",
           )}
           aria-hidden="true"
         />

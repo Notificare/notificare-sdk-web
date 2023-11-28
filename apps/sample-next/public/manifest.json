@@ -1,7 +1,0 @@
-{
-  "name": "Sample app",
-  "short_name": "Sample app",
-  "description": "Sample app used for testing the Notificare web libraries.",
-  "start_url": "/",
-  "display": "standalone"
-}

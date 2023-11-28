@@ -39,7 +39,9 @@ export function LocationCard() {
         />
 
         <div className="flex items-center justify-between">
-          <p className="text-sm font-medium leading-6 text-gray-900">Permission</p>
+          <p className="text-sm font-medium leading-6 text-gray-900 dark:text-gray-200">
+            Permission
+          </p>
           <p className="text-sm font-mono lowercase text-gray-400">WIP</p>
         </div>
       </CardContent>
