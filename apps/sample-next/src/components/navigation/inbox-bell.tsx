@@ -12,7 +12,10 @@ export function InboxBell() {
   useOnBadgeUpdated((badge) => setBadge(badge));
 
   return (
-    <Link href="/inbox" className="group p-2.5 text-gray-400 hover:text-gray-500">
+    <Link
+      href="/inbox"
+      className="group p-2.5 text-gray-400 hover:text-gray-500 dark:text-gray-200 dark:hover:text-gray-500"
+    >
       <span className="sr-only">View notifications</span>
       <div className="relative">
         <BellIcon className="h-6 w-6" aria-hidden="true" />

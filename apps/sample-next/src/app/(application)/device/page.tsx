@@ -59,7 +59,7 @@ export default function Device() {
                 />
               </div>
 
-              <pre className="bg-gray-200 rounded p-4 overflow-scroll">
+              <pre className="bg-gray-200 dark:bg-neutral-800 text-gray-800 dark:text-gray-200 rounded p-4 overflow-scroll">
                 {JSON.stringify(device, null, 2)}
               </pre>
             </>

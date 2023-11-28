@@ -16,10 +16,10 @@ export function StickyNavigation() {
   useOnDeviceRegistered((device) => setDevice(device));
 
   return (
-    <div className="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-x-4 border-b border-gray-200 bg-white px-4 shadow-sm sm:gap-x-6 sm:px-6 lg:px-8">
+    <div className="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-x-4 border-b border-gray-200 dark:border-none bg-white dark:bg-neutral-900 px-4 shadow-sm sm:gap-x-6 sm:px-6 lg:px-8">
       <button
         type="button"
-        className="-m-2.5 p-2.5 text-gray-700 lg:hidden"
+        className="-m-2.5 p-2.5 text-gray-700 dark:text-gray-200 lg:hidden"
         onClick={() => sidebar.setOpen(!sidebar.isOpen)}
       >
         <span className="sr-only">Open sidebar</span>
@@ -27,20 +27,23 @@ export function StickyNavigation() {
       </button>
 
       {/* Separator */}
-      <div className="h-6 w-px bg-gray-200 lg:hidden" aria-hidden="true" />
+      <div className="h-6 w-px bg-gray-200 dark:bg-gray-400 lg:hidden" aria-hidden="true" />
 
       <div className="flex flex-1 flex-row-reverse gap-x-4 self-stretch lg:gap-x-6">
         <div className="flex items-center gap-x-4 lg:gap-x-6">
           <InboxBell />
 
           {/* Separator */}
-          <div className="hidden lg:block lg:h-6 lg:w-px lg:bg-gray-200" aria-hidden="true" />
+          <div
+            className="hidden lg:block lg:h-6 lg:w-px lg:bg-gray-200 dark:lg:bg-gray-400"
+            aria-hidden="true"
+          />
 
           <div className="-m-1.5 flex items-center p-1.5">
             <Gravatar email={device?.userId ?? ""} />
             <span className="hidden lg:flex lg:items-center">
               <span
-                className="ml-4 text-sm font-semibold leading-6 text-gray-900"
+                className="ml-4 text-sm font-semibold leading-6 text-gray-900 dark:text-gray-200"
                 aria-hidden="true"
               >
                 {device?.userName ?? "Anonymous"}
