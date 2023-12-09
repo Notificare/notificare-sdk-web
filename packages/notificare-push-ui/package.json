@@ -33,7 +33,6 @@
   "devDependencies": {
     "@notificare/eslint-config": "*",
     "@notificare/rollup": "*",
-    "@notificare/tsconfig": "*",
     "@types/google.maps": "^3.52.6",
     "typescript": "^5.1.6"
   },
