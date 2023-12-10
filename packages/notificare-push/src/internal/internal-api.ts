@@ -1,3 +1,4 @@
+import { updateCloudDevice } from '@notificare/web-cloud-api';
 import {
   deleteDevice,
   getApplication,
@@ -14,21 +15,20 @@ import {
   registerPushDevice,
   registerTemporaryDevice,
 } from '@notificare/web-core';
-import { updateCloudDevice } from '@notificare/web-cloud-api';
 import { logger } from '../logger';
-import { sleep } from './utils';
-import { showOnboarding } from './ui/onboarding';
-import { showFloatingButton } from './ui/floating-button';
-import { getPushPermissionStatus } from './utils/push';
+import { logPushRegistration } from './internal-api-events';
+import { enableSafariPushNotifications, hasSafariPushSupport } from './internal-api-safari-push';
 import {
   disableWebPushNotifications,
   enableWebPushNotifications,
   hasWebPushSupport,
   postMessageToServiceWorker,
 } from './internal-api-web-push';
-import { enableSafariPushNotifications, hasSafariPushSupport } from './internal-api-safari-push';
 import { setRemoteNotificationsEnabled } from './storage/local-storage';
-import { logPushRegistration } from './internal-api-events';
+import { showFloatingButton } from './ui/floating-button';
+import { showOnboarding } from './ui/onboarding';
+import { sleep } from './utils';
+import { getPushPermissionStatus } from './utils/push';
 
 export function hasWebPushCapabilities(): boolean {
   return hasWebPushSupport() || hasSafariPushSupport();

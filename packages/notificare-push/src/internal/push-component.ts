@@ -6,24 +6,24 @@ import {
   getCurrentDevice,
   logNotificationOpen,
 } from '@notificare/web-core';
-import {
-  disableWebPushNotifications,
-  handleServiceWorkerMessage,
-  hasWebPushSupport,
-} from './internal-api-web-push';
+import { logger } from '../logger';
+import { notifyNotificationOpened } from './consumer-events';
 import {
   enableRemoteNotifications,
   handleAutoOnboarding,
   handleFloatingButton,
   hasWebPushCapabilities,
 } from './internal-api';
-import { logger } from '../logger';
+import { logNotificationInfluenced } from './internal-api-events';
+import {
+  disableWebPushNotifications,
+  handleServiceWorkerMessage,
+  hasWebPushSupport,
+} from './internal-api-web-push';
 import {
   getRemoteNotificationsEnabled,
   setRemoteNotificationsEnabled,
 } from './storage/local-storage';
-import { logNotificationInfluenced } from './internal-api-events';
-import { notifyNotificationOpened } from './consumer-events';
 
 /* eslint-disable class-methods-use-this */
 export class PushComponent extends Component {

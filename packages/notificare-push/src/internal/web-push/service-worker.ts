@@ -5,9 +5,9 @@ import {
 } from '@notificare/web-core';
 import { logger } from '../../logger';
 import { arrayBufferToBase64Url, base64UrlToUint8Array } from '../utils';
-import { WorkerConfiguration } from './configuration/worker-configuration';
-import { encodeWorkerConfiguration, parseWorkerConfiguration } from './configuration/parser';
 import { isStandaloneMode } from '../utils/device';
+import { encodeWorkerConfiguration, parseWorkerConfiguration } from './configuration/parser';
+import { WorkerConfiguration } from './configuration/worker-configuration';
 
 export async function registerServiceWorker(
   options: NotificareInternalOptions,

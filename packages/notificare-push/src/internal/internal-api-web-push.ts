@@ -8,9 +8,8 @@ import {
   NotificareInternalOptions,
   NotificareNotification,
 } from '@notificare/web-core';
-import { arrayBufferToBase64 } from './utils';
 import { logger } from '../logger';
-import { logNotificationInfluenced, logNotificationReceived } from './internal-api-events';
+import { NotificareNotificationDeliveryMechanism } from '../models/notificare-notification-delivery-mechanism';
 import {
   notifyNotificationActionOpened,
   notifyNotificationOpened,
@@ -18,9 +17,10 @@ import {
   notifySystemNotificationReceived,
   notifyUnknownNotificationReceived,
 } from './consumer-events';
-import { createWebPushSubscription, registerServiceWorker } from './web-push/service-worker';
-import { NotificareNotificationDeliveryMechanism } from '../models/notificare-notification-delivery-mechanism';
+import { logNotificationInfluenced, logNotificationReceived } from './internal-api-events';
+import { arrayBufferToBase64 } from './utils';
 import { isStandaloneMode, isSafariDesktopBrowser } from './utils/device';
+import { createWebPushSubscription, registerServiceWorker } from './web-push/service-worker';
 
 export function hasWebPushSupport(): boolean {
   // The navigator.standalone check ensures that iOS Safari with WebPush
