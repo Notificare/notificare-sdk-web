@@ -1,6 +1,6 @@
 module.exports = {
   root: true,
-  extends: ['@notificare/eslint-config'],
+  extends: ['../../.eslintrc.json'],
   parserOptions: {
     project: './tsconfig.json',
     tsconfigRootDir: __dirname,

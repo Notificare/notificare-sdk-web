@@ -31,7 +31,6 @@
     "tslib": "^2.5.0"
   },
   "devDependencies": {
-    "@notificare/eslint-config": "*",
     "typescript": "^5.1.6"
   },
   "publishConfig": {
