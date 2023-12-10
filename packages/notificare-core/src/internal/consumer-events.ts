@@ -1,7 +1,7 @@
-import { NotificareApplication } from '../models/notificare-application';
 import { EventSubscription } from '../event-subscription';
-import { logger } from './logger';
+import { NotificareApplication } from '../models/notificare-application';
 import { NotificareDevice } from '../models/notificare-device';
+import { logger } from './logger';
 
 let onReadyCallback: OnReadyCallback | undefined;
 let unlaunchedCallback: OnUnlaunchedCallback | undefined;

@@ -4,16 +4,16 @@ import {
   registerTemporaryDevice,
   registerTestDevice,
 } from '../internal-api-device';
-import { logger } from '../logger';
-import { getApplicationVersion } from '../utils';
 import {
   logApplicationInstall,
   logApplicationRegistration,
   logApplicationUpgrade,
 } from '../internal-api-events';
 import { launch as launchSession } from '../internal-api-session';
-import { getCurrentDevice } from '../storage/local-storage';
+import { logger } from '../logger';
 import { getOptions } from '../options';
+import { getCurrentDevice } from '../storage/local-storage';
+import { getApplicationVersion } from '../utils';
 
 /* eslint-disable class-methods-use-this */
 export class DeviceComponent extends Component {

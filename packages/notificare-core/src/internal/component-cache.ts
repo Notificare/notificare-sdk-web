@@ -1,5 +1,5 @@
-import { logger } from './logger';
 import { Component } from './component';
+import { logger } from './logger';
 
 export const components = new Map<string, Component>();
 

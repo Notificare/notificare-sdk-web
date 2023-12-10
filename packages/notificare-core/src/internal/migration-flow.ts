@@ -1,6 +1,6 @@
-import { logger } from './logger';
-import { components } from './component-cache';
 import { NotificareDevice } from '../models/notificare-device';
+import { components } from './component-cache';
+import { logger } from './logger';
 import { storeCurrentDevice } from './storage/local-storage';
 
 export function isLatestStorageStructure(): boolean {
