@@ -1,4 +1,6 @@
-export function emitModulePackageFile() {
+// noinspection JSUnresolvedReference
+
+export default function emitModulePackageFile() {
   return {
     name: "emit-module-package-file",
     generateBundle() {

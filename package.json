@@ -19,6 +19,11 @@
     "typecheck": "lerna run --scope @notificare/* --scope notificare-web typecheck"
   },
   "devDependencies": {
+    "@rollup/plugin-commonjs": "^25.0.7",
+    "@rollup/plugin-json": "^6.0.1",
+    "@rollup/plugin-node-resolve": "^15.2.3",
+    "@rollup/plugin-terser": "^0.4.4",
+    "@rollup/plugin-typescript": "^11.1.5",
     "autoprefixer": "^10.4.15",
     "cssnano": "^6.0.1",
     "gulp": "^4.0.2",
@@ -33,6 +38,8 @@
     "postcss": "^8.4.28",
     "postcss-cli": "^10.1.0",
     "postcss-import": "^15.1.0",
-    "postcss-preset-env": "^9.1.1"
+    "postcss-preset-env": "^9.1.1",
+    "rollup": "^3.10.0",
+    "rollup-plugin-svg-import": "^2.1.0"
   }
 }
