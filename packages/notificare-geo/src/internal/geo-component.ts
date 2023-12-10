@@ -1,7 +1,7 @@
 import { Component, getCurrentDevice, getOptions } from '@notificare/web-core';
-import { getLocationServicesEnabled, setLocationServicesEnabled } from './storage/local-storage';
-import { clearLocation, startLocationUpdates } from './internal-api';
 import { logger } from '../logger';
+import { clearLocation, startLocationUpdates } from './internal-api';
+import { getLocationServicesEnabled, setLocationServicesEnabled } from './storage/local-storage';
 
 /* eslint-disable class-methods-use-this */
 export class GeoComponent extends Component {

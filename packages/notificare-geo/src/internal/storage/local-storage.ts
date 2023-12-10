@@ -1,5 +1,5 @@
-import { NotificareLocation } from '../../models/notificare-location';
 import { logger } from '../../logger';
+import { NotificareLocation } from '../../models/notificare-location';
 
 export function getLocationServicesEnabled(): boolean {
   const enabledStr = localStorage.getItem('re.notifica.geo.location_services_enabled');
