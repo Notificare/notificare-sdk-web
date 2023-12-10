@@ -1,3 +1,4 @@
+import { fetchCloudInAppMessage } from '@notificare/web-cloud-api';
 import {
   getCloudApiEnvironment,
   getCurrentDevice,
@@ -5,15 +6,14 @@ import {
   NotificareDeviceUnavailableError,
   NotificareNetworkRequestError,
 } from '@notificare/web-core';
-import { fetchCloudInAppMessage } from '@notificare/web-cloud-api';
-import { NotificareInAppMessage } from '../models/notificare-in-app-message';
 import { logger } from '../logger';
+import { NotificareInAppMessage } from '../models/notificare-in-app-message';
+import { convertCloudInAppMessageToPublic } from './cloud-api/in-app-message-converter';
+import { notifyMessageFailedToPresent, notifyMessagePresented } from './consumer-events';
+import { logInAppMessageViewed } from './internal-api-events';
 import { ApplicationContext } from './types/application-context';
 import { ApplicationState } from './types/application-state';
 import { dismissMessage, isShowingMessage, showMessage } from './ui/message-presenter';
-import { notifyMessageFailedToPresent, notifyMessagePresented } from './consumer-events';
-import { logInAppMessageViewed } from './internal-api-events';
-import { convertCloudInAppMessageToPublic } from './cloud-api/in-app-message-converter';
 
 const DEFAULT_BACKGROUND_GRACE_PERIOD_MILLIS = 5 * 60 * 1000;
 

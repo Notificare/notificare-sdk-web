@@ -3,8 +3,8 @@ import {
   NotificareInAppMessage,
   NotificareInAppMessageAction,
 } from '../../../models/notificare-in-app-message';
-import { ROOT_ELEMENT_IDENTIFIER } from '../root';
 import { ActionType } from '../../types/action-type';
+import { ROOT_ELEMENT_IDENTIFIER } from '../root';
 
 export function createCardComponent({
   message,

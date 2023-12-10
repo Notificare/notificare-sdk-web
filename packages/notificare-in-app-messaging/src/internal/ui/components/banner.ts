@@ -1,7 +1,7 @@
 import { createBackdrop, createRoot } from '@notificare/web-ui';
 import { NotificareInAppMessage } from '../../../models/notificare-in-app-message';
-import { ROOT_ELEMENT_IDENTIFIER } from '../root';
 import { ActionType } from '../../types/action-type';
+import { ROOT_ELEMENT_IDENTIFIER } from '../root';
 
 export function createBannerComponent(params: CreateBannerComponentParams): HTMLElement {
   const { dismiss } = params;
