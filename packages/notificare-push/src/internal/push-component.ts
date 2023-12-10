@@ -67,15 +67,7 @@ export class PushComponent extends Component {
   }
 
   async launch(): Promise<void> {
-    if (getRemoteNotificationsEnabled()) {
-      try {
-        logger.debug('Automatically enabling remote notification.');
-        await enableRemoteNotifications();
-      } catch (e) {
-        logger.error('Failed to automatically enable remote notifications.');
-      }
-    }
-
+    this.autoEnableRemoteNotifications();
     this.handleOnboarding();
     this.handleSafariWebPushNotification();
   }
@@ -103,6 +95,15 @@ export class PushComponent extends Component {
     }
 
     throw new Error(`Unsupported command '${command}' in '${this.name}' component.`);
+  }
+
+  private autoEnableRemoteNotifications() {
+    if (getRemoteNotificationsEnabled()) {
+      logger.debug('Automatically enabling remote notification.');
+      enableRemoteNotifications().catch((error) =>
+        logger.error('Failed to automatically enable remote notifications.', error),
+      );
+    }
   }
 
   private handleOnboarding() {
