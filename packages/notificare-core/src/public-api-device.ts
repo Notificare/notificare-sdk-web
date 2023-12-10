@@ -155,10 +155,10 @@ export async function fetchDoNotDisturb(): Promise<NotificareDoNotDisturb | unde
   // Update current device properties.
   storeCurrentDevice({
     ...device,
-    dnd,
+    dnd: dnd ?? undefined,
   });
 
-  return dnd;
+  return dnd ?? undefined;
 }
 
 export async function updateDoNotDisturb(dnd: NotificareDoNotDisturb): Promise<void> {
