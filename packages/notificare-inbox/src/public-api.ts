@@ -1,4 +1,10 @@
 import {
+  clearCloudDeviceInbox,
+  fetchCloudDeviceInbox,
+  markCloudDeviceInboxAsRead,
+  removeCloudDeviceInboxItem,
+} from '@notificare/web-cloud-api';
+import {
   fetchNotification,
   getApplication,
   getCloudApiEnvironment,
@@ -11,18 +17,12 @@ import {
   NotificareNotReadyError,
   NotificareServiceUnavailableError,
 } from '@notificare/web-core';
-import {
-  clearCloudDeviceInbox,
-  fetchCloudDeviceInbox,
-  markCloudDeviceInboxAsRead,
-  removeCloudDeviceInboxItem,
-} from '@notificare/web-cloud-api';
-import { logger } from './logger';
-import { NotificareInboxResponse } from './models/notificare-inbox-response';
-import { NotificareInboxItem } from './models/notificare-inbox-item';
-import { refreshBadgeInternal } from './internal/internal-api';
-import { notifyInboxUpdated } from './internal/consumer-events';
 import { convertCloudInboxItemToPublic } from './internal/cloud-api/inbox-converter';
+import { notifyInboxUpdated } from './internal/consumer-events';
+import { refreshBadgeInternal } from './internal/internal-api';
+import { logger } from './logger';
+import { NotificareInboxItem } from './models/notificare-inbox-item';
+import { NotificareInboxResponse } from './models/notificare-inbox-response';
 
 export {
   onInboxUpdated,

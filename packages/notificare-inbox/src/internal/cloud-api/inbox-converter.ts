@@ -1,5 +1,5 @@
-import { NotificareNotificationAttachment } from '@notificare/web-core';
 import { CloudDeviceInboxItem, CloudDeviceInboxItemAttachment } from '@notificare/web-cloud-api';
+import { NotificareNotificationAttachment } from '@notificare/web-core';
 import { NotificareInboxItem } from '../../models/notificare-inbox-item';
 
 export function convertCloudInboxItemToPublic(
