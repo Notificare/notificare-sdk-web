@@ -1,3 +1,4 @@
+import { NotificareNotification, NotificareNotificationAction } from '@notificare/web-core';
 import {
   createBackdrop,
   createButton,
@@ -7,9 +8,8 @@ import {
   createModalHeader,
   createRoot,
 } from '@notificare/web-ui';
-import { NotificareNotification, NotificareNotificationAction } from '@notificare/web-core';
-import { ROOT_ELEMENT_IDENTIFIER } from '../root';
 import { getApplicationIcon, getApplicationName } from '../../utils';
+import { ROOT_ELEMENT_IDENTIFIER } from '../root';
 import { createAlertContent } from './content/alert';
 import { createImageContent } from './content/image';
 import { createMapContent } from './content/map';
