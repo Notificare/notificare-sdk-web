@@ -1,30 +1,30 @@
 "use client";
 
+import { useOnDeviceRegistered } from "@/notificare/hooks/events/core/device-registered";
 import { useOnReady } from "@/notificare/hooks/events/core/ready";
 import { useOnUnlaunched } from "@/notificare/hooks/events/core/unlaunched";
-import { useOnDeviceRegistered } from "@/notificare/hooks/events/core/device-registered";
-import { useOnInboxUpdated } from "@/notificare/hooks/events/inbox/inbox-updated";
+import { useOnLocationUpdateError } from "@/notificare/hooks/events/geo/location-update-error";
+import { useOnLocationUpdated } from "@/notificare/hooks/events/geo/location-updated";
+import { useOnMessageActionExecuted } from "@/notificare/hooks/events/in-app-messaging/message-action-executed";
+import { useOnMessageActionFailedToExecute } from "@/notificare/hooks/events/in-app-messaging/message-action-failed-to-execute";
+import { useOnMessageFailedToPresent } from "@/notificare/hooks/events/in-app-messaging/message-failed-to-present";
+import { useOnMessageFinishedPresenting } from "@/notificare/hooks/events/in-app-messaging/message-finished-presenting";
+import { useOnMessagePresented } from "@/notificare/hooks/events/in-app-messaging/message-presented";
 import { useOnBadgeUpdated } from "@/notificare/hooks/events/inbox/badge-updated";
+import { useOnInboxUpdated } from "@/notificare/hooks/events/inbox/inbox-updated";
+import { useOnNotificationActionOpened } from "@/notificare/hooks/events/push/notification-action-opened";
+import { useOnNotificationOpened } from "@/notificare/hooks/events/push/notification-opened";
 import { useOnNotificationReceived } from "@/notificare/hooks/events/push/notification-received";
 import { useOnSystemNotificationReceived } from "@/notificare/hooks/events/push/system-notification-received";
 import { useOnUnknownNotificationReceived } from "@/notificare/hooks/events/push/unknown-notification-received";
-import { useOnNotificationOpened } from "@/notificare/hooks/events/push/notification-opened";
-import { useOnNotificationActionOpened } from "@/notificare/hooks/events/push/notification-action-opened";
-import { useOnLocationUpdated } from "@/notificare/hooks/events/geo/location-updated";
-import { useOnLocationUpdateError } from "@/notificare/hooks/events/geo/location-update-error";
-import { useOnMessagePresented } from "@/notificare/hooks/events/in-app-messaging/message-presented";
-import { useOnMessageFinishedPresenting } from "@/notificare/hooks/events/in-app-messaging/message-finished-presenting";
-import { useOnMessageFailedToPresent } from "@/notificare/hooks/events/in-app-messaging/message-failed-to-present";
-import { useOnMessageActionExecuted } from "@/notificare/hooks/events/in-app-messaging/message-action-executed";
-import { useOnMessageActionFailedToExecute } from "@/notificare/hooks/events/in-app-messaging/message-action-failed-to-execute";
-import { useOnNotificationWillPresent } from "@/notificare/hooks/events/push-ui/notification-will-present";
-import { useOnNotificationPresented } from "@/notificare/hooks/events/push-ui/notification-presented";
-import { useOnNotificationFinishedPresenting } from "@/notificare/hooks/events/push-ui/notification-finished-presenting";
-import { useOnNotificationFailedToPresent } from "@/notificare/hooks/events/push-ui/notification-failed-to-present";
-import { useOnNotificationActionWillExecute } from "@/notificare/hooks/events/push-ui/notification-action-will-execute";
 import { useOnNotificationActionExecuted } from "@/notificare/hooks/events/push-ui/notification-action-executed";
 import { useOnNotificationActionFailedToExecute } from "@/notificare/hooks/events/push-ui/notification-action-failed-to-execute";
+import { useOnNotificationActionWillExecute } from "@/notificare/hooks/events/push-ui/notification-action-will-execute";
 import { useOnNotificationCustomActionReceived } from "@/notificare/hooks/events/push-ui/notification-custom-action-received";
+import { useOnNotificationFailedToPresent } from "@/notificare/hooks/events/push-ui/notification-failed-to-present";
+import { useOnNotificationFinishedPresenting } from "@/notificare/hooks/events/push-ui/notification-finished-presenting";
+import { useOnNotificationPresented } from "@/notificare/hooks/events/push-ui/notification-presented";
+import { useOnNotificationWillPresent } from "@/notificare/hooks/events/push-ui/notification-will-present";
 
 export function NotificareEventLogger() {
   /**

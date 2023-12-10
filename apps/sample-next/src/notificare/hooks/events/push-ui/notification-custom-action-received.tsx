@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect } from "react";
-import { useNotificare } from "@/notificare/notificare-context";
 import { OnCustomActionReceivedCallback } from "notificare-web/push-ui";
+import { useNotificare } from "@/notificare/notificare-context";
 
 export function useOnNotificationCustomActionReceived(callback: OnCustomActionReceivedCallback) {
   const { registerListener } = useNotificare();

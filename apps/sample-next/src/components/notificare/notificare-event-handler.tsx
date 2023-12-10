@@ -1,9 +1,9 @@
 "use client";
 
-import { useOnNotificationOpened } from "@/notificare/hooks/events/push/notification-opened";
-import { useOnNotificationActionOpened } from "@/notificare/hooks/events/push/notification-action-opened";
-import { useOnNotificationCustomActionReceived } from "@/notificare/hooks/events/push-ui/notification-custom-action-received";
 import { presentAction, presentNotification } from "notificare-web/push-ui";
+import { useOnNotificationActionOpened } from "@/notificare/hooks/events/push/notification-action-opened";
+import { useOnNotificationOpened } from "@/notificare/hooks/events/push/notification-opened";
+import { useOnNotificationCustomActionReceived } from "@/notificare/hooks/events/push-ui/notification-custom-action-received";
 
 export function NotificareEventHandler() {
   useOnNotificationOpened((notification) => {

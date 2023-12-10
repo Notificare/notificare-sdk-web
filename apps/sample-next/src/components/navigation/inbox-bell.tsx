@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
+import { BellIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { getBadge } from "notificare-web/inbox";
-import { BellIcon } from "@heroicons/react/24/outline";
 import { useOnBadgeUpdated } from "@/notificare/hooks/events/inbox/badge-updated";
 
 export function InboxBell() {

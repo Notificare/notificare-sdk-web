@@ -1,8 +1,8 @@
-import { getCurrentDevice, registerDevice, RegisterDeviceOptions } from "notificare-web/core";
 import { useCallback, useState } from "react";
+import { getCurrentDevice, registerDevice, RegisterDeviceOptions } from "notificare-web/core";
+import { Button } from "@/components/button";
 import { Card, CardActions, CardContent, CardHeader } from "@/components/card";
 import { InputField } from "@/components/input-field";
-import { Button } from "@/components/button";
 
 export function DeviceRegistrationCard() {
   const device = getCurrentDevice();

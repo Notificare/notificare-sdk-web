@@ -1,14 +1,14 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { Card, CardActions, CardContent, CardHeader } from "@/components/card";
-import { Switch } from "@/components/switch";
 import {
   clearDoNotDisturb,
   fetchDoNotDisturb,
   updateDoNotDisturb,
   getCurrentDevice,
 } from "notificare-web/core";
-import { InputField } from "@/components/input-field";
 import { Button } from "@/components/button";
+import { Card, CardActions, CardContent, CardHeader } from "@/components/card";
+import { InputField } from "@/components/input-field";
+import { Switch } from "@/components/switch";
 
 const DEFAULT_DND_START = "23:00";
 const DEFAULT_DND_END = "08:00";

@@ -1,4 +1,3 @@
-import { TypedListener } from "@/notificare/hooks/events/base";
 import {
   OnActionExecutedCallback,
   OnActionFailedToExecuteCallback,
@@ -9,6 +8,7 @@ import {
   OnNotificationPresentedCallback,
   OnNotificationWillPresentCallback,
 } from "notificare-web/push-ui";
+import { TypedListener } from "@/notificare/hooks/events/base";
 
 export type NotificarePushUiListener =
   | NotificationWillPresentListener

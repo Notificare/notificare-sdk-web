@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect } from "react";
-import { useNotificare } from "@/notificare/notificare-context";
 import { OnMessagePresentedCallback } from "notificare-web/in-app-messaging";
+import { useNotificare } from "@/notificare/notificare-context";
 
 export function useOnMessagePresented(callback: OnMessagePresentedCallback) {
   const { registerListener } = useNotificare();

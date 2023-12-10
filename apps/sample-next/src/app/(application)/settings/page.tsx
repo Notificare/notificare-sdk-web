@@ -1,11 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { PageHeader } from "@/components/page-header";
+import { NotificareOptions } from "notificare-web/core";
 import { ConfigurationForm } from "@/components/configuration/configuration-form";
 import { ConfigurationFormState } from "@/components/configuration/configuration-form-state";
 import { NotificareLaunchBlocker } from "@/components/notificare/notificare-launch-blocker";
-import { NotificareOptions } from "notificare-web/core";
+import { PageHeader } from "@/components/page-header";
 
 export default function Settings() {
   const [state, setState] = useState<ConfigurationFormState>();

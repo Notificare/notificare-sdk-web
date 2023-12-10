@@ -1,12 +1,12 @@
 import { PropsWithChildren } from "react";
-import { Sidebar } from "@/components/navigation/sidebar";
 import { MobileSidebar } from "@/components/navigation/mobile-sidebar";
+import { Sidebar } from "@/components/navigation/sidebar";
 import { StickyNavigation } from "@/components/navigation/sticky-navigation";
-import { NavigationProvider } from "@/context/navigation";
 import { NotificareAutoLauncher } from "@/components/notificare/notificare-auto-launcher";
-import { NotificareEventLogger } from "@/components/notificare/notificare-event-logger";
-import { NotificareProvider } from "@/notificare/notificare-context";
 import { NotificareEventHandler } from "@/components/notificare/notificare-event-handler";
+import { NotificareEventLogger } from "@/components/notificare/notificare-event-logger";
+import { NavigationProvider } from "@/context/navigation";
+import { NotificareProvider } from "@/notificare/notificare-context";
 
 export default function ApplicationLayout({ children }: PropsWithChildren) {
   return (
