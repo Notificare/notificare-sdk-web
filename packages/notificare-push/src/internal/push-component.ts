@@ -24,6 +24,7 @@ import {
   getRemoteNotificationsEnabled,
   setRemoteNotificationsEnabled,
 } from './storage/local-storage';
+import { getPushPermissionStatus } from './utils/push';
 
 /* eslint-disable class-methods-use-this */
 export class PushComponent extends Component {
@@ -98,7 +99,7 @@ export class PushComponent extends Component {
   }
 
   private autoEnableRemoteNotifications() {
-    if (getRemoteNotificationsEnabled()) {
+    if (getRemoteNotificationsEnabled() && getPushPermissionStatus() === 'granted') {
       logger.debug('Automatically enabling remote notification.');
       enableRemoteNotifications().catch((error) =>
         logger.error('Failed to automatically enable remote notifications.', error),
