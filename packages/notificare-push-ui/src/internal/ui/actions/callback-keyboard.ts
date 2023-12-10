@@ -7,8 +7,8 @@ import {
   createPrimaryButton,
   createRoot,
 } from '@notificare/web-ui';
-import { ROOT_ELEMENT_IDENTIFIER } from '../root';
 import { getApplicationIcon, getApplicationName } from '../../utils';
+import { ROOT_ELEMENT_IDENTIFIER } from '../root';
 
 export function createKeyboardCallbackModal({
   dismiss,

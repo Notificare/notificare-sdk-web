@@ -1,6 +1,6 @@
-import { NotificareAsset } from "notificare-web/assets";
 import Image from "next/image";
 import Link from "next/link";
+import { NotificareAsset } from "notificare-web/assets";
 
 export function AssetPreview({ asset }: AssetPreviewProps) {
   return (

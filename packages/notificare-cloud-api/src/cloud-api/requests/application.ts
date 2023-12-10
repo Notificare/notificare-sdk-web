@@ -1,5 +1,5 @@
-import { CloudApplicationResponse } from '../responses/application';
 import { cloudRequest, CloudRequestParams } from '../request';
+import { CloudApplicationResponse } from '../responses/application';
 
 export async function fetchCloudApplication(
   params: FetchCloudApplicationParams,

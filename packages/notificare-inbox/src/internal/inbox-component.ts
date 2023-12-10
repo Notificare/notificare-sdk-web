@@ -1,7 +1,7 @@
 import { Component, getApplication, getCurrentDevice, getOptions } from '@notificare/web-core';
 import { logger } from '../logger';
-import { clearInboxInternal, refreshBadgeInternal } from './internal-api';
 import { notifyInboxUpdated } from './consumer-events';
+import { clearInboxInternal, refreshBadgeInternal } from './internal-api';
 
 /* eslint-disable class-methods-use-this */
 export class InboxComponent extends Component {

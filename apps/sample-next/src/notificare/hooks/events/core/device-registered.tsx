@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect } from "react";
-import { useNotificare } from "@/notificare/notificare-context";
 import { OnDeviceRegisteredCallback } from "notificare-web/core";
+import { useNotificare } from "@/notificare/notificare-context";
 
 export function useOnDeviceRegistered(callback: OnDeviceRegisteredCallback) {
   const { registerListener } = useNotificare();

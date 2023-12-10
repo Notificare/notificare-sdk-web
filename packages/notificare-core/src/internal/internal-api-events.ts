@@ -1,9 +1,9 @@
 import { createCloudEvent } from '@notificare/web-cloud-api';
-import { logger } from './logger';
-import { getSession } from './internal-api-session-shared';
-import { getCurrentDevice } from './storage/local-storage';
-import { isConfigured } from './launch-state';
 import { getCloudApiEnvironment } from './cloud-api/environment';
+import { getSession } from './internal-api-session-shared';
+import { isConfigured } from './launch-state';
+import { logger } from './logger';
+import { getCurrentDevice } from './storage/local-storage';
 
 export async function logApplicationInstall() {
   await logInternal({ type: 're.notifica.event.application.Install' });

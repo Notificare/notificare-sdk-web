@@ -1,5 +1,5 @@
-import Image from "next/image";
 import { sha256 } from "js-sha256";
+import Image from "next/image";
 
 export function Gravatar({
   email,

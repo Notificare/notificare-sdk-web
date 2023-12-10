@@ -1,9 +1,4 @@
 import {
-  LogLevel,
-  LogLevelString,
-  setLogLevel as setLogLevelInternal,
-} from '@notificare/web-logger';
-import {
   callCloudNotificationWebhook,
   CloudNotificationWebhookPayload,
   createCloudNotificationReply,
@@ -13,9 +8,21 @@ import {
   request,
   uploadCloudNotificationReplyMedia,
 } from '@notificare/web-cloud-api';
-import { NotificareOptions } from './options';
-import { logger } from './internal/logger';
-import { getOptions, NotificareInternalOptionsServices, setOptions } from './internal/options';
+import {
+  LogLevel,
+  LogLevelString,
+  setLogLevel as setLogLevelInternal,
+} from '@notificare/web-logger';
+import { NotificareDeviceUnavailableError } from './errors/notificare-device-unavailable-error';
+import { NotificareNotConfiguredError } from './errors/notificare-not-configured-error';
+import { NotificareNotReadyError } from './errors/notificare-not-ready-error';
+import { convertCloudApplicationToPublic } from './internal/cloud-api/converters/application-converter';
+import { convertCloudDynamicLinkToPublic } from './internal/cloud-api/converters/dynamic-link-converter';
+import { convertCloudNotificationToPublic } from './internal/cloud-api/converters/notification-converter';
+import { getCloudApiEnvironment } from './internal/cloud-api/environment';
+import { components } from './internal/component-cache';
+import { notifyOnReady, notifyUnlaunched } from './internal/consumer-events';
+import { deleteDevice, registerTemporaryDevice } from './internal/internal-api-device';
 import {
   getLaunchState,
   isConfigured as isConfiguredInternal,
@@ -23,26 +30,19 @@ import {
   LaunchState,
   setLaunchState,
 } from './internal/launch-state';
+import { logger } from './internal/logger';
+import { isLatestStorageStructure, migrate } from './internal/migration-flow';
+import { getOptions, NotificareInternalOptionsServices, setOptions } from './internal/options';
+import { hasWebPushSupport } from './internal/utils';
+import { SDK_VERSION as SDK_VERSION_INTERNAL } from './internal/version';
 import { NotificareApplication } from './models/notificare-application';
-import { NotificareNotConfiguredError } from './errors/notificare-not-configured-error';
-import { components } from './internal/component-cache';
+import { NotificareDynamicLink } from './models/notificare-dynamic-link';
 import {
   NotificareNotification,
   NotificareNotificationAction,
 } from './models/notificare-notification';
-import { notifyOnReady, notifyUnlaunched } from './internal/consumer-events';
-import { NotificareNotReadyError } from './errors/notificare-not-ready-error';
+import { NotificareOptions } from './options';
 import { clearTags, getCurrentDevice } from './public-api-device';
-import { SDK_VERSION as SDK_VERSION_INTERNAL } from './internal/version';
-import { deleteDevice, registerTemporaryDevice } from './internal/internal-api-device';
-import { NotificareDeviceUnavailableError } from './errors/notificare-device-unavailable-error';
-import { isLatestStorageStructure, migrate } from './internal/migration-flow';
-import { hasWebPushSupport } from './internal/utils';
-import { NotificareDynamicLink } from './models/notificare-dynamic-link';
-import { getCloudApiEnvironment } from './internal/cloud-api/environment';
-import { convertCloudApplicationToPublic } from './internal/cloud-api/converters/application-converter';
-import { convertCloudDynamicLinkToPublic } from './internal/cloud-api/converters/dynamic-link-converter';
-import { convertCloudNotificationToPublic } from './internal/cloud-api/converters/notification-converter';
 
 export const SDK_VERSION: string = SDK_VERSION_INTERNAL;
 

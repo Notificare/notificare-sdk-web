@@ -1,6 +1,6 @@
-import { WorkerConfiguration } from './worker-configuration';
 import { logger } from '../../logger';
 import { base64Decode, getServiceWorkerLocation } from '../utils';
+import { WorkerConfiguration } from './worker-configuration';
 
 export function parseWorkerConfiguration(): WorkerConfiguration | undefined {
   const location = getServiceWorkerLocation();

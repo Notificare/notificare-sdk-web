@@ -3,8 +3,8 @@ import {
   InformationCircleIcon,
   XCircleIcon,
 } from "@heroicons/react/20/solid";
-import Link from "next/link";
 import cx from "classnames";
+import Link from "next/link";
 
 export function Alert({ variant = "info", message, action }: AlertProps) {
   return (

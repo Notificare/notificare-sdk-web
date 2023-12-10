@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
+import { hasMessagesSuppressed, setMessagesSuppressed } from "notificare-web/in-app-messaging";
 import { Card, CardContent, CardHeader } from "@/components/card";
 import { Switch } from "@/components/switch";
-import { hasMessagesSuppressed, setMessagesSuppressed } from "notificare-web/in-app-messaging";
 
 export function InAppMessagingCard() {
   const [suppressed, setSuppressed] = useState(false);

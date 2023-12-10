@@ -1,5 +1,5 @@
-import { CloudDeviceInboxResponse } from '../responses/device-inbox';
 import { cloudRequest, CloudRequestParams } from '../request';
+import { CloudDeviceInboxResponse } from '../responses/device-inbox';
 
 export async function fetchCloudDeviceInbox(
   params: FetchCloudDeviceInboxParams,

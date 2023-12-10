@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect } from "react";
-import { useNotificare } from "@/notificare/notificare-context";
 import { OnNotificationFailedToPresentCallback } from "notificare-web/push-ui";
+import { useNotificare } from "@/notificare/notificare-context";
 
 export function useOnNotificationFailedToPresent(callback: OnNotificationFailedToPresentCallback) {
   const { registerListener } = useNotificare();

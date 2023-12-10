@@ -5,13 +5,13 @@ import {
   NotificareNotReadyError,
   NotificareServiceUnavailableError,
 } from '@notificare/web-core';
-import { logger } from './logger';
 import {
   disableRemoteNotifications as disableRemoteNotificationsInternal,
   enableRemoteNotifications as enableRemoteNotificationsInternal,
 } from './internal/internal-api';
 import { getRemoteNotificationsEnabled } from './internal/storage/local-storage';
 import { getPushPermissionStatus } from './internal/utils/push';
+import { logger } from './logger';
 
 export {
   onNotificationReceived,

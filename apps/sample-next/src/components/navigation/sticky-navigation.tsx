@@ -1,11 +1,11 @@
 "use client";
 
-import { Bars3Icon } from "@heroicons/react/24/outline";
-import { useNavigation } from "@/context/navigation";
-import { InboxBell } from "@/components/navigation/inbox-bell";
 import { useEffect, useState } from "react";
+import { Bars3Icon } from "@heroicons/react/24/outline";
 import { getCurrentDevice, NotificareDevice } from "notificare-web/core";
 import { Gravatar } from "@/components/gravatar";
+import { InboxBell } from "@/components/navigation/inbox-bell";
+import { useNavigation } from "@/context/navigation";
 import { useOnDeviceRegistered } from "@/notificare/hooks/events/core/device-registered";
 
 export function StickyNavigation() {

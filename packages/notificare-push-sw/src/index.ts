@@ -1,5 +1,5 @@
-import { logger } from './logger';
 import { onMessage, onNotificationClick, onPush } from './internal/sw-handlers';
+import { logger } from './logger';
 
 // Let TS know this is scoped to a service worker.
 declare const self: ServiceWorkerGlobalScope;

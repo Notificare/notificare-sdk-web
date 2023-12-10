@@ -3,8 +3,8 @@
 import { Fragment } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
-import { useNavigation } from "@/context/navigation";
 import { Sidebar } from "@/components/navigation/sidebar";
+import { useNavigation } from "@/context/navigation";
 
 export function MobileSidebar() {
   const { sidebar } = useNavigation();

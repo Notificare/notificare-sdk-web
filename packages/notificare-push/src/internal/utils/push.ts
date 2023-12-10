@@ -1,6 +1,6 @@
 import { getApplication } from '@notificare/web-core';
-import { hasWebPushSupport } from '../internal-api-web-push';
 import { hasSafariPushSupport } from '../internal-api-safari-push';
+import { hasWebPushSupport } from '../internal-api-web-push';
 
 export type NotificareWebPushPermissionStatus = 'default' | 'granted' | 'denied';
 

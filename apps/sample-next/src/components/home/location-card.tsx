@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import { Card, CardContent, CardHeader } from "@/components/card";
-import { Switch } from "@/components/switch";
 import {
   disableLocationUpdates,
   enableLocationUpdates,
   hasLocationServicesEnabled,
 } from "notificare-web/geo";
+import { Card, CardContent, CardHeader } from "@/components/card";
+import { Switch } from "@/components/switch";
 
 export function LocationCard() {
   const [enabled, setEnabled] = useState(false);

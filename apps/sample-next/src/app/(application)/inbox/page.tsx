@@ -1,9 +1,7 @@
 "use client";
 
-import { PageHeader, PageHeaderAction } from "@/components/page-header";
-import { EnvelopeOpenIcon, TrashIcon } from "@heroicons/react/24/solid";
-import { NotificareLaunchBlocker } from "@/components/notificare/notificare-launch-blocker";
 import { useCallback, useEffect, useState } from "react";
+import { EnvelopeOpenIcon, TrashIcon } from "@heroicons/react/24/solid";
 import {
   clearInbox,
   fetchInbox,
@@ -12,11 +10,13 @@ import {
   openInboxItem,
 } from "notificare-web/inbox";
 import { presentNotification } from "notificare-web/push-ui";
-import { ProgressIndicator } from "@/components/progress-indicator";
 import { Alert } from "@/components/alert";
 import { InboxItem } from "@/components/inbox";
-import { useNotificareState } from "@/notificare/hooks/notificare-state";
+import { NotificareLaunchBlocker } from "@/components/notificare/notificare-launch-blocker";
+import { PageHeader, PageHeaderAction } from "@/components/page-header";
+import { ProgressIndicator } from "@/components/progress-indicator";
 import { useOnInboxUpdated } from "@/notificare/hooks/events/inbox/inbox-updated";
+import { useNotificareState } from "@/notificare/hooks/notificare-state";
 
 export default function Inbox() {
   const state = useNotificareState();

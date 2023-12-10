@@ -1,6 +1,6 @@
-import { getOptions } from './options';
 import { components } from './component-cache';
 import { logger } from './logger';
+import { getOptions } from './options';
 
 export function randomUUID(): string {
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment

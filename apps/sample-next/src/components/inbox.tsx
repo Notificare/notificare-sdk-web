@@ -1,7 +1,7 @@
-import { NotificareNotificationAttachment } from "notificare-web/core";
-import { NotificareInboxItem } from "notificare-web/inbox";
 import { formatDistanceToNow, parseISO } from "date-fns";
 import Image from "next/image";
+import { NotificareNotificationAttachment } from "notificare-web/core";
+import { NotificareInboxItem } from "notificare-web/inbox";
 
 export function InboxItem({ item, onClick }: InboxItemProps) {
   return (

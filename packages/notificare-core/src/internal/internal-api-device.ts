@@ -4,6 +4,18 @@ import {
   registerCloudDevice,
   registerCloudTestDevice,
 } from '@notificare/web-cloud-api';
+import { NotificareDeviceUnavailableError } from '../errors/notificare-device-unavailable-error';
+import { NotificareNotReadyError } from '../errors/notificare-not-ready-error';
+import { NotificareDevice } from '../models/notificare-device';
+import { NotificareTransport } from '../models/notificare-transport';
+import { getCloudApiEnvironment } from './cloud-api/environment';
+import { notifyDeviceRegistered } from './consumer-events';
+import { logApplicationInstall, logApplicationRegistration } from './internal-api-events';
+import { launch as launchSession } from './internal-api-session';
+import { isReady } from './launch-state';
+import { logger } from './logger';
+import { getOptions } from './options';
+import { getCurrentDevice, storeCurrentDevice } from './storage/local-storage';
 import {
   getApplicationVersion,
   getBrowserLanguage,
@@ -11,19 +23,7 @@ import {
   getTimeZoneOffset,
   randomUUID,
 } from './utils';
-import { NotificareTransport } from '../models/notificare-transport';
-import { logger } from './logger';
-import { getOptions } from './options';
-import { NotificareDevice } from '../models/notificare-device';
-import { NotificareNotReadyError } from '../errors/notificare-not-ready-error';
-import { NotificareDeviceUnavailableError } from '../errors/notificare-device-unavailable-error';
-import { isReady } from './launch-state';
 import { SDK_VERSION } from './version';
-import { notifyDeviceRegistered } from './consumer-events';
-import { getCurrentDevice, storeCurrentDevice } from './storage/local-storage';
-import { logApplicationInstall, logApplicationRegistration } from './internal-api-events';
-import { launch as launchSession } from './internal-api-session';
-import { getCloudApiEnvironment } from './cloud-api/environment';
 
 export async function registerTemporaryDevice() {
   const device = getCurrentDevice();

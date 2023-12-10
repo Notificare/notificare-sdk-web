@@ -9,11 +9,6 @@ import {
   useMemo,
   useState,
 } from "react";
-import {
-  createListenerIdentifier,
-  IdentifiableListener,
-  Listener,
-} from "@/notificare/hooks/events/base";
 import { launch, onDeviceRegistered, onReady, onUnlaunched, unlaunch } from "notificare-web/core";
 import { onLocationUpdated, onLocationUpdateError } from "notificare-web/geo";
 import {
@@ -41,6 +36,11 @@ import {
   onActionFailedToExecute as onNotificationActionFailedToExecute,
   onCustomActionReceived as onNotificationCustomActionReceived,
 } from "notificare-web/push-ui";
+import {
+  createListenerIdentifier,
+  IdentifiableListener,
+  Listener,
+} from "@/notificare/hooks/events/base";
 
 const NotificareContext = createContext<NotificareContextState | undefined>(undefined);
 

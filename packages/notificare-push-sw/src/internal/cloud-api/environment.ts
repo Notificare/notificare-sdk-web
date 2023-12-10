@@ -1,5 +1,5 @@
-import { parseWorkerConfiguration } from '../configuration/parser';
 import { InvalidWorkerConfigurationError } from '../configuration/errors';
+import { parseWorkerConfiguration } from '../configuration/parser';
 
 export async function getCloudApiEnvironment() {
   const configuration = parseWorkerConfiguration();

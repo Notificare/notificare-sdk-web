@@ -1,10 +1,10 @@
 "use client";
 
-import { PageHeader } from "@/components/page-header";
-import { NotificareLaunchBlocker } from "@/components/notificare/notificare-launch-blocker";
 import { useEffect, useState } from "react";
 import { getApplication, NotificareApplication } from "notificare-web/core";
 import { Alert } from "@/components/alert";
+import { NotificareLaunchBlocker } from "@/components/notificare/notificare-launch-blocker";
+import { PageHeader } from "@/components/page-header";
 
 export default function Application() {
   const [application, setApplication] = useState<NotificareApplication>();

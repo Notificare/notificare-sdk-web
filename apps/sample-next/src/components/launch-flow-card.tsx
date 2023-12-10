@@ -1,9 +1,9 @@
 "use client";
 
-import { CheckCircleIcon } from "@heroicons/react/24/solid";
 import { XCircleIcon } from "@heroicons/react/20/solid";
-import { Button } from "@/components/button";
+import { CheckCircleIcon } from "@heroicons/react/24/solid";
 import { isConfigured } from "notificare-web/core";
+import { Button } from "@/components/button";
 import { Card, CardActions, CardContent, CardHeader } from "@/components/card";
 import { useNotificareLaunchFlow } from "@/notificare/hooks/notificare-launch-flow";
 

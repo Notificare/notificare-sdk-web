@@ -1,14 +1,14 @@
+import { updateCloudDevice } from '@notificare/web-cloud-api';
 import {
   getCurrentDevice,
   getOptions,
   NotificareDeviceUnavailableError,
   getCloudApiEnvironment,
 } from '@notificare/web-core';
-import { updateCloudDevice } from '@notificare/web-cloud-api';
-import { getCurrentLocation, setCurrentLocation } from './storage/local-storage';
 import { logger } from '../logger';
-import { notifyLocationUpdated, notifyLocationUpdateError } from './consumer-events';
 import { NotificareLocation } from '../models/notificare-location';
+import { notifyLocationUpdated, notifyLocationUpdateError } from './consumer-events';
+import { getCurrentLocation, setCurrentLocation } from './storage/local-storage';
 
 let geolocationWatchId: number | undefined;
 

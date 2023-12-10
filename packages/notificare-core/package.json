@@ -25,9 +25,6 @@
     "dist"
   ],
   "devDependencies": {
-    "@notificare/eslint-config": "*",
-    "@notificare/rollup": "*",
-    "@notificare/tsconfig": "*",
     "typescript": "^5.1.6"
   },
   "publishConfig": {

@@ -1,3 +1,4 @@
+import { fetchCloudAssetGroup } from '@notificare/web-cloud-api';
 import {
   getApplication,
   getCloudApiEnvironment,
@@ -8,10 +9,9 @@ import {
   NotificareNotReadyError,
   NotificareServiceUnavailableError,
 } from '@notificare/web-core';
-import { fetchCloudAssetGroup } from '@notificare/web-cloud-api';
+import { convertCloudAssetToPublic } from './internal/cloud-api/assets-converter';
 import { logger } from './logger';
 import { NotificareAsset } from './models/notificare-asset';
-import { convertCloudAssetToPublic } from './internal/cloud-api/assets-converter';
 
 export async function fetchAssets(group: string): Promise<NotificareAsset[]> {
   checkPrerequisites();

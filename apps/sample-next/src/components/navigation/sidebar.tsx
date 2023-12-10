@@ -1,14 +1,14 @@
 "use client";
 
-import { SideBarNavigationItem, sideBarNavigationItems } from "@/data/navigation";
-import { usePathname } from "next/navigation";
 import { useMemo } from "react";
-import { classNames } from "@/utils/css";
-import Link from "next/link";
 import Image from "next/image";
-import NotificareLogo from "@/../public/assets/notificare-logo.svg";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import NotificareLogoDark from "@/../public/assets/notificare-logo-dark.svg";
+import NotificareLogo from "@/../public/assets/notificare-logo.svg";
 import { useNavigation } from "@/context/navigation";
+import { SideBarNavigationItem, sideBarNavigationItems } from "@/data/navigation";
+import { classNames } from "@/utils/css";
 
 export function Sidebar() {
   return (

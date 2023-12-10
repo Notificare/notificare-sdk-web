@@ -1,6 +1,6 @@
-import { InputField } from "@/components/input-field";
 import { Card, CardContent, CardHeader } from "@/components/card";
 import { ConfigurationFormState } from "@/components/configuration/configuration-form-state";
+import { InputField } from "@/components/input-field";
 
 export function ServiceWorkerSettingsCard({ state, onChange }: ServiceWorkerSettingsCardProps) {
   return (
