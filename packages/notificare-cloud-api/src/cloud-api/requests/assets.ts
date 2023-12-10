@@ -1,5 +1,5 @@
-import { CloudAssetsResponse } from '../responses/assets';
 import { cloudRequest, CloudRequestParams } from '../request';
+import { CloudAssetsResponse } from '../responses/assets';
 
 export async function fetchCloudAssetGroup(
   params: FetchCloudAssetGroupParams,

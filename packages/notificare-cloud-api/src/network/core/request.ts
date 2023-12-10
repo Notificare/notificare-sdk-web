@@ -1,6 +1,6 @@
-import { NotificareNetworkRequestError } from './errors';
-import { base64Encode, sleep } from '../../utils';
 import { logger } from '../../logger';
+import { base64Encode, sleep } from '../../utils';
+import { NotificareNetworkRequestError } from './errors';
 
 export async function request(params: RequestParams): Promise<Response> {
   const { url, method = 'GET' } = params;

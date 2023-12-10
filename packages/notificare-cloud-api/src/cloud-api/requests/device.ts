@@ -1,11 +1,11 @@
-import { CloudDeviceDoNotDisturbResponse } from '../responses/device-do-not-disturb';
-import { cloudRequest, CloudRequestParams } from '../request';
 import { CloudDoNotDisturb } from '../models/do-not-disturb';
-import { CloudDeviceUserDataResponse } from '../responses/device-user-data';
 import { CloudUserData } from '../models/user-data';
-import { CloudDeviceTagsResponse } from '../responses/device-tags';
-import { CloudDeviceUpdatePayload } from '../payloads/device-update';
 import { CloudDeviceRegistrationPayload } from '../payloads/device-registration';
+import { CloudDeviceUpdatePayload } from '../payloads/device-update';
+import { cloudRequest, CloudRequestParams } from '../request';
+import { CloudDeviceDoNotDisturbResponse } from '../responses/device-do-not-disturb';
+import { CloudDeviceTagsResponse } from '../responses/device-tags';
+import { CloudDeviceUserDataResponse } from '../responses/device-user-data';
 
 export async function registerCloudDevice(params: RegisterCloudDeviceParams): Promise<void> {
   const { payload, ...rest } = params;
