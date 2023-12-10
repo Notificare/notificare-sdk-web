@@ -1,11 +1,11 @@
-import { NotificareNotification, NotificareNotificationAction } from '@notificare/web-core';
 import { createCloudNotificationReply } from '@notificare/web-cloud-api';
+import { NotificareNotification, NotificareNotificationAction } from '@notificare/web-core';
+import { logger } from '../../logger';
+import { getCloudApiEnvironment } from '../cloud-api/environment';
+import { InvalidWorkerConfigurationError } from '../configuration/errors';
+import { parseWorkerConfiguration } from '../configuration/parser';
 import { getCurrentPushToken, getEmailUrl, getSmsUrl, getTelephoneUrl } from '../utils';
 import { presentWindowClient } from './window-client';
-import { getCloudApiEnvironment } from '../cloud-api/environment';
-import { parseWorkerConfiguration } from '../configuration/parser';
-import { InvalidWorkerConfigurationError } from '../configuration/errors';
-import { logger } from '../../logger';
 
 // Let TS know this is scoped to a service worker.
 declare const self: ServiceWorkerGlobalScope;

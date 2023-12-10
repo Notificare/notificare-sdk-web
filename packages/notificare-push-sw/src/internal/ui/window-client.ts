@@ -1,7 +1,7 @@
 import { NotificareNotification, NotificareNotificationAction } from '@notificare/web-core';
+import { logger } from '../../logger';
 import { getClientState, setClientState } from '../client-state';
 import { sleep } from '../utils';
-import { logger } from '../../logger';
 
 // Let TS know this is scoped to a service worker.
 declare const self: ServiceWorkerGlobalScope;
