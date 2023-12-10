@@ -11,6 +11,15 @@ module.exports = {
   rules: {
     '@typescript-eslint/no-use-before-define': 'off',
     'import/prefer-default-export': 'off', // prefer named to default exports
+    'import/order': [
+      'error',
+      {
+        alphabetize: {
+          order: 'asc',
+          caseInsensitive: true,
+        },
+      },
+    ],
   },
   ignorePatterns: ['.build', 'dist/', '.eslintrc.js'],
 };
