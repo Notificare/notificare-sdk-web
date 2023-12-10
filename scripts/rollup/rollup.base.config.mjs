@@ -1,14 +1,12 @@
-import tsc from "@rollup/plugin-typescript";
-import json from "@rollup/plugin-json";
-import svg from "rollup-plugin-svg-import";
-import emitModulePackageFile from "./plugins/rollup-emit-module-package-file.mjs";
+import tsc from '@rollup/plugin-typescript';
+import json from '@rollup/plugin-json';
+import svg from 'rollup-plugin-svg-import';
+import emitModulePackageFile from './plugins/rollup-emit-module-package-file.mjs';
 
 export function build(pkg, options) {
   const { typescript } = options;
 
-  const dependencies = [
-    ...Object.keys({ ...pkg.dependencies, ...pkg.peerDependencies }),
-  ];
+  const dependencies = [...Object.keys({ ...pkg.dependencies, ...pkg.peerDependencies })];
 
   /**
    * CommonJS builds
@@ -16,7 +14,7 @@ export function build(pkg, options) {
   const commonJsBuildPlugins = [
     tsc({
       typescript: typescript,
-      target: "ES6",
+      target: 'ES6',
       // noEmitOnError: true,
     }),
     json(),
@@ -25,11 +23,11 @@ export function build(pkg, options) {
 
   const commonJsBuilds = [
     {
-      input: "src/index.ts",
+      input: 'src/index.ts',
       output: [
         {
           file: pkg.main,
-          format: "cjs",
+          format: 'cjs',
           sourcemap: true,
         },
       ],
@@ -41,7 +39,7 @@ export function build(pkg, options) {
       output: [
         {
           file: build.output,
-          format: "cjs",
+          format: 'cjs',
           sourcemap: true,
         },
       ],
@@ -56,7 +54,7 @@ export function build(pkg, options) {
   const esmBuildPlugins = [
     tsc({
       typescript: typescript,
-      target: "es2017",
+      target: 'es2017',
       // noEmitOnError: true,
     }),
     json({ preferConst: true }),
@@ -65,11 +63,11 @@ export function build(pkg, options) {
 
   const esmBuilds = [
     {
-      input: "src/index.ts",
+      input: 'src/index.ts',
       output: [
         {
           file: pkg.browser,
-          format: "es",
+          format: 'es',
           sourcemap: true,
         },
       ],
@@ -81,7 +79,7 @@ export function build(pkg, options) {
       output: [
         {
           file: build.output,
-          format: "es",
+          format: 'es',
           sourcemap: true,
         },
       ],
