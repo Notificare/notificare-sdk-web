@@ -24,6 +24,7 @@ import {
   getRemoteNotificationsEnabled,
   setRemoteNotificationsEnabled,
 } from './storage/local-storage';
+import { getPushPermissionStatus } from './utils/push';
 
 /* eslint-disable class-methods-use-this */
 export class PushComponent extends Component {
@@ -67,15 +68,7 @@ export class PushComponent extends Component {
   }
 
   async launch(): Promise<void> {
-    if (getRemoteNotificationsEnabled()) {
-      try {
-        logger.debug('Automatically enabling remote notification.');
-        await enableRemoteNotifications();
-      } catch (e) {
-        logger.error('Failed to automatically enable remote notifications.');
-      }
-    }
-
+    this.autoEnableRemoteNotifications();
     this.handleOnboarding();
     this.handleSafariWebPushNotification();
   }
@@ -103,6 +96,15 @@ export class PushComponent extends Component {
     }
 
     throw new Error(`Unsupported command '${command}' in '${this.name}' component.`);
+  }
+
+  private autoEnableRemoteNotifications() {
+    if (getRemoteNotificationsEnabled() && getPushPermissionStatus() === 'granted') {
+      logger.debug('Automatically enabling remote notification.');
+      enableRemoteNotifications().catch((error) =>
+        logger.error('Failed to automatically enable remote notifications.', error),
+      );
+    }
   }
 
   private handleOnboarding() {
