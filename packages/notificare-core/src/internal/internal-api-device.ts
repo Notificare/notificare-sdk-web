@@ -12,7 +12,7 @@ import { getCloudApiEnvironment } from './cloud-api/environment';
 import { notifyDeviceRegistered } from './consumer-events';
 import { logApplicationInstall, logApplicationRegistration } from './internal-api-events';
 import { launch as launchSession } from './internal-api-session';
-import { isReady } from './launch-state';
+import { getLaunchState, isReady, LaunchState } from './launch-state';
 import { logger } from './logger';
 import { getOptions } from './options';
 import { getCurrentDevice, storeCurrentDevice } from './storage/local-storage';
@@ -108,8 +108,10 @@ export async function registerDeviceInternal(options: InternalRegisterDeviceOpti
     logger.info('Skipping device registration, nothing changed.');
   }
 
-  const device = getCurrentDevice();
-  if (device) notifyDeviceRegistered(device);
+  if (getLaunchState() === LaunchState.LAUNCHED) {
+    const device = getCurrentDevice();
+    if (device) notifyDeviceRegistered(device);
+  }
 }
 
 export async function deleteDevice(): Promise<void> {

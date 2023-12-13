@@ -10,6 +10,9 @@ export abstract class Component {
 
   abstract unlaunch(): Promise<void>;
 
+  // eslint-disable-next-line class-methods-use-this,@typescript-eslint/no-empty-function
+  async postLaunch(): Promise<void> {}
+
   // eslint-disable-next-line class-methods-use-this,@typescript-eslint/no-unused-vars
   processBroadcast(event: string, data?: unknown): void {}
 

@@ -1,4 +1,5 @@
 import { Component } from '../component';
+import { notifyDeviceRegistered } from '../consumer-events';
 import {
   registerDeviceInternal,
   registerTemporaryDevice,
@@ -69,6 +70,11 @@ export class DeviceComponent extends Component {
 
   async unlaunch(): Promise<void> {
     //
+  }
+
+  async postLaunch(): Promise<void> {
+    const device = getCurrentDevice();
+    if (device) notifyDeviceRegistered(device);
   }
 
   private handleTestDeviceRegistration() {

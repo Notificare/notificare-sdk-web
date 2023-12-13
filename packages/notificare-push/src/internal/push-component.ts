@@ -68,8 +68,15 @@ export class PushComponent extends Component {
   }
 
   async launch(): Promise<void> {
-    this.autoEnableRemoteNotifications();
-    this.handleOnboarding();
+    if (getRemoteNotificationsEnabled() && getPushPermissionStatus() === 'granted') {
+      try {
+        logger.debug('Automatically enabling remote notifications.');
+        await enableRemoteNotifications();
+      } catch (e) {
+        logger.error('Failed to automatically enable remote notifications.', e);
+      }
+    }
+
     this.handleSafariWebPushNotification();
   }
 
@@ -89,6 +96,10 @@ export class PushComponent extends Component {
     setRemoteNotificationsEnabled(false);
   }
 
+  async postLaunch(): Promise<void> {
+    this.handleOnboarding();
+  }
+
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   async executeCommand(command: string, data?: unknown): Promise<unknown> {
     if (command === 'hasWebPushSupport') {
@@ -96,15 +107,6 @@ export class PushComponent extends Component {
     }
 
     throw new Error(`Unsupported command '${command}' in '${this.name}' component.`);
-  }
-
-  private autoEnableRemoteNotifications() {
-    if (getRemoteNotificationsEnabled() && getPushPermissionStatus() === 'granted') {
-      logger.debug('Automatically enabling remote notification.');
-      enableRemoteNotifications().catch((error) =>
-        logger.error('Failed to automatically enable remote notifications.', error),
-      );
-    }
   }
 
   private handleOnboarding() {
