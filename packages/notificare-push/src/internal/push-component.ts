@@ -7,12 +7,14 @@ import {
   logNotificationOpen,
 } from '@notificare/web-core';
 import { logger } from '../logger';
+import { getPushPermissionStatus } from '../utils/push';
 import { notifyNotificationOpened } from './consumer-events';
 import {
   enableRemoteNotifications,
   handleAutoOnboarding,
   handleFloatingButton,
   hasWebPushCapabilities,
+  monitorPushPermissionChanges,
 } from './internal-api';
 import { logNotificationInfluenced } from './internal-api-events';
 import {
@@ -23,8 +25,8 @@ import {
 import {
   getRemoteNotificationsEnabled,
   setRemoteNotificationsEnabled,
+  storeAllowedUI,
 } from './storage/local-storage';
-import { getPushPermissionStatus } from './utils/push';
 
 /* eslint-disable class-methods-use-this */
 export class PushComponent extends Component {
@@ -65,6 +67,10 @@ export class PushComponent extends Component {
     if (hasWebPushSupport()) {
       navigator.serviceWorker.onmessage = handleServiceWorkerMessage;
     }
+
+    monitorPushPermissionChanges()
+      .then(() => logger.debug('Started monitoring push permission changes.'))
+      .catch((error) => logger.error('Unable to monitor push permission changes.', error));
   }
 
   async launch(): Promise<void> {
@@ -94,6 +100,7 @@ export class PushComponent extends Component {
     }
 
     setRemoteNotificationsEnabled(false);
+    storeAllowedUI(undefined);
   }
 
   async postLaunch(): Promise<void> {

@@ -2,17 +2,24 @@ import {
   OnNotificationActionOpenedCallback,
   OnNotificationOpenedCallback,
   OnNotificationReceivedCallback,
+  OnNotificationSettingsChangedCallback,
   OnSystemNotificationReceivedCallback,
   OnUnknownNotificationReceivedCallback,
 } from "notificare-web/push";
 import { TypedListener } from "@/notificare/hooks/events/base";
 
 export type NotificarePushListener =
+  | NotificationSettingsChangedListener
   | NotificationReceivedListener
   | SystemNotificationReceivedListener
   | UnknownNotificationReceivedListener
   | NotificationOpenedListener
   | NotificationActionOpenedListener;
+
+export type NotificationSettingsChangedListener = TypedListener<
+  "notification_settings_changed",
+  OnNotificationSettingsChangedCallback
+>;
 
 export type NotificationReceivedListener = TypedListener<
   "notification_received",

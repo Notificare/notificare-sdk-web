@@ -23,18 +23,19 @@ import {
   onNotificationActionOpened,
   onNotificationOpened,
   onNotificationReceived,
+  onNotificationSettingsChanged,
   onSystemNotificationReceived,
   onUnknownNotificationReceived,
 } from "notificare-web/push";
 import {
-  onNotificationWillPresent,
-  onNotificationPresented,
-  onNotificationFinishedPresenting,
-  onNotificationFailedToPresent,
-  onActionWillExecute as onNotificationActionWillExecute,
   onActionExecuted as onNotificationActionExecuted,
   onActionFailedToExecute as onNotificationActionFailedToExecute,
+  onActionWillExecute as onNotificationActionWillExecute,
   onCustomActionReceived as onNotificationCustomActionReceived,
+  onNotificationFailedToPresent,
+  onNotificationFinishedPresenting,
+  onNotificationPresented,
+  onNotificationWillPresent,
 } from "notificare-web/push-ui";
 import {
   createListenerIdentifier,
@@ -193,6 +194,13 @@ export function NotificareProvider({ children }: PropsWithChildren) {
       /**
        * Push events
        */
+      onNotificationSettingsChanged((allowedUI) => {
+        listeners.forEach((listener) => {
+          if (listener.event === "notification_settings_changed") {
+            listener.callback(allowedUI);
+          }
+        });
+      }),
       onNotificationReceived((notification, deliveryMechanism) => {
         listeners.forEach((listener) => {
           if (listener.event === "notification_received") {
