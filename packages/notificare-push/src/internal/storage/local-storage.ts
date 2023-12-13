@@ -13,3 +13,19 @@ export function setRemoteNotificationsEnabled(enabled: boolean | undefined) {
 
   localStorage.setItem('re.notifica.push.remote_notifications_enabled', enabled.toString());
 }
+
+export function retrieveAllowedUI(): boolean | undefined {
+  const allowedUIStr = localStorage.getItem('re.notifica.push.allowed_ui');
+  if (!allowedUIStr) return undefined;
+
+  return allowedUIStr === 'true';
+}
+
+export function storeAllowedUI(allowedUI: boolean | undefined) {
+  if (!allowedUI) {
+    localStorage.removeItem('re.notifica.push.allowed_ui');
+    return;
+  }
+
+  localStorage.setItem('re.notifica.push.allowed_ui', allowedUI.toString());
+}

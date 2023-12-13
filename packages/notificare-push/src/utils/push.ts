@@ -1,10 +1,10 @@
 import { getApplication } from '@notificare/web-core';
-import { hasSafariPushSupport } from '../internal-api-safari-push';
-import { hasWebPushSupport } from '../internal-api-web-push';
+import { hasSafariPushSupport } from '../internal/internal-api-safari-push';
+import { hasWebPushSupport } from '../internal/internal-api-web-push';
 
-export type NotificareWebPushPermissionStatus = 'default' | 'granted' | 'denied';
+export type NotificarePushPermissionStatus = 'default' | 'granted' | 'denied';
 
-export function getPushPermissionStatus(): NotificareWebPushPermissionStatus {
+export function getPushPermissionStatus(): NotificarePushPermissionStatus {
   if (hasWebPushSupport()) {
     return Notification.permission;
   }
