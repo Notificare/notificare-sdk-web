@@ -201,6 +201,9 @@ export async function launch(): Promise<void> {
     logger.error('Failed to launch Notificare.', e);
     setLaunchState(LaunchState.CONFIGURED);
   }
+
+  // We don't want the launch() promise to be held for the postLaunch().
+  postLaunch().catch((e) => logger.error('Failed to execute the post-launch step.', e));
 }
 
 export async function unlaunch(): Promise<void> {
@@ -403,4 +406,18 @@ function printLaunchSummary(application: NotificareApplication) {
   logger.debug(`SDK version: ${SDK_VERSION}`);
   logger.debug(`SDK modules: ${enabledComponents.join(', ')}`);
   logger.debug('/==============================================================================/');
+}
+
+async function postLaunch() {
+  // eslint-disable-next-line no-restricted-syntax
+  for (const component of components.values()) {
+    try {
+      logger.debug(`Post-launch '${component.name}' component.`);
+
+      // eslint-disable-next-line no-await-in-loop
+      await component.postLaunch();
+    } catch (e) {
+      logger.error(`Failed to post-launch the '${component.name}' component.`, e);
+    }
+  }
 }
