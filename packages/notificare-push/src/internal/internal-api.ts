@@ -24,11 +24,15 @@ import {
   hasWebPushSupport,
   postMessageToServiceWorker,
 } from './internal-api-web-push';
-import { setRemoteNotificationsEnabled } from './storage/local-storage';
+import {
+  getRemoteNotificationsEnabled,
+  setRemoteNotificationsEnabled,
+} from './storage/local-storage';
 import { showFloatingButton } from './ui/floating-button';
 import { showOnboarding } from './ui/onboarding';
 import { sleep } from './utils';
 import { getPushPermissionStatus } from './utils/push';
+import { transaction } from './utils/transaction';
 
 export function hasWebPushCapabilities(): boolean {
   return hasWebPushSupport() || hasSafariPushSupport();
@@ -57,32 +61,38 @@ export async function enableRemoteNotifications(): Promise<void> {
     throw new Error('Your browser does not support Service Workers nor Safari Website Push.');
   }
 
-  if (hasWebPushSupport()) {
-    const token = await enableWebPushNotifications(application, options);
+  await transaction({
+    originalValue: getRemoteNotificationsEnabled(),
+    restoreValue: setRemoteNotificationsEnabled,
+    fn: async () => {
+      setRemoteNotificationsEnabled(true);
 
-    await registerPushDevice({
-      transport: 'WebPush',
-      token: token.endpoint,
-      keys: token.keys,
-    });
+      if (hasWebPushSupport()) {
+        const token = await enableWebPushNotifications(application, options);
 
-    try {
-      await postMessageToServiceWorker({
-        action: 're.notifica.ready',
-      });
-    } catch (e) {
-      logger.warning('Failed to send a message to the service worker.', e);
-    }
-  } else if (hasSafariPushSupport()) {
-    const token = await enableSafariPushNotifications();
+        await registerPushDevice({
+          transport: 'WebPush',
+          token: token.endpoint,
+          keys: token.keys,
+        });
 
-    await registerPushDevice({
-      transport: 'WebsitePush',
-      token,
-    });
-  }
+        try {
+          await postMessageToServiceWorker({
+            action: 're.notifica.ready',
+          });
+        } catch (e) {
+          logger.warning('Failed to send a message to the service worker.', e);
+        }
+      } else if (hasSafariPushSupport()) {
+        const token = await enableSafariPushNotifications();
 
-  setRemoteNotificationsEnabled(true);
+        await registerPushDevice({
+          transport: 'WebsitePush',
+          token,
+        });
+      }
+    },
+  });
 
   try {
     await updateNotificationSettings();
@@ -95,18 +105,24 @@ export async function disableRemoteNotifications(): Promise<void> {
   const device = getCurrentDevice();
   if (!device) throw new NotificareDeviceUnavailableError();
 
-  if (device.transport === 'WebPush') {
-    await disableWebPushNotifications();
-  }
+  await transaction({
+    originalValue: getRemoteNotificationsEnabled(),
+    restoreValue: setRemoteNotificationsEnabled,
+    fn: async () => {
+      setRemoteNotificationsEnabled(false);
 
-  const options = getOptions();
-  if (options?.ignoreTemporaryDevices) {
-    await deleteDevice();
-  } else {
-    await registerTemporaryDevice();
-  }
+      if (device.transport === 'WebPush') {
+        await disableWebPushNotifications();
+      }
 
-  setRemoteNotificationsEnabled(false);
+      const options = getOptions();
+      if (options?.ignoreTemporaryDevices) {
+        await deleteDevice();
+      } else {
+        await registerTemporaryDevice();
+      }
+    },
+  });
 }
 
 export async function handleAutoOnboarding(
