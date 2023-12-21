@@ -1,5 +1,14 @@
 # CHANGELOG
 
+## 3.2.0
+
+- Monitor notification permission changes
+- Add `onNotificationSettingsChanged` event for a more accurate `allowedUI`
+- Fix device do not disturb returning `null` instead of `undefined`
+- Fix auto-enable remote notifications blocking the launch flow
+- Prevent the `onDeviceRegistered` event from invoking before the `onReady` event
+- Ensure `hasRemoteNotificationEnabled()` returns an accurate value when `onDeviceRegistered` is executed 
+
 ## 3.1.1
 
 - Update JS target to ES6 for CommonJS builds
