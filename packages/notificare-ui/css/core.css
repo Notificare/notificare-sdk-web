@@ -4,6 +4,8 @@
     --notificare-primary-hover: #071CC3;
     --notificare-on-primary: rgba(255, 255, 255, 0.87);
 
+    --notificare-secondary: #2B42F7;
+
     --notificare-primary-container: #DFE0FF;
     --notificare-on-primary-container: #000A64;
 
@@ -30,9 +32,10 @@
 }
 
 [data-notificare-theme="dark"] .notificare {
-    --notificare-primary: #A392FD;
-    --notificare-primary-hover: #927EFD;
-    --notificare-on-primary: rgba(0, 0, 0, 0.87);
+    --notificare-primary: #2B4EFF;
+    --notificare-primary-hover: #2746E6;
+
+    --notificare-secondary: #3B82F6;
 
     --notificare-error: #EF4444;
 
@@ -43,9 +46,10 @@
 
 @media (prefers-color-scheme: dark) {
     .notificare {
-        --notificare-primary: #A392FD;
-        --notificare-primary-hover: #927EFD;
-        --notificare-on-primary: rgba(0, 0, 0, 0.87);
+        --notificare-primary: #2B4EFF;
+        --notificare-primary-hover: #2746E6;
+
+        --notificare-secondary: #3B82F6;
 
         --notificare-error: #EF4444;
 
