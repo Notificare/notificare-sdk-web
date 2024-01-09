@@ -1,5 +1,5 @@
-import { getOptions } from '../options';
 import { NotificareNotConfiguredError } from '../../errors/notificare-not-configured-error';
+import { getOptions } from '../options';
 
 export function getCloudApiEnvironment() {
   const options = getOptions();

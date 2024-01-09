@@ -8,14 +8,17 @@ export function Switch({ label, description, disabled = false, checked, onChange
         <span className="flex flex-grow flex-col">
           <HeadlessSwitch.Label
             as="span"
-            className="text-sm font-medium leading-6 text-gray-900"
+            className="text-sm font-medium leading-6 text-gray-900 dark:text-gray-200"
             passive
           >
             {label}
           </HeadlessSwitch.Label>
 
           {description && (
-            <HeadlessSwitch.Description as="span" className="text-sm text-gray-500">
+            <HeadlessSwitch.Description
+              as="span"
+              className="text-sm text-gray-500 dark:text-neutral-500"
+            >
               {description}
             </HeadlessSwitch.Description>
           )}
@@ -27,10 +30,10 @@ export function Switch({ label, description, disabled = false, checked, onChange
         checked={checked}
         onChange={onChange}
         className={cx(
-          "relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2 disabled:cursor-not-allowed",
+          "relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2 disabled:cursor-not-allowed dark:focus:ring-offset-neutral-900",
           {
             "bg-indigo-600": checked,
-            "bg-gray-200": !checked,
+            "bg-gray-200 dark:bg-neutral-800": !checked,
           },
         )}
       >

@@ -28,10 +28,10 @@
 
 .notificare .notificare__button--secondary {
     --notificare-button-background-color: clear;
-    --notificare-button-text-color: var(--notificare-primary);
+    --notificare-button-text-color: var(--notificare-secondary);
 
     --notificare-button-background-color--hover: var(--notificare-surface-hover);
-    --notificare-button-text-color--hover: var(--notificare-primary);
+    --notificare-button-text-color--hover: var(--notificare-secondary);
 }
 
 .notificare .notificare__button--destructive {

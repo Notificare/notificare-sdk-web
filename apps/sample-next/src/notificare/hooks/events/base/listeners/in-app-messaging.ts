@@ -1,4 +1,3 @@
-import { TypedListener } from "@/notificare/hooks/events/base";
 import {
   OnActionExecutedCallback,
   OnActionFailedToExecuteCallback,
@@ -6,6 +5,7 @@ import {
   OnMessageFinishedPresentingCallback,
   OnMessagePresentedCallback,
 } from "notificare-web/in-app-messaging";
+import { TypedListener } from "@/notificare/hooks/events/base";
 
 export type NotificareInAppMessagingListener =
   | MessagePresentedListener

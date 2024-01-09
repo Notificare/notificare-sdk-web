@@ -1,11 +1,11 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { PageHeader, PageHeaderAction } from "@/components/page-header";
 import { CheckIcon } from "@heroicons/react/20/solid";
 import { NotificareOptions } from "notificare-web/core";
 import { ConfigurationForm } from "@/components/configuration/configuration-form";
 import { ConfigurationFormState } from "@/components/configuration/configuration-form-state";
+import { PageHeader, PageHeaderAction } from "@/components/page-header";
 
 export default function Setup() {
   const [state, setState] = useState<ConfigurationFormState>({

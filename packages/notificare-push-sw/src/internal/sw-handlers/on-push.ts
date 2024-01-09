@@ -1,12 +1,12 @@
-import { NotificareNotification } from '@notificare/web-core';
 import { fetchCloudNotification } from '@notificare/web-cloud-api';
+import { NotificareNotification } from '@notificare/web-core';
 import { logger } from '../../logger';
-import { NotificareWorkerNotification, WorkerNotification } from '../internal-types';
-import { parseWorkerConfiguration } from '../configuration/parser';
-import { createPartialNotification } from '../create-partial-notification';
 import { convertCloudNotificationToPublic } from '../cloud-api/converters/notification-converter';
 import { getCloudApiEnvironment } from '../cloud-api/environment';
 import { logNotificationReceived } from '../cloud-api/requests/events';
+import { parseWorkerConfiguration } from '../configuration/parser';
+import { createPartialNotification } from '../create-partial-notification';
+import { NotificareWorkerNotification, WorkerNotification } from '../internal-types';
 
 // Let TS know this is scoped to a service worker.
 declare const self: ServiceWorkerGlobalScope;

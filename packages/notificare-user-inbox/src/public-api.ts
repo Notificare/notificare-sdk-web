@@ -1,4 +1,8 @@
 import {
+  fetchCloudUserInboxNotification,
+  removeCloudUserInboxItem,
+} from '@notificare/web-cloud-api';
+import {
   getApplication,
   getCloudApiEnvironment,
   getCurrentDevice,
@@ -14,16 +18,12 @@ import {
   convertCloudNotificationToPublic,
 } from '@notificare/web-core';
 import {
-  fetchCloudUserInboxNotification,
-  removeCloudUserInboxItem,
-} from '@notificare/web-cloud-api';
-import { logger } from './logger';
-import { NotificareUserInboxResponse } from './models/notificare-user-inbox-response';
-import { NotificareUserInboxItem } from './models/notificare-user-inbox-item';
-import {
   convertNetworkUserInboxItemToPublic,
   NetworkUserInboxResponse,
 } from './internal/network/responses/user-inbox-response';
+import { logger } from './logger';
+import { NotificareUserInboxItem } from './models/notificare-user-inbox-item';
+import { NotificareUserInboxResponse } from './models/notificare-user-inbox-response';
 
 export async function parseInboxResponse(
   response: NetworkUserInboxResponse,

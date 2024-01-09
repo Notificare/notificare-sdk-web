@@ -7,12 +7,14 @@ import { logger } from '../logger';
 import { NotificareNotificationDeliveryMechanism } from '../models/notificare-notification-delivery-mechanism';
 import { NotificareSystemNotification } from '../models/notificare-system-notification';
 
+let notificationSettingsChangedCallback: OnNotificationSettingsChangedCallback | undefined;
 let notificationReceivedCallback: OnNotificationReceivedCallback | undefined;
 let notificationOpenedCallback: OnNotificationOpenedCallback | undefined;
 let notificationActionOpenedCallback: OnNotificationActionOpenedCallback | undefined;
 let systemNotificationReceivedCallback: OnSystemNotificationReceivedCallback | undefined;
 let unknownNotificationReceivedCallback: OnUnknownNotificationReceivedCallback | undefined;
 
+export type OnNotificationSettingsChangedCallback = (allowedUI: boolean) => void;
 export type OnNotificationReceivedCallback = (
   notification: NotificareNotification,
   deliveryMechanism: NotificareNotificationDeliveryMechanism,
@@ -26,6 +28,18 @@ export type OnSystemNotificationReceivedCallback = (
   notification: NotificareSystemNotification,
 ) => void;
 export type OnUnknownNotificationReceivedCallback = (notification: unknown) => void;
+
+export function onNotificationSettingsChanged(
+  callback: OnNotificationSettingsChangedCallback,
+): EventSubscription {
+  notificationSettingsChangedCallback = callback;
+
+  return {
+    remove: () => {
+      notificationSettingsChangedCallback = undefined;
+    },
+  };
+}
 
 export function onNotificationReceived(
   callback: OnNotificationReceivedCallback,
@@ -83,6 +97,16 @@ export function onUnknownNotificationReceived(
       unknownNotificationReceivedCallback = undefined;
     },
   };
+}
+
+export function notifyNotificationSettingsChanged(allowedUI: boolean) {
+  const callback = notificationSettingsChangedCallback;
+  if (!callback) {
+    logger.debug("The 'notification_settings_changed' handler is not configured.");
+    return;
+  }
+
+  callback(allowedUI);
 }
 
 export function notifyNotificationReceived(

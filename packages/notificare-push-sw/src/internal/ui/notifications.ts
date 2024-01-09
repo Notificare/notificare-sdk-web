@@ -1,15 +1,15 @@
-import { NotificareNotification } from '@notificare/web-core';
 import {
   fetchCloudDynamicLink,
   fetchCloudPass,
   fetchCloudPassSaveLinks,
 } from '@notificare/web-cloud-api';
-import { getCloudApiUrl, getCurrentPushToken, isAppleDevice, isSafariBrowser } from '../utils';
-import { parseWorkerConfiguration } from '../configuration/parser';
-import { InvalidWorkerConfigurationError } from '../configuration/errors';
-import { presentWindowClient } from './window-client';
+import { NotificareNotification } from '@notificare/web-core';
 import { logger } from '../../logger';
 import { getCloudApiEnvironment } from '../cloud-api/environment';
+import { InvalidWorkerConfigurationError } from '../configuration/errors';
+import { parseWorkerConfiguration } from '../configuration/parser';
+import { getCloudApiUrl, getCurrentPushToken, isAppleDevice, isSafariBrowser } from '../utils';
+import { presentWindowClient } from './window-client';
 
 // Let TS know this is scoped to a service worker.
 declare const self: ServiceWorkerGlobalScope;

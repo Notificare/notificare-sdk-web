@@ -1,6 +1,6 @@
 import { createCloudEvent } from '@notificare/web-cloud-api';
-import { getCloudApiEnvironment } from '../environment';
 import { getCurrentPushToken } from '../../utils';
+import { getCloudApiEnvironment } from '../environment';
 
 export async function logNotificationReceived(id: string) {
   await createCloudEvent({

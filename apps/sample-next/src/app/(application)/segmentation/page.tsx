@@ -1,14 +1,14 @@
 "use client";
 
-import { PageHeader } from "@/components/page-header";
-import { NotificareLaunchBlocker } from "@/components/notificare/notificare-launch-blocker";
 import { useCallback, useEffect, useState } from "react";
-import { InputField } from "@/components/input-field";
-import { Button } from "@/components/button";
-import { ProgressIndicator } from "@/components/progress-indicator";
-import { Alert } from "@/components/alert";
 import { TagIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { addTag, fetchTags, removeTag } from "notificare-web/core";
+import { Alert } from "@/components/alert";
+import { Button } from "@/components/button";
+import { InputField } from "@/components/input-field";
+import { NotificareLaunchBlocker } from "@/components/notificare/notificare-launch-blocker";
+import { PageHeader } from "@/components/page-header";
+import { ProgressIndicator } from "@/components/progress-indicator";
 import { useNotificareState } from "@/notificare/hooks/notificare-state";
 
 export default function Segmentation() {

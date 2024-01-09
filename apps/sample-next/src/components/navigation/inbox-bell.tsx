@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
+import { BellIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { getBadge } from "notificare-web/inbox";
-import { BellIcon } from "@heroicons/react/24/outline";
 import { useOnBadgeUpdated } from "@/notificare/hooks/events/inbox/badge-updated";
 
 export function InboxBell() {
@@ -12,7 +12,10 @@ export function InboxBell() {
   useOnBadgeUpdated((badge) => setBadge(badge));
 
   return (
-    <Link href="/inbox" className="group p-2.5 text-gray-400 hover:text-gray-500">
+    <Link
+      href="/inbox"
+      className="group p-2.5 text-gray-400 hover:text-gray-500 dark:text-gray-200 dark:hover:text-gray-500"
+    >
       <span className="sr-only">View notifications</span>
       <div className="relative">
         <BellIcon className="h-6 w-6" aria-hidden="true" />

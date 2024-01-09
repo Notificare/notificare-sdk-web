@@ -10,18 +10,18 @@ import {
   updateCloudDeviceDoNotDisturb,
   updateCloudDeviceUserData,
 } from '@notificare/web-cloud-api';
+import { NotificareDeviceUnavailableError } from './errors/notificare-device-unavailable-error';
+import { NotificareNotReadyError } from './errors/notificare-not-ready-error';
+import { getCloudApiEnvironment } from './internal/cloud-api/environment';
 import {
   checkPrerequisites,
   getDeviceLanguage,
   getDeviceRegion,
   registerDeviceInternal,
 } from './internal/internal-api-device';
-import { NotificareNotReadyError } from './errors/notificare-not-ready-error';
-import { NotificareDoNotDisturb } from './models/notificare-do-not-disturb';
-import { NotificareDeviceUnavailableError } from './errors/notificare-device-unavailable-error';
-import { NotificareUserData } from './models/notificare-user-data';
 import { getCurrentDevice, storeCurrentDevice } from './internal/storage/local-storage';
-import { getCloudApiEnvironment } from './internal/cloud-api/environment';
+import { NotificareDoNotDisturb } from './models/notificare-do-not-disturb';
+import { NotificareUserData } from './models/notificare-user-data';
 
 export { getCurrentDevice } from './internal/storage/local-storage';
 
@@ -155,10 +155,10 @@ export async function fetchDoNotDisturb(): Promise<NotificareDoNotDisturb | unde
   // Update current device properties.
   storeCurrentDevice({
     ...device,
-    dnd,
+    dnd: dnd ?? undefined,
   });
 
-  return dnd;
+  return dnd ?? undefined;
 }
 
 export async function updateDoNotDisturb(dnd: NotificareDoNotDisturb): Promise<void> {

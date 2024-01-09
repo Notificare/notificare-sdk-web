@@ -1,3 +1,4 @@
+import { updateCloudDevice } from '@notificare/web-cloud-api';
 import {
   deleteDevice,
   getApplication,
@@ -14,21 +15,27 @@ import {
   registerPushDevice,
   registerTemporaryDevice,
 } from '@notificare/web-core';
-import { updateCloudDevice } from '@notificare/web-cloud-api';
 import { logger } from '../logger';
-import { sleep } from './utils';
-import { showOnboarding } from './ui/onboarding';
-import { showFloatingButton } from './ui/floating-button';
-import { getPushPermissionStatus } from './utils/push';
+import { getPushPermissionStatus } from '../utils/push';
+import { notifyNotificationSettingsChanged } from './consumer-events';
+import { logPushRegistration } from './internal-api-events';
+import { enableSafariPushNotifications, hasSafariPushSupport } from './internal-api-safari-push';
 import {
   disableWebPushNotifications,
   enableWebPushNotifications,
   hasWebPushSupport,
   postMessageToServiceWorker,
 } from './internal-api-web-push';
-import { enableSafariPushNotifications, hasSafariPushSupport } from './internal-api-safari-push';
-import { setRemoteNotificationsEnabled } from './storage/local-storage';
-import { logPushRegistration } from './internal-api-events';
+import {
+  getRemoteNotificationsEnabled,
+  retrieveAllowedUI,
+  setRemoteNotificationsEnabled,
+  storeAllowedUI,
+} from './storage/local-storage';
+import { showFloatingButton } from './ui/floating-button';
+import { showOnboarding } from './ui/onboarding';
+import { sleep } from './utils';
+import { transaction } from './utils/transaction';
 
 export function hasWebPushCapabilities(): boolean {
   return hasWebPushSupport() || hasSafariPushSupport();
@@ -57,32 +64,38 @@ export async function enableRemoteNotifications(): Promise<void> {
     throw new Error('Your browser does not support Service Workers nor Safari Website Push.');
   }
 
-  if (hasWebPushSupport()) {
-    const token = await enableWebPushNotifications(application, options);
+  await transaction({
+    originalValue: getRemoteNotificationsEnabled(),
+    restoreValue: setRemoteNotificationsEnabled,
+    fn: async () => {
+      setRemoteNotificationsEnabled(true);
 
-    await registerPushDevice({
-      transport: 'WebPush',
-      token: token.endpoint,
-      keys: token.keys,
-    });
+      if (hasWebPushSupport()) {
+        const token = await enableWebPushNotifications(application, options);
 
-    try {
-      await postMessageToServiceWorker({
-        action: 're.notifica.ready',
-      });
-    } catch (e) {
-      logger.warning('Failed to send a message to the service worker.', e);
-    }
-  } else if (hasSafariPushSupport()) {
-    const token = await enableSafariPushNotifications();
+        await registerPushDevice({
+          transport: 'WebPush',
+          token: token.endpoint,
+          keys: token.keys,
+        });
 
-    await registerPushDevice({
-      transport: 'WebsitePush',
-      token,
-    });
-  }
+        try {
+          await postMessageToServiceWorker({
+            action: 're.notifica.ready',
+          });
+        } catch (e) {
+          logger.warning('Failed to send a message to the service worker.', e);
+        }
+      } else if (hasSafariPushSupport()) {
+        const token = await enableSafariPushNotifications();
 
-  setRemoteNotificationsEnabled(true);
+        await registerPushDevice({
+          transport: 'WebsitePush',
+          token,
+        });
+      }
+    },
+  });
 
   try {
     await updateNotificationSettings();
@@ -95,18 +108,27 @@ export async function disableRemoteNotifications(): Promise<void> {
   const device = getCurrentDevice();
   if (!device) throw new NotificareDeviceUnavailableError();
 
-  if (device.transport === 'WebPush') {
-    await disableWebPushNotifications();
-  }
+  await transaction({
+    originalValue: getRemoteNotificationsEnabled(),
+    restoreValue: setRemoteNotificationsEnabled,
+    fn: async () => {
+      setRemoteNotificationsEnabled(false);
 
-  const options = getOptions();
-  if (options?.ignoreTemporaryDevices) {
-    await deleteDevice();
-  } else {
-    await registerTemporaryDevice();
-  }
+      if (device.transport === 'WebPush') {
+        await disableWebPushNotifications();
+      }
 
-  setRemoteNotificationsEnabled(false);
+      const options = getOptions();
+      if (options?.ignoreTemporaryDevices) {
+        await deleteDevice();
+      } else {
+        await registerTemporaryDevice();
+      }
+
+      storeAllowedUI(false);
+      notifyNotificationSettingsChanged(false);
+    },
+  });
 }
 
 export async function handleAutoOnboarding(
@@ -177,16 +199,26 @@ async function updateNotificationSettings() {
   const device = getCurrentDevice();
   if (!device) throw new NotificareDeviceUnavailableError();
 
-  const allowedUI = device.transport !== 'Notificare' && hasWebPushCapabilities();
+  const granted = getPushPermissionStatus() === 'granted';
+  const allowedUI = device.transport !== 'Notificare' && granted;
 
-  await updateCloudDevice({
-    environment: getCloudApiEnvironment(),
-    deviceId: device.id,
-    payload: {
-      allowedUI,
-      webPushCapable: hasWebPushCapabilities(),
-    },
-  });
+  if (retrieveAllowedUI() !== allowedUI) {
+    await updateCloudDevice({
+      environment: getCloudApiEnvironment(),
+      deviceId: device.id,
+      payload: {
+        allowedUI,
+        webPushCapable: hasWebPushCapabilities(),
+      },
+    });
+
+    storeAllowedUI(allowedUI);
+    notifyNotificationSettingsChanged(allowedUI);
+
+    logger.debug('User notification settings updated.');
+  } else {
+    logger.debug('User notification settings update skipped, nothing changed.');
+  }
 
   const firstRegistrationStr = localStorage.getItem('re.notifica.push.first_registration');
   const firstRegistration = firstRegistrationStr == null || firstRegistrationStr === 'true';
@@ -195,4 +227,21 @@ async function updateNotificationSettings() {
     await logPushRegistration();
     localStorage.setItem('re.notifica.push.first_registration', 'false');
   }
+}
+
+export async function monitorPushPermissionChanges() {
+  if (!('permissions' in navigator)) {
+    throw new Error('The current browser does not supporting the permission status.');
+  }
+
+  const permissionStatus = await navigator.permissions.query({ name: 'notifications' });
+  permissionStatus.onchange = () => {
+    const device = getCurrentDevice();
+    if (!device || device.transport === 'Notificare') return;
+
+    logger.debug('Updating notification settings due to a permission status change.');
+    updateNotificationSettings().catch((e) =>
+      logger.warning('Unable to update the notification settings.', e),
+    );
+  };
 }

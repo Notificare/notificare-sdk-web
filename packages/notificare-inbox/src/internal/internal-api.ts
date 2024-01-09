@@ -1,3 +1,4 @@
+import { clearCloudDeviceInbox, fetchCloudDeviceInbox } from '@notificare/web-cloud-api';
 import {
   getApplication,
   getCloudApiEnvironment,
@@ -5,9 +6,8 @@ import {
   NotificareApplicationUnavailableError,
   NotificareDeviceUnavailableError,
 } from '@notificare/web-core';
-import { clearCloudDeviceInbox, fetchCloudDeviceInbox } from '@notificare/web-cloud-api';
-import { logger } from '../logger';
 import { NotificareAutoBadgeUnavailableError } from '../errors/notificare-auto-badge-unavailable-error';
+import { logger } from '../logger';
 import { notifyBadgeUpdated } from './consumer-events';
 
 export async function refreshBadgeInternal(): Promise<number> {

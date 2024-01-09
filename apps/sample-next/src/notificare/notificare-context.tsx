@@ -9,11 +9,6 @@ import {
   useMemo,
   useState,
 } from "react";
-import {
-  createListenerIdentifier,
-  IdentifiableListener,
-  Listener,
-} from "@/notificare/hooks/events/base";
 import { launch, onDeviceRegistered, onReady, onUnlaunched, unlaunch } from "notificare-web/core";
 import { onLocationUpdated, onLocationUpdateError } from "notificare-web/geo";
 import {
@@ -28,19 +23,25 @@ import {
   onNotificationActionOpened,
   onNotificationOpened,
   onNotificationReceived,
+  onNotificationSettingsChanged,
   onSystemNotificationReceived,
   onUnknownNotificationReceived,
 } from "notificare-web/push";
 import {
-  onNotificationWillPresent,
-  onNotificationPresented,
-  onNotificationFinishedPresenting,
-  onNotificationFailedToPresent,
-  onActionWillExecute as onNotificationActionWillExecute,
   onActionExecuted as onNotificationActionExecuted,
   onActionFailedToExecute as onNotificationActionFailedToExecute,
+  onActionWillExecute as onNotificationActionWillExecute,
   onCustomActionReceived as onNotificationCustomActionReceived,
+  onNotificationFailedToPresent,
+  onNotificationFinishedPresenting,
+  onNotificationPresented,
+  onNotificationWillPresent,
 } from "notificare-web/push-ui";
+import {
+  createListenerIdentifier,
+  IdentifiableListener,
+  Listener,
+} from "@/notificare/hooks/events/base";
 
 const NotificareContext = createContext<NotificareContextState | undefined>(undefined);
 
@@ -193,6 +194,13 @@ export function NotificareProvider({ children }: PropsWithChildren) {
       /**
        * Push events
        */
+      onNotificationSettingsChanged((allowedUI) => {
+        listeners.forEach((listener) => {
+          if (listener.event === "notification_settings_changed") {
+            listener.callback(allowedUI);
+          }
+        });
+      }),
       onNotificationReceived((notification, deliveryMechanism) => {
         listeners.forEach((listener) => {
           if (listener.event === "notification_received") {

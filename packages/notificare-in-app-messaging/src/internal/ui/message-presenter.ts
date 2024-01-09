@@ -1,20 +1,20 @@
+import { logger } from '../../logger';
 import {
   NotificareInAppMessage,
   NotificareInAppMessageAction,
 } from '../../models/notificare-in-app-message';
-import { logger } from '../../logger';
-import { ensureCleanState } from './root';
 import {
   notifyActionExecuted,
   notifyActionFailedToExecute,
   notifyMessageFinishedPresenting,
 } from '../consumer-events';
+import { logInAppMessageActionClicked } from '../internal-api-events';
 import { ActionType } from '../types/action-type';
 import { MessageType } from '../types/message-type';
 import { createBannerComponent } from './components/banner';
 import { createCardComponent } from './components/card';
 import { createFullscreenComponent } from './components/fullscreen';
-import { logInAppMessageActionClicked } from '../internal-api-events';
+import { ensureCleanState } from './root';
 
 let shownMessage: NotificareInAppMessage | undefined;
 

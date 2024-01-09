@@ -32,4 +32,6 @@ export * from './public-api';
 export * from './models/notificare-notification-delivery-mechanism';
 export * from './models/notificare-system-notification';
 
+export * from './utils/push';
+
 registerComponents();

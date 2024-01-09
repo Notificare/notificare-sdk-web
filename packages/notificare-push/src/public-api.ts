@@ -5,20 +5,21 @@ import {
   NotificareNotReadyError,
   NotificareServiceUnavailableError,
 } from '@notificare/web-core';
-import { logger } from './logger';
 import {
   disableRemoteNotifications as disableRemoteNotificationsInternal,
   enableRemoteNotifications as enableRemoteNotificationsInternal,
 } from './internal/internal-api';
-import { getRemoteNotificationsEnabled } from './internal/storage/local-storage';
-import { getPushPermissionStatus } from './internal/utils/push';
+import { getRemoteNotificationsEnabled, retrieveAllowedUI } from './internal/storage/local-storage';
+import { logger } from './logger';
 
 export {
+  onNotificationSettingsChanged,
   onNotificationReceived,
   onNotificationOpened,
   onNotificationActionOpened,
   onSystemNotificationReceived,
   onUnknownNotificationReceived,
+  OnNotificationSettingsChangedCallback,
   OnNotificationReceivedCallback,
   OnSystemNotificationReceivedCallback,
   OnNotificationActionOpenedCallback,
@@ -33,7 +34,7 @@ export function hasRemoteNotificationsEnabled(): boolean {
 }
 
 export function getAllowedUI(): boolean {
-  return getRemoteNotificationsEnabled() && getPushPermissionStatus() === 'granted';
+  return retrieveAllowedUI() ?? false;
 }
 
 export async function enableRemoteNotifications(): Promise<void> {

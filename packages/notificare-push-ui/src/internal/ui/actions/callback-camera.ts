@@ -8,9 +8,9 @@ import {
   createRoot,
   createSecondaryButton,
 } from '@notificare/web-ui';
-import { ROOT_ELEMENT_IDENTIFIER } from '../root';
-import { getApplicationIcon, getApplicationName } from '../../utils';
 import { logger } from '../../../logger';
+import { getApplicationIcon, getApplicationName } from '../../utils';
+import { ROOT_ELEMENT_IDENTIFIER } from '../root';
 
 export function createCameraCallbackModal({
   hasMoreSteps,

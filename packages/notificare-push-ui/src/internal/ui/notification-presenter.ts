@@ -6,17 +6,17 @@ import {
   fetchDynamicLink,
   getCloudApiEnvironment,
 } from '@notificare/web-core';
+import { logger } from '../../logger';
 import {
   notifyNotificationFailedToPresent,
   notifyNotificationFinishedPresenting,
   notifyNotificationPresented,
   notifyNotificationWillPresent,
 } from '../consumer-events';
-import { ensureCleanState } from './root';
-import { logger } from '../../logger';
-import { createNotificationModal } from './notifications/notification-modal';
-import { presentAction } from './action-presenter';
 import { isAppleDevice, isSafariBrowser } from '../utils/device';
+import { presentAction } from './action-presenter';
+import { createNotificationModal } from './notifications/notification-modal';
+import { ensureCleanState } from './root';
 
 class NotificationPresenter {
   private notification: NotificareNotification | undefined;

@@ -1,5 +1,5 @@
-import { WorkerConfiguration } from './worker-configuration';
 import { base64Decode, base64Encode } from '../../utils/base64';
+import { WorkerConfiguration } from './worker-configuration';
 
 export function parseWorkerConfiguration(encoded: string): WorkerConfiguration | undefined {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

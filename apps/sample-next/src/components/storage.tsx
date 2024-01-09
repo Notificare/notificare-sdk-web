@@ -1,6 +1,6 @@
-import { NotificareAsset } from "notificare-web/assets";
 import Image from "next/image";
 import Link from "next/link";
+import { NotificareAsset } from "notificare-web/assets";
 
 export function AssetPreview({ asset }: AssetPreviewProps) {
   return (
@@ -9,23 +9,25 @@ export function AssetPreview({ asset }: AssetPreviewProps) {
         <AssetImage url={asset.url} />
 
         <div className="flex flex-col overflow-hidden">
-          <p className="text-lg font-medium text-gray-900 truncate dark:text-white">
+          <p className="text-lg font-medium text-gray-900 truncate dark:text-gray-200">
             {asset.title}
           </p>
 
           {asset.description && (
-            <p className="text-xs text-gray-500 truncate dark:text-gray-200">{asset.description}</p>
+            <p className="text-xs text-gray-500 truncate dark:text-neutral-500">
+              {asset.description}
+            </p>
           )}
 
           {asset.url && (
-            <Link href={asset.url} target="_blank" className="truncate">
+            <Link href={asset.url} target="_blank" className="truncate text-blue-600">
               {asset.url}
             </Link>
           )}
         </div>
       </div>
 
-      <pre className="bg-gray-200 rounded p-4 overflow-scroll">
+      <pre className="bg-gray-200 dark:bg-neutral-800 text-gray-800 dark:text-gray-200 rounded p-4 overflow-scroll">
         {JSON.stringify(asset, null, 2)}
       </pre>
     </div>

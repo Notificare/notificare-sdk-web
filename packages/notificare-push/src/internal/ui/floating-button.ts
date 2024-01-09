@@ -4,10 +4,10 @@ import {
   NotificareWebsitePushConfigLaunchConfigFloatingButtonVerticalAlignment,
 } from '@notificare/web-core';
 import { createRoot } from '@notificare/web-ui';
-import { getPushPermissionStatus } from '../utils/push';
-import createBellIcon from '../../assets/bell-icon.svg';
-import createGrantedBellIcon from '../../assets/bell-icon-granted.svg';
 import createDeniedBellIcon from '../../assets/bell-icon-denied.svg';
+import createGrantedBellIcon from '../../assets/bell-icon-granted.svg';
+import createBellIcon from '../../assets/bell-icon.svg';
+import { getPushPermissionStatus } from '../../utils/push';
 
 let permissionCheckTimer: number | undefined;
 

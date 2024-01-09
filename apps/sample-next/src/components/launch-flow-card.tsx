@@ -1,9 +1,9 @@
 "use client";
 
-import { CheckCircleIcon } from "@heroicons/react/24/solid";
 import { XCircleIcon } from "@heroicons/react/20/solid";
-import { Button } from "@/components/button";
+import { CheckCircleIcon } from "@heroicons/react/24/solid";
 import { isConfigured } from "notificare-web/core";
+import { Button } from "@/components/button";
 import { Card, CardActions, CardContent, CardHeader } from "@/components/card";
 import { useNotificareLaunchFlow } from "@/notificare/hooks/notificare-launch-flow";
 
@@ -16,7 +16,9 @@ export function LaunchFlowCard() {
 
       <CardContent>
         <div className="flex items-center justify-between">
-          <p className="text-sm font-medium leading-6 text-gray-900">Configured</p>
+          <p className="text-sm font-medium leading-6 text-gray-900 dark:text-gray-200">
+            Configured
+          </p>
 
           {isConfigured() && <CheckCircleIcon className="flex-shrink-0 h-6 w-6 text-green-700" />}
 
@@ -24,7 +26,7 @@ export function LaunchFlowCard() {
         </div>
 
         <div className="flex items-center justify-between">
-          <p className="text-sm font-medium leading-6 text-gray-900">Ready</p>
+          <p className="text-sm font-medium leading-6 text-gray-900 dark:text-gray-200">Ready</p>
 
           {state.status === "launched" && (
             <CheckCircleIcon className="flex-shrink-0 h-6 w-6 text-green-700" />
@@ -36,7 +38,9 @@ export function LaunchFlowCard() {
         </div>
 
         <div className="flex items-center justify-between">
-          <p className="text-sm font-medium leading-6 text-gray-900">Current state</p>
+          <p className="text-sm font-medium leading-6 text-gray-900 dark:text-gray-200">
+            Current state
+          </p>
 
           <p className="text-sm font-mono lowercase text-gray-400">{state.status}</p>
         </div>

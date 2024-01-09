@@ -1,7 +1,7 @@
-import { Component, getApplication, getCurrentDevice, getOptions } from '@notificare/web-core';
+import { Component, getApplication, getCurrentDevice } from '@notificare/web-core';
 import { logger } from '../logger';
-import { clearInboxInternal, refreshBadgeInternal } from './internal-api';
 import { notifyInboxUpdated } from './consumer-events';
+import { clearInboxInternal, refreshBadgeInternal } from './internal-api';
 
 /* eslint-disable class-methods-use-this */
 export class InboxComponent extends Component {
@@ -32,20 +32,21 @@ export class InboxComponent extends Component {
         'Using the device-level inbox module, but the user-level inbox is enabled for this application.',
       );
     }
-
-    const options = getOptions();
-    const device = getCurrentDevice();
-    if (options?.ignoreTemporaryDevices && !device) return;
-
-    if (application?.inboxConfig?.autoBadge) {
-      await refreshBadgeInternal();
-    }
   }
 
   async unlaunch(): Promise<void> {
     if (!getCurrentDevice()) return;
 
     await clearInboxInternal();
+  }
+
+  async postLaunch(): Promise<void> {
+    const application = getApplication();
+    const device = getCurrentDevice();
+
+    if (device && application?.inboxConfig?.autoBadge) {
+      await refreshBadgeInternal();
+    }
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars

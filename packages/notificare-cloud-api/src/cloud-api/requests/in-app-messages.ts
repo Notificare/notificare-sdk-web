@@ -1,5 +1,5 @@
-import { CloudInAppMessageResponse } from '../responses/in-app-message';
 import { cloudRequest, CloudRequestParams } from '../request';
+import { CloudInAppMessageResponse } from '../responses/in-app-message';
 
 export async function fetchCloudInAppMessage(
   params: FetchCloudInAppMessageParams,

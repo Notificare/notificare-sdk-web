@@ -5,12 +5,12 @@ import {
   NotificareNotReadyError,
   NotificareServiceUnavailableError,
 } from '@notificare/web-core';
-import { logger } from './logger';
+import { startLocationUpdates, stopLocationUpdates } from './internal/internal-api';
 import {
   getLocationServicesEnabled,
   setLocationServicesEnabled,
 } from './internal/storage/local-storage';
-import { startLocationUpdates, stopLocationUpdates } from './internal/internal-api';
+import { logger } from './logger';
 
 export {
   onLocationUpdated,

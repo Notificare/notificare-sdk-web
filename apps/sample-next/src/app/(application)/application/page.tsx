@@ -1,10 +1,10 @@
 "use client";
 
-import { PageHeader } from "@/components/page-header";
-import { NotificareLaunchBlocker } from "@/components/notificare/notificare-launch-blocker";
 import { useEffect, useState } from "react";
 import { getApplication, NotificareApplication } from "notificare-web/core";
 import { Alert } from "@/components/alert";
+import { NotificareLaunchBlocker } from "@/components/notificare/notificare-launch-blocker";
+import { PageHeader } from "@/components/page-header";
 
 export default function Application() {
   const [application, setApplication] = useState<NotificareApplication>();
@@ -27,7 +27,7 @@ export default function Application() {
           )}
 
           {application && (
-            <pre className="bg-gray-200 rounded p-4 overflow-scroll">
+            <pre className="bg-gray-200 dark:bg-neutral-800 text-gray-800 dark:text-gray-200 rounded p-4 overflow-scroll">
               {JSON.stringify(application, null, 2)}
             </pre>
           )}

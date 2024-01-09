@@ -1,7 +1,7 @@
-import { Switch } from "@/components/switch";
-import { InputField } from "@/components/input-field";
 import { Card, CardContent, CardHeader } from "@/components/card";
 import { ConfigurationFormState } from "@/components/configuration/configuration-form-state";
+import { InputField } from "@/components/input-field";
+import { Switch } from "@/components/switch";
 
 export function GeolocationSettingsCard({ state, onChange }: GeolocationSettingsCardProps) {
   return (

@@ -2,8 +2,8 @@
 
 import { PropsWithChildren } from "react";
 import { Alert } from "@/components/alert";
-import { ProgressIndicator } from "@/components/progress-indicator";
 import { NotificareConfigurationBlocker } from "@/components/notificare/notificare-configuration-blocker";
+import { ProgressIndicator } from "@/components/progress-indicator";
 import { useNotificareLaunchFlow } from "@/notificare/hooks/notificare-launch-flow";
 
 export function NotificareLaunchBlocker({ children }: PropsWithChildren) {

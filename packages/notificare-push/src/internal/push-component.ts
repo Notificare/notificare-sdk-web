@@ -6,24 +6,27 @@ import {
   getCurrentDevice,
   logNotificationOpen,
 } from '@notificare/web-core';
+import { logger } from '../logger';
+import { getPushPermissionStatus } from '../utils/push';
+import { notifyNotificationOpened } from './consumer-events';
+import {
+  enableRemoteNotifications,
+  handleAutoOnboarding,
+  handleFloatingButton,
+  hasWebPushCapabilities,
+  monitorPushPermissionChanges,
+} from './internal-api';
+import { logNotificationInfluenced } from './internal-api-events';
 import {
   disableWebPushNotifications,
   handleServiceWorkerMessage,
   hasWebPushSupport,
 } from './internal-api-web-push';
 import {
-  enableRemoteNotifications,
-  handleAutoOnboarding,
-  handleFloatingButton,
-  hasWebPushCapabilities,
-} from './internal-api';
-import { logger } from '../logger';
-import {
   getRemoteNotificationsEnabled,
   setRemoteNotificationsEnabled,
+  storeAllowedUI,
 } from './storage/local-storage';
-import { logNotificationInfluenced } from './internal-api-events';
-import { notifyNotificationOpened } from './consumer-events';
 
 /* eslint-disable class-methods-use-this */
 export class PushComponent extends Component {
@@ -64,19 +67,22 @@ export class PushComponent extends Component {
     if (hasWebPushSupport()) {
       navigator.serviceWorker.onmessage = handleServiceWorkerMessage;
     }
+
+    monitorPushPermissionChanges()
+      .then(() => logger.debug('Started monitoring push permission changes.'))
+      .catch((error) => logger.error('Unable to monitor push permission changes.', error));
   }
 
   async launch(): Promise<void> {
-    if (getRemoteNotificationsEnabled()) {
+    if (getRemoteNotificationsEnabled() && getPushPermissionStatus() === 'granted') {
       try {
-        logger.debug('Automatically enabling remote notification.');
+        logger.debug('Automatically enabling remote notifications.');
         await enableRemoteNotifications();
       } catch (e) {
-        logger.error('Failed to automatically enable remote notifications.');
+        logger.error('Failed to automatically enable remote notifications.', e);
       }
     }
 
-    this.handleOnboarding();
     this.handleSafariWebPushNotification();
   }
 
@@ -94,6 +100,11 @@ export class PushComponent extends Component {
     }
 
     setRemoteNotificationsEnabled(false);
+    storeAllowedUI(undefined);
+  }
+
+  async postLaunch(): Promise<void> {
+    this.handleOnboarding();
   }
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars

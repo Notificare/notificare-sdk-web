@@ -5,10 +5,7 @@ import {
   NotificareNotificationAction,
   NotificationReplyData,
 } from '@notificare/web-core';
-import { ensureCleanState } from './root';
 import { logger } from '../../logger';
-import { createKeyboardCallbackModal } from './actions/callback-keyboard';
-import { createCameraCallbackModal } from './actions/callback-camera';
 import {
   notifyActionExecuted,
   notifyActionFailedToExecute,
@@ -16,6 +13,9 @@ import {
   notifyCustomActionReceived,
 } from '../consumer-events';
 import { getEmailUrl, getSmsUrl, getTelephoneUrl } from '../utils';
+import { createCameraCallbackModal } from './actions/callback-camera';
+import { createKeyboardCallbackModal } from './actions/callback-keyboard';
+import { ensureCleanState } from './root';
 
 export function presentAction(
   notification: NotificareNotification,

@@ -1,5 +1,5 @@
-import { CloudPassResponse } from '../responses/pass';
 import { cloudRequest, CloudRequestParams } from '../request';
+import { CloudPassResponse } from '../responses/pass';
 import { CloudPassSaveLinksResponse } from '../responses/pass-save-links';
 
 export async function fetchCloudPass(params: FetchCloudPassParams): Promise<CloudPassResponse> {
