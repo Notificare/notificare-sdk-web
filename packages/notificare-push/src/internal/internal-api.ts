@@ -159,7 +159,8 @@ export async function handleAutoOnboarding(
     application,
     autoOnboardingOptions,
     onAcceptClicked: () => {
-      localStorage.removeItem('re.notifica.push.onboarding_last_attempt');
+      localStorage.setItem('re.notifica.push.onboarding_last_attempt', Date.now().toString());
+
       enableRemoteNotifications()
         .then(() => logger.debug('Remote notifications enabled.'))
         .catch((e) => logger.error(`Failed to enable remote notifications: ${e}`));
