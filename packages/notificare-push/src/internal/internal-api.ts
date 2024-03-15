@@ -234,8 +234,10 @@ export async function monitorPushPermissionChanges() {
     if (!getRemoteNotificationsEnabled()) return;
 
     const device = getCurrentDevice();
+    const hasPushPermission = getPushPermissionStatus() === 'granted';
+    const canRegisterPushDevice = !device || device.transport === 'Notificare';
 
-    if (!device || device.transport === 'Notificare') {
+    if (hasPushPermission && canRegisterPushDevice) {
       logger.debug('Enabling remote notifications due to a permission status change.');
       enableRemoteNotifications().catch((e) =>
         logger.warning('Failed to enable remote notifications.', e),
