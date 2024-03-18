@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## Upcoming release
+## 3.3.0
 
 - Set the last onboarding attempt when accepting it preventing re-prompting when notifications are blocked
 - Enable remote notifications when manually changing the permission after opting-in
