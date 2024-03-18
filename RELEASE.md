@@ -1,22 +1,27 @@
 # Release process
 
 1. Update the version of each library.
-2. Update the `CHANGELOG.md`.
-3. Push the generated changes to the repository.
-4. Clean the project.
+2. Update the version in `packages/notificare-core/src/internal/version.ts`.
+3. Update the `CHANGELOG.md`.
+4. Push the generated changes to the repository.
+5. Clean the project.
 ```shell
 yarn clean
 ```
-5. Build the libraries.
+6. Build the libraries.
 ```shell
 yarn build
 ```
-6. Release the libraries to NPM.
+7. Release the libraries to NPM.
 ```shell
 lerna publish from-package
 ```
-7. Release the libraries to the CDN.
+8. Release the libraries to the CDN.
 ```shell
 cd packages/notificare && gulp publish && cd -
 ```
-8. Create a GitHub release with the contents of the `CHANGELOG.md`.
+9. Invalidate the cache
+```shell
+aws cloudfront create-invalidation --distribution-id $AWS_WEB_SDK_CF_DISTRIBUTION_ID --paths '/libs/web/v3/latest/*'
+```
+10. Create a GitHub release with the contents of the `CHANGELOG.md`.
