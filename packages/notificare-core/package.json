@@ -1,6 +1,6 @@
 {
   "name": "@notificare/web-core",
-  "version": "3.2.0",
+  "version": "3.3.0",
   "description": "The core package for the 'notificare-web' umbrella package.",
   "author": "Notificare <info@notificare.com> (https://notificare.com)",
   "license": "MIT",
@@ -17,8 +17,8 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@notificare/web-cloud-api": "^3.2.0",
-    "@notificare/web-logger": "^3.2.0",
+    "@notificare/web-cloud-api": "^3.3.0",
+    "@notificare/web-logger": "^3.3.0",
     "tslib": "^2.5.0"
   },
   "files": [

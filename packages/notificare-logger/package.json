@@ -1,6 +1,6 @@
 {
   "name": "@notificare/web-logger",
-  "version": "3.2.0",
+  "version": "3.3.0",
   "description": "A logger package for use in the Notificare Web SDK.",
   "author": "Notificare <info@notificare.com> (https://notificare.com)",
   "license": "MIT",
