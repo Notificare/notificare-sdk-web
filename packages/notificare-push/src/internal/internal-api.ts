@@ -64,38 +64,32 @@ export async function enableRemoteNotifications(): Promise<void> {
     throw new Error('Your browser does not support Service Workers nor Safari Website Push.');
   }
 
-  await transaction({
-    originalValue: getRemoteNotificationsEnabled(),
-    restoreValue: setRemoteNotificationsEnabled,
-    fn: async () => {
-      setRemoteNotificationsEnabled(true);
+  setRemoteNotificationsEnabled(true);
 
-      if (hasWebPushSupport()) {
-        const token = await enableWebPushNotifications(application, options);
+  if (hasWebPushSupport()) {
+    const token = await enableWebPushNotifications(application, options);
 
-        await registerPushDevice({
-          transport: 'WebPush',
-          token: token.endpoint,
-          keys: token.keys,
-        });
+    await registerPushDevice({
+      transport: 'WebPush',
+      token: token.endpoint,
+      keys: token.keys,
+    });
 
-        try {
-          await postMessageToServiceWorker({
-            action: 're.notifica.ready',
-          });
-        } catch (e) {
-          logger.warning('Failed to send a message to the service worker.', e);
-        }
-      } else if (hasSafariPushSupport()) {
-        const token = await enableSafariPushNotifications();
+    try {
+      await postMessageToServiceWorker({
+        action: 're.notifica.ready',
+      });
+    } catch (e) {
+      logger.warning('Failed to send a message to the service worker.', e);
+    }
+  } else if (hasSafariPushSupport()) {
+    const token = await enableSafariPushNotifications();
 
-        await registerPushDevice({
-          transport: 'WebsitePush',
-          token,
-        });
-      }
-    },
-  });
+    await registerPushDevice({
+      transport: 'WebsitePush',
+      token,
+    });
+  }
 
   try {
     await updateNotificationSettings();
@@ -159,7 +153,8 @@ export async function handleAutoOnboarding(
     application,
     autoOnboardingOptions,
     onAcceptClicked: () => {
-      localStorage.removeItem('re.notifica.push.onboarding_last_attempt');
+      localStorage.setItem('re.notifica.push.onboarding_last_attempt', Date.now().toString());
+
       enableRemoteNotifications()
         .then(() => logger.debug('Remote notifications enabled.'))
         .catch((e) => logger.error(`Failed to enable remote notifications: ${e}`));
@@ -236,8 +231,20 @@ export async function monitorPushPermissionChanges() {
 
   const permissionStatus = await navigator.permissions.query({ name: 'notifications' });
   permissionStatus.onchange = () => {
+    if (!getRemoteNotificationsEnabled()) return;
+
     const device = getCurrentDevice();
-    if (!device || device.transport === 'Notificare') return;
+    const hasPushPermission = getPushPermissionStatus() === 'granted';
+    const canRegisterPushDevice = !device || device.transport === 'Notificare';
+
+    if (hasPushPermission && canRegisterPushDevice) {
+      logger.debug('Enabling remote notifications due to a permission status change.');
+      enableRemoteNotifications().catch((e) =>
+        logger.warning('Failed to enable remote notifications.', e),
+      );
+
+      return;
+    }
 
     logger.debug('Updating notification settings due to a permission status change.');
     updateNotificationSettings().catch((e) =>
