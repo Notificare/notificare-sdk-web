@@ -47,6 +47,8 @@ export async function createWebPushSubscription(
   const currentSubscription = await registration.pushManager.getSubscription();
 
   if (currentSubscription) {
+    logger.debug('Validating the current push subscription.');
+
     const currentApplicationServerKey =
       currentSubscription.options.applicationServerKey &&
       arrayBufferToBase64Url(currentSubscription.options.applicationServerKey);
@@ -58,31 +60,19 @@ export async function createWebPushSubscription(
       await currentSubscription.unsubscribe();
 
       logger.debug('Subscribing for push notifications again.');
-      return registration.pushManager.subscribe({
-        userVisibleOnly: true,
-        applicationServerKey: base64UrlToUint8Array(vapidPublicKey),
-      });
+      return subscribe(registration, vapidPublicKey);
     }
 
     if (subscriptionAboutToExpire(currentSubscription)) {
       logger.debug('Renewing existing push subscription.');
       await currentSubscription.unsubscribe();
 
-      return registration.pushManager.subscribe({
-        userVisibleOnly: true,
-        applicationServerKey: base64UrlToUint8Array(vapidPublicKey),
-      });
+      return subscribe(registration, vapidPublicKey);
     }
-
-    logger.debug('Using the current push subscription.');
-    return currentSubscription;
   }
 
   logger.debug('Subscribing for push notifications.');
-  return registration.pushManager.subscribe({
-    userVisibleOnly: true,
-    applicationServerKey: base64UrlToUint8Array(vapidPublicKey),
-  });
+  return subscribe(registration, vapidPublicKey);
 }
 
 function hasSupportedProtocol(applicationHost: string): boolean {
@@ -155,4 +145,14 @@ function subscriptionAboutToExpire(subscription: PushSubscription): boolean {
   if (!expirationTime) return false;
 
   return Date.now() > expirationTime - 432000000;
+}
+
+async function subscribe(
+  registration: ServiceWorkerRegistration,
+  vapidPublicKey: string,
+): Promise<PushSubscription> {
+  return registration.pushManager.subscribe({
+    userVisibleOnly: true,
+    applicationServerKey: base64UrlToUint8Array(vapidPublicKey),
+  });
 }
