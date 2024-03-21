@@ -9,6 +9,8 @@ import { isStandaloneMode } from '../utils/device';
 import { encodeWorkerConfiguration, parseWorkerConfiguration } from './configuration/parser';
 import { WorkerConfiguration } from './configuration/worker-configuration';
 
+const SUBSCRIPTION_EXPIRATION_TIME_LEEWAY_MILLIS = 432000000;
+
 export async function registerServiceWorker(
   options: NotificareInternalOptions,
 ): Promise<ServiceWorkerRegistration> {
@@ -144,7 +146,7 @@ function subscriptionAboutToExpire(subscription: PushSubscription): boolean {
   const { expirationTime } = subscription;
   if (!expirationTime) return false;
 
-  return Date.now() > expirationTime - 432000000;
+  return Date.now() > expirationTime - SUBSCRIPTION_EXPIRATION_TIME_LEEWAY_MILLIS;
 }
 
 async function subscribe(
