@@ -9,6 +9,8 @@ import { isStandaloneMode } from '../utils/device';
 import { encodeWorkerConfiguration, parseWorkerConfiguration } from './configuration/parser';
 import { WorkerConfiguration } from './configuration/worker-configuration';
 
+const SUBSCRIPTION_EXPIRATION_TIME_LEEWAY_MILLIS = 432000000;
+
 export async function registerServiceWorker(
   options: NotificareInternalOptions,
 ): Promise<ServiceWorkerRegistration> {
@@ -47,6 +49,8 @@ export async function createWebPushSubscription(
   const currentSubscription = await registration.pushManager.getSubscription();
 
   if (currentSubscription) {
+    logger.debug('Validating the current push subscription.');
+
     const currentApplicationServerKey =
       currentSubscription.options.applicationServerKey &&
       arrayBufferToBase64Url(currentSubscription.options.applicationServerKey);
@@ -58,31 +62,19 @@ export async function createWebPushSubscription(
       await currentSubscription.unsubscribe();
 
       logger.debug('Subscribing for push notifications again.');
-      return registration.pushManager.subscribe({
-        userVisibleOnly: true,
-        applicationServerKey: base64UrlToUint8Array(vapidPublicKey),
-      });
+      return subscribe(registration, vapidPublicKey);
     }
 
     if (subscriptionAboutToExpire(currentSubscription)) {
       logger.debug('Renewing existing push subscription.');
       await currentSubscription.unsubscribe();
 
-      return registration.pushManager.subscribe({
-        userVisibleOnly: true,
-        applicationServerKey: base64UrlToUint8Array(vapidPublicKey),
-      });
+      return subscribe(registration, vapidPublicKey);
     }
-
-    logger.debug('Using the current push subscription.');
-    return currentSubscription;
   }
 
   logger.debug('Subscribing for push notifications.');
-  return registration.pushManager.subscribe({
-    userVisibleOnly: true,
-    applicationServerKey: base64UrlToUint8Array(vapidPublicKey),
-  });
+  return subscribe(registration, vapidPublicKey);
 }
 
 function hasSupportedProtocol(applicationHost: string): boolean {
@@ -154,5 +146,15 @@ function subscriptionAboutToExpire(subscription: PushSubscription): boolean {
   const { expirationTime } = subscription;
   if (!expirationTime) return false;
 
-  return Date.now() > expirationTime - 432000000;
+  return Date.now() > expirationTime - SUBSCRIPTION_EXPIRATION_TIME_LEEWAY_MILLIS;
+}
+
+async function subscribe(
+  registration: ServiceWorkerRegistration,
+  vapidPublicKey: string,
+): Promise<PushSubscription> {
+  return registration.pushManager.subscribe({
+    userVisibleOnly: true,
+    applicationServerKey: base64UrlToUint8Array(vapidPublicKey),
+  });
 }

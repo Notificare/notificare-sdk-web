@@ -3,6 +3,8 @@
 ## Upcoming release
 
 - Fix device's last registered date encoding
+- Remove the default icon from the notification preview
+- Refresh the WebPush subscription when the current one is considered valid 
 
 ## 3.3.0
 
