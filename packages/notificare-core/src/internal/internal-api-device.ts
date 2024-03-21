@@ -229,7 +229,7 @@ function convertRegistrationToStoredDevice(
         : registration.keys ?? previousDevice?.keys,
     dnd: previousDevice?.dnd,
     userData: previousDevice?.userData ?? {},
-    lastRegistered: new Date().toUTCString(),
+    lastRegistered: new Date().toISOString(),
   };
 }
 

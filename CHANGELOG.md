@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## Upcoming release
+
+- Fix device's last registered date encoding
+
 ## 3.3.0
 
 - Set the last onboarding attempt when accepting it preventing re-prompting when notifications are blocked
