@@ -135,7 +135,7 @@ async function showNotificationPreview(notification: NotificareWorkerNotificatio
   }
 
   const title = notification.alertTitle ?? notification.application ?? '';
-  let { icon } = notification;
+  let icon: string | undefined;
 
   // When the browser doesn't support the image attribute, use the attachment as the icon when available.
   if (!('image' in Notification.prototype) && notification.attachment?.uri) {
