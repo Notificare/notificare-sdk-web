@@ -43,7 +43,8 @@ async function presentInAppBrowserNotification(notification: NotificareNotificat
   const content = notification.content.find(({ type }) => type === 're.notifica.content.URL');
   if (!content) throw new Error('Invalid notification content.');
 
-  await self.clients.openWindow(content.data);
+  const url = content.data?.trim() ? content.data.trim() : '/';
+  await self.clients.openWindow(url);
 }
 
 async function presentPassbookNotification(notification: NotificareNotification) {
@@ -94,7 +95,12 @@ async function presentUrlSchemeNotification(notification: NotificareNotification
   const content = notification.content.find(({ type }) => type === 're.notifica.content.URL');
   if (!content) throw new Error('Invalid notification content.');
 
-  const urlStr: string = content.data;
+  if (!content.data || !content.data.trim()) {
+    await self.clients.openWindow('/');
+    return;
+  }
+
+  const urlStr: string = content.data.trim();
   let url: URL;
 
   try {
