@@ -30,7 +30,7 @@ export function migrate() {
           transport: oldDevice.transport,
           keys: oldDevice.keys,
           userData: {},
-          lastRegistered: new Date(0).toUTCString(),
+          lastRegistered: new Date(0).toISOString(),
         };
 
         storeCurrentDevice(device);

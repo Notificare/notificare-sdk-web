@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## 3.4.0
+
+- Fix device's last registered date encoding
+- Remove the default icon from the notification preview when there is no `image` support
+- Refresh the WebPush subscription when the current one is considered valid
+- Fallback to presenting the root page when the notification contains invalid content
+- Prevent concurrent registrations when the permission changes
+
 ## 3.3.0
 
 - Set the last onboarding attempt when accepting it preventing re-prompting when notifications are blocked

@@ -51,10 +51,9 @@ export async function presentNotificationAction(
 }
 
 async function presentAppNotificationAction(action: NotificareNotificationAction): Promise<void> {
-  if (!action.target) throw new Error('Invalid action target.');
-
   try {
-    await self.clients.openWindow(action.target);
+    const urlStr = action.target?.trim() ? action.target.trim() : '/';
+    await self.clients.openWindow(urlStr);
   } catch {
     // The promise fails when opening a deep link
     // even when it succeeds in processing it.
@@ -64,17 +63,15 @@ async function presentAppNotificationAction(action: NotificareNotificationAction
 async function presentBrowserNotificationAction(
   action: NotificareNotificationAction,
 ): Promise<void> {
-  if (!action.target) throw new Error('Invalid action target.');
-
-  await self.clients.openWindow(action.target);
+  const urlStr = action.target?.trim() ? action.target.trim() : '/';
+  await self.clients.openWindow(urlStr);
 }
 
 async function presentInAppBrowserNotificationAction(
   action: NotificareNotificationAction,
 ): Promise<void> {
-  if (!action.target) throw new Error('Invalid action target.');
-
-  await self.clients.openWindow(action.target);
+  const urlStr = action.target?.trim() ? action.target.trim() : '/';
+  await self.clients.openWindow(urlStr);
 }
 
 async function presentMailNotificationAction(action: NotificareNotificationAction): Promise<void> {

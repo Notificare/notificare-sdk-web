@@ -37,6 +37,8 @@ import { showOnboarding } from './ui/onboarding';
 import { sleep } from './utils';
 import { transaction } from './utils/transaction';
 
+let ongoingPushRegistration = false;
+
 export function hasWebPushCapabilities(): boolean {
   return hasWebPushSupport() || hasSafariPushSupport();
 }
@@ -64,31 +66,41 @@ export async function enableRemoteNotifications(): Promise<void> {
     throw new Error('Your browser does not support Service Workers nor Safari Website Push.');
   }
 
+  if (ongoingPushRegistration) {
+    throw new Error('Cannot process multiple registration at the same time.');
+  }
+
   setRemoteNotificationsEnabled(true);
 
-  if (hasWebPushSupport()) {
-    const token = await enableWebPushNotifications(application, options);
+  try {
+    ongoingPushRegistration = true;
 
-    await registerPushDevice({
-      transport: 'WebPush',
-      token: token.endpoint,
-      keys: token.keys,
-    });
+    if (hasWebPushSupport()) {
+      const token = await enableWebPushNotifications(application, options);
 
-    try {
-      await postMessageToServiceWorker({
-        action: 're.notifica.ready',
+      await registerPushDevice({
+        transport: 'WebPush',
+        token: token.endpoint,
+        keys: token.keys,
       });
-    } catch (e) {
-      logger.warning('Failed to send a message to the service worker.', e);
-    }
-  } else if (hasSafariPushSupport()) {
-    const token = await enableSafariPushNotifications();
 
-    await registerPushDevice({
-      transport: 'WebsitePush',
-      token,
-    });
+      try {
+        await postMessageToServiceWorker({
+          action: 're.notifica.ready',
+        });
+      } catch (e) {
+        logger.warning('Failed to send a message to the service worker.', e);
+      }
+    } else if (hasSafariPushSupport()) {
+      const token = await enableSafariPushNotifications();
+
+      await registerPushDevice({
+        transport: 'WebsitePush',
+        token,
+      });
+    }
+  } finally {
+    ongoingPushRegistration = false;
   }
 
   try {
@@ -231,7 +243,7 @@ export async function monitorPushPermissionChanges() {
 
   const permissionStatus = await navigator.permissions.query({ name: 'notifications' });
   permissionStatus.onchange = () => {
-    if (!getRemoteNotificationsEnabled()) return;
+    if (!getRemoteNotificationsEnabled() || ongoingPushRegistration) return;
 
     const device = getCurrentDevice();
     const hasPushPermission = getPushPermissionStatus() === 'granted';

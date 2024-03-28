@@ -31,7 +31,7 @@ self.addEventListener('push', (event) => {
 });
 
 self.addEventListener('pushsubscriptionchange', () => {
-  logger.debug('Handling a push subscription change event.');
+  logger.info('Handling a push subscription change event.');
 });
 
 self.addEventListener('notificationclick', (event) => {

@@ -99,15 +99,11 @@ function requiresUserInteraction(action: NotificareNotificationAction): boolean 
 }
 
 async function presentApp(action: NotificareNotificationAction): Promise<void> {
-  if (!action.target) throw new Error('Invalid action target.');
-
-  window.location.href = action.target;
+  window.location.href = action.target?.trim() ? action.target.trim() : '/';
 }
 
 async function presentBrowser(action: NotificareNotificationAction): Promise<void> {
-  if (!action.target) throw new Error('Invalid action target.');
-
-  window.location.href = action.target;
+  window.location.href = action.target?.trim() ? action.target.trim() : '/';
 }
 
 async function presentCallback(
@@ -204,9 +200,7 @@ async function presentCustom(
 }
 
 async function presentInAppBrowser(action: NotificareNotificationAction): Promise<void> {
-  if (!action.target) throw new Error('Invalid action target.');
-
-  window.location.href = action.target;
+  window.location.href = action.target?.trim() ? action.target.trim() : '/';
 }
 
 async function presentMail(action: NotificareNotificationAction): Promise<void> {
