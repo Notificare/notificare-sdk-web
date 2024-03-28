@@ -135,7 +135,12 @@ function presentInAppBrowser(notification: NotificareNotification) {
   const content = notification.content.find(({ type }) => type === 're.notifica.content.URL');
   if (!content) throw new Error('Invalid notification content.');
 
-  window.location.href = content.data;
+  if (!content.data || !content.data.trim()) {
+    window.location.href = '/';
+    return;
+  }
+
+  window.location.href = content.data.trim();
 }
 
 async function presentPassbook(
@@ -184,7 +189,12 @@ async function presentUrlScheme(notification: NotificareNotification) {
   const content = notification.content.find(({ type }) => type === 're.notifica.content.URL');
   if (!content) throw new Error('Invalid notification content.');
 
-  const urlStr: string = content.data;
+  if (!content.data || !content.data.trim()) {
+    window.location.href = '/';
+    return;
+  }
+
+  const urlStr: string = content.data.trim();
   let url: URL;
 
   try {
