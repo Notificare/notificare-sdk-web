@@ -2,9 +2,12 @@
 
 import { useEffect, useRef } from "react";
 import { configure, setLogLevel } from "notificare-web/core";
+import { useSampleUser } from "@/hooks/sample-user";
 import { useNotificareLaunchFlow } from "@/notificare/hooks/notificare-launch-flow";
 
 export function NotificareAutoLauncher() {
+  useSampleUser();
+
   const { launch } = useNotificareLaunchFlow();
   const autoLaunched = useRef(false);
 
