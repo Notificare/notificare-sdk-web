@@ -3,6 +3,7 @@ import { getCurrentDevice, registerDevice, RegisterDeviceOptions } from "notific
 import { Button } from "@/components/button";
 import { Card, CardActions, CardContent, CardHeader } from "@/components/card";
 import { InputField } from "@/components/input-field";
+import { useOnDeviceRegistered } from "@/notificare/hooks/events/core/device-registered";
 
 export function DeviceRegistrationCard() {
   const device = getCurrentDevice();
@@ -10,6 +11,11 @@ export function DeviceRegistrationCard() {
   const [userId, setUserId] = useState<string>(device?.userId ?? "");
   const [userName, setUserName] = useState<string>(device?.userName ?? "");
   const [loading, setLoading] = useState<boolean>(false);
+
+  useOnDeviceRegistered((device) => {
+    setUserId(device.userId ?? "");
+    setUserName(device.userName ?? "");
+  });
 
   const onRegisterClick = useCallback(() => {
     setLoading(true);
