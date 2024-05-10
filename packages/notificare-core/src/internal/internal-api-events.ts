@@ -24,9 +24,14 @@ export async function logApplicationOpen(sessionId: string) {
   });
 }
 
-export async function logApplicationClose(sessionId: string, sessionLength: number) {
+export async function logApplicationClose(
+  sessionId: string,
+  sessionLength: number,
+  sessionCloseTimestamp: number,
+) {
   await logInternal({
     type: 're.notifica.event.application.Close',
+    timestamp: sessionCloseTimestamp,
     sessionId,
     data: {
       length: sessionLength.toString(),
@@ -60,7 +65,7 @@ export async function logInternal(options: InternalLogEventOptions) {
     environment: getCloudApiEnvironment(),
     payload: {
       type: options.type,
-      timestamp: Date.now(),
+      timestamp: options.timestamp ?? Date.now(),
       deviceID: currentDevice?.id,
       userID: currentDevice?.userId,
       sessionID: options.sessionId ?? getSession()?.id,
@@ -72,6 +77,7 @@ export async function logInternal(options: InternalLogEventOptions) {
 
 interface InternalLogEventOptions {
   readonly type: string;
+  readonly timestamp?: number;
   readonly data?: Record<string, unknown>;
   readonly sessionId?: string;
   readonly notificationId?: string;
