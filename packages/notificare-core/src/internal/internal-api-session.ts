@@ -92,10 +92,10 @@ async function startSession() {
   await logApplicationOpen(session.id);
 }
 
-async function stopSession(session: StoredSession, unloadTimestamp: number) {
-  logger.debug(`Session '${session.id}' stopped at ${unloadTimestamp} (epoch).`);
+async function stopSession(session: StoredSession, sessionCloseTimestamp: number) {
+  logger.debug(`Session '${session.id}' stopped at ${sessionCloseTimestamp} (epoch).`);
   storeSession(undefined);
 
-  const sessionLength = (unloadTimestamp - session.start) / 1000;
-  await logApplicationClose(session.id, sessionLength);
+  const sessionLength = (sessionCloseTimestamp - session.start) / 1000;
+  await logApplicationClose(session.id, sessionLength, sessionCloseTimestamp);
 }
