@@ -6,6 +6,8 @@ import { getOptions } from './options';
 import { getCurrentDevice } from './storage/local-storage';
 import { randomUUID } from './utils';
 
+const TEN_MINUTES_MILLISECONDS = 600000;
+
 let sessionCloseTimeout: number | undefined;
 
 export async function launch() {
@@ -56,13 +58,13 @@ export async function handleDocumentVisibilityChanged() {
   const session = getSession();
   const { visibilityState } = document;
 
+  if (sessionCloseTimeout) {
+    window.clearTimeout(sessionCloseTimeout);
+    sessionCloseTimeout = undefined;
+  }
+
   if (visibilityState === 'visible' && !session) {
     await startSession();
-
-    if (sessionCloseTimeout) {
-      window.clearTimeout(sessionCloseTimeout);
-    }
-
     return;
   }
 
@@ -73,7 +75,7 @@ export async function handleDocumentVisibilityChanged() {
       } catch (e) {
         logger.error('Failed to stop the session after the idle timeout.', e);
       }
-    }, 600000);
+    }, TEN_MINUTES_MILLISECONDS);
   }
 }
 

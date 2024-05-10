@@ -3,6 +3,7 @@
 ## Upcoming release
 
 - Session close events now report the time when they happened instead of when they're sent
+- Prevent duplicate session close events
 
 ## 3.4.0
 
