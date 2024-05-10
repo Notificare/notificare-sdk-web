@@ -58,13 +58,13 @@ export async function handleDocumentVisibilityChanged() {
   const session = getSession();
   const { visibilityState } = document;
 
+  if (sessionCloseTimeout) {
+    window.clearTimeout(sessionCloseTimeout);
+    sessionCloseTimeout = undefined;
+  }
+
   if (visibilityState === 'visible' && !session) {
     await startSession();
-
-    if (sessionCloseTimeout) {
-      window.clearTimeout(sessionCloseTimeout);
-    }
-
     return;
   }
 
