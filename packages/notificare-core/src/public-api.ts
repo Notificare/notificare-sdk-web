@@ -241,6 +241,9 @@ export async function unlaunch(): Promise<void> {
       await deleteDevice();
     }
 
+    localStorage.removeItem('re.notifica.application');
+    localStorage.removeItem('re.notifica.migrated');
+
     logger.info('Un-launched Notificare.');
     setLaunchState(LaunchState.CONFIGURED);
 
