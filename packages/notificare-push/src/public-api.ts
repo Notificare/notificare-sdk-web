@@ -30,7 +30,7 @@ export {
 export { hasWebPushCapabilities } from './internal/internal-api';
 
 export function hasRemoteNotificationsEnabled(): boolean {
-  return getRemoteNotificationsEnabled();
+  return getRemoteNotificationsEnabled() ?? false;
 }
 
 export function getAllowedUI(): boolean {

@@ -74,7 +74,9 @@ export class PushComponent extends Component {
   }
 
   async launch(): Promise<void> {
-    if (getRemoteNotificationsEnabled() && getPushPermissionStatus() === 'granted') {
+    // An undefined getRemoteNotificationsEnabled() likely means the user or the app
+    // tampered with the local storage. We can recover based on the browser permission.
+    if (getRemoteNotificationsEnabled() !== false && getPushPermissionStatus() === 'granted') {
       try {
         logger.debug('Automatically enabling remote notifications.');
         await enableRemoteNotifications();
