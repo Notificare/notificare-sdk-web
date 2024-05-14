@@ -6,6 +6,7 @@ import { NotificareOptions } from "notificare-web/core";
 import { ConfigurationForm } from "@/components/configuration/configuration-form";
 import { ConfigurationFormState } from "@/components/configuration/configuration-form-state";
 import { PageHeader, PageHeaderAction } from "@/components/page-header";
+import { logger } from "@/utils/logger";
 
 export default function Setup() {
   const [state, setState] = useState<ConfigurationFormState>({
@@ -53,7 +54,7 @@ export default function Setup() {
       );
       window.location.href = "/";
     } catch (e) {
-      console.log(`Something went wrong: ${e}`);
+      logger.error(`Something went wrong: ${e}`);
     }
   }, [state]);
 

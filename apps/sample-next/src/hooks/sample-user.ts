@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { registerDevice } from "notificare-web/core";
 import { useNotificareState } from "@/notificare/hooks/notificare-state";
+import { logger } from "@/utils/logger";
 
 export function useSampleUser() {
   const { status } = useNotificareState();
@@ -14,7 +15,7 @@ export function useSampleUser() {
     if (userId === undefined && userName === undefined) return;
 
     registerDevice({ userId: userId ?? null, userName: userName ?? null })
-      .then(() => console.info("Updated registered user."))
-      .catch((e) => console.error("Failed to register user.", e));
+      .then(() => logger.info("Updated registered user."))
+      .catch((e) => logger.error("Failed to register user.", e));
   }, [status]);
 }

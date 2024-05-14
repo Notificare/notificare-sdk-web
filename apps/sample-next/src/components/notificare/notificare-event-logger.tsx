@@ -25,146 +25,147 @@ import { useOnNotificationFailedToPresent } from "@/notificare/hooks/events/push
 import { useOnNotificationFinishedPresenting } from "@/notificare/hooks/events/push-ui/notification-finished-presenting";
 import { useOnNotificationPresented } from "@/notificare/hooks/events/push-ui/notification-presented";
 import { useOnNotificationWillPresent } from "@/notificare/hooks/events/push-ui/notification-will-present";
+import { logger } from "@/utils/logger";
 
 export function NotificareEventLogger() {
   /**
    * Core events
    */
   useOnReady((application) => {
-    console.log(`notificare is ready`);
-    console.log(application);
+    logger.debug(`notificare is ready`);
+    logger.debug(application);
   });
 
   useOnUnlaunched(() => {
-    console.log("unlaunched");
+    logger.debug("unlaunched");
   });
 
   useOnDeviceRegistered((device) => {
-    console.log("device registered");
-    console.log(device);
+    logger.debug("device registered");
+    logger.debug(device);
   });
 
   /**
    * Geo events
    */
   useOnLocationUpdated((location) => {
-    console.log("location updated");
-    console.log(location);
+    logger.debug("location updated");
+    logger.debug(location);
   });
 
   useOnLocationUpdateError((error) => {
-    console.log("location update error");
-    console.log(error);
+    logger.debug("location update error");
+    logger.debug(error);
   });
 
   /**
    * In-app messaging events
    */
   useOnMessagePresented((message) => {
-    console.log("message presented");
-    console.log(message);
+    logger.debug("message presented");
+    logger.debug(message);
   });
 
   useOnMessageFinishedPresenting((message) => {
-    console.log("message finished presenting");
-    console.log(message);
+    logger.debug("message finished presenting");
+    logger.debug(message);
   });
 
   useOnMessageFailedToPresent((message) => {
-    console.log("message failed to present");
-    console.log(message);
+    logger.debug("message failed to present");
+    logger.debug(message);
   });
 
   useOnMessageActionExecuted((message, action) => {
-    console.log("message action executed");
-    console.log({ message, action });
+    logger.debug("message action executed");
+    logger.debug({ message, action });
   });
 
   useOnMessageActionFailedToExecute((message, action) => {
-    console.log("message action failed to execute");
-    console.log({ message, action });
+    logger.debug("message action failed to execute");
+    logger.debug({ message, action });
   });
 
   /**
    * Inbox events
    */
   useOnInboxUpdated(() => {
-    console.log("inbox updated");
+    logger.debug("inbox updated");
   });
 
   useOnBadgeUpdated((badge) => {
-    console.log(`badge updated = ${badge}`);
+    logger.debug(`badge updated = ${badge}`);
   });
 
   /**
    * Push events
    */
   useOnNotificationReceived((notification, deliveryMechanism) => {
-    console.log("notification received");
-    console.log({ notification, deliveryMechanism });
+    logger.debug("notification received");
+    logger.debug({ notification, deliveryMechanism });
   });
 
   useOnSystemNotificationReceived((notification) => {
-    console.log("system notification received");
-    console.log(notification);
+    logger.debug("system notification received");
+    logger.debug(notification);
   });
 
   useOnUnknownNotificationReceived((notification) => {
-    console.log("unknown notification received");
-    console.log(notification);
+    logger.debug("unknown notification received");
+    logger.debug(notification);
   });
 
   useOnNotificationOpened((notification) => {
-    console.log("notification opened");
-    console.log(notification);
+    logger.debug("notification opened");
+    logger.debug(notification);
   });
 
   useOnNotificationActionOpened((notification, action) => {
-    console.log("notification opened");
-    console.log({ notification, action });
+    logger.debug("notification opened");
+    logger.debug({ notification, action });
   });
 
   /**
    * Push UI events
    */
   useOnNotificationWillPresent((notification) => {
-    console.log("notification will present");
-    console.log(notification);
+    logger.debug("notification will present");
+    logger.debug(notification);
   });
 
   useOnNotificationPresented((notification) => {
-    console.log("notification presented");
-    console.log(notification);
+    logger.debug("notification presented");
+    logger.debug(notification);
   });
 
   useOnNotificationFinishedPresenting((notification) => {
-    console.log("notification finished presenting");
-    console.log(notification);
+    logger.debug("notification finished presenting");
+    logger.debug(notification);
   });
 
   useOnNotificationFailedToPresent((notification) => {
-    console.log("notification failed to present");
-    console.log(notification);
+    logger.debug("notification failed to present");
+    logger.debug(notification);
   });
 
   useOnNotificationActionWillExecute((notification, action) => {
-    console.log("notification action will execute");
-    console.log({ notification, action });
+    logger.debug("notification action will execute");
+    logger.debug({ notification, action });
   });
 
   useOnNotificationActionExecuted((notification, action) => {
-    console.log("notification action executed");
-    console.log({ notification, action });
+    logger.debug("notification action executed");
+    logger.debug({ notification, action });
   });
 
   useOnNotificationActionFailedToExecute((notification, action) => {
-    console.log("notification action failed to execute");
-    console.log({ notification, action });
+    logger.debug("notification action failed to execute");
+    logger.debug({ notification, action });
   });
 
   useOnNotificationCustomActionReceived((notification, action, target) => {
-    console.log("notification custom action received");
-    console.log({ notification, action, target });
+    logger.debug("notification custom action received");
+    logger.debug({ notification, action, target });
   });
 
   return null;

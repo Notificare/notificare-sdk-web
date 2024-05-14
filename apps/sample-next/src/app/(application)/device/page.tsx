@@ -7,6 +7,7 @@ import { Button } from "@/components/button";
 import { NotificareLaunchBlocker } from "@/components/notificare/notificare-launch-blocker";
 import { PageHeader } from "@/components/page-header";
 import { useOnDeviceRegistered } from "@/notificare/hooks/events/core/device-registered";
+import { logger } from "@/utils/logger";
 
 export default function Device() {
   const [device, setDevice] = useState<NotificareDevice>();
@@ -21,7 +22,7 @@ export default function Device() {
     try {
       await navigator.clipboard.writeText(device.id);
     } catch (e) {
-      console.error("Failed to copy the deviceId to the clipboard.");
+      logger.error("Failed to copy the deviceId to the clipboard.");
     }
   }, [device]);
 
@@ -31,7 +32,7 @@ export default function Device() {
     try {
       await navigator.clipboard.writeText(encodeURIComponent(device.id));
     } catch (e) {
-      console.error("Failed to copy the deviceId to the clipboard.");
+      logger.error("Failed to copy the deviceId to the clipboard.");
     }
   }, [device]);
 

@@ -7,13 +7,26 @@ export enum LogLevel {
 
 export type LogLevelString = 'debug' | 'info' | 'warning' | 'error';
 
+export interface LoggingOptions {
+  readonly group?: string;
+  readonly includeName?: boolean;
+  readonly includeLogLevel?: boolean;
+  readonly includeTimestamp?: boolean;
+}
+
 export class Logger {
   public readonly name: string;
 
+  public readonly options: LoggingOptions;
+
   private logLevel: LogLevel = LogLevel.INFO;
 
-  constructor(name: string) {
+  constructor(name: string, options?: LoggingOptions) {
     this.name = name;
+    this.options = {
+      ...defaultLoggingOptions,
+      ...options,
+    };
 
     // Keep track of the logger instances to update them from global
     // logging methods.
@@ -52,22 +65,60 @@ export class Logger {
   private log(logLevel: LogLevel, ...args: unknown[]) {
     if (logLevel < this.logLevel) return;
 
-    const now = new Date().toISOString();
     const method = consoleMethodConverter[logLevel];
-
-    const format =
-      this.logLevel >= LogLevel.INFO
-        ? `[${now}] [${this.name}]`
-        : `[${now}] [${this.name}] [${logLevelToStringConverter[logLevel]}]`;
+    const groupBadge = this.getGroupBadge(logLevel);
+    const messagePrefix = this.getMessagePrefix(logLevel);
 
     // eslint-disable-next-line no-console
-    console[method](format, ...args);
+    console[method](...groupBadge, messagePrefix, ...args);
+  }
+
+  private getGroupBadge(logLevel: LogLevel): string[] {
+    const styles = [
+      `background: ${consoleMethodColor[logLevel]}`,
+      'border-radius: 0.5em',
+      'color: white',
+      'font-weight: bold',
+      'padding: 2px 0.5em',
+    ];
+
+    const { group } = this.options;
+    if (!group) return [];
+
+    return [`%c${group}`, styles.join(';')];
+  }
+
+  private getMessagePrefix(logLevel: LogLevel): string {
+    const parts = [];
+
+    if (this.options.includeTimestamp) {
+      const now = new Date().toISOString();
+      parts.push(`[${now}]`);
+    }
+
+    if (this.options.includeName) {
+      parts.push(`[${this.name}]`);
+    }
+
+    if (
+      this.options.includeLogLevel ||
+      (this.options.includeLogLevel === undefined && logLevel < LogLevel.INFO)
+    ) {
+      parts.push(`[${logLevelToStringConverter[logLevel]}]`);
+    }
+
+    return parts.join(' ');
   }
 }
 
 export function setLogLevel(logLevel: LogLevel | LogLevelString) {
   instances.forEach((instance) => instance.setLogLevel(logLevel));
 }
+
+const defaultLoggingOptions: LoggingOptions = {
+  includeName: true,
+  includeTimestamp: true,
+};
 
 /**
  * A container for all logger instances.
@@ -95,4 +146,11 @@ const consoleMethodConverter: Record<LogLevel, ConsoleMethod> = {
   [LogLevel.INFO]: 'info',
   [LogLevel.WARNING]: 'warn',
   [LogLevel.ERROR]: 'error',
+};
+
+const consoleMethodColor: Record<LogLevel, string> = {
+  [LogLevel.DEBUG]: '#7F8C8D',
+  [LogLevel.INFO]: '#3498DB',
+  [LogLevel.WARNING]: '#F39C12',
+  [LogLevel.ERROR]: '#C0392B',
 };
