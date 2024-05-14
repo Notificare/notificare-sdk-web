@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## Upcoming release
+## 3.5.0
 
 - Session close events now report the time when they happened instead of when they're sent
 - Prevent duplicate session close events
