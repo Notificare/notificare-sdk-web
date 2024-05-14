@@ -57,6 +57,10 @@ export interface ShowFloatingButtonOptions {
   onButtonClicked: () => void;
 }
 
+export function hideFloatingButton() {
+  ensureCleanState();
+}
+
 function ensureCleanState() {
   removeRootElement();
 

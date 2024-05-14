@@ -110,6 +110,10 @@ export interface ShowAutoBoardingOptions {
   onCancelClicked: () => void;
 }
 
+export function hideOnboarding() {
+  ensureCleanState();
+}
+
 function ensureCleanState() {
   removeRootElement();
 }
