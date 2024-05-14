@@ -10,9 +10,9 @@ import {
   createModalContent,
   createModalFooter,
   createPrimaryButton,
-  createRoot,
 } from '@notificare/web-ui';
 import createNotificareLogo from '../../assets/notificare-logo.svg';
+import { createRootElement, removeRootElement } from './base';
 
 export function showOnboarding({
   application,
@@ -25,7 +25,7 @@ export function showOnboarding({
 
   ensureCleanState();
 
-  const root = createRoot('notificare-push');
+  const root = createRootElement();
   root.classList.add('notificare-push-onboarding');
 
   root.appendChild(createBackdrop(() => {}));
@@ -110,7 +110,10 @@ export interface ShowAutoBoardingOptions {
   onCancelClicked: () => void;
 }
 
+export function hideOnboarding() {
+  ensureCleanState();
+}
+
 function ensureCleanState() {
-  const root = document.getElementById('notificare-push');
-  if (root) root.remove();
+  removeRootElement();
 }

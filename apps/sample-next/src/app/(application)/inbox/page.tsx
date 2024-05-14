@@ -17,6 +17,7 @@ import { PageHeader, PageHeaderAction } from "@/components/page-header";
 import { ProgressIndicator } from "@/components/progress-indicator";
 import { useOnInboxUpdated } from "@/notificare/hooks/events/inbox/inbox-updated";
 import { useNotificareState } from "@/notificare/hooks/notificare-state";
+import { logger } from "@/utils/logger";
 
 export default function Inbox() {
   const state = useNotificareState();
@@ -43,7 +44,7 @@ export default function Inbox() {
   const openItem = useCallback((item: NotificareInboxItem) => {
     openInboxItem(item)
       .then((notification) => presentNotification(notification))
-      .catch((error) => console.log(`Unable to open inbox item: ${error}`));
+      .catch((error) => logger.error(`Unable to open inbox item: ${error}`));
   }, []);
 
   const markAllItemsAsRead = useCallback(() => {

@@ -10,6 +10,7 @@ import { PageHeader } from "@/components/page-header";
 import { ProgressIndicator } from "@/components/progress-indicator";
 import { AssetPreview } from "@/components/storage";
 import { useDebounce } from "@/hooks/debounce";
+import { logger } from "@/utils/logger";
 
 export default function Storage() {
   const [search, setSearch] = useState<string>("");
@@ -31,7 +32,7 @@ export default function Storage() {
         return;
       }
 
-      console.error(`Unable to find the asset group: ${e}`);
+      logger.error(`Unable to find the asset group: ${e}`);
       setState({ status: "failure" });
     }
   });

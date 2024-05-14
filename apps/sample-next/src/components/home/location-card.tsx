@@ -6,6 +6,7 @@ import {
 } from "notificare-web/geo";
 import { Card, CardContent, CardHeader } from "@/components/card";
 import { Switch } from "@/components/switch";
+import { logger } from "@/utils/logger";
 
 export function LocationCard() {
   const [enabled, setEnabled] = useState(false);
@@ -33,7 +34,7 @@ export function LocationCard() {
                 disableLocationUpdates();
               }
             } catch (e) {
-              console.log(`Something went wrong: ${e}`);
+              logger.error(`Something went wrong: ${e}`);
             }
           }}
         />

@@ -6,6 +6,8 @@ import { getOptions } from './options';
 import { getCurrentDevice } from './storage/local-storage';
 import { randomUUID } from './utils';
 
+const TEN_MINUTES_MILLISECONDS = 600000;
+
 let sessionCloseTimeout: number | undefined;
 
 export async function launch() {
@@ -56,13 +58,13 @@ export async function handleDocumentVisibilityChanged() {
   const session = getSession();
   const { visibilityState } = document;
 
+  if (sessionCloseTimeout) {
+    window.clearTimeout(sessionCloseTimeout);
+    sessionCloseTimeout = undefined;
+  }
+
   if (visibilityState === 'visible' && !session) {
     await startSession();
-
-    if (sessionCloseTimeout) {
-      window.clearTimeout(sessionCloseTimeout);
-    }
-
     return;
   }
 
@@ -73,7 +75,7 @@ export async function handleDocumentVisibilityChanged() {
       } catch (e) {
         logger.error('Failed to stop the session after the idle timeout.', e);
       }
-    }, 600000);
+    }, TEN_MINUTES_MILLISECONDS);
   }
 }
 
@@ -92,10 +94,10 @@ async function startSession() {
   await logApplicationOpen(session.id);
 }
 
-async function stopSession(session: StoredSession, unloadTimestamp: number) {
-  logger.debug(`Session '${session.id}' stopped at ${unloadTimestamp} (epoch).`);
+async function stopSession(session: StoredSession, sessionCloseTimestamp: number) {
+  logger.debug(`Session '${session.id}' stopped at ${sessionCloseTimestamp} (epoch).`);
   storeSession(undefined);
 
-  const sessionLength = (unloadTimestamp - session.start) / 1000;
-  await logApplicationClose(session.id, sessionLength);
+  const sessionLength = (sessionCloseTimestamp - session.start) / 1000;
+  await logApplicationClose(session.id, sessionLength, sessionCloseTimestamp);
 }
