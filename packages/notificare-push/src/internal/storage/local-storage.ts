@@ -1,12 +1,12 @@
-export function getRemoteNotificationsEnabled(): boolean {
+export function getRemoteNotificationsEnabled(): boolean | undefined {
   const enabledStr = localStorage.getItem('re.notifica.push.remote_notifications_enabled');
-  if (!enabledStr) return false;
+  if (!enabledStr) return undefined;
 
   return enabledStr === 'true';
 }
 
 export function setRemoteNotificationsEnabled(enabled: boolean | undefined) {
-  if (!enabled) {
+  if (enabled === undefined) {
     localStorage.removeItem('re.notifica.push.remote_notifications_enabled');
     return;
   }
