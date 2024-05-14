@@ -9,6 +9,7 @@ import { Button } from "@/components/button";
 import { Card, CardActions, CardContent, CardHeader } from "@/components/card";
 import { InputField } from "@/components/input-field";
 import { Switch } from "@/components/switch";
+import { logger } from "@/utils/logger";
 
 const DEFAULT_DND_START = "23:00";
 const DEFAULT_DND_END = "08:00";
@@ -32,7 +33,7 @@ export function DoNotDisturbCard() {
         if (dnd?.start) setStart(dnd.start);
         if (dnd?.end) setEnd(dnd.end);
       })
-      .catch((e) => console.error(`Failed to fetch to dnd: ${e}`));
+      .catch((e) => logger.error(`Failed to fetch to dnd: ${e}`));
   }, []);
 
   const updateDoNotDisturbCallback = useCallback(() => {

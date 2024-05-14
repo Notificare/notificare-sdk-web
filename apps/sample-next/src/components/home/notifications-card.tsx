@@ -11,6 +11,7 @@ import { Card, CardContent, CardHeader } from "@/components/card";
 import { Switch } from "@/components/switch";
 import { useOnDeviceRegistered } from "@/notificare/hooks/events/core/device-registered";
 import { useOnNotificationSettingsChanged } from "@/notificare/hooks/events/push/notification-settings-changed";
+import { logger } from "@/utils/logger";
 
 export function NotificationsCard() {
   const [enabled, setEnabled] = useState(false);
@@ -61,7 +62,7 @@ export function NotificationsCard() {
                 await disableRemoteNotifications();
               }
             } catch (e) {
-              console.log(`Something went wrong: ${e}`);
+              logger.error(`Something went wrong: ${e}`);
             }
           }}
         />

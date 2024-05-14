@@ -4,6 +4,7 @@ import { Button } from "@/components/button";
 import { Card, CardActions, CardContent, CardHeader } from "@/components/card";
 import { InputField } from "@/components/input-field";
 import { useOnDeviceRegistered } from "@/notificare/hooks/events/core/device-registered";
+import { logger } from "@/utils/logger";
 
 export function DeviceRegistrationCard() {
   const device = getCurrentDevice();
@@ -28,7 +29,7 @@ export function DeviceRegistrationCard() {
     registerDevice(options)
       .then(() => setLoading(false))
       .catch((e) => {
-        console.error(`Unable to register device: ${e}`);
+        logger.error(`Unable to register device: ${e}`);
         setLoading(false);
       });
   }, [userId, userName]);
