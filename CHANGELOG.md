@@ -5,6 +5,7 @@
 - Session close events now report the time when they happened instead of when they're sent
 - Prevent duplicate session close events
 - Recover push enrolment based on browser permission
+- Remove onboarding elements when un-launching
 
 ## 3.4.0
 

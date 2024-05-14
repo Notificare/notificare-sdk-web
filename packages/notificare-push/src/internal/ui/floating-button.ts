@@ -3,11 +3,11 @@ import {
   NotificareWebsitePushConfigLaunchConfigFloatingButtonOptions,
   NotificareWebsitePushConfigLaunchConfigFloatingButtonVerticalAlignment,
 } from '@notificare/web-core';
-import { createRoot } from '@notificare/web-ui';
 import createDeniedBellIcon from '../../assets/bell-icon-denied.svg';
 import createGrantedBellIcon from '../../assets/bell-icon-granted.svg';
 import createBellIcon from '../../assets/bell-icon.svg';
 import { getPushPermissionStatus } from '../../utils/push';
+import { createRootElement, removeRootElement } from './base';
 
 let permissionCheckTimer: number | undefined;
 
@@ -17,7 +17,7 @@ export function showFloatingButton({
 }: ShowFloatingButtonOptions) {
   ensureCleanState();
 
-  const root = createRoot('notificare-push');
+  const root = createRootElement();
   root.classList.add('notificare-push-floating-button');
 
   const floatingButton = root.appendChild(document.createElement('div'));
@@ -57,9 +57,12 @@ export interface ShowFloatingButtonOptions {
   onButtonClicked: () => void;
 }
 
+export function hideFloatingButton() {
+  ensureCleanState();
+}
+
 function ensureCleanState() {
-  const root = document.getElementById('notificare-push');
-  if (root) root.remove();
+  removeRootElement();
 
   const timer = permissionCheckTimer;
   if (timer) window.clearInterval(timer);

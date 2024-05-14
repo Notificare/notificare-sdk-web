@@ -27,6 +27,8 @@ import {
   setRemoteNotificationsEnabled,
   storeAllowedUI,
 } from './storage/local-storage';
+import { hideFloatingButton } from './ui/floating-button';
+import { hideOnboarding } from './ui/onboarding';
 
 /* eslint-disable class-methods-use-this */
 export class PushComponent extends Component {
@@ -89,6 +91,8 @@ export class PushComponent extends Component {
   }
 
   async unlaunch(): Promise<void> {
+    this.removeOnboardingElements();
+
     localStorage.removeItem('re.notifica.push.first_registration');
     localStorage.removeItem('re.notifica.push.onboarding_last_attempt');
 
@@ -101,7 +105,7 @@ export class PushComponent extends Component {
       await disableWebPushNotifications();
     }
 
-    setRemoteNotificationsEnabled(false);
+    setRemoteNotificationsEnabled(undefined);
     storeAllowedUI(undefined);
   }
 
@@ -217,5 +221,10 @@ export class PushComponent extends Component {
 
     const notification = await fetchNotification(notificationId);
     notifyNotificationOpened(notification);
+  }
+
+  private removeOnboardingElements() {
+    hideOnboarding();
+    hideFloatingButton();
   }
 }
