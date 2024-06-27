@@ -200,6 +200,7 @@ export async function launch(): Promise<void> {
   } catch (e) {
     logger.error('Failed to launch Notificare.', e);
     setLaunchState(LaunchState.CONFIGURED);
+    throw e;
   }
 
   // We don't want the launch() promise to be held for the postLaunch().
@@ -249,7 +250,8 @@ export async function unlaunch(): Promise<void> {
 
     notifyUnlaunched();
   } catch (e) {
-    logger.error('Failed to launch Notificare.', e);
+    logger.error('Failed to un-launch Notificare.', e);
+    throw e;
   }
 }
 
