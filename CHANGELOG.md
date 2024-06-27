@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## Upcoming release
+
+- Report back errors in `launch()` and `unlaunch()`
+
 ## 3.5.0
 
 - Session close events now report the time when they happened instead of when they're sent
