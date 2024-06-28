@@ -11,7 +11,6 @@ import {
   createModalFooter,
   createPrimaryButton,
 } from '@notificare/web-ui';
-import createNotificareLogo from '../../assets/notificare-logo.svg';
 import { createRootElement, removeRootElement } from './base';
 
 export function showOnboarding({
@@ -59,20 +58,6 @@ export function showOnboarding({
 
   const footer = modal.appendChild(createModalFooter());
   footer.classList.add('notificare__onboarding-footer');
-
-  if (application.branding) {
-    const brandingContainer = footer.appendChild(document.createElement('a'));
-    brandingContainer.classList.add('notificare__onboarding-branding-content');
-    brandingContainer.setAttribute('href', 'https://notificare.com');
-    brandingContainer.setAttribute('target', '_blank');
-
-    const brandingText = brandingContainer.appendChild(document.createElement('p'));
-    brandingText.classList.add('notificare__onboarding-branding');
-    brandingText.innerHTML = 'powered by';
-
-    const brandingLogo = brandingContainer.appendChild(createNotificareLogo());
-    brandingLogo.classList.add('notificare__onboarding-branding-logo');
-  }
 
   const footerButtons = footer.appendChild(document.createElement('div'));
   footerButtons.classList.add('notificare__onboarding-actions');

@@ -1,30 +1,3 @@
-.notificare.notificare-push-onboarding,
-[data-notificare-theme="light"] .notificare.notificare-push-onboarding {
-    --notificare-branding-ring-color: black;
-    --notificare-branding-lettering-color: black;
-    --notificare-branding-leg-color: #10D1C4;
-    --notificare-branding-leg-overlay-color: #10D1C4;
-    --notificare-branding-leg-ring-background-color: black;
-}
-
-[data-notificare-theme="dark"] .notificare.notificare-push-onboarding {
-    --notificare-branding-ring-color: white;
-    --notificare-branding-lettering-color: white;
-    --notificare-branding-leg-color: white;
-    --notificare-branding-leg-overlay-color: white;
-    --notificare-branding-leg-ring-background-color: transparent;
-}
-
-@media (prefers-color-scheme: dark) {
-    .notificare.notificare-push-onboarding {
-        --notificare-branding-ring-color: white;
-        --notificare-branding-lettering-color: white;
-        --notificare-branding-leg-color: white;
-        --notificare-branding-leg-overlay-color: white;
-        --notificare-branding-leg-ring-background-color: transparent;
-    }
-}
-
 .notificare-push-onboarding .notificare__onboarding-modal {
     min-width: 360px;
     max-width: 480px;
@@ -68,41 +41,6 @@
     align-items: flex-end;
 
     margin-top: 16px;
-}
-
-.notificare.notificare-push-onboarding .notificare__onboarding-branding-content {
-    display: flex;
-    flex-direction: column;
-    cursor: pointer;
-}
-
-.notificare.notificare-push-onboarding .notificare__onboarding-branding {
-    font-size: 10px;
-}
-
-.notificare.notificare-push-onboarding .notificare__onboarding-branding-logo {
-    width: 80px;
-    height: 16px;
-}
-
-.notificare.notificare-push-onboarding .notificare__onboarding-branding-logo #ring {
-    fill: var(--notificare-branding-ring-color);
-}
-
-.notificare.notificare-push-onboarding .notificare__onboarding-branding-logo #leg-ring-background {
-    fill: var(--notificare-branding-leg-ring-background-color);
-}
-
-.notificare.notificare-push-onboarding .notificare__onboarding-branding-logo #lettering {
-    fill: var(--notificare-branding-lettering-color);
-}
-
-.notificare.notificare-push-onboarding .notificare__onboarding-branding-logo #leg {
-    fill: var(--notificare-branding-leg-color);
-}
-
-.notificare.notificare-push-onboarding .notificare__onboarding-branding-logo #leg-overlay {
-    fill: var(--notificare-branding-leg-overlay-color);
 }
 
 .notificare.notificare-push-onboarding .notificare__onboarding-actions {
