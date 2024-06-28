@@ -1,0 +1,13 @@
+.notificare .notificare__notification[data-notification-type="re.notifica.notification.URLResolver"] {
+    width: 100%;
+    height: 100%;
+}
+
+.notificare .notificare__notification[data-notification-type="re.notifica.notification.URLResolver"] .notificare__modal-content {
+    flex-grow: 1;
+}
+
+.notificare .notificare__notification-url-iframe {
+    flex-grow: 1;
+    border: none;
+}

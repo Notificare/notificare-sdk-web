@@ -1,10 +1,10 @@
 import { fetchCloudPass, fetchCloudPassSaveLinks } from '@notificare/web-cloud-api';
 import {
+  fetchDynamicLink,
+  getCloudApiEnvironment,
   getOptions,
   NotificareInternalOptions,
   NotificareNotification,
-  fetchDynamicLink,
-  getCloudApiEnvironment,
 } from '@notificare/web-core';
 import { logger } from '../../logger';
 import {
@@ -13,7 +13,9 @@ import {
   notifyNotificationPresented,
   notifyNotificationWillPresent,
 } from '../consumer-events';
+import { resolveUrl, UrlResolverResult } from '../notification-url-resolver';
 import { isAppleDevice, isSafariBrowser } from '../utils/device';
+import { sanitizeContentUrl } from '../utils/notification-content';
 import { presentAction } from './action-presenter';
 import { createNotificationModal } from './notifications/notification-modal';
 import { ensureCleanState } from './root';
@@ -85,6 +87,36 @@ class NotificationPresenter {
         presentInAppBrowser(notification);
         return;
 
+      case 're.notifica.notification.URLResolver': {
+        const result = resolveUrl(notification);
+
+        switch (result) {
+          case UrlResolverResult.NONE:
+            logger.debug("Resolving as 'none' notification.");
+            break;
+
+          case UrlResolverResult.URL_SCHEME:
+            logger.debug("Resolving as 'url scheme' notification.");
+            await presentUrlScheme(notification);
+            break;
+
+          case UrlResolverResult.IN_APP_BROWSER:
+            logger.debug("Resolving as 'in-app browser' notification.");
+            presentInAppBrowser(notification);
+            break;
+
+          case UrlResolverResult.WEB_VIEW:
+            logger.debug("Resolving as 'web view' notification.");
+            await this.showNotificationModal(notification);
+            break;
+
+          default:
+            throw new Error(`Unknown URL resolver result '${result}'.`);
+        }
+
+        return;
+      }
+
       case 're.notifica.notification.URLScheme':
         await presentUrlScheme(notification);
         return;
@@ -97,6 +129,10 @@ class NotificationPresenter {
         break;
     }
 
+    await this.showNotificationModal(notification);
+  }
+
+  private async showNotificationModal(notification: NotificareNotification) {
     const ui = await createNotificationModal({
       notification,
       dismiss: () => this.dismiss(),
@@ -122,6 +158,7 @@ function checkNotificationSupport(notification: NotificareNotification): boolean
     case 're.notifica.notification.Map':
     case 're.notifica.notification.Passbook':
     case 're.notifica.notification.URL':
+    case 're.notifica.notification.URLResolver':
     case 're.notifica.notification.URLScheme':
     case 're.notifica.notification.Video':
     case 're.notifica.notification.WebView':
@@ -135,12 +172,7 @@ function presentInAppBrowser(notification: NotificareNotification) {
   const content = notification.content.find(({ type }) => type === 're.notifica.content.URL');
   if (!content) throw new Error('Invalid notification content.');
 
-  if (!content.data || !content.data.trim()) {
-    window.location.href = '/';
-    return;
-  }
-
-  window.location.href = content.data.trim();
+  window.location.href = sanitizeContentUrl(content);
 }
 
 async function presentPassbook(
