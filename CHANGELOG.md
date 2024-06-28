@@ -3,6 +3,7 @@
 ## Upcoming release
 
 - Report back errors in `launch()` and `unlaunch()`
+- Remove push onboarding branding
 
 ## 3.5.0
 
