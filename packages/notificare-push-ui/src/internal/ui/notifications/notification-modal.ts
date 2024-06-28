@@ -65,6 +65,8 @@ async function createContentContainer(notification: NotificareNotification): Pro
       return createMapContent(notification);
     case 're.notifica.notification.URL':
       return createUrlContent(notification);
+    case 're.notifica.notification.URLResolver':
+      return createUrlContent(notification);
     case 're.notifica.notification.Video':
       return createVideoContent(notification);
     case 're.notifica.notification.WebView':

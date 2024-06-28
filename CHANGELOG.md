@@ -4,6 +4,7 @@
 
 - Report back errors in `launch()` and `unlaunch()`
 - Remove push onboarding branding
+- Add support for the URLResolver notification type
 
 ## 3.5.0
 
