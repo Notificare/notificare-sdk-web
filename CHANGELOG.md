@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 3.6.0
+
+- Report back errors in `launch()` and `unlaunch()`
+- Remove push onboarding branding
+- Add support for the URLResolver notification type
+
 ## 3.5.0
 
 - Session close events now report the time when they happened instead of when they're sent
