@@ -1,6 +1,6 @@
 {
   "name": "notificare-web",
-  "version": "3.5.0",
+  "version": "3.6.0",
   "description": "The official Notificare JS library.",
   "author": "Notificare <info@notificare.com> (https://notificare.com)",
   "license": "MIT",
@@ -160,14 +160,14 @@
     }
   },
   "dependencies": {
-    "@notificare/web-assets": "^3.5.0",
-    "@notificare/web-core": "^3.5.0",
-    "@notificare/web-geo": "^3.5.0",
-    "@notificare/web-in-app-messaging": "^3.5.0",
-    "@notificare/web-inbox": "^3.5.0",
-    "@notificare/web-push": "^3.5.0",
-    "@notificare/web-push-ui": "^3.5.0",
-    "@notificare/web-user-inbox": "^3.5.0"
+    "@notificare/web-assets": "^3.6.0",
+    "@notificare/web-core": "^3.6.0",
+    "@notificare/web-geo": "^3.6.0",
+    "@notificare/web-in-app-messaging": "^3.6.0",
+    "@notificare/web-inbox": "^3.6.0",
+    "@notificare/web-push": "^3.6.0",
+    "@notificare/web-push-ui": "^3.6.0",
+    "@notificare/web-user-inbox": "^3.6.0"
   },
   "devDependencies": {
     "typescript": "^5.1.6"

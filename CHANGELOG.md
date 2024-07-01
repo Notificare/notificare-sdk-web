@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## Upcoming release
+## 3.6.0
 
 - Report back errors in `launch()` and `unlaunch()`
 - Remove push onboarding branding
