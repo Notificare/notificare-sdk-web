@@ -22,7 +22,7 @@ import { convertCloudNotificationToPublic } from './internal/cloud-api/converter
 import { getCloudApiEnvironment } from './internal/cloud-api/environment';
 import { components } from './internal/component-cache';
 import { notifyOnReady, notifyUnlaunched } from './internal/consumer-events';
-import { deleteDevice, registerTemporaryDevice } from './internal/internal-api-device';
+import { deleteDevice } from './internal/internal-api-device';
 import {
   getLaunchState,
   isConfigured as isConfiguredInternal,
@@ -42,7 +42,7 @@ import {
   NotificareNotificationAction,
 } from './models/notificare-notification';
 import { NotificareOptions } from './options';
-import { clearTags, getCurrentDevice } from './public-api-device';
+import { getCurrentDevice } from './public-api-device';
 
 export const SDK_VERSION: string = SDK_VERSION_INTERNAL;
 
@@ -232,12 +232,6 @@ export async function unlaunch(): Promise<void> {
     }
 
     if (getCurrentDevice()) {
-      logger.debug('Clearing device tags.');
-      await clearTags();
-
-      logger.debug('Registering a temporary device.');
-      await registerTemporaryDevice();
-
       logger.debug('Removing device.');
       await deleteDevice();
     }

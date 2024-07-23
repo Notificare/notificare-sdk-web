@@ -44,7 +44,7 @@ export async function deleteCloudDevice(params: DeleteCloudDeviceParams): Promis
   await cloudRequest({
     ...rest,
     method: 'DELETE',
-    path: `/api/device/${encodeURIComponent(deviceId)}`,
+    path: `/api/push/${encodeURIComponent(deviceId)}`,
   });
 }
 
