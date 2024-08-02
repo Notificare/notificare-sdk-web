@@ -29,6 +29,7 @@ export function migrate() {
           language: oldDevice.language,
           region: oldDevice.region,
           transport: oldDevice.transport,
+          keys: oldDevice.keys,
           userData: {},
         };
 

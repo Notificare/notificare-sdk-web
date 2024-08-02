@@ -11,6 +11,7 @@ export interface StoredDevice {
   readonly language: string;
   readonly region: string;
   readonly transport?: string | null;
+  readonly keys?: object | null;
   readonly dnd?: NotificareDoNotDisturb;
   readonly userData: Record<string, string>;
 }

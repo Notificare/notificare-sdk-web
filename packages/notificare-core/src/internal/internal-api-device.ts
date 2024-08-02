@@ -103,6 +103,7 @@ export async function upgradeToLongLivedDeviceWhenNeeded() {
     deviceID: currentDevice.id,
     transport: currentDevice.transport,
     subscriptionId: currentDevice.transport !== 'Notificare' ? currentDevice.id : undefined,
+    keys: currentDevice.keys ?? undefined,
     language: currentDevice.language,
     region: currentDevice.region,
     platform: 'Web',
