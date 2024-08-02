@@ -257,6 +257,7 @@ async function updateDeviceSubscription({
       subscriptionId: token,
       keys,
       allowedUI,
+      webPushCapable: hasWebPushCapabilities(),
     },
   });
 
