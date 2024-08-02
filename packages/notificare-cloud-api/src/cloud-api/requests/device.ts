@@ -1,25 +1,48 @@
-import { CloudDoNotDisturb } from '../models/do-not-disturb';
-import { CloudUserData } from '../models/user-data';
-import { CloudDeviceRegistrationPayload } from '../payloads/device-registration';
+import {
+  CloudCreateDevicePayload,
+  CloudUpgradeToLongLivedDevicePayload,
+} from '../payloads/device-registration';
 import { CloudDeviceUpdatePayload } from '../payloads/device-update';
 import { cloudRequest, CloudRequestParams } from '../request';
+import { CloudCreateDeviceResponse } from '../responses/device';
 import { CloudDeviceDoNotDisturbResponse } from '../responses/device-do-not-disturb';
 import { CloudDeviceTagsResponse } from '../responses/device-tags';
 import { CloudDeviceUserDataResponse } from '../responses/device-user-data';
 
-export async function registerCloudDevice(params: RegisterCloudDeviceParams): Promise<void> {
+export async function createCloudDevice(
+  params: CreateCloudDeviceParams,
+): Promise<CloudCreateDeviceResponse> {
   const { payload, ...rest } = params;
 
-  await cloudRequest({
+  const response = await cloudRequest({
     ...rest,
     method: 'POST',
-    path: `/api/device`,
+    path: `/api/push`,
+    body: payload,
+  });
+
+  return response.json();
+}
+
+export interface CreateCloudDeviceParams extends CloudRequestParams {
+  payload: CloudCreateDevicePayload;
+}
+
+export async function upgradeToLongLivedCloudDevice(
+  params: UpgradeToLongLivedCloudDeviceParams,
+): Promise<Response> {
+  const { payload, ...rest } = params;
+
+  return cloudRequest({
+    ...rest,
+    method: 'POST',
+    path: '/api/push',
     body: payload,
   });
 }
 
-export interface RegisterCloudDeviceParams extends CloudRequestParams {
-  payload: CloudDeviceRegistrationPayload;
+export interface UpgradeToLongLivedCloudDeviceParams extends CloudRequestParams {
+  payload: CloudUpgradeToLongLivedDevicePayload;
 }
 
 export async function updateCloudDevice(params: UpdateCloudDeviceParams): Promise<void> {
@@ -28,7 +51,7 @@ export async function updateCloudDevice(params: UpdateCloudDeviceParams): Promis
   await cloudRequest({
     ...rest,
     method: 'PUT',
-    path: `/api/device/${encodeURIComponent(deviceId)}`,
+    path: `/api/push/${encodeURIComponent(deviceId)}`,
     body: payload,
   });
 }
@@ -59,7 +82,7 @@ export async function fetchCloudDeviceTags(
 
   const response = await cloudRequest({
     ...rest,
-    path: `/api/device/${encodeURIComponent(deviceId)}/tags`,
+    path: `/api/push/${encodeURIComponent(deviceId)}/tags`,
   });
 
   return response.json();
@@ -75,7 +98,7 @@ export async function addCloudDeviceTags(params: UpdateCloudDeviceTagsParams): P
   await cloudRequest({
     ...rest,
     method: 'PUT',
-    path: `/api/device/${encodeURIComponent(deviceId)}/addtags`,
+    path: `/api/push/${encodeURIComponent(deviceId)}/addtags`,
     body: { tags },
   });
 }
@@ -91,7 +114,7 @@ export async function removeCloudDeviceTags(params: RemoveCloudDeviceTagsParams)
   await cloudRequest({
     ...rest,
     method: 'PUT',
-    path: `/api/device/${encodeURIComponent(deviceId)}/removetags`,
+    path: `/api/push/${encodeURIComponent(deviceId)}/removetags`,
     body: { tags },
   });
 }
@@ -107,7 +130,7 @@ export async function clearCloudDeviceTags(params: ClearCloudDeviceTagsParams): 
   await cloudRequest({
     ...rest,
     method: 'PUT',
-    path: `/api/device/${encodeURIComponent(deviceId)}/cleartags`,
+    path: `/api/push/${encodeURIComponent(deviceId)}/cleartags`,
   });
 }
 
@@ -122,47 +145,13 @@ export async function fetchCloudDeviceDoNotDisturb(
 
   const response = await cloudRequest({
     ...rest,
-    path: `/api/device/${encodeURIComponent(deviceId)}/dnd`,
+    path: `/api/push/${encodeURIComponent(deviceId)}/dnd`,
   });
 
   return response.json();
 }
 
 export interface FetchCloudDeviceDoNotDisturbParams extends CloudRequestParams {
-  deviceId: string;
-}
-
-export async function updateCloudDeviceDoNotDisturb(
-  params: UpdateCloudDeviceDoNotDisturbParams,
-): Promise<void> {
-  const { deviceId, dnd, ...rest } = params;
-
-  await cloudRequest({
-    ...rest,
-    method: 'PUT',
-    path: `/api/device/${encodeURIComponent(deviceId)}/dnd`,
-    body: dnd,
-  });
-}
-
-export interface UpdateCloudDeviceDoNotDisturbParams extends CloudRequestParams {
-  deviceId: string;
-  dnd: CloudDoNotDisturb;
-}
-
-export async function clearCloudDeviceDoNotDisturb(
-  params: ClearCloudDeviceDoNotDisturbParams,
-): Promise<void> {
-  const { deviceId, ...rest } = params;
-
-  await cloudRequest({
-    ...rest,
-    method: 'PUT',
-    path: `/api/device/${encodeURIComponent(deviceId)}/cleardnd`,
-  });
-}
-
-export interface ClearCloudDeviceDoNotDisturbParams extends CloudRequestParams {
   deviceId: string;
 }
 
@@ -173,7 +162,7 @@ export async function fetchCloudDeviceUserData(
 
   const response = await cloudRequest({
     ...rest,
-    path: `/api/device/${encodeURIComponent(deviceId)}/userdata`,
+    path: `/api/push/${encodeURIComponent(deviceId)}/userdata`,
   });
 
   return response.json();
@@ -181,24 +170,6 @@ export async function fetchCloudDeviceUserData(
 
 export interface FetchCloudDeviceUserDataParams extends CloudRequestParams {
   deviceId: string;
-}
-
-export async function updateCloudDeviceUserData(
-  params: UpdateCloudDeviceUserDataParams,
-): Promise<void> {
-  const { deviceId, userData, ...rest } = params;
-
-  await cloudRequest({
-    ...rest,
-    method: 'PUT',
-    path: `/api/device/${encodeURIComponent(deviceId)}/userdata`,
-    body: userData,
-  });
-}
-
-export interface UpdateCloudDeviceUserDataParams extends CloudRequestParams {
-  deviceId: string;
-  userData: CloudUserData;
 }
 
 export async function registerCloudTestDevice(params: RegisterCloudTestDevice): Promise<void> {

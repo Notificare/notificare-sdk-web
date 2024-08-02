@@ -33,6 +33,7 @@ import {
 import { logger } from './internal/logger';
 import { isLatestStorageStructure, migrate } from './internal/migration-flow';
 import { getOptions, NotificareInternalOptionsServices, setOptions } from './internal/options';
+import { getStoredDevice } from './internal/storage/local-storage';
 import { hasWebPushSupport } from './internal/utils';
 import { SDK_VERSION as SDK_VERSION_INTERNAL } from './internal/version';
 import { NotificareApplication } from './models/notificare-application';
@@ -42,7 +43,6 @@ import {
   NotificareNotificationAction,
 } from './models/notificare-notification';
 import { NotificareOptions } from './options';
-import { getCurrentDevice } from './public-api-device';
 
 export const SDK_VERSION: string = SDK_VERSION_INTERNAL;
 
@@ -172,17 +172,6 @@ export async function launch(): Promise<void> {
   try {
     setLaunchState(LaunchState.LAUNCHING);
 
-    if (options.ignoreTemporaryDevices) {
-      const device = getCurrentDevice();
-      if (device && device.transport === 'Notificare') {
-        try {
-          await deleteDevice();
-        } catch (e) {
-          logger.error('Failed to clean up temporary device.', e);
-        }
-      }
-    }
-
     const application = await fetchApplication();
 
     // eslint-disable-next-line no-restricted-syntax
@@ -231,7 +220,7 @@ export async function unlaunch(): Promise<void> {
       }
     }
 
-    if (getCurrentDevice()) {
+    if (getStoredDevice()) {
       logger.debug('Removing device.');
       await deleteDevice();
     }
@@ -297,7 +286,7 @@ export async function fetchNotification(id: string): Promise<NotificareNotificat
 export async function fetchDynamicLink(url: string): Promise<NotificareDynamicLink> {
   if (!isConfigured()) throw new NotificareNotConfiguredError();
 
-  const device = getCurrentDevice();
+  const device = getStoredDevice();
 
   const { link } = await fetchCloudDynamicLink({
     environment: getCloudApiEnvironment(),
@@ -318,7 +307,7 @@ export async function createNotificationReply(
   const options = getOptions();
   if (!options) throw new NotificareNotConfiguredError();
 
-  const device = getCurrentDevice();
+  const device = getStoredDevice();
   if (!device) throw new NotificareDeviceUnavailableError();
 
   let mediaUrl: string | undefined;
@@ -362,7 +351,7 @@ export async function callNotificationWebhook(
   if (!action.target) throw new Error('Unable to execute webhook without a target for the action.');
 
   const url = new URL(action.target);
-  const device = getCurrentDevice();
+  const device = getStoredDevice();
 
   const data: CloudNotificationWebhookPayload = {
     target: url.origin,

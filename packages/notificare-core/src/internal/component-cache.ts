@@ -18,3 +18,18 @@ export function broadcastComponentEvent(event: string, data?: unknown) {
     component.processBroadcast(event, data);
   }
 }
+
+export async function executeComponentCommand({
+  component,
+  command,
+  data,
+}: {
+  component: string;
+  command: string;
+  data?: unknown;
+}): Promise<unknown> {
+  const instance = components.get(component);
+  if (!instance) throw new Error(`Unable to find an instance for component '${component}'.`);
+
+  return instance.executeCommand(command, data);
+}

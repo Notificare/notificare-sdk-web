@@ -1,9 +1,11 @@
 import {
   broadcastComponentEvent,
   Component,
+  executeComponentCommand,
   fetchNotification,
   getApplication,
   getCurrentDevice,
+  getOptions,
   logNotificationOpen,
 } from '@notificare/web-core';
 import { logger } from '../logger';
@@ -24,8 +26,11 @@ import {
 } from './internal-api-web-push';
 import {
   getRemoteNotificationsEnabled,
+  retrieveTransport,
   setRemoteNotificationsEnabled,
   storeAllowedUI,
+  storeSubscriptionId,
+  storeTransport,
 } from './storage/local-storage';
 import { hideFloatingButton } from './ui/floating-button';
 import { hideOnboarding } from './ui/onboarding';
@@ -76,9 +81,29 @@ export class PushComponent extends Component {
   }
 
   async launch(): Promise<void> {
+    const options = getOptions();
+
+    const device = getCurrentDevice();
+    const transport = retrieveTransport();
+    const isTemporaryDevice = device && (!transport || transport === 'Notificare');
+
     // An undefined getRemoteNotificationsEnabled() likely means the user or the app
     // tampered with the local storage. We can recover based on the browser permission.
-    if (getRemoteNotificationsEnabled() !== false && getPushPermissionStatus() === 'granted') {
+    const canEnableRemoteNotifications =
+      getRemoteNotificationsEnabled() !== false && getPushPermissionStatus() === 'granted';
+
+    if (options?.ignoreTemporaryDevices && isTemporaryDevice && !canEnableRemoteNotifications) {
+      try {
+        await executeComponentCommand({
+          component: 'device',
+          command: 'deleteDevice',
+        });
+      } catch (e) {
+        logger.error('Failed to clean up temporary device.', e);
+      }
+    }
+
+    if (canEnableRemoteNotifications) {
       try {
         logger.debug('Automatically enabling remote notifications.');
         await enableRemoteNotifications();
@@ -96,16 +121,14 @@ export class PushComponent extends Component {
     localStorage.removeItem('re.notifica.push.first_registration');
     localStorage.removeItem('re.notifica.push.onboarding_last_attempt');
 
-    // // Update the local notification settings.
-    // // Registering a temporary device automatically reports the allowedUI to the API.
-    // allowedUI = false
-
-    const device = getCurrentDevice();
-    if (device && device.transport === 'WebPush') {
+    const transport = retrieveTransport();
+    if (transport === 'WebPush') {
       await disableWebPushNotifications();
     }
 
     setRemoteNotificationsEnabled(undefined);
+    storeTransport(undefined);
+    storeSubscriptionId(undefined);
     storeAllowedUI(undefined);
   }
 

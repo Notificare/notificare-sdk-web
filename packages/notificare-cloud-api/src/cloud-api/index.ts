@@ -29,6 +29,7 @@ export * from './requests/user-inbox';
 
 export * from './responses/application';
 export * from './responses/assets';
+export * from './responses/device';
 export * from './responses/device-do-not-disturb';
 export * from './responses/device-inbox';
 export * from './responses/device-tags';
