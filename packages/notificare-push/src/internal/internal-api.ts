@@ -81,13 +81,19 @@ export async function enableRemoteNotifications(): Promise<void> {
     const device = getCurrentDevice();
 
     if (hasWebPushSupport()) {
-      const token = await enableWebPushNotifications(application, options);
+      let token = await enableWebPushNotifications(application, options);
 
       if (!device && options.ignoreTemporaryDevices) {
         await executeComponentCommand({
           component: 'device',
           command: 'createDevice',
         });
+
+        // The first service worker registration won't register with a deviceId when ignoreTemporaryDevices
+        // is enabled, since there is no device at that point. We must re-register the service worker with
+        // the updated configuration to pass along the latest device identifier.
+        logger.debug('Updating service worker with the latest device identifier.');
+        token = await enableWebPushNotifications(application, options);
       }
 
       await updateDeviceSubscription({

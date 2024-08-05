@@ -1,5 +1,6 @@
 import { logger } from '../../logger';
 import { base64Decode, getServiceWorkerLocation } from '../utils';
+import { InvalidWorkerConfigurationError } from './errors';
 import { WorkerConfiguration } from './worker-configuration';
 
 export function parseWorkerConfiguration(): WorkerConfiguration | undefined {
@@ -35,10 +36,24 @@ export function parseWorkerConfiguration(): WorkerConfiguration | undefined {
     return undefined;
   }
 
+  const { deviceId } = config;
+  if (!deviceId) {
+    logger.warning('Cannot parse the worker configuration: missing device id.');
+    return undefined;
+  }
+
   return {
     applicationKey,
     applicationSecret,
+    deviceId,
     useTestEnvironment: config.useTestEnvironment,
     standalone: config.standalone,
   };
+}
+
+export function getCurrentDeviceId(): string {
+  const configuration = parseWorkerConfiguration();
+  if (!configuration) throw new InvalidWorkerConfigurationError();
+
+  return configuration.deviceId;
 }

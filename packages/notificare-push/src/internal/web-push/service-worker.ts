@@ -1,4 +1,5 @@
 import {
+  getCurrentDevice,
   getOptions,
   NotificareInternalOptions,
   NotificareNotConfiguredError,
@@ -45,7 +46,6 @@ export async function createWebPushSubscription(
   registration: ServiceWorkerRegistration,
   vapidPublicKey: string,
 ): Promise<PushSubscription> {
-  //
   const currentSubscription = await registration.pushManager.getSubscription();
 
   if (currentSubscription) {
@@ -122,9 +122,12 @@ function getWorkerConfiguration(): WorkerConfiguration {
   const options = getOptions();
   if (!options) throw new NotificareNotConfiguredError();
 
+  const device = getCurrentDevice();
+
   return {
     applicationKey: options.applicationKey,
     applicationSecret: options.applicationSecret,
+    deviceId: device?.id,
     useTestEnvironment: options.useTestEnvironment ? true : undefined,
     standalone: isStandaloneMode() ? true : undefined,
   };
@@ -137,6 +140,7 @@ function areSameWorkerConfiguration(
   return (
     expectedConfig.applicationKey === config.applicationKey &&
     expectedConfig.applicationSecret === config.applicationSecret &&
+    expectedConfig.deviceId === config.deviceId &&
     expectedConfig.useTestEnvironment === config.useTestEnvironment &&
     expectedConfig.standalone === config.standalone
   );
