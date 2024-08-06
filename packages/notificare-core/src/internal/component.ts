@@ -18,6 +18,6 @@ export abstract class Component {
 
   // eslint-disable-next-line class-methods-use-this,@typescript-eslint/no-unused-vars
   async executeCommand(command: string, data?: unknown): Promise<unknown> {
-    return undefined;
+    throw new Error(`The '${this.name}' component does not support commands.`);
   }
 }

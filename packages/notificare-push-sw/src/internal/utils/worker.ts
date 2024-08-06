@@ -5,11 +5,6 @@ export function getServiceWorkerLocation(): WorkerLocation {
   return self.location;
 }
 
-export async function getCurrentPushToken(): Promise<string | undefined> {
-  const subscription = await self.registration.pushManager.getSubscription();
-  return subscription?.endpoint;
-}
-
 export function base64Encode(data: string): string {
   return self.btoa(data);
 }

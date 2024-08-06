@@ -21,6 +21,7 @@ export function parseWorkerConfiguration(encoded: string): WorkerConfiguration |
   return {
     applicationKey,
     applicationSecret,
+    deviceId: config.deviceId,
     useTestEnvironment: config.useTestEnvironment,
     standalone: config.standalone,
   };

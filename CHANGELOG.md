@@ -1,5 +1,16 @@
 # CHANGELOG
 
+## Upcoming release
+
+- Device identifiers become long-lived
+
+#### Breaking changes
+
+- `NotificareDevice.id` attribute no longer contains the push token. Use `getSubscriptionId()` from `notificare-web/push` instead.
+- The `NotificareDevice` data model was reduced to only publicly relevant attributes.
+- `onDeviceRegistered` only triggers once, when the device is created.
+- `NotificareTransport` was moved to `notificare-web/push`.
+
 ## 3.6.0
 
 - Report back errors in `launch()` and `unlaunch()`

@@ -7,9 +7,9 @@ import { NotificareNotification, NotificareNotificationContent } from '@notifica
 import { logger } from '../../logger';
 import { getCloudApiEnvironment } from '../cloud-api/environment';
 import { InvalidWorkerConfigurationError } from '../configuration/errors';
-import { parseWorkerConfiguration } from '../configuration/parser';
+import { getCurrentDeviceId, parseWorkerConfiguration } from '../configuration/parser';
 import { resolveUrl, UrlResolverResult } from '../notification-url-resolver';
-import { getCloudApiUrl, getCurrentPushToken, isAppleDevice, isSafariBrowser } from '../utils';
+import { getCloudApiUrl, isAppleDevice, isSafariBrowser } from '../utils';
 import { presentWindowClient } from './window-client';
 
 // Let TS know this is scoped to a service worker.
@@ -181,7 +181,7 @@ async function presentUrlSchemeNotification(notification: NotificareNotification
 
   const { link } = await fetchCloudDynamicLink({
     environment: await getCloudApiEnvironment(),
-    deviceId: await getCurrentPushToken(),
+    deviceId: getCurrentDeviceId(),
     url: urlStr,
   });
 

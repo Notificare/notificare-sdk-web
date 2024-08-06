@@ -2,12 +2,11 @@ import { registerComponents } from './register-components';
 
 export * from './internal/cloud-api/environment';
 export * from './internal/component';
-export { registerComponent, broadcastComponentEvent } from './internal/component-cache';
 export {
-  registerTemporaryDevice,
-  registerPushDevice,
-  deleteDevice,
-} from './internal/internal-api-device';
+  registerComponent,
+  broadcastComponentEvent,
+  executeComponentCommand,
+} from './internal/component-cache';
 export { getOptions, NotificareInternalOptions } from './internal/options';
 export { logInternal, logNotificationOpen } from './internal/internal-api-events';
 export { convertCloudNotificationToPublic } from './internal/cloud-api/converters/notification-converter';
@@ -23,7 +22,6 @@ export * from './event-subscription';
 
 export * from './models/notificare-application';
 export * from './models/notificare-device';
-export * from './models/notificare-transport';
 export * from './models/notificare-do-not-disturb';
 export * from './models/notificare-dynamic-link';
 export * from './models/notificare-notification';

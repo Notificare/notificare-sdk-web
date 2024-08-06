@@ -7,6 +7,7 @@ import { logger } from '../logger';
 import { NotificareNotificationDeliveryMechanism } from '../models/notificare-notification-delivery-mechanism';
 import { NotificareSystemNotification } from '../models/notificare-system-notification';
 
+let subscriptionIdChangedCallback: OnSubscriptionIdChangedCallback | undefined;
 let notificationSettingsChangedCallback: OnNotificationSettingsChangedCallback | undefined;
 let notificationReceivedCallback: OnNotificationReceivedCallback | undefined;
 let notificationOpenedCallback: OnNotificationOpenedCallback | undefined;
@@ -14,6 +15,7 @@ let notificationActionOpenedCallback: OnNotificationActionOpenedCallback | undef
 let systemNotificationReceivedCallback: OnSystemNotificationReceivedCallback | undefined;
 let unknownNotificationReceivedCallback: OnUnknownNotificationReceivedCallback | undefined;
 
+export type OnSubscriptionIdChangedCallback = (subscriptionId: string | undefined) => void;
 export type OnNotificationSettingsChangedCallback = (allowedUI: boolean) => void;
 export type OnNotificationReceivedCallback = (
   notification: NotificareNotification,
@@ -28,6 +30,18 @@ export type OnSystemNotificationReceivedCallback = (
   notification: NotificareSystemNotification,
 ) => void;
 export type OnUnknownNotificationReceivedCallback = (notification: unknown) => void;
+
+export function onSubscriptionIdChanged(
+  callback: OnSubscriptionIdChangedCallback,
+): EventSubscription {
+  subscriptionIdChangedCallback = callback;
+
+  return {
+    remove: () => {
+      subscriptionIdChangedCallback = undefined;
+    },
+  };
+}
 
 export function onNotificationSettingsChanged(
   callback: OnNotificationSettingsChangedCallback,
@@ -97,6 +111,16 @@ export function onUnknownNotificationReceived(
       unknownNotificationReceivedCallback = undefined;
     },
   };
+}
+
+export function notifySubscriptionIdChanged(subscriptionId: string | undefined) {
+  const callback = subscriptionIdChangedCallback;
+  if (!callback) {
+    logger.debug("The 'subscription_id_changed' handler is not configured.");
+    return;
+  }
+
+  callback(subscriptionId);
 }
 
 export function notifyNotificationSettingsChanged(allowedUI: boolean) {
