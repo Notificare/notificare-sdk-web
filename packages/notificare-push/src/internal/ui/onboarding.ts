@@ -41,7 +41,7 @@ export function showOnboarding({
 
     icon.setAttribute(
       'src',
-      `${options.services.awsStorageHost}${application.websitePushConfig.icon}`,
+      `https://${options.hosts.restApi}/upload${application.websitePushConfig.icon}`,
     );
   }
 

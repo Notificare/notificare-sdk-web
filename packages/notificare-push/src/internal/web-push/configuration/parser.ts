@@ -12,6 +12,9 @@ export function parseWorkerConfiguration(encoded: string): WorkerConfiguration |
     return undefined;
   }
 
+  const { cloudHost } = config;
+  if (!cloudHost) return undefined;
+
   const { applicationKey } = config;
   if (!applicationKey) return undefined;
 
@@ -19,10 +22,10 @@ export function parseWorkerConfiguration(encoded: string): WorkerConfiguration |
   if (!applicationSecret) return undefined;
 
   return {
+    cloudHost,
     applicationKey,
     applicationSecret,
     deviceId: config.deviceId,
-    useTestEnvironment: config.useTestEnvironment,
     standalone: config.standalone,
   };
 }

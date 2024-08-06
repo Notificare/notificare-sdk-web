@@ -3,6 +3,7 @@
 ## Upcoming release
 
 - Device identifiers become long-lived
+- Add support for customisable hosts
 
 #### Breaking changes
 

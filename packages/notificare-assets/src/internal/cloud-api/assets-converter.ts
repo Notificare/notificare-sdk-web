@@ -20,8 +20,8 @@ function createAssetUrl({ key }: CloudAsset): string | undefined {
   const options = getOptions();
   if (!options || !key) return undefined;
 
-  const host = options.services.pushHost;
-  return `${host}/asset/file/${key}`;
+  const host = options.hosts.restApi;
+  return `https://${host}/asset/file/${key}`;
 }
 
 function convertCloudAssetButtonToPublic(

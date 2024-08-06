@@ -6,7 +6,7 @@ export async function getCloudApiEnvironment() {
   if (!configuration) throw new InvalidWorkerConfigurationError();
 
   return {
-    useTestEnvironment: configuration.useTestEnvironment ?? false,
+    cloudHost: configuration.cloudHost,
     applicationKey: configuration.applicationKey,
     applicationSecret: configuration.applicationSecret,
   };

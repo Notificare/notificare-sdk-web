@@ -32,7 +32,14 @@ import {
 } from './internal/launch-state';
 import { logger } from './internal/logger';
 import { isLatestStorageStructure, migrate } from './internal/migration-flow';
-import { getOptions, NotificareInternalOptionsServices, setOptions } from './internal/options';
+import {
+  DEFAULT_CLOUD_API_HOST,
+  DEFAULT_REST_API_HOST,
+  getOptions,
+  isDefaultHosts,
+  NotificareInternalOptionsHosts,
+  setOptions,
+} from './internal/options';
 import { getStoredDevice } from './internal/storage/local-storage';
 import { hasWebPushSupport } from './internal/utils';
 import { SDK_VERSION as SDK_VERSION_INTERNAL } from './internal/version';
@@ -83,31 +90,13 @@ export function configure(options: NotificareOptions) {
     migrate();
   }
 
-  // Hidden property from the consumer options.
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-  const { useTestEnvironment } = options;
-
-  let services: NotificareInternalOptionsServices;
-  if (useTestEnvironment) {
-    services = {
-      cloudHost: 'https://cloud-test.notifica.re',
-      pushHost: 'https://push-test.notifica.re',
-      awsStorageHost: 'https://push-test.notifica.re/upload',
-      websitePushHost: 'https://push-test.notifica.re/website-push/safari',
-    };
-  } else {
-    services = {
-      cloudHost: 'https://cloud.notifica.re',
-      pushHost: 'https://push.notifica.re',
-      awsStorageHost: 'https://push.notifica.re/upload',
-      websitePushHost: 'https://push.notifica.re/website-push/safari',
-    };
-  }
+  const hosts: NotificareInternalOptionsHosts = {
+    cloudApi: options.hosts?.cloudApi ?? DEFAULT_CLOUD_API_HOST,
+    restApi: options.hosts?.restApi ?? DEFAULT_REST_API_HOST,
+  };
 
   setOptions({
-    useTestEnvironment,
-    services,
+    hosts,
     applicationKey: options.applicationKey,
     applicationSecret: options.applicationSecret,
     applicationVersion: options.applicationVersion ?? '1.0.0',
@@ -127,6 +116,12 @@ export function configure(options: NotificareOptions) {
   }
 
   setLaunchState(LaunchState.CONFIGURED);
+
+  if (!isDefaultHosts(hosts)) {
+    logger.info('Notificare configured with customized hosts.');
+    logger.debug(`Cloud API host: ${hosts.cloudApi}`);
+    logger.debug(`REST API host: ${hosts.restApi}`);
+  }
 }
 
 export async function launch(): Promise<void> {
@@ -318,7 +313,7 @@ export async function createNotificationReply(
       media: data.media,
     });
 
-    mediaUrl = `${options.services.awsStorageHost}${filename}`;
+    mediaUrl = `https://${options.hosts.restApi}/upload${filename}`;
   }
 
   await createCloudNotificationReply({
