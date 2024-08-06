@@ -34,5 +34,10 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
+# Generated workbox files
+public/sw*
+public/worker*
+public/workbox*
+
 # Notificare configuration file
 public/notificare-services.json

@@ -1,1 +1,0 @@
-../../../node_modules/notificare-web/push/sw/dist/index.mjs
