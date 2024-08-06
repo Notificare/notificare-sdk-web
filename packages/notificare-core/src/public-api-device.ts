@@ -27,7 +27,7 @@ export function getCurrentDevice(): NotificareDevice | undefined {
   return asPublicDevice(device);
 }
 
-export async function registerDevice(options: RegisterDeviceOptions): Promise<void> {
+export async function updateUser({ userId, userName }: UpdateUserOptions): Promise<void> {
   checkPrerequisites();
 
   const device = getStoredDevice();
@@ -37,18 +37,34 @@ export async function registerDevice(options: RegisterDeviceOptions): Promise<vo
     environment: getCloudApiEnvironment(),
     deviceId: device.id,
     payload: {
-      userID: options.userId ?? null,
-      userName: options.userName ?? null,
+      userID: userId ?? null,
+      userName: userName ?? null,
     },
   });
 
   // Update current device properties.
   setStoredDevice({
     ...device,
-    userId: options.userId ?? undefined,
-    userName: options.userName ?? undefined,
+    userId: userId ?? undefined,
+    userName: userName ?? undefined,
   });
 }
+
+export interface UpdateUserOptions {
+  readonly userId: string | null;
+  readonly userName: string | null;
+}
+
+/**
+ * @deprecated Use updateUser() instead.
+ *
+ * @param options
+ */
+export async function registerDevice(options: RegisterDeviceOptions): Promise<void> {
+  await updateUser(options);
+}
+
+export type RegisterDeviceOptions = UpdateUserOptions;
 
 export function getPreferredLanguage(): string | undefined {
   const preferredLanguage = localStorage.getItem('re.notifica.preferred_language');
@@ -252,9 +268,4 @@ export async function updateUserData(userData: NotificareUserData): Promise<void
     ...device,
     userData,
   });
-}
-
-export interface RegisterDeviceOptions {
-  userId: string | null;
-  userName: string | null;
 }
