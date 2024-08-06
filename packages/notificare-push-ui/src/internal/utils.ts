@@ -24,7 +24,7 @@ export function getApplicationIcon(): string | undefined {
   const icon = getApplication()?.websitePushConfig?.icon;
   if (!icon) return undefined;
 
-  return `${options.services.awsStorageHost}${icon}`;
+  return `https://${options.hosts.restApi}/upload${icon}`;
 }
 
 export function getApplicationName(): string | undefined {

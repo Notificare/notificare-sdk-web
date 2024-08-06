@@ -125,10 +125,10 @@ function getWorkerConfiguration(): WorkerConfiguration {
   const device = getCurrentDevice();
 
   return {
+    cloudHost: options.hosts.cloudApi,
     applicationKey: options.applicationKey,
     applicationSecret: options.applicationSecret,
     deviceId: device?.id,
-    useTestEnvironment: options.useTestEnvironment ? true : undefined,
     standalone: isStandaloneMode() ? true : undefined,
   };
 }
@@ -138,10 +138,10 @@ function areSameWorkerConfiguration(
   expectedConfig: WorkerConfiguration,
 ) {
   return (
+    expectedConfig.cloudHost === config.cloudHost &&
     expectedConfig.applicationKey === config.applicationKey &&
     expectedConfig.applicationSecret === config.applicationSecret &&
     expectedConfig.deviceId === config.deviceId &&
-    expectedConfig.useTestEnvironment === config.useTestEnvironment &&
     expectedConfig.standalone === config.standalone
   );
 }

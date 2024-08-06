@@ -24,6 +24,12 @@ export function parseWorkerConfiguration(): WorkerConfiguration | undefined {
     return undefined;
   }
 
+  const { cloudHost } = config;
+  if (!cloudHost) {
+    logger.warning('Cannot parse the worker configuration: missing cloud host.');
+    return undefined;
+  }
+
   const { applicationKey } = config;
   if (!applicationKey) {
     logger.warning('Cannot parse the worker configuration: missing application key.');
@@ -43,10 +49,10 @@ export function parseWorkerConfiguration(): WorkerConfiguration | undefined {
   }
 
   return {
+    cloudHost,
     applicationKey,
     applicationSecret,
     deviceId,
-    useTestEnvironment: config.useTestEnvironment,
     standalone: config.standalone,
   };
 }
