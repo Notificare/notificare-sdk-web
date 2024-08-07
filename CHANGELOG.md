@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## Upcoming release
+## 4.0.0-beta.1
 
 - Device identifiers become long-lived
 - Add support for customisable hosts
