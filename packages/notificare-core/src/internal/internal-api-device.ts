@@ -14,7 +14,6 @@ import { NotificareNotReadyError } from '../errors/notificare-not-ready-error';
 import { getCloudApiEnvironment } from './cloud-api/environment';
 import { isReady } from './launch-state';
 import { logger } from './logger';
-import { getOptions } from './options';
 import { getStoredDevice, isLongLivedDevice, setStoredDevice } from './storage/local-storage';
 import {
   getApplicationVersion,
@@ -58,11 +57,6 @@ export async function createDevice() {
 export async function updateDevice() {
   const device = getStoredDevice();
   if (!device) throw new NotificareDeviceUnavailableError();
-
-  if (!registrationChanged()) {
-    logger.debug('Skipping device update, nothing changed.');
-    return;
-  }
 
   const payload: CloudDeviceUpdateBaseAttributesPayload = {
     language: getDeviceLanguage(),
@@ -232,49 +226,6 @@ export function checkPrerequisites() {
     logger.warning('Notificare is not ready yet.');
     throw new NotificareNotReadyError();
   }
-}
-
-function registrationChanged(): boolean {
-  const device = getStoredDevice();
-
-  if (!device) {
-    logger.debug('Registration check: fresh installation');
-    return true;
-  }
-
-  let changed = false;
-
-  if (device.userAgent !== navigator.userAgent) {
-    logger.debug('Registration check: user agent changed');
-    changed = true;
-  }
-
-  if (device.appVersion !== getOptions()?.applicationVersion) {
-    logger.debug('Registration check: application version changed');
-    changed = true;
-  }
-
-  if (device.sdkVersion !== SDK_VERSION) {
-    logger.debug('Registration check: sdk version changed');
-    changed = true;
-  }
-
-  if (device.timeZoneOffset !== getTimeZoneOffset()) {
-    logger.debug('Registration check: timezone offset changed');
-    changed = true;
-  }
-
-  if (device.language !== getDeviceLanguage()) {
-    logger.debug('Registration check: language changed');
-    changed = true;
-  }
-
-  if (device.region !== getDeviceRegion()) {
-    logger.debug('Registration check: region changed');
-    changed = true;
-  }
-
-  return changed;
 }
 
 export function getDeviceLanguage(): string {
