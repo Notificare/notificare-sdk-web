@@ -12,10 +12,11 @@ import {
 import {
   getRemoteNotificationsEnabled,
   retrieveAllowedUI,
-  retrieveSubscriptionId,
+  retrieveSubscription,
   retrieveTransport,
 } from './internal/storage/local-storage';
 import { logger } from './logger';
+import { NotificarePushSubscription } from './models/notificare-push-subscription';
 import { NotificareTransport } from './models/notificare-transport';
 
 export {
@@ -47,8 +48,8 @@ export function getTransport(): NotificareTransport | undefined {
   return retrieveTransport();
 }
 
-export function getSubscriptionId(): string | undefined {
-  return retrieveSubscriptionId();
+export function getSubscription(): NotificarePushSubscription | undefined {
+  return retrieveSubscription();
 }
 
 export async function enableRemoteNotifications(): Promise<void> {

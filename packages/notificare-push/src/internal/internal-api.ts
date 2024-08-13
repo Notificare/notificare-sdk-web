@@ -14,9 +14,10 @@ import {
   NotificareWebsitePushConfigLaunchConfigFloatingButtonOptions,
 } from '@notificare/web-core';
 import { logger } from '../logger';
+import { NotificarePushSubscription } from '../models/notificare-push-subscription';
 import { NotificareTransport } from '../models/notificare-transport';
 import { getPushPermissionStatus } from '../utils/push';
-import { notifyNotificationSettingsChanged, notifySubscriptionIdChanged } from './consumer-events';
+import { notifyNotificationSettingsChanged, notifySubscriptionChanged } from './consumer-events';
 import { logPushRegistration } from './internal-api-events';
 import { enableSafariPushNotifications, hasSafariPushSupport } from './internal-api-safari-push';
 import {
@@ -28,11 +29,11 @@ import {
 import {
   getRemoteNotificationsEnabled,
   retrieveAllowedUI,
-  retrieveSubscriptionId,
+  retrieveSubscription,
   retrieveTransport,
   setRemoteNotificationsEnabled,
   storeAllowedUI,
-  storeSubscriptionId,
+  storeSubscription,
   storeTransport,
 } from './storage/local-storage';
 import { showFloatingButton } from './ui/floating-button';
@@ -234,8 +235,8 @@ async function updateDeviceSubscription({
 
     storeTransport(undefined);
 
-    storeSubscriptionId(undefined);
-    notifySubscriptionIdChanged(undefined);
+    storeSubscription(undefined);
+    notifySubscriptionChanged(undefined);
 
     storeAllowedUI(false);
     notifyNotificationSettingsChanged(false);
@@ -244,9 +245,10 @@ async function updateDeviceSubscription({
   }
 
   const previousTransport = retrieveTransport();
-  const previousSubscriptionId = retrieveSubscriptionId();
+  const previousSubscription = retrieveSubscription();
+  logger.warning(`previous sub = ${JSON.stringify(previousSubscription, null, 2)}`);
 
-  if (previousTransport === transport && previousSubscriptionId === token) {
+  if (previousTransport === transport && previousSubscription?.token === token) {
     logger.debug('Push subscription unmodified. Updating notification settings instead.');
     await updateDeviceNotificationSettings();
     return;
@@ -269,8 +271,9 @@ async function updateDeviceSubscription({
 
   storeTransport(transport);
 
-  storeSubscriptionId(token);
-  notifySubscriptionIdChanged(token);
+  const subscription: NotificarePushSubscription | undefined = token ? { token, keys } : undefined;
+  storeSubscription(subscription);
+  notifySubscriptionChanged(subscription);
 
   storeAllowedUI(allowedUI);
   notifyNotificationSettingsChanged(allowedUI);

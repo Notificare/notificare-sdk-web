@@ -1,3 +1,5 @@
+import { logger } from '../../logger';
+import { NotificarePushSubscription } from '../../models/notificare-push-subscription';
 import { NotificareTransport } from '../../models/notificare-transport';
 
 export function getRemoteNotificationsEnabled(): boolean | undefined {
@@ -48,15 +50,27 @@ export function storeTransport(transport: NotificareTransport | undefined) {
   localStorage.setItem('re.notifica.push.transport', transport);
 }
 
-export function retrieveSubscriptionId(): string | undefined {
-  return localStorage.getItem('re.notifica.push.subscription_id') ?? undefined;
+export function retrieveSubscription(): NotificarePushSubscription | undefined {
+  const subscriptionStr = localStorage.getItem('re.notifica.push.subscription');
+  if (!subscriptionStr) return undefined;
+
+  try {
+    return JSON.parse(subscriptionStr);
+  } catch (e) {
+    logger.warning('Failed to decode the stored subscription.', e);
+
+    // Remove the corrupted subscription from local storage.
+    storeSubscription(undefined);
+
+    return undefined;
+  }
 }
 
-export function storeSubscriptionId(subscriptionId: string | undefined) {
-  if (subscriptionId === undefined) {
-    localStorage.removeItem('re.notifica.push.subscription_id');
+export function storeSubscription(subscription: NotificarePushSubscription | undefined) {
+  if (subscription === undefined) {
+    localStorage.removeItem('re.notifica.push.subscription');
     return;
   }
 
-  localStorage.setItem('re.notifica.push.subscription_id', subscriptionId);
+  localStorage.setItem('re.notifica.push.subscription', JSON.stringify(subscription));
 }

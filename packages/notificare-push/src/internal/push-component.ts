@@ -29,7 +29,7 @@ import {
   retrieveTransport,
   setRemoteNotificationsEnabled,
   storeAllowedUI,
-  storeSubscriptionId,
+  storeSubscription,
   storeTransport,
 } from './storage/local-storage';
 import { hideFloatingButton } from './ui/floating-button';
@@ -128,7 +128,7 @@ export class PushComponent extends Component {
 
     setRemoteNotificationsEnabled(undefined);
     storeTransport(undefined);
-    storeSubscriptionId(undefined);
+    storeSubscription(undefined);
     storeAllowedUI(undefined);
   }
 
