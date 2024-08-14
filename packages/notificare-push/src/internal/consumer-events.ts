@@ -5,9 +5,10 @@ import {
 } from '@notificare/web-core';
 import { logger } from '../logger';
 import { NotificareNotificationDeliveryMechanism } from '../models/notificare-notification-delivery-mechanism';
+import { NotificarePushSubscription } from '../models/notificare-push-subscription';
 import { NotificareSystemNotification } from '../models/notificare-system-notification';
 
-let subscriptionIdChangedCallback: OnSubscriptionIdChangedCallback | undefined;
+let subscriptionChangedCallback: OnSubscriptionChangedCallback | undefined;
 let notificationSettingsChangedCallback: OnNotificationSettingsChangedCallback | undefined;
 let notificationReceivedCallback: OnNotificationReceivedCallback | undefined;
 let notificationOpenedCallback: OnNotificationOpenedCallback | undefined;
@@ -15,7 +16,9 @@ let notificationActionOpenedCallback: OnNotificationActionOpenedCallback | undef
 let systemNotificationReceivedCallback: OnSystemNotificationReceivedCallback | undefined;
 let unknownNotificationReceivedCallback: OnUnknownNotificationReceivedCallback | undefined;
 
-export type OnSubscriptionIdChangedCallback = (subscriptionId: string | undefined) => void;
+export type OnSubscriptionChangedCallback = (
+  subscription: NotificarePushSubscription | undefined,
+) => void;
 export type OnNotificationSettingsChangedCallback = (allowedUI: boolean) => void;
 export type OnNotificationReceivedCallback = (
   notification: NotificareNotification,
@@ -31,14 +34,12 @@ export type OnSystemNotificationReceivedCallback = (
 ) => void;
 export type OnUnknownNotificationReceivedCallback = (notification: unknown) => void;
 
-export function onSubscriptionIdChanged(
-  callback: OnSubscriptionIdChangedCallback,
-): EventSubscription {
-  subscriptionIdChangedCallback = callback;
+export function onSubscriptionChanged(callback: OnSubscriptionChangedCallback): EventSubscription {
+  subscriptionChangedCallback = callback;
 
   return {
     remove: () => {
-      subscriptionIdChangedCallback = undefined;
+      subscriptionChangedCallback = undefined;
     },
   };
 }
@@ -113,14 +114,14 @@ export function onUnknownNotificationReceived(
   };
 }
 
-export function notifySubscriptionIdChanged(subscriptionId: string | undefined) {
-  const callback = subscriptionIdChangedCallback;
+export function notifySubscriptionChanged(subscription: NotificarePushSubscription | undefined) {
+  const callback = subscriptionChangedCallback;
   if (!callback) {
-    logger.debug("The 'subscription_id_changed' handler is not configured.");
+    logger.debug("The 'subscription_changed' handler is not configured.");
     return;
   }
 
-  callback(subscriptionId);
+  callback(subscription);
 }
 
 export function notifyNotificationSettingsChanged(allowedUI: boolean) {

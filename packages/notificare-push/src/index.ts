@@ -30,6 +30,7 @@ declare global {
 export * from './public-api';
 
 export * from './models/notificare-notification-delivery-mechanism';
+export * from './models/notificare-push-subscription';
 export * from './models/notificare-system-notification';
 export * from './models/notificare-transport';
 
