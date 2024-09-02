@@ -1,6 +1,8 @@
 import {
+  getApplication,
   getCurrentDevice,
   getOptions,
+  NotificareApplicationUnavailableError,
   NotificareInternalOptions,
   NotificareNotConfiguredError,
 } from '@notificare/web-core';
@@ -122,10 +124,14 @@ function getWorkerConfiguration(): WorkerConfiguration {
   const options = getOptions();
   if (!options) throw new NotificareNotConfiguredError();
 
+  const application = getApplication();
+  if (!application) throw new NotificareApplicationUnavailableError();
+
   const device = getCurrentDevice();
 
   return {
     cloudHost: options.hosts.cloudApi,
+    applicationId: application.id,
     applicationKey: options.applicationKey,
     applicationSecret: options.applicationSecret,
     deviceId: device?.id,
@@ -139,6 +145,7 @@ function areSameWorkerConfiguration(
 ) {
   return (
     expectedConfig.cloudHost === config.cloudHost &&
+    expectedConfig.applicationId === config.applicationId &&
     expectedConfig.applicationKey === config.applicationKey &&
     expectedConfig.applicationSecret === config.applicationSecret &&
     expectedConfig.deviceId === config.deviceId &&

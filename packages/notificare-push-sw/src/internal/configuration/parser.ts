@@ -30,6 +30,13 @@ export function parseWorkerConfiguration(): WorkerConfiguration | undefined {
     return undefined;
   }
 
+  const { applicationId } = config;
+  if (!applicationId) {
+    // The service worker was updated on the background and the user hasn't opened
+    // the website yet to update the worker registration.
+    logger.warning('Parsing older worker configuration: missing application id.');
+  }
+
   const { applicationKey } = config;
   if (!applicationKey) {
     logger.warning('Cannot parse the worker configuration: missing application key.');
@@ -50,6 +57,7 @@ export function parseWorkerConfiguration(): WorkerConfiguration | undefined {
 
   return {
     cloudHost,
+    applicationId,
     applicationKey,
     applicationSecret,
     deviceId,

@@ -40,7 +40,12 @@ import {
   NotificareInternalOptionsHosts,
   setOptions,
 } from './internal/options';
-import { getStoredDevice } from './internal/storage/local-storage';
+import {
+  clearStorage,
+  getStoredApplication,
+  getStoredDevice,
+  setStoredApplication,
+} from './internal/storage/local-storage';
 import { hasWebPushSupport } from './internal/utils';
 import { SDK_VERSION as SDK_VERSION_INTERNAL } from './internal/version';
 import { NotificareApplication } from './models/notificare-application';
@@ -75,9 +80,15 @@ export function isReady(): boolean {
 }
 
 export function configure(options: NotificareOptions) {
-  if (getLaunchState() >= LaunchState.CONFIGURED) {
-    logger.warning('Notificare has already been configured. Skipping...');
+  const state = getLaunchState();
+
+  if (state > LaunchState.CONFIGURED) {
+    logger.warning('Unable to reconfigure Notificare once launched.');
     return;
+  }
+
+  if (state === LaunchState.CONFIGURED) {
+    logger.info('Reconfiguring Notificare with another set of application keys.');
   }
 
   logger.debug('Configuring notificare.');
@@ -167,7 +178,24 @@ export async function launch(): Promise<void> {
   try {
     setLaunchState(LaunchState.LAUNCHING);
 
-    const application = await fetchApplication();
+    const application = await fetchApplicationInternal({ saveToLocalStorage: false });
+    const storedApplication = getStoredApplication();
+
+    if (storedApplication && storedApplication.id !== application.id) {
+      logger.warning('Incorrect application keys detected. Resetting Notificare to a clean state.');
+
+      // eslint-disable-next-line no-restricted-syntax
+      for (const component of components.values()) {
+        logger.debug(`Resetting '${component.name}' component.`);
+
+        // eslint-disable-next-line no-await-in-loop
+        await component.clearStorage();
+      }
+
+      clearStorage();
+    }
+
+    setStoredApplication(application);
 
     // eslint-disable-next-line no-restricted-syntax
     for (const component of components.values()) {
@@ -220,7 +248,7 @@ export async function unlaunch(): Promise<void> {
       await deleteDevice();
     }
 
-    localStorage.removeItem('re.notifica.application');
+    setStoredApplication(undefined);
     localStorage.removeItem('re.notifica.migrated');
 
     logger.info('Un-launched Notificare.');
@@ -234,37 +262,11 @@ export async function unlaunch(): Promise<void> {
 }
 
 export function getApplication(): NotificareApplication | undefined {
-  const applicationStr = localStorage.getItem('re.notifica.application');
-  if (!applicationStr) return undefined;
-
-  try {
-    return JSON.parse(applicationStr);
-  } catch (e) {
-    logger.warning('Failed to decode the stored application.', e);
-
-    // Remove the corrupted device from local storage.
-    localStorage.removeItem('re.notifica.application');
-
-    return undefined;
-  }
+  return getStoredApplication();
 }
 
 export async function fetchApplication(): Promise<NotificareApplication> {
-  if (!isConfigured()) throw new NotificareNotConfiguredError();
-
-  const options = getOptions();
-  if (!options) throw new NotificareNotConfiguredError();
-
-  const { application: cloudApplication } = await fetchCloudApplication({
-    environment: getCloudApiEnvironment(),
-    language: options.language,
-  });
-
-  const application = convertCloudApplicationToPublic(cloudApplication);
-
-  localStorage.setItem('re.notifica.application', JSON.stringify(application));
-
-  return application;
+  return fetchApplicationInternal({ saveToLocalStorage: true });
 }
 
 export async function fetchNotification(id: string): Promise<NotificareNotification> {
@@ -403,4 +405,28 @@ async function postLaunch() {
       logger.error(`Failed to post-launch the '${component.name}' component.`, e);
     }
   }
+}
+
+async function fetchApplicationInternal({
+  saveToLocalStorage,
+}: {
+  saveToLocalStorage: boolean;
+}): Promise<NotificareApplication> {
+  if (!isConfigured()) throw new NotificareNotConfiguredError();
+
+  const options = getOptions();
+  if (!options) throw new NotificareNotConfiguredError();
+
+  const { application: cloudApplication } = await fetchCloudApplication({
+    environment: getCloudApiEnvironment(),
+    language: options.language,
+  });
+
+  const application = convertCloudApplicationToPublic(cloudApplication);
+
+  if (saveToLocalStorage) {
+    setStoredApplication(application);
+  }
+
+  return application;
 }

@@ -25,6 +25,10 @@ export class InboxComponent extends Component {
     //
   }
 
+  async clearStorage(): Promise<void> {
+    localStorage.removeItem('re.notifica.inbox.badge');
+  }
+
   async launch(): Promise<void> {
     const application = getApplication();
     if (application?.inboxConfig?.useUserInbox) {

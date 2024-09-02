@@ -80,6 +80,15 @@ export class PushComponent extends Component {
       .catch((error) => logger.error('Unable to monitor push permission changes.', error));
   }
 
+  async clearStorage(): Promise<void> {
+    setRemoteNotificationsEnabled(undefined);
+    storeTransport(undefined);
+    storeSubscription(undefined);
+    storeAllowedUI(undefined);
+
+    localStorage.removeItem('re.notifica.push.first_registration');
+  }
+
   async launch(): Promise<void> {
     const options = getOptions();
 
