@@ -6,6 +6,9 @@ export abstract class Component {
 
   abstract configure(): void;
 
+  // eslint-disable-next-line class-methods-use-this,@typescript-eslint/no-empty-function
+  async clearStorage(): Promise<void> {}
+
   abstract launch(): Promise<void>;
 
   abstract unlaunch(): Promise<void>;

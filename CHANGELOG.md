@@ -3,6 +3,7 @@
 ## Upcoming release
 
 - Changed the `subscriptionId` properties to a more robust data model
+- Allow `configure()` to be called more than once, provided Notificare is unlaunched.
 
 ## 4.0.0-beta.1
 

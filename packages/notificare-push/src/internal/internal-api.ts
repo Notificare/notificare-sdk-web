@@ -246,7 +246,6 @@ async function updateDeviceSubscription({
 
   const previousTransport = retrieveTransport();
   const previousSubscription = retrieveSubscription();
-  logger.warning(`previous sub = ${JSON.stringify(previousSubscription, null, 2)}`);
 
   if (previousTransport === transport && previousSubscription?.token === token) {
     logger.debug('Push subscription unmodified. Updating notification settings instead.');
