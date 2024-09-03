@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## Upcoming release
+## 4.0.0-beta.2
 
 - Changed the `subscriptionId` properties to a more robust data model
 - Allow `configure()` to be called more than once, provided Notificare is unlaunched.
