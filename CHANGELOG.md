@@ -1,5 +1,17 @@
 # CHANGELOG
 
+## 4.0.0
+
+- Device identifiers become long-lived
+- Add support for customisable hosts
+
+#### Breaking changes
+
+- `NotificareDevice.id` attribute no longer contains the push token. Use `getSubscription()` from `notificare-web/push` instead.
+- The `NotificareDevice` data model was reduced to only publicly relevant attributes.
+- `onDeviceRegistered` only triggers once, when the device is created.
+- `NotificareTransport` was moved to `notificare-web/push`.
+
 ## 4.0.0-beta.2
 
 - Changed the `subscriptionId` properties to a more robust data model
@@ -133,4 +145,4 @@ Check our [migration guide](./MIGRATION.md) before adopting the v3.x generation.
 
 ## 3.0.0-beta.1
 
-Check our [migration guide](./MIGRATION.md) before adopting the v3.x generation.
+Check our [migration guide](./MIGRATION-3.0.md) before adopting the v3.x generation.
