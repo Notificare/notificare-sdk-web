@@ -4,6 +4,36 @@ import { NotificareWorkerNotification } from './internal-types';
 export function createPartialNotification(
   message: NotificareWorkerNotification,
 ): NotificareNotification {
+  const ignoreKeys: Array<keyof NotificareWorkerNotification> = [
+    'system',
+    'push',
+    'requireInteraction',
+    'renotify',
+    'urlFormatString',
+    'badge',
+    'id',
+    'inboxItemId',
+    'inboxItemVisible',
+    'inboxItemExpires',
+    'notificationId',
+    'notificationType',
+    'application',
+    'alertTitle',
+    'alertSubtitle',
+    'alert',
+    'icon',
+    'sound',
+    'attachment',
+    'actions',
+  ];
+
+  const extras = Object.keys(message)
+    .filter((key) => !ignoreKeys.includes(key) && !key.startsWith('x-'))
+    .reduce<Record<string, unknown>>((acc, key) => {
+      acc[key] = message[key];
+      return acc;
+    }, {});
+
   return {
     id: message.notificationId,
     partial: true,
@@ -15,6 +45,6 @@ export function createPartialNotification(
     content: [],
     actions: [],
     attachments: message.attachment ? [message.attachment] : [],
-    extra: {},
+    extra: extras,
   };
 }

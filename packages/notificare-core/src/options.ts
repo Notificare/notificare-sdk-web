@@ -8,10 +8,16 @@ export interface NotificareOptions {
   serviceWorker?: string;
   serviceWorkerScope?: string;
   geolocation?: NotificareGeolocationOptions;
+  hosts?: NotificareHostsOptions;
 }
 
 export interface NotificareGeolocationOptions {
   timeout?: number;
   enableHighAccuracy?: boolean;
   maximumAge?: number;
+}
+
+export interface NotificareHostsOptions {
+  cloudApi?: string;
+  restApi?: string;
 }

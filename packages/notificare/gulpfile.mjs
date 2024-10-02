@@ -8,8 +8,8 @@ import pkg from "./package.json" assert { type: "json" };
 
 const s3 = s3Upload();
 
-const NOTIFICARE_CORE_URL = `https://cdn.notifica.re/libs/web/v3/${pkg.version}/notificare-core.js`;
-const NOTIFICARE_LATEST_CORE_URL = `https://cdn.notifica.re/libs/web/v3/latest/notificare-core.js`;
+const NOTIFICARE_CORE_URL = `https://cdn.notifica.re/libs/web/v4/${pkg.version}/notificare-core.js`;
+const NOTIFICARE_LATEST_CORE_URL = `https://cdn.notifica.re/libs/web/v4/latest/notificare-core.js`;
 const NOTIFICARE_INTERNAL_CORE_URL = `https://cdn.notifica.re/libs/web/internal/${pkg.version}/notificare-core.js`;
 const STABLE_VERSION_REGEX = /^\d+\.\d+\.\d+$/;
 
@@ -120,7 +120,7 @@ export function uploadVersionRelease() {
     .pipe(s3({
       Bucket: "cdn.notifica.re",
       ACL: "public-read",
-      keyTransform: (filename) => `libs/web/v3/${pkg.version}/${filename}`
+      keyTransform: (filename) => `libs/web/v4/${pkg.version}/${filename}`
     }));
 }
 
@@ -131,7 +131,7 @@ export function uploadLatestRelease() {
     .pipe(s3({
       Bucket: "cdn.notifica.re",
       ACL: "public-read",
-      keyTransform: (filename) => `libs/web/v3/latest/${filename}`
+      keyTransform: (filename) => `libs/web/v4/latest/${filename}`
     }));
 }
 

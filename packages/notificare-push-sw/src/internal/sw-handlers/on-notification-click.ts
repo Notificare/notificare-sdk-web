@@ -7,11 +7,10 @@ import { logger } from '../../logger';
 import { convertCloudNotificationToPublic } from '../cloud-api/converters/notification-converter';
 import { getCloudApiEnvironment } from '../cloud-api/environment';
 import { logNotificationInfluenced, logNotificationOpen } from '../cloud-api/requests/events';
-import { parseWorkerConfiguration } from '../configuration/parser';
+import { getCurrentDeviceId, parseWorkerConfiguration } from '../configuration/parser';
 import { createNotificationReply, presentNotificationAction } from '../ui/notification-actions';
 import { presentNotification } from '../ui/notifications';
 import { ensureOpenWindowClient } from '../ui/window-client';
-import { getCurrentPushToken } from '../utils';
 
 // Let TS know this is scoped to a service worker.
 declare const self: ServiceWorkerGlobalScope;
@@ -98,15 +97,9 @@ async function refreshApplicationBadge() {
       return;
     }
 
-    const deviceId = await getCurrentPushToken();
-    if (!deviceId) {
-      logger.warning('Unable to acquire the device id.');
-      return;
-    }
-
     const { unread } = await fetchCloudDeviceInbox({
       environment: await getCloudApiEnvironment(),
-      deviceId,
+      deviceId: getCurrentDeviceId(),
       skip: 0,
       limit: 0,
     });

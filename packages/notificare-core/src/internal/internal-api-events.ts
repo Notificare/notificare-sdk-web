@@ -3,7 +3,7 @@ import { getCloudApiEnvironment } from './cloud-api/environment';
 import { getSession } from './internal-api-session-shared';
 import { isConfigured } from './launch-state';
 import { logger } from './logger';
-import { getCurrentDevice } from './storage/local-storage';
+import { getStoredDevice } from './storage/local-storage';
 
 export async function logApplicationInstall() {
   await logInternal({ type: 're.notifica.event.application.Install' });
@@ -59,7 +59,7 @@ export async function logInternal(options: InternalLogEventOptions) {
     return;
   }
 
-  const currentDevice = getCurrentDevice();
+  const currentDevice = getStoredDevice();
 
   await createCloudEvent({
     environment: getCloudApiEnvironment(),

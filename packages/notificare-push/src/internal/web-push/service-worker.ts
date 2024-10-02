@@ -1,5 +1,8 @@
 import {
+  getApplication,
+  getCurrentDevice,
   getOptions,
+  NotificareApplicationUnavailableError,
   NotificareInternalOptions,
   NotificareNotConfiguredError,
 } from '@notificare/web-core';
@@ -45,7 +48,6 @@ export async function createWebPushSubscription(
   registration: ServiceWorkerRegistration,
   vapidPublicKey: string,
 ): Promise<PushSubscription> {
-  //
   const currentSubscription = await registration.pushManager.getSubscription();
 
   if (currentSubscription) {
@@ -122,10 +124,17 @@ function getWorkerConfiguration(): WorkerConfiguration {
   const options = getOptions();
   if (!options) throw new NotificareNotConfiguredError();
 
+  const application = getApplication();
+  if (!application) throw new NotificareApplicationUnavailableError();
+
+  const device = getCurrentDevice();
+
   return {
+    cloudHost: options.hosts.cloudApi,
+    applicationId: application.id,
     applicationKey: options.applicationKey,
     applicationSecret: options.applicationSecret,
-    useTestEnvironment: options.useTestEnvironment ? true : undefined,
+    deviceId: device?.id,
     standalone: isStandaloneMode() ? true : undefined,
   };
 }
@@ -135,9 +144,11 @@ function areSameWorkerConfiguration(
   expectedConfig: WorkerConfiguration,
 ) {
   return (
+    expectedConfig.cloudHost === config.cloudHost &&
+    expectedConfig.applicationId === config.applicationId &&
     expectedConfig.applicationKey === config.applicationKey &&
     expectedConfig.applicationSecret === config.applicationSecret &&
-    expectedConfig.useTestEnvironment === config.useTestEnvironment &&
+    expectedConfig.deviceId === config.deviceId &&
     expectedConfig.standalone === config.standalone
   );
 }

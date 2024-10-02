@@ -1,14 +1,11 @@
 import {
   addCloudDeviceTags,
-  clearCloudDeviceDoNotDisturb,
   clearCloudDeviceTags,
   fetchCloudDeviceDoNotDisturb,
   fetchCloudDeviceTags,
   fetchCloudDeviceUserData,
   removeCloudDeviceTags,
   updateCloudDevice,
-  updateCloudDeviceDoNotDisturb,
-  updateCloudDeviceUserData,
 } from '@notificare/web-cloud-api';
 import { NotificareDeviceUnavailableError } from './errors/notificare-device-unavailable-error';
 import { NotificareNotReadyError } from './errors/notificare-not-ready-error';
@@ -17,28 +14,57 @@ import {
   checkPrerequisites,
   getDeviceLanguage,
   getDeviceRegion,
-  registerDeviceInternal,
 } from './internal/internal-api-device';
-import { getCurrentDevice, storeCurrentDevice } from './internal/storage/local-storage';
+import { asPublicDevice, getStoredDevice, setStoredDevice } from './internal/storage/local-storage';
+import { NotificareDevice } from './models/notificare-device';
 import { NotificareDoNotDisturb } from './models/notificare-do-not-disturb';
 import { NotificareUserData } from './models/notificare-user-data';
 
-export { getCurrentDevice } from './internal/storage/local-storage';
+export function getCurrentDevice(): NotificareDevice | undefined {
+  const device = getStoredDevice();
+  if (!device) return undefined;
 
-export async function registerDevice(options: RegisterDeviceOptions): Promise<void> {
+  return asPublicDevice(device);
+}
+
+export async function updateUser({ userId, userName }: UpdateUserOptions): Promise<void> {
   checkPrerequisites();
 
-  const device = getCurrentDevice();
+  const device = getStoredDevice();
   if (!device) throw new NotificareNotReadyError();
 
-  await registerDeviceInternal({
-    transport: device.transport,
-    token: device.id,
-    keys: device.keys,
-    userId: options.userId ?? undefined,
-    userName: options.userName ?? undefined,
+  await updateCloudDevice({
+    environment: getCloudApiEnvironment(),
+    deviceId: device.id,
+    payload: {
+      userID: userId ?? null,
+      userName: userName ?? null,
+    },
+  });
+
+  // Update current device properties.
+  setStoredDevice({
+    ...device,
+    userId: userId ?? undefined,
+    userName: userName ?? undefined,
   });
 }
+
+export interface UpdateUserOptions {
+  readonly userId: string | null;
+  readonly userName: string | null;
+}
+
+/**
+ * @deprecated Use updateUser() instead.
+ *
+ * @param options
+ */
+export async function registerDevice(options: RegisterDeviceOptions): Promise<void> {
+  await updateUser(options);
+}
+
+export type RegisterDeviceOptions = UpdateUserOptions;
 
 export function getPreferredLanguage(): string | undefined {
   const preferredLanguage = localStorage.getItem('re.notifica.preferred_language');
@@ -53,7 +79,7 @@ export function getPreferredLanguage(): string | undefined {
 export async function updatePreferredLanguage(language: string | null): Promise<void> {
   checkPrerequisites();
 
-  const device = getCurrentDevice();
+  const device = getStoredDevice();
   if (!device) throw new NotificareDeviceUnavailableError();
 
   if (language) {
@@ -84,7 +110,7 @@ export async function updatePreferredLanguage(language: string | null): Promise<
 export async function fetchTags(): Promise<string[]> {
   checkPrerequisites();
 
-  const device = getCurrentDevice();
+  const device = getStoredDevice();
   if (!device) throw new NotificareDeviceUnavailableError();
 
   const { tags } = await fetchCloudDeviceTags({
@@ -102,7 +128,7 @@ export async function addTag(tag: string): Promise<void> {
 export async function addTags(tags: string[]): Promise<void> {
   checkPrerequisites();
 
-  const device = getCurrentDevice();
+  const device = getStoredDevice();
   if (!device) throw new NotificareDeviceUnavailableError();
 
   await addCloudDeviceTags({
@@ -119,7 +145,7 @@ export async function removeTag(tag: string): Promise<void> {
 export async function removeTags(tags: string[]): Promise<void> {
   checkPrerequisites();
 
-  const device = getCurrentDevice();
+  const device = getStoredDevice();
   if (!device) throw new NotificareDeviceUnavailableError();
 
   await removeCloudDeviceTags({
@@ -132,7 +158,7 @@ export async function removeTags(tags: string[]): Promise<void> {
 export async function clearTags(): Promise<void> {
   checkPrerequisites();
 
-  const device = getCurrentDevice();
+  const device = getStoredDevice();
   if (!device) throw new NotificareDeviceUnavailableError();
 
   await clearCloudDeviceTags({
@@ -144,7 +170,7 @@ export async function clearTags(): Promise<void> {
 export async function fetchDoNotDisturb(): Promise<NotificareDoNotDisturb | undefined> {
   checkPrerequisites();
 
-  const device = getCurrentDevice();
+  const device = getStoredDevice();
   if (!device) throw new NotificareDeviceUnavailableError();
 
   const { dnd } = await fetchCloudDeviceDoNotDisturb({
@@ -153,7 +179,7 @@ export async function fetchDoNotDisturb(): Promise<NotificareDoNotDisturb | unde
   });
 
   // Update current device properties.
-  storeCurrentDevice({
+  setStoredDevice({
     ...device,
     dnd: dnd ?? undefined,
   });
@@ -164,17 +190,19 @@ export async function fetchDoNotDisturb(): Promise<NotificareDoNotDisturb | unde
 export async function updateDoNotDisturb(dnd: NotificareDoNotDisturb): Promise<void> {
   checkPrerequisites();
 
-  const device = getCurrentDevice();
+  const device = getStoredDevice();
   if (!device) throw new NotificareDeviceUnavailableError();
 
-  await updateCloudDeviceDoNotDisturb({
+  await updateCloudDevice({
     environment: getCloudApiEnvironment(),
     deviceId: device.id,
-    dnd,
+    payload: {
+      dnd,
+    },
   });
 
   // Update current device properties.
-  storeCurrentDevice({
+  setStoredDevice({
     ...device,
     dnd,
   });
@@ -183,16 +211,19 @@ export async function updateDoNotDisturb(dnd: NotificareDoNotDisturb): Promise<v
 export async function clearDoNotDisturb(): Promise<void> {
   checkPrerequisites();
 
-  const device = getCurrentDevice();
+  const device = getStoredDevice();
   if (!device) throw new NotificareDeviceUnavailableError();
 
-  await clearCloudDeviceDoNotDisturb({
+  await updateCloudDevice({
     environment: getCloudApiEnvironment(),
     deviceId: device.id,
+    payload: {
+      dnd: null,
+    },
   });
 
   // Update current device properties.
-  storeCurrentDevice({
+  setStoredDevice({
     ...device,
     dnd: undefined,
   });
@@ -201,7 +232,7 @@ export async function clearDoNotDisturb(): Promise<void> {
 export async function fetchUserData(): Promise<NotificareUserData> {
   checkPrerequisites();
 
-  const device = getCurrentDevice();
+  const device = getStoredDevice();
   if (!device) throw new NotificareDeviceUnavailableError();
 
   const { userData } = await fetchCloudDeviceUserData({
@@ -210,7 +241,7 @@ export async function fetchUserData(): Promise<NotificareUserData> {
   });
 
   // Update current device properties.
-  storeCurrentDevice({
+  setStoredDevice({
     ...device,
     userData: userData ?? {},
   });
@@ -221,23 +252,20 @@ export async function fetchUserData(): Promise<NotificareUserData> {
 export async function updateUserData(userData: NotificareUserData): Promise<void> {
   checkPrerequisites();
 
-  const device = getCurrentDevice();
+  const device = getStoredDevice();
   if (!device) throw new NotificareDeviceUnavailableError();
 
-  await updateCloudDeviceUserData({
+  await updateCloudDevice({
     environment: getCloudApiEnvironment(),
     deviceId: device.id,
-    userData,
+    payload: {
+      userData,
+    },
   });
 
   // Update current device properties.
-  storeCurrentDevice({
+  setStoredDevice({
     ...device,
     userData,
   });
-}
-
-export interface RegisterDeviceOptions {
-  userId: string | null;
-  userName: string | null;
 }

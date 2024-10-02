@@ -3,8 +3,8 @@ import { NotificareNotification, NotificareNotificationAction } from '@notificar
 import { logger } from '../../logger';
 import { getCloudApiEnvironment } from '../cloud-api/environment';
 import { InvalidWorkerConfigurationError } from '../configuration/errors';
-import { parseWorkerConfiguration } from '../configuration/parser';
-import { getCurrentPushToken, getEmailUrl, getSmsUrl, getTelephoneUrl } from '../utils';
+import { getCurrentDeviceId, parseWorkerConfiguration } from '../configuration/parser';
+import { getEmailUrl, getSmsUrl, getTelephoneUrl } from '../utils';
 import { presentWindowClient } from './window-client';
 
 // Let TS know this is scoped to a service worker.
@@ -113,15 +113,12 @@ export async function createNotificationReply(
   notification: NotificareNotification,
   action: NotificareNotificationAction,
 ) {
-  const deviceId = await getCurrentPushToken();
-  if (!deviceId) throw new Error('Unable to acquire the device id.');
-
   await createCloudNotificationReply({
     environment: await getCloudApiEnvironment(),
     payload: {
       notification: notification.id,
       label: action.label,
-      deviceID: deviceId,
+      deviceID: getCurrentDeviceId(),
       data: {
         target: action.target,
       },

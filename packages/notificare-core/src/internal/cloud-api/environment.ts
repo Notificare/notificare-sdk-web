@@ -6,7 +6,7 @@ export function getCloudApiEnvironment() {
   if (!options) throw new NotificareNotConfiguredError();
 
   return {
-    useTestEnvironment: options.useTestEnvironment ?? false,
+    cloudHost: options.hosts.cloudApi,
     applicationKey: options.applicationKey,
     applicationSecret: options.applicationSecret,
   };

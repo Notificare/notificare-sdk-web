@@ -7,9 +7,9 @@ import { NotificareNotification, NotificareNotificationContent } from '@notifica
 import { logger } from '../../logger';
 import { getCloudApiEnvironment } from '../cloud-api/environment';
 import { InvalidWorkerConfigurationError } from '../configuration/errors';
-import { parseWorkerConfiguration } from '../configuration/parser';
+import { getCurrentDeviceId, parseWorkerConfiguration } from '../configuration/parser';
 import { resolveUrl, UrlResolverResult } from '../notification-url-resolver';
-import { getCloudApiUrl, getCurrentPushToken, isAppleDevice, isSafariBrowser } from '../utils';
+import { isAppleDevice, isSafariBrowser } from '../utils';
 import { presentWindowClient } from './window-client';
 
 // Let TS know this is scoped to a service worker.
@@ -102,14 +102,12 @@ async function presentPassbookNotification(notification: NotificareNotification)
   const config = parseWorkerConfiguration();
   if (!config) throw new InvalidWorkerConfigurationError();
 
-  const cloudApiUrl = getCloudApiUrl(config);
-
   if (isAppleDevice() && isSafariBrowser()) {
-    await self.clients.openWindow(`${cloudApiUrl}/pass/pkpass/${id}`);
+    await self.clients.openWindow(`https://${config.cloudHost}/pass/pkpass/${id}`);
     return;
   }
 
-  await self.clients.openWindow(`${cloudApiUrl}/pass/web/${id}?showWebVersion=1`);
+  await self.clients.openWindow(`https://${config.cloudHost}/pass/web/${id}?showWebVersion=1`);
 }
 
 async function presentUrlResolverNotification(notification: NotificareNotification) {
@@ -181,7 +179,7 @@ async function presentUrlSchemeNotification(notification: NotificareNotification
 
   const { link } = await fetchCloudDynamicLink({
     environment: await getCloudApiEnvironment(),
-    deviceId: await getCurrentPushToken(),
+    deviceId: getCurrentDeviceId(),
     url: urlStr,
   });
 
