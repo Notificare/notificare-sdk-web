@@ -22,7 +22,7 @@ import { convertCloudNotificationToPublic } from './internal/cloud-api/converter
 import { getCloudApiEnvironment } from './internal/cloud-api/environment';
 import { components } from './internal/component-cache';
 import { notifyOnReady, notifyUnlaunched } from './internal/consumer-events';
-import { deleteDevice, registerTemporaryDevice } from './internal/internal-api-device';
+import { deleteDevice } from './internal/internal-api-device';
 import {
   getLaunchState,
   isConfigured as isConfiguredInternal,
@@ -32,7 +32,20 @@ import {
 } from './internal/launch-state';
 import { logger } from './internal/logger';
 import { isLatestStorageStructure, migrate } from './internal/migration-flow';
-import { getOptions, NotificareInternalOptionsServices, setOptions } from './internal/options';
+import {
+  DEFAULT_CLOUD_API_HOST,
+  DEFAULT_REST_API_HOST,
+  getOptions,
+  isDefaultHosts,
+  NotificareInternalOptionsHosts,
+  setOptions,
+} from './internal/options';
+import {
+  clearStorage,
+  getStoredApplication,
+  getStoredDevice,
+  setStoredApplication,
+} from './internal/storage/local-storage';
 import { hasWebPushSupport } from './internal/utils';
 import { SDK_VERSION as SDK_VERSION_INTERNAL } from './internal/version';
 import { NotificareApplication } from './models/notificare-application';
@@ -42,7 +55,6 @@ import {
   NotificareNotificationAction,
 } from './models/notificare-notification';
 import { NotificareOptions } from './options';
-import { clearTags, getCurrentDevice } from './public-api-device';
 
 export const SDK_VERSION: string = SDK_VERSION_INTERNAL;
 
@@ -68,9 +80,15 @@ export function isReady(): boolean {
 }
 
 export function configure(options: NotificareOptions) {
-  if (getLaunchState() >= LaunchState.CONFIGURED) {
-    logger.warning('Notificare has already been configured. Skipping...');
+  const state = getLaunchState();
+
+  if (state > LaunchState.CONFIGURED) {
+    logger.warning('Unable to reconfigure Notificare once launched.');
     return;
+  }
+
+  if (state === LaunchState.CONFIGURED) {
+    logger.info('Reconfiguring Notificare with another set of application keys.');
   }
 
   logger.debug('Configuring notificare.');
@@ -83,31 +101,13 @@ export function configure(options: NotificareOptions) {
     migrate();
   }
 
-  // Hidden property from the consumer options.
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
-  const { useTestEnvironment } = options;
-
-  let services: NotificareInternalOptionsServices;
-  if (useTestEnvironment) {
-    services = {
-      cloudHost: 'https://cloud-test.notifica.re',
-      pushHost: 'https://push-test.notifica.re',
-      awsStorageHost: 'https://push-test.notifica.re/upload',
-      websitePushHost: 'https://push-test.notifica.re/website-push/safari',
-    };
-  } else {
-    services = {
-      cloudHost: 'https://cloud.notifica.re',
-      pushHost: 'https://push.notifica.re',
-      awsStorageHost: 'https://push.notifica.re/upload',
-      websitePushHost: 'https://push.notifica.re/website-push/safari',
-    };
-  }
+  const hosts: NotificareInternalOptionsHosts = {
+    cloudApi: options.hosts?.cloudApi ?? DEFAULT_CLOUD_API_HOST,
+    restApi: options.hosts?.restApi ?? DEFAULT_REST_API_HOST,
+  };
 
   setOptions({
-    useTestEnvironment,
-    services,
+    hosts,
     applicationKey: options.applicationKey,
     applicationSecret: options.applicationSecret,
     applicationVersion: options.applicationVersion ?? '1.0.0',
@@ -127,6 +127,12 @@ export function configure(options: NotificareOptions) {
   }
 
   setLaunchState(LaunchState.CONFIGURED);
+
+  if (!isDefaultHosts(hosts)) {
+    logger.info('Notificare configured with customized hosts.');
+    logger.debug(`Cloud API host: ${hosts.cloudApi}`);
+    logger.debug(`REST API host: ${hosts.restApi}`);
+  }
 }
 
 export async function launch(): Promise<void> {
@@ -172,18 +178,24 @@ export async function launch(): Promise<void> {
   try {
     setLaunchState(LaunchState.LAUNCHING);
 
-    if (options.ignoreTemporaryDevices) {
-      const device = getCurrentDevice();
-      if (device && device.transport === 'Notificare') {
-        try {
-          await deleteDevice();
-        } catch (e) {
-          logger.error('Failed to clean up temporary device.', e);
-        }
+    const application = await fetchApplicationInternal({ saveToLocalStorage: false });
+    const storedApplication = getStoredApplication();
+
+    if (storedApplication && storedApplication.id !== application.id) {
+      logger.warning('Incorrect application keys detected. Resetting Notificare to a clean state.');
+
+      // eslint-disable-next-line no-restricted-syntax
+      for (const component of components.values()) {
+        logger.debug(`Resetting '${component.name}' component.`);
+
+        // eslint-disable-next-line no-await-in-loop
+        await component.clearStorage();
       }
+
+      clearStorage();
     }
 
-    const application = await fetchApplication();
+    setStoredApplication(application);
 
     // eslint-disable-next-line no-restricted-syntax
     for (const component of components.values()) {
@@ -231,18 +243,12 @@ export async function unlaunch(): Promise<void> {
       }
     }
 
-    if (getCurrentDevice()) {
-      logger.debug('Clearing device tags.');
-      await clearTags();
-
-      logger.debug('Registering a temporary device.');
-      await registerTemporaryDevice();
-
+    if (getStoredDevice()) {
       logger.debug('Removing device.');
       await deleteDevice();
     }
 
-    localStorage.removeItem('re.notifica.application');
+    setStoredApplication(undefined);
     localStorage.removeItem('re.notifica.migrated');
 
     logger.info('Un-launched Notificare.');
@@ -256,37 +262,11 @@ export async function unlaunch(): Promise<void> {
 }
 
 export function getApplication(): NotificareApplication | undefined {
-  const applicationStr = localStorage.getItem('re.notifica.application');
-  if (!applicationStr) return undefined;
-
-  try {
-    return JSON.parse(applicationStr);
-  } catch (e) {
-    logger.warning('Failed to decode the stored application.', e);
-
-    // Remove the corrupted device from local storage.
-    localStorage.removeItem('re.notifica.application');
-
-    return undefined;
-  }
+  return getStoredApplication();
 }
 
 export async function fetchApplication(): Promise<NotificareApplication> {
-  if (!isConfigured()) throw new NotificareNotConfiguredError();
-
-  const options = getOptions();
-  if (!options) throw new NotificareNotConfiguredError();
-
-  const { application: cloudApplication } = await fetchCloudApplication({
-    environment: getCloudApiEnvironment(),
-    language: options.language,
-  });
-
-  const application = convertCloudApplicationToPublic(cloudApplication);
-
-  localStorage.setItem('re.notifica.application', JSON.stringify(application));
-
-  return application;
+  return fetchApplicationInternal({ saveToLocalStorage: true });
 }
 
 export async function fetchNotification(id: string): Promise<NotificareNotification> {
@@ -303,7 +283,7 @@ export async function fetchNotification(id: string): Promise<NotificareNotificat
 export async function fetchDynamicLink(url: string): Promise<NotificareDynamicLink> {
   if (!isConfigured()) throw new NotificareNotConfiguredError();
 
-  const device = getCurrentDevice();
+  const device = getStoredDevice();
 
   const { link } = await fetchCloudDynamicLink({
     environment: getCloudApiEnvironment(),
@@ -324,7 +304,7 @@ export async function createNotificationReply(
   const options = getOptions();
   if (!options) throw new NotificareNotConfiguredError();
 
-  const device = getCurrentDevice();
+  const device = getStoredDevice();
   if (!device) throw new NotificareDeviceUnavailableError();
 
   let mediaUrl: string | undefined;
@@ -335,7 +315,7 @@ export async function createNotificationReply(
       media: data.media,
     });
 
-    mediaUrl = `${options.services.awsStorageHost}${filename}`;
+    mediaUrl = `https://${options.hosts.restApi}/upload${filename}`;
   }
 
   await createCloudNotificationReply({
@@ -368,7 +348,7 @@ export async function callNotificationWebhook(
   if (!action.target) throw new Error('Unable to execute webhook without a target for the action.');
 
   const url = new URL(action.target);
-  const device = getCurrentDevice();
+  const device = getStoredDevice();
 
   const data: CloudNotificationWebhookPayload = {
     target: url.origin,
@@ -425,4 +405,28 @@ async function postLaunch() {
       logger.error(`Failed to post-launch the '${component.name}' component.`, e);
     }
   }
+}
+
+async function fetchApplicationInternal({
+  saveToLocalStorage,
+}: {
+  saveToLocalStorage: boolean;
+}): Promise<NotificareApplication> {
+  if (!isConfigured()) throw new NotificareNotConfiguredError();
+
+  const options = getOptions();
+  if (!options) throw new NotificareNotConfiguredError();
+
+  const { application: cloudApplication } = await fetchCloudApplication({
+    environment: getCloudApiEnvironment(),
+    language: options.language,
+  });
+
+  const application = convertCloudApplicationToPublic(cloudApplication);
+
+  if (saveToLocalStorage) {
+    setStoredApplication(application);
+  }
+
+  return application;
 }

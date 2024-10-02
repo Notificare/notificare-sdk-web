@@ -1,7 +1,7 @@
-import { NotificareDevice } from '../models/notificare-device';
 import { components } from './component-cache';
 import { logger } from './logger';
-import { storeCurrentDevice } from './storage/local-storage';
+import { StoredDevice } from './storage/entities/stored-device';
+import { setStoredDevice } from './storage/local-storage';
 
 export function isLatestStorageStructure(): boolean {
   return localStorage.getItem('re.notifica.migrated') === 'true';
@@ -18,22 +18,22 @@ export function migrate() {
       try {
         const oldDevice = JSON.parse(deviceStr);
 
-        const device: NotificareDevice = {
+        const device: StoredDevice = {
           id: oldDevice.deviceID,
           userId: oldDevice.userID,
           userName: oldDevice.userName,
           timeZoneOffset: oldDevice.timeZoneOffset,
           sdkVersion: oldDevice.sdkVersion,
           appVersion: oldDevice.appVersion,
+          userAgent: oldDevice.userAgent,
           language: oldDevice.language,
           region: oldDevice.region,
           transport: oldDevice.transport,
           keys: oldDevice.keys,
           userData: {},
-          lastRegistered: new Date(0).toISOString(),
         };
 
-        storeCurrentDevice(device);
+        setStoredDevice(device);
       } catch (e) {
         logger.error('Failed to decode the legacy device.', e);
       }

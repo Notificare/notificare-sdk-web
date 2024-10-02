@@ -12,6 +12,8 @@ import { NotificareWorkerNotification, WorkerNotification } from '../internal-ty
 declare const self: ServiceWorkerGlobalScope;
 
 export async function onPush(event: PushEvent) {
+  logger.debug('Received a remote notification.');
+
   if (!event.data) {
     logger.warning('The push event contained no data. Skipping...');
     return;
@@ -28,6 +30,18 @@ export async function onPush(event: PushEvent) {
 
   if (workerNotification['x-sender'] !== 'notificare') {
     await handleUnknownNotification(workerNotification);
+    return;
+  }
+
+  const workerConfiguration = parseWorkerConfiguration();
+  if (
+    workerConfiguration &&
+    workerConfiguration.applicationId &&
+    workerConfiguration.applicationId !== workerNotification['x-application']
+  ) {
+    logger.warning('Incoming notification originated from another application.');
+    logger.debug(workerConfiguration);
+    logger.debug(workerNotification);
     return;
   }
 

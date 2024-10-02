@@ -1,5 +1,5 @@
 import { useCallback, useState } from "react";
-import { getCurrentDevice, registerDevice, RegisterDeviceOptions } from "notificare-web/core";
+import { getCurrentDevice, updateUser } from "notificare-web/core";
 import { Button } from "@/components/button";
 import { Card, CardActions, CardContent, CardHeader } from "@/components/card";
 import { InputField } from "@/components/input-field";
@@ -21,12 +21,7 @@ export function DeviceRegistrationCard() {
   const onRegisterClick = useCallback(() => {
     setLoading(true);
 
-    const options: RegisterDeviceOptions = {
-      userId: userId.trim() || null,
-      userName: userName.trim() || null,
-    };
-
-    registerDevice(options)
+    updateUser({ userId: userId.trim() || null, userName: userName.trim() || null })
       .then(() => setLoading(false))
       .catch((e) => {
         logger.error(`Unable to register device: ${e}`);

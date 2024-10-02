@@ -9,8 +9,15 @@ import {
   disableRemoteNotifications as disableRemoteNotificationsInternal,
   enableRemoteNotifications as enableRemoteNotificationsInternal,
 } from './internal/internal-api';
-import { getRemoteNotificationsEnabled, retrieveAllowedUI } from './internal/storage/local-storage';
+import {
+  getRemoteNotificationsEnabled,
+  retrieveAllowedUI,
+  retrieveSubscription,
+  retrieveTransport,
+} from './internal/storage/local-storage';
 import { logger } from './logger';
+import { NotificarePushSubscription } from './models/notificare-push-subscription';
+import { NotificareTransport } from './models/notificare-transport';
 
 export {
   onNotificationSettingsChanged,
@@ -35,6 +42,14 @@ export function hasRemoteNotificationsEnabled(): boolean {
 
 export function getAllowedUI(): boolean {
   return retrieveAllowedUI() ?? false;
+}
+
+export function getTransport(): NotificareTransport | undefined {
+  return retrieveTransport();
+}
+
+export function getSubscription(): NotificarePushSubscription | undefined {
+  return retrieveSubscription();
 }
 
 export async function enableRemoteNotifications(): Promise<void> {

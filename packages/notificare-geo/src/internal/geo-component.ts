@@ -1,7 +1,11 @@
 import { Component, getCurrentDevice, getOptions } from '@notificare/web-core';
 import { logger } from '../logger';
 import { clearLocation, startLocationUpdates } from './internal-api';
-import { getLocationServicesEnabled, setLocationServicesEnabled } from './storage/local-storage';
+import {
+  getLocationServicesEnabled,
+  setCurrentLocation,
+  setLocationServicesEnabled,
+} from './storage/local-storage';
 
 /* eslint-disable class-methods-use-this */
 export class GeoComponent extends Component {
@@ -20,6 +24,11 @@ export class GeoComponent extends Component {
 
   configure() {
     //
+  }
+
+  async clearStorage(): Promise<void> {
+    setLocationServicesEnabled(undefined);
+    setCurrentLocation(undefined);
   }
 
   async launch(): Promise<void> {

@@ -51,7 +51,7 @@ export function createModalHeaderElement(
   if (application.websitePushConfig?.icon) {
     logo.setAttribute(
       'src',
-      `${options.services.awsStorageHost}${application.websitePushConfig.icon}`,
+      `https://${options.hosts.restApi}/upload${application.websitePushConfig.icon}`,
     );
   }
 

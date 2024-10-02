@@ -3,7 +3,7 @@ import { getSession, StoredSession, storeSession } from './internal-api-session-
 import { isReady } from './launch-state';
 import { logger } from './logger';
 import { getOptions } from './options';
-import { getCurrentDevice } from './storage/local-storage';
+import { getStoredDevice } from './storage/local-storage';
 import { randomUUID } from './utils';
 
 const TEN_MINUTES_MILLISECONDS = 600000;
@@ -39,7 +39,7 @@ export async function launch() {
 
 export async function unlaunch() {
   const currentSession = getSession();
-  const currentDevice = getCurrentDevice();
+  const currentDevice = getStoredDevice();
 
   if (!currentSession || !currentDevice) {
     return;
@@ -52,7 +52,7 @@ export async function handleDocumentVisibilityChanged() {
   if (!isReady()) return;
 
   const options = getOptions();
-  const device = getCurrentDevice();
+  const device = getStoredDevice();
   if (options?.ignoreTemporaryDevices && !device) return;
 
   const session = getSession();

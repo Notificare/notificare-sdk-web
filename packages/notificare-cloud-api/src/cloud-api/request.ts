@@ -5,7 +5,7 @@ export interface CloudRequestParams {
 }
 
 export interface CloudRequestEnvironment {
-  useTestEnvironment: boolean;
+  cloudHost: string;
   applicationKey: string;
   applicationSecret: string;
 }
@@ -37,10 +37,8 @@ export async function cloudRequest(params: CloudInternalRequestParams): Promise<
   });
 }
 
-function getCloudUrl({ useTestEnvironment }: CloudRequestEnvironment): URL {
-  return useTestEnvironment
-    ? new URL('https://cloud-test.notifica.re')
-    : new URL('https://cloud.notifica.re');
+function getCloudUrl({ cloudHost }: CloudRequestEnvironment): URL {
+  return new URL(`https://${cloudHost}`);
 }
 
 function getCloudRequestAuthorization({

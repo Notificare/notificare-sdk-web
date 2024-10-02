@@ -1,34 +1,29 @@
 # MIGRATING
 
-Notificare 3.x brings a highly modular system with a functional approach that supports tree-shaking.
+In Notificare 4.x, one of the most significant changes is the immutability of device identifiers. Previously, the `id` property of a `NotificareDevice` would change based on the device's WebPush capability. Now, new devices will be assigned a UUID that remains constant. For existing devices, their current identifier will persist without changes.
 
-Using a module bundler like [webpack](https://webpack.js.org/) or [Rollup](https://rollupjs.org/) in your development environment is strongly recommended. Otherwise, you won't be able to take advantage of the modular API's main benefits , i.e., reducing your app's bundle size.
+## Breaking changes
 
-## Configuration file
+### Device identifier immutability
 
-The new library reads from a different configuration file. The old `config.json` was replaced by the `notificare-services.json` file.
-
-Review the [implementation guide](https://docs.notifica.re/sdk/v3/html5/implementation/#configuration-file) for more information.
-
-It's possible to configure Notificare through Javascript. 
-However, the recommended configuration approach remains to be the remote `notificare-services.json`.
-
-## Packages
-
-The new API breaks the monolithic approach into several modules, available through the [Notificare](https://www.npmjs.com/package/notificare-web/) package. You can interact with the SDK like the following.
+As noted, device identifiers are now immutable in Notificare 4.x. Most applications won't need to directly access the device identifier or the push token, as Notificare handles these internally. However, if you do need to access the push token, it is available through the `notificare-web/push` package.
 
 ```javascript
-import { launch } from 'notificare-web/core';
-import { enableRemoteNotifications } from 'notificare-web/push';
-
-await launch();
-await enableRemoteNotifications();
+import { getSubscription, onSubscriptionChanged } from 'notificare-web/push';
 ```
 
-Refer to the [documentation](https://docs.notifica.re/sdk/v3/html5/implementation/) for a complete list of packages. 
+### Device registration behavior
 
-## Moving forward
+In previous versions, the `onDeviceRegistered` event triggered when enabling or disabling remote notifications. With the new immutability of device identifiers, this event will now only trigger once — when the device is initially created.
 
-Given the foundational changes and large differences in the Public API in the new libraries, we found the best way to cover every detail is to go through the [documentation](https://docs.notifica.re/sdk/v3/html5/implementation) for each of the modules you want to include and adjust accordingly.
+If you need to track changes when a device switches between a temporary and a push-enabled state (or vice versa), you can listen to the `onSubscriptionChanged` event, as demonstrated in the example above.
+
+## Migration guides for other versions
+
+Looking to migrate from an older version of Notificare? Refer to the following guides for more details:
+
+- [Migrating to 3.0.0](./MIGRATION-3.0.md)
+
+---
 
 As always, if you have anything to add or require further assistance, we are available via our [Support Channel](mailto:support@notifica.re).
