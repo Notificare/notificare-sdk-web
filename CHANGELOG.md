@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## Upcoming release
+
+- Filter invisible and expired inbox items
+
 ## 4.0.0
 
 - Device identifiers become long-lived

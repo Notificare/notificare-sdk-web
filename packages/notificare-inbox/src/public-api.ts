@@ -68,8 +68,13 @@ export async function fetchInbox(options?: FetchInboxOptions): Promise<Notificar
     since: options?.since,
   });
 
+  const now = Date.now();
+  const items = inboxItems
+    .filter(({ visible, expires }) => visible && (!expires || Date.parse(expires) > now))
+    .map(convertCloudInboxItemToPublic);
+
   return {
-    items: inboxItems.map(convertCloudInboxItemToPublic),
+    items,
     count,
     unread,
   };
