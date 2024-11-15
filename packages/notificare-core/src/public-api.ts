@@ -5,6 +5,7 @@ import {
   fetchCloudApplication,
   fetchCloudDynamicLink,
   fetchCloudNotification,
+  NotificareNetworkRequestError,
   request,
   uploadCloudNotificationReplyMedia,
 } from '@notificare/web-cloud-api';
@@ -211,6 +212,13 @@ export async function launch(): Promise<void> {
     notifyOnReady(application);
   } catch (e) {
     logger.error('Failed to launch Notificare.', e);
+
+    if (e instanceof NotificareNetworkRequestError && e.response.status === 403) {
+      logger.error(
+        `The origin ${window.location.origin} is not configured. See https://docs.notifica.re/guides/v3/settings/services/website-push/#allowed-domains for more information.`,
+      );
+    }
+
     setLaunchState(LaunchState.CONFIGURED);
     throw e;
   }
