@@ -3,6 +3,8 @@
 ## Upcoming release
 
 - Filter invisible and expired inbox items
+- Prevent overlaying in-app messages on top of the push onboarding
+- Prevent overlaying in-app messages on top of notifications
 
 ## 4.0.0
 

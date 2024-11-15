@@ -11,6 +11,7 @@ import { NotificareInAppMessage } from '../models/notificare-in-app-message';
 import { convertCloudInAppMessageToPublic } from './cloud-api/in-app-message-converter';
 import { notifyMessageFailedToPresent, notifyMessagePresented } from './consumer-events';
 import { logInAppMessageViewed } from './internal-api-events';
+import { isShowingNotification, isShowingPushOnboarding } from './push-ui-integration';
 import { ApplicationContext } from './types/application-context';
 import { ApplicationState } from './types/application-state';
 import { dismissMessage, isShowingMessage, showMessage } from './ui/message-presenter';
@@ -39,6 +40,16 @@ export function setMessagesSuppressed(suppressed: boolean, evaluate?: boolean) {
 
 export function evaluateContext(context: ApplicationContext) {
   logger.debug(`Checking in-app message for context '${context}'.`);
+
+  if (isShowingPushOnboarding()) {
+    logger.warning('In-app message evaluation skipped: push onboarding in progress.');
+    return;
+  }
+
+  if (isShowingNotification()) {
+    logger.warning('In-app message evaluation skipped: notification currently displayed.');
+    return;
+  }
 
   const device = getCurrentDevice();
   if (!device) {
@@ -89,6 +100,20 @@ function presentMessage(message: NotificareInAppMessage) {
 
   if (hasMessagesSuppressed()) {
     logger.warning('Cannot display an in-app message while messages are being suppressed.');
+    notifyMessageFailedToPresent(message);
+    return;
+  }
+
+  if (isShowingPushOnboarding()) {
+    logger.warning(
+      'Cannot display an in-app message while the push onboarding is being presented.',
+    );
+    notifyMessageFailedToPresent(message);
+    return;
+  }
+
+  if (isShowingNotification()) {
+    logger.warning('Cannot display an in-app message while a notification is being presented.');
     notifyMessageFailedToPresent(message);
     return;
   }
