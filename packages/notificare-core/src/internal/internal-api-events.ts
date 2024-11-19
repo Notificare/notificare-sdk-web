@@ -46,6 +46,15 @@ export async function logNotificationOpen(notificationId: string) {
   });
 }
 
+/**
+ * Logs in Notificare a custom event.
+ *
+ * This function allows logging, in Notificare, of custom events, optionally associating structured
+ * data for more detailed event tracking and analysis.
+ *
+ * @param event The name of the custom event to log.
+ * @param data Optional Record object containing event data for further details.
+ */
 export async function logCustom(event: string, data?: Record<string, unknown>) {
   await logInternal({
     type: `re.notifica.event.custom.${event}`,

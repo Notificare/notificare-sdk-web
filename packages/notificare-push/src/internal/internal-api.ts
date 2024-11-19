@@ -43,6 +43,9 @@ import { transaction } from './utils/transaction';
 
 let ongoingPushRegistration = false;
 
+/**
+ * Indicates whether the current environment supports web push notifications.
+ */
 export function hasWebPushCapabilities(): boolean {
   return hasWebPushSupport() || hasSafariPushSupport();
 }

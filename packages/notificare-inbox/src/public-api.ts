@@ -31,6 +31,9 @@ export {
   OnBadgeUpdatedCallback,
 } from './internal/consumer-events';
 
+/**
+ * The current badge count, representing the number of unread inbox items.
+ */
 export function getBadge(): number {
   const application = getApplication();
   if (!application) {
@@ -54,6 +57,13 @@ export function getBadge(): number {
   return parseInt(badgeStr, 10);
 }
 
+/**
+ * Fetches the current inbox, returning all the inbox items, inbox count and unread count.
+ *
+ * @param options An {@link FetchInboxOptions} object with the inbox fetching options.
+ * @returns A {@link NotificareInboxResponse} object containing all the inbox items, inbox count and
+ * unread count.
+ */
 export async function fetchInbox(options?: FetchInboxOptions): Promise<NotificareInboxResponse> {
   checkPrerequisites();
 
@@ -80,12 +90,21 @@ export async function fetchInbox(options?: FetchInboxOptions): Promise<Notificar
   };
 }
 
+/**
+ * Refreshes the badge count reflecting the number of unread inbox items.
+ */
 export async function refreshBadge(): Promise<number> {
   checkPrerequisites();
 
   return refreshBadgeInternal();
 }
 
+/**
+ * Opens a specified inbox item, marking it as read and returning the associated notification.
+ *
+ * @param item The {@link NotificareInboxItem} to open.
+ * @return The {@link NotificareNotification} associated with the inbox item.
+ */
 export async function openInboxItem(item: NotificareInboxItem): Promise<NotificareNotification> {
   checkPrerequisites();
 
@@ -106,6 +125,11 @@ export async function openInboxItem(item: NotificareInboxItem): Promise<Notifica
   return notification;
 }
 
+/**
+ * Marks the specified inbox item as read.
+ *
+ * @param item The {@link NotificareInboxItem} to mark as read.
+ */
 export async function markInboxItemAsRead(item: NotificareInboxItem): Promise<void> {
   checkPrerequisites();
 
@@ -113,6 +137,9 @@ export async function markInboxItemAsRead(item: NotificareInboxItem): Promise<vo
   await refreshBadge();
 }
 
+/**
+ * Marks all inbox items as read.
+ */
 export async function markAllInboxItemsAsRead(): Promise<void> {
   checkPrerequisites();
 
@@ -127,6 +154,11 @@ export async function markAllInboxItemsAsRead(): Promise<void> {
   await refreshBadge();
 }
 
+/**
+ * Permanently removes the specified inbox item from the inbox.
+ *
+ * @param item The {@link NotificareInboxItem} to remove.
+ */
 export async function removeInboxItem(item: NotificareInboxItem): Promise<void> {
   checkPrerequisites();
 
@@ -141,6 +173,9 @@ export async function removeInboxItem(item: NotificareInboxItem): Promise<void> 
   await refreshBadge();
 }
 
+/**
+ * Clears all inbox items, permanently deleting them from the inbox.
+ */
 export async function clearInbox(): Promise<void> {
   checkPrerequisites();
 

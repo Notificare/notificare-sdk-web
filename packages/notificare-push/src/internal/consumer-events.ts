@@ -34,6 +34,15 @@ export type OnSystemNotificationReceivedCallback = (
 ) => void;
 export type OnUnknownNotificationReceivedCallback = (notification: unknown) => void;
 
+/**
+ * Called when the device's push subscription changes.
+ *
+ * @param callback A {@link OnSubscriptionChangedCallback} that will be invoked with the result
+ * of the onSubscriptionChanged event.
+ *  - The callback receives a single parameter:
+ *     - `subscription`: The updated {@link NotificarePushSubscription}, or `undefined` if the
+ *     subscription token is unavailable.
+ */
 export function onSubscriptionChanged(callback: OnSubscriptionChangedCallback): EventSubscription {
   subscriptionChangedCallback = callback;
 
@@ -44,6 +53,15 @@ export function onSubscriptionChanged(callback: OnSubscriptionChangedCallback): 
   };
 }
 
+/**
+ * Called when the notification settings are changed.
+ *
+ * @param callback A {@link OnNotificationSettingsChangedCallback} that will be invoked with the
+ * result of the onNotificationSettingsChanged event.
+ *  - The callback receives a single parameter:
+ *     - `allowedUI`: A Boolean indicating whether the app is permitted to display notifications.
+ *     `true` if notifications are allowed, `false` if they are restricted by the user.
+ */
 export function onNotificationSettingsChanged(
   callback: OnNotificationSettingsChangedCallback,
 ): EventSubscription {
@@ -56,6 +74,15 @@ export function onNotificationSettingsChanged(
   };
 }
 
+/**
+ * Called when a push notification is received.
+ *
+ * @param callback A {@link OnNotificationReceivedCallback} that will be invoked with the
+ * result of the onNotificationReceived event.
+ *  - The callback receives the following parameters:
+ *     - `notification`: The received {@link NotificareNotification} object.
+ *     - `deliveryMechanism`: The mechanism used to deliver the notification.
+ */
 export function onNotificationReceived(
   callback: OnNotificationReceivedCallback,
 ): EventSubscription {
@@ -68,6 +95,14 @@ export function onNotificationReceived(
   };
 }
 
+/**
+ * Called when a push notification is opened by the user.
+ *
+ * @param callback A {@link OnNotificationOpenedCallback} that will be invoked with the
+ * result of the onNotificationOpened event.
+ *  - The callback receives a single parameter:
+ *     - `notification`: The {@link NotificareNotification} opened.
+ */
 export function onNotificationOpened(callback: OnNotificationOpenedCallback): EventSubscription {
   notificationOpenedCallback = callback;
 
@@ -78,6 +113,15 @@ export function onNotificationOpened(callback: OnNotificationOpenedCallback): Ev
   };
 }
 
+/**
+ * Called when a push notification action is opened by the user.
+ *
+ * @param callback A {@link OnNotificationActionOpenedCallback} that will be invoked with the
+ * result of the onNotificationActionOpened event.
+ *  - The callback receives the following parameters:
+ *     - `notification`: The {@link NotificareNotification} opened.
+ *     - `action`: The specific action opened by the user.
+ */
 export function onNotificationActionOpened(
   callback: OnNotificationActionOpenedCallback,
 ): EventSubscription {
@@ -90,6 +134,14 @@ export function onNotificationActionOpened(
   };
 }
 
+/**
+ * Called when a custom system notification is received.
+ *
+ * @param callback A {@link OnSystemNotificationReceivedCallback} that will be invoked with the
+ * result of the onSystemNotificationReceived event.
+ *  - The callback receives a single parameter:
+ *     - `notification`: The {@link NotificareSystemNotification} received.
+ */
 export function onSystemNotificationReceived(
   callback: OnSystemNotificationReceivedCallback,
 ): EventSubscription {
@@ -102,6 +154,14 @@ export function onSystemNotificationReceived(
   };
 }
 
+/**
+ * Called when an unknown notification is received.
+ *
+ * @param callback A {@link OnUnknownNotificationReceivedCallback} that will be invoked with the
+ * result of the onUnknownNotificationReceived event.
+ *  - The callback receives a single parameter:
+ *     - `notification`: The unknown notification received.
+ */
 export function onUnknownNotificationReceived(
   callback: OnUnknownNotificationReceivedCallback,
 ): EventSubscription {

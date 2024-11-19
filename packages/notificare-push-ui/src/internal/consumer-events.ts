@@ -38,6 +38,16 @@ export type OnCustomActionReceivedCallback = (
   target: string,
 ) => void;
 
+/**
+ * Called when a notification is about to be presented.
+ *
+ * This method is invoked before the notification is shown to the user.
+ *
+ * @param callback A {@link OnNotificationWillPresentCallback} that will be invoked with the result
+ * of the onNotificationWillPresent event.
+ *  - The callback receives a single parameter:
+ *     - `notification`: The {@link NotificareNotification} that will be presented.
+ */
 export function onNotificationWillPresent(
   callback: OnNotificationWillPresentCallback,
 ): EventSubscription {
@@ -50,6 +60,16 @@ export function onNotificationWillPresent(
   };
 }
 
+/**
+ * Called when a notification has been presented.
+ *
+ * This method is triggered when the notification has been shown to the user.
+ *
+ * @param callback A {@link OnNotificationPresentedCallback} that will be invoked with the result
+ * of the onNotificationPresented event.
+ *  - The callback receives a single parameter:
+ *     - `notification`: The {@link NotificareNotification} presented.
+ */
 export function onNotificationPresented(
   callback: OnNotificationPresentedCallback,
 ): EventSubscription {
@@ -62,6 +82,17 @@ export function onNotificationPresented(
   };
 }
 
+/**
+ * Called when the presentation of a notification has finished.
+ *
+ * This method is invoked after the notification UI has been dismissed or the notification
+ * interaction has completed.
+ *
+ * @param callback A {@link OnNotificationFinishedPresentingCallback} that will be invoked with the
+ * result of the onNotificationFinishedPresenting event.
+ *  - The callback receives a single parameter:
+ *     - `notification`: The {@link NotificareNotification} that finished presenting.
+ */
 export function onNotificationFinishedPresenting(
   callback: OnNotificationFinishedPresentingCallback,
 ): EventSubscription {
@@ -74,6 +105,16 @@ export function onNotificationFinishedPresenting(
   };
 }
 
+/**
+ * Called when a notification fails to present.
+ *
+ * This method is triggered when the user clicks a URL in the notification.
+ *
+ * @param callback A {@link OnNotificationFailedToPresentCallback} that will be invoked with the
+ * result of the onNotificationFailedToPresent event.
+ *  - The callback receives a single parameter:
+ *     - `notification`: The {@link NotificareNotification} that failed to present.
+ */
 export function onNotificationFailedToPresent(
   callback: OnNotificationFailedToPresentCallback,
 ): EventSubscription {
@@ -86,6 +127,17 @@ export function onNotificationFailedToPresent(
   };
 }
 
+/**
+ * Called when an action associated with a notification is about to execute.
+ *
+ * This method is invoked right before the action associated with a notification is executed.
+ *
+ * @param callback A {@link OnActionWillExecuteCallback} that will be invoked with the
+ * result of the onActionWillExecute event.
+ *  - The callback receives the following parameters:
+ *     - `notification`: The {@link NotificareNotification} containing the action.
+ *     - `action`: The {@link NotificareNotificationAction} that will be executed.
+ */
 export function onActionWillExecute(callback: OnActionWillExecuteCallback): EventSubscription {
   actionWillExecuteCallback = callback;
 
@@ -96,6 +148,18 @@ export function onActionWillExecute(callback: OnActionWillExecuteCallback): Even
   };
 }
 
+/**
+ * Called when an action associated with a notification has been executed.
+ *
+ * This method is triggered after the action associated with the notification has been successfully
+ * executed.
+ *
+ * @param callback A {@link OnActionExecutedCallback} that will be invoked with the
+ * result of the onActionExecuted event.
+ *  - The callback receives the following parameters:
+ *     - `notification`: The {@link NotificareNotification} containing the action.
+ *     - `action`: The {@link NotificareNotificationAction} that was executed.
+ */
 export function onActionExecuted(callback: OnActionExecutedCallback): EventSubscription {
   actionExecutedCallback = callback;
 
@@ -106,6 +170,18 @@ export function onActionExecuted(callback: OnActionExecutedCallback): EventSubsc
   };
 }
 
+/**
+ * Called when an action associated with a notification fails to execute.
+ *
+ * This method is triggered if an error occurs while trying to execute an action associated with the
+ * notification.
+ *
+ * @param callback A {@link OnActionFailedToExecuteCallback} that will be invoked with the
+ * result of the onActionFailedToExecute event.
+ *  - The callback receives the following parameters:
+ *     - `notification`: The {@link NotificareNotification} containing the action.
+ *     - `action`: The {@link NotificareNotificationAction} that failed to execute.
+ */
 export function onActionFailedToExecute(
   callback: OnActionFailedToExecuteCallback,
 ): EventSubscription {
@@ -118,6 +194,19 @@ export function onActionFailedToExecute(
   };
 }
 
+/**
+ * Called when a custom action associated with a notification is received.
+ *
+ * This method is triggered when a custom action associated with the notification is received,
+ * such as a deep link or custom URL scheme.
+ *
+ * @param callback A {@link OnCustomActionReceivedCallback} that will be invoked with the
+ * result of the onCustomActionReceived event.
+ *  - The callback receives the following parameters:
+ *     - `notification`: The {@link NotificareNotification} containing the action.
+ *     - `action`: The {@link NotificareNotificationAction} that failed to execute.
+ *     - `target`: The url representing the custom action.
+ */
 export function onCustomActionReceived(
   callback: OnCustomActionReceivedCallback,
 ): EventSubscription {

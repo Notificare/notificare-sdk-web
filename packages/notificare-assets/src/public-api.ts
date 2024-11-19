@@ -13,6 +13,12 @@ import { convertCloudAssetToPublic } from './internal/cloud-api/assets-converter
 import { logger } from './logger';
 import { NotificareAsset } from './models/notificare-asset';
 
+/**
+ * Fetches a list of {@link NotificareAsset} for a specified group.
+ *
+ * @param group The name of the group whose assets are to be fetched.
+ * @return  A list of {@link NotificareAsset} belonging to the specified group.
+ */
 export async function fetchAssets(group: string): Promise<NotificareAsset[]> {
   checkPrerequisites();
 

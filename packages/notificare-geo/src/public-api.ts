@@ -19,10 +19,18 @@ export {
   OnLocationUpdateErrorCallback,
 } from './internal/consumer-events';
 
+/**
+ * Indicates whether location services are enabled.
+ *
+ * @returns `true` if the location services are enabled, and `false` otherwise.
+ */
 export function hasLocationServicesEnabled(): boolean {
   return getLocationServicesEnabled();
 }
 
+/**
+ * Enables location updates, activating location tracking, region monitoring, and beacon detection.
+ */
 export function enableLocationUpdates() {
   try {
     checkPrerequisites();
@@ -34,6 +42,9 @@ export function enableLocationUpdates() {
   startLocationUpdates();
 }
 
+/**
+ * Disables location updates.
+ */
 export function disableLocationUpdates() {
   try {
     checkPrerequisites();

@@ -25,6 +25,16 @@ import { logger } from './logger';
 import { NotificareUserInboxItem } from './models/notificare-user-inbox-item';
 import { NotificareUserInboxResponse } from './models/notificare-user-inbox-response';
 
+/**
+ * Parses a {@link NetworkUserInboxResponse} object to produce a {@link NotificareUserInboxItem}.
+ *
+ * This method takes a {@link NetworkUserInboxResponse} and converts it into a structured
+ * {@link NotificareUserInboxItem}.
+ *
+ * @param response The {@link NetworkUserInboxResponse} representing the user inbox response.
+ * @return A {@link NotificareUserInboxItem} object parsed from the provided
+ * {@link NetworkUserInboxResponse}.
+ */
 export async function parseInboxResponse(
   response: NetworkUserInboxResponse,
 ): Promise<NotificareUserInboxResponse> {
@@ -41,6 +51,15 @@ export async function parseInboxResponse(
   };
 }
 
+/**
+ * Opens an inbox item and retrieves its associated notification.
+ *
+ * This function opens the provided {@link NotificareUserInboxItem} and returns the associated
+ * {@link NotificareNotification}. This operation marks the item as read.
+ *
+ * @param item The {@link NotificareUserInboxItem} to be opened.
+ * @return The {@link NotificareNotification} associated with the opened inbox item.
+ */
 export async function openInboxItem(
   item: NotificareUserInboxItem,
 ): Promise<NotificareNotification> {
@@ -57,12 +76,26 @@ export async function openInboxItem(
   return notification;
 }
 
+/**
+ * Marks an inbox item as read.
+ *
+ * This function updates the status of the provided {@link NotificareUserInboxItem} to read.
+ *
+ * @param item The {@link NotificareUserInboxItem} to mark as read.
+ */
 export async function markInboxItemAsRead(item: NotificareUserInboxItem): Promise<void> {
   checkPrerequisites();
 
   await logNotificationOpen(item.notification.id);
 }
 
+/**
+ * Removes an inbox item from the user's inbox.
+ *
+ * This function deletes the provided {@link NotificareUserInboxItem} from the user's inbox.
+ *
+ * @param item The {@link NotificareUserInboxItem} to be removed.
+ */
 export async function removeInboxItem(item: NotificareUserInboxItem): Promise<void> {
   checkPrerequisites();
 

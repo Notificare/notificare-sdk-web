@@ -21,10 +21,26 @@ export {
   OnCustomActionReceivedCallback,
 } from './internal/consumer-events';
 
+/**
+ * Presents a notification to the user.
+ *
+ * This method launches the UI for displaying the provided {@link NotificareNotification}.
+ *
+ * @param notification The {@link NotificareNotification} to present.
+ */
 export function presentNotification(notification: NotificareNotification) {
   notificationPresenter.present(notification);
 }
 
+/**
+ * Presents a notification to the user.
+ *
+ * This method presents the UI for executing a specific {@link NotificareNotificationAction}
+ * associated with the provided {@link NotificareNotification}.
+ *
+ * @param notification The {@link NotificareNotification} to present.
+ * @param action The {@link NotificareNotificationAction} to execute.
+ */
 export function presentAction(
   notification: NotificareNotification,
   action: NotificareNotificationAction,
