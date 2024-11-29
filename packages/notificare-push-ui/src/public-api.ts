@@ -33,7 +33,7 @@ export function presentNotification(notification: NotificareNotification) {
 }
 
 /**
- * Presents a notification to the user.
+ * Presents an action associated with a notification.
  *
  * This method presents the UI for executing a specific {@link NotificareNotificationAction}
  * associated with the provided {@link NotificareNotification}.

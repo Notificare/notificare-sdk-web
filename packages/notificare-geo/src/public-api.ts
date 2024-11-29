@@ -29,7 +29,7 @@ export function hasLocationServicesEnabled(): boolean {
 }
 
 /**
- * Enables location updates, activating location tracking, region monitoring, and beacon detection.
+ * Enables location updates, activating location tracking.
  */
 export function enableLocationUpdates() {
   try {

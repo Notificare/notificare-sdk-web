@@ -108,7 +108,7 @@ export function onNotificationFinishedPresenting(
 /**
  * Called when a notification fails to present.
  *
- * This method is triggered when the user clicks a URL in the notification.
+ * This method is invoked if there is an error preventing the notification from being presented.
  *
  * @param callback A {@link OnNotificationFailedToPresentCallback} that will be invoked with the
  * result of the onNotificationFailedToPresent event.
