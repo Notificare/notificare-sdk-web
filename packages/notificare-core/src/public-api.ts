@@ -363,8 +363,8 @@ export async function fetchDynamicLink(url: string): Promise<NotificareDynamicLi
 /**
  * Sends a reply to a notification action.
  *
- * This method sends a reply to the specified {@link NotificareNotification} and {@link NotificareNotificationAction},
- * optionally including a message and media.
+ * This method sends a reply to the specified {@link NotificareNotification} and
+ * {@link NotificareNotificationAction}, optionally including a message and media.
  *
  * @param notification The notification to reply to.
  * @param action The action associated with the reply.

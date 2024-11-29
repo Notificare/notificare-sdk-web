@@ -16,7 +16,7 @@ export type OnDeviceRegisteredCallback = (device: NotificareDevice) => void;
  *
  * This method is invoked after the SDK has been successfully launched and is available for use.
  *
- * @param callback A {@link onReadyCallback} that will be invoked with the result of the onReady
+ * @param callback A {@link OnReadyCallback} that will be invoked with the result of the onReady
  * event.
  * - The callback receives a single parameter:
  *     - `application`: The {@link NotificareApplication} instance containing the application
@@ -53,8 +53,10 @@ export function onUnlaunched(callback: OnUnlaunchedCallback): EventSubscription 
 /**
  * Called when the device has been successfully registered with the Notificare platform.
  *
- * This method is invoked after the device has been registered, making it eligible to receive
- * notifications and participate in device-specific interactions.
+ * This method is triggered after the device is initially created, which happens the first time
+ * `launch()` is called.
+ * Once created, the method will not trigger again unless the device is deleted by calling
+ * `unlaunch()` and created again on a new `launch()`.
  *
  * @param callback A {@link OnDeviceRegisteredCallback} that will be invoked with the result of the
  * onDeviceRegistered event.

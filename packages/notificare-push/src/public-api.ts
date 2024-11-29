@@ -81,8 +81,8 @@ export function getSubscription(): NotificarePushSubscription | undefined {
 /**
  * Enables remote notifications.
  *
- * This suspending function enables remote notifications for the application, allowing push +
- * notifications to be received.
+ * This function enables remote notifications for the application, allowing push notifications to be
+ * received.
  */
 export async function enableRemoteNotifications(): Promise<void> {
   checkPrerequisites();
@@ -92,8 +92,8 @@ export async function enableRemoteNotifications(): Promise<void> {
 /**
  * Disables remote notifications.
  *
- * This suspending function disables remote notifications for the application, preventing push
- * notifications from being received.
+ * This function disables remote notifications for the application, preventing push notifications
+ * from being received.
  */
 export async function disableRemoteNotifications(): Promise<void> {
   checkPrerequisites();
