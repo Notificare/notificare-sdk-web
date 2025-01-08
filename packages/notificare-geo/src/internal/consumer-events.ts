@@ -13,10 +13,11 @@ export type OnLocationUpdateErrorCallback = (error: GeolocationPositionError) =>
  *
  * This method is invoked when a new location update is received.
  *
- * @param callback A {@link OnLocationUpdatedCallback} that will be invoked with the result of the
- * onLocationUpdated event.
+ * @param {OnLocationUpdatedCallback} callback - A {@link OnLocationUpdatedCallback} that will be
+ * invoked with the result of the onLocationUpdated event.
  *  - The callback receives a single parameter:
  *     - `location`: The {@link NotificareLocation} instance representing the current location.
+ * @returns {EventSubscription} - The {@link EventSubscription} for the onLocationUpdated event.
  */
 export function onLocationUpdated(callback: OnLocationUpdatedCallback): EventSubscription {
   locationUpdatedCallback = callback;
@@ -33,10 +34,11 @@ export function onLocationUpdated(callback: OnLocationUpdatedCallback): EventSub
  *
  * This method is invoked when an error occurs during a new location update.
  *
- * @param callback A {@link OnLocationUpdateErrorCallback} that will be invoked with the result of
- * the onLocationUpdateError event.
+ * @param {OnLocationUpdateErrorCallback} callback - A {@link OnLocationUpdateErrorCallback} that
+ * will be invoked with the result of the onLocationUpdateError event.
  *  - The callback receives a single parameter:
  *     - `error`: The {@link GeolocationPositionError} instance representing the location error.
+ * @returns {EventSubscription} - The {@link EventSubscription} for the onLocationUpdateError event.
  */
 export function onLocationUpdateError(callback: OnLocationUpdateErrorCallback): EventSubscription {
   locationUpdateErrorCallback = callback;

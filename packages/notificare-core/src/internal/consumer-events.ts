@@ -16,11 +16,12 @@ export type OnDeviceRegisteredCallback = (device: NotificareDevice) => void;
  *
  * This method is invoked after the SDK has been successfully launched and is available for use.
  *
- * @param callback A {@link OnReadyCallback} that will be invoked with the result of the onReady
- * event.
+ * @param {OnReadyCallback} callback - A {@link OnReadyCallback} that will be invoked with the result
+ * of the onReady event.
  * - The callback receives a single parameter:
  *     - `application`: The {@link NotificareApplication} instance containing the application
  *     metadata.
+ * @returns {EventSubscription} - The {@link EventSubscription} for the onReady event.
  */
 export function onReady(callback: OnReadyCallback): EventSubscription {
   onReadyCallback = callback;
@@ -37,9 +38,10 @@ export function onReady(callback: OnReadyCallback): EventSubscription {
  *
  * This method is invoked after the SDK has been shut down (unlaunched) and is no longer in use.
  *
- * @param callback A {@link OnUnlaunchedCallback} that will be invoked with the result of the
- * onUnlaunched event.
- */
+ * @param {OnUnlaunchedCallback} callback - A {@link OnUnlaunchedCallback} that will be invoked with
+ * the result of the onUnlaunched event.
+ * @returns {EventSubscription} - The {@link EventSubscription} for the onUnlaunched event.
+ * */
 export function onUnlaunched(callback: OnUnlaunchedCallback): EventSubscription {
   unlaunchedCallback = callback;
 
@@ -58,11 +60,12 @@ export function onUnlaunched(callback: OnUnlaunchedCallback): EventSubscription 
  * Once created, the method will not trigger again unless the device is deleted by calling
  * `unlaunch()` and created again on a new `launch()`.
  *
- * @param callback A {@link OnDeviceRegisteredCallback} that will be invoked with the result of the
- * onDeviceRegistered event.
+ * @param {OnDeviceRegisteredCallback} callback - A {@link OnDeviceRegisteredCallback} that will be
+ * invoked with the result of the onDeviceRegistered event.
  * - The callback receives a single parameter:
  *     - `device`: The {@link NotificareDevice} instance containing the device's registration
  *     details.
+ * @returns {EventSubscription} - The {@link EventSubscription} for the onDeviceRegistered event.
  */
 export function onDeviceRegistered(callback: OnDeviceRegisteredCallback): EventSubscription {
   deviceRegisteredCallback = callback;

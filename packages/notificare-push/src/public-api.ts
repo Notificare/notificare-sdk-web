@@ -39,7 +39,7 @@ export { hasWebPushCapabilities } from './internal/internal-api';
 /**
  * Indicates whether remote notifications are enabled.
  *
- * This property returns `true` if remote notifications are enabled for the application, and `false`
+ * @returns {boolean} - `true` if remote notifications are enabled for the application, and `false`
  * otherwise.
  */
 export function hasRemoteNotificationsEnabled(): boolean {
@@ -53,7 +53,7 @@ export function hasRemoteNotificationsEnabled(): boolean {
  * the device has successfully obtained a push token from the notification service. It reflects
  * whether the app can present notifications as allowed by the system and user settings.
  *
- * @return `true` if the device can receive remote notifications, `false` otherwise.
+ * @returns {boolean} - `true` if the device can receive remote notifications, `false` otherwise.
  */
 export function getAllowedUI(): boolean {
   return retrieveAllowedUI() ?? false;
@@ -62,7 +62,7 @@ export function getAllowedUI(): boolean {
 /**
  * Provides the current push transport information.
  *
- * This property returns the {@link NotificareTransport} assigned to the device.
+ * @returns {NotificareTransport | undefined} - The {@link NotificareTransport} assigned to the device.
  */
 export function getTransport(): NotificareTransport | undefined {
   return retrieveTransport();
@@ -71,8 +71,8 @@ export function getTransport(): NotificareTransport | undefined {
 /**
  * Provides the current push subscription token.
  *
- * This property returns the {@link NotificarePushSubscription} object containing the device's
- * current push subscription token, or `null` if no token is available.
+ * @returns {NotificarePushSubscription | undefined} - The {@link NotificarePushSubscription} object
+ * containing the device's current push subscription token, or `null` if no token is available.
  */
 export function getSubscription(): NotificarePushSubscription | undefined {
   return retrieveSubscription();
@@ -83,6 +83,9 @@ export function getSubscription(): NotificarePushSubscription | undefined {
  *
  * This function enables remote notifications for the application, allowing push notifications to be
  * received.
+ *
+ * @returns {Promise<void>} - A promise that resolves when remote notifications
+ * have been successfully enabled.
  */
 export async function enableRemoteNotifications(): Promise<void> {
   checkPrerequisites();
@@ -94,6 +97,9 @@ export async function enableRemoteNotifications(): Promise<void> {
  *
  * This function disables remote notifications for the application, preventing push notifications
  * from being received.
+ *
+ * @returns {Promise<void>} - A promise that resolves when remote notifications
+ * have been successfully disabled.
  */
 export async function disableRemoteNotifications(): Promise<void> {
   checkPrerequisites();

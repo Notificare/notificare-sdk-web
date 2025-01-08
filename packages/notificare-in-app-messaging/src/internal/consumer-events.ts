@@ -26,10 +26,11 @@ export type OnActionFailedToExecuteCallback = (
 /**
  * Called when an in-app message is successfully presented to the user.
  *
- * @param callback A {@link OnMessagePresentedCallback} that will be invoked with the result
- * of the onMessagePresented event.
+ * @param {OnMessagePresentedCallback} callback - A {@link OnMessagePresentedCallback} that will be
+ * invoked with the result of the onMessagePresented event.
  *  - The callback receives a single parameter:
  *     - `message`: The {@link NotificareInAppMessage} that was presented.
+ * @returns {EventSubscription} - The {@link EventSubscription} for the onMessagePresented event.
  */
 export function onMessagePresented(callback: OnMessagePresentedCallback): EventSubscription {
   messagePresentedCallback = callback;
@@ -44,10 +45,12 @@ export function onMessagePresented(callback: OnMessagePresentedCallback): EventS
 /**
  * Called when the presentation of an in-app message has finished.
  *
- * @param callback A {@link OnMessageFinishedPresentingCallback} that will be invoked with the result
- * of the onMessageFinishedPresenting event.
+ * @param {OnMessageFinishedPresentingCallback} callback - A {@link OnMessageFinishedPresentingCallback}
+ * that will be invoked with the result of the onMessageFinishedPresenting event.
  *  - The callback receives a single parameter:
  *     - `message`: The {@link NotificareInAppMessage} that finished presenting.
+ * @returns {EventSubscription} - The {@link EventSubscription} for the onMessageFinishedPresenting
+ * event.
  */
 export function onMessageFinishedPresenting(
   callback: OnMessageFinishedPresentingCallback,
@@ -64,10 +67,12 @@ export function onMessageFinishedPresenting(
 /**
  * Called when an in-app message failed to present.
  *
- * @param callback A {@link OnMessageFailedToPresentCallback} that will be invoked with the result
- * of the onMessageFailedToPresent event.
+ * @param {OnMessageFailedToPresentCallback} callback - A {@link OnMessageFailedToPresentCallback}
+ * that will be invoked with the result of the onMessageFailedToPresent event.
  *  - The callback receives a single parameter:
  *     - `message`: The {@link NotificareInAppMessage} that failed to present.
+ * @returns {EventSubscription} - The {@link EventSubscription} for the onMessageFailedToPresent
+ * event.
  */
 export function onMessageFailedToPresent(
   callback: OnMessageFailedToPresentCallback,
@@ -84,11 +89,12 @@ export function onMessageFailedToPresent(
 /**
  * Called when an action is successfully executed for an in-app message.
  *
- * @param callback A {@link OnActionExecutedCallback} that will be invoked with the result
- * of the onActionExecuted event.
+ * @param {OnActionExecutedCallback} callback - A {@link OnActionExecutedCallback} that will be
+ * invoked with the result of the onActionExecuted event.
  * - The callback receives the following parameters:
  *     - `message`: The {@link NotificareInAppMessage} for which the action was executed.
  *     - `action`: The {@link NotificareInAppMessageAction} that was executed.
+ * @returns {EventSubscription} - The {@link EventSubscription} for the onActionExecuted event.
  */
 export function onActionExecuted(callback: OnActionExecutedCallback): EventSubscription {
   actionExecutedCallback = callback;
@@ -103,11 +109,13 @@ export function onActionExecuted(callback: OnActionExecutedCallback): EventSubsc
 /**
  * Called when an action execution failed for an in-app message.
  *
- * @param callback A {@link OnActionFailedToExecuteCallback} that will be invoked with the result
- * of the onActionFailedToExecute event.
+ * @param {OnActionFailedToExecuteCallback} callback - A {@link OnActionFailedToExecuteCallback}
+ * that will be invoked with the result of the onActionFailedToExecute event.
  * - The callback receives the following parameters:
  *     - `message`: The {@link NotificareInAppMessage} for which the action was attempted.
  *     - `action`: The {@link NotificareInAppMessageAction} that failed to execute.
+ * @returns {EventSubscription} - The {@link EventSubscription} for the onActionFailedToExecute
+ * event.
  */
 export function onActionFailedToExecute(
   callback: OnActionFailedToExecuteCallback,

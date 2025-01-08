@@ -10,8 +10,9 @@ export type OnBadgeUpdatedCallback = (badge: number) => void;
 /**
  * Called when the inbox is successfully updated.
  *
- * @param callback A {@link OnInboxUpdatedCallback} that will be invoked with the
- * result of the onInboxUpdated event.
+ * @param {OnInboxUpdatedCallback} callback - A {@link OnInboxUpdatedCallback} that will be invoked
+ * with the result of the onInboxUpdated event.
+ * @returns {EventSubscription} - The {@link EventSubscription} for the onInboxUpdated event.
  */
 export function onInboxUpdated(callback: OnInboxUpdatedCallback): EventSubscription {
   inboxUpdatedCallback = callback;
@@ -26,10 +27,11 @@ export function onInboxUpdated(callback: OnInboxUpdatedCallback): EventSubscript
 /**
  * Called when the unread message count badge is updated.
  *
- * @param callback A {@link OnBadgeUpdatedCallback} that will be invoked with the
- * result of the onBadgeUpdated event.
+ * @param {OnBadgeUpdatedCallback} callback - A {@link OnBadgeUpdatedCallback} that will be invoked
+ * with the result of the onBadgeUpdated event.
  * - The callback receives a single parameter:
  *     - `badge`: The updated unread messages count.
+ * @returns {EventSubscription} - The {@link EventSubscription} for the onBadgeUpdated event.
  */
 export function onBadgeUpdated(callback: OnBadgeUpdatedCallback): EventSubscription {
   badgeUpdatedCallback = callback;

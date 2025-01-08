@@ -22,7 +22,7 @@ export {
 /**
  * Indicates whether location services are enabled.
  *
- * @returns `true` if the location services are enabled, and `false` otherwise.
+ * @returns {boolean} - `true` if the location services are enabled, and `false` otherwise.
  */
 export function hasLocationServicesEnabled(): boolean {
   return getLocationServicesEnabled();

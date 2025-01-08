@@ -22,6 +22,9 @@ import { NotificareUserData } from './models/notificare-user-data';
 
 /**
  * Provides the current registered device information.
+ *
+ * @returns {NotificareDevice | undefined} - The {@link NotificareDevice} object containing the
+ * current registered device information, or 'undefined' in case no device is registered.
  */
 export function getCurrentDevice(): NotificareDevice | undefined {
   const device = getStoredDevice();
@@ -35,8 +38,11 @@ export function getCurrentDevice(): NotificareDevice | undefined {
  *
  * To register the device anonymously, set both `userId` and `userName` to `null`.
  *
- * @param userId Optional user identifier.
- * @param userName Optional username.
+ * @param {UpdateUserOptions} userOptions - User options to be updated.
+ * @param {string | null} userOptions.userId - Optional user identifier.
+ * @param {string | null} userOptions.userName - Optional username.
+ * @returns {Promise<void>} - A promise that resolves when the user information
+ * has been successfully updated.
  */
 export async function updateUser({ userId, userName }: UpdateUserOptions): Promise<void> {
   checkPrerequisites();
@@ -71,8 +77,10 @@ export interface UpdateUserOptions {
  *
  * To register the device anonymously, set both `userId` and `userName` to `null`.
  *
- * @param options A {@link RegisterDeviceOptions} object containing the user ID and username to
- * register.
+ * @param {RegisterDeviceOptions} options - A {@link RegisterDeviceOptions} object containing the
+ * user ID and username to register.
+ * @returns {Promise<void>} - A promise that resolves when the user has been
+ * successfully registered.
  *
  * @deprecated Use updateUser() instead.
  */
@@ -85,7 +93,8 @@ export type RegisterDeviceOptions = UpdateUserOptions;
 /**
  * Provides the preferred language of the current device for notifications and messages.
  *
- * @returns The preferred language code, or `undefined` if no preferred language is set.
+ * @returns {string | undefined} - The preferred language code, or `undefined` if no preferred
+ * language is set.
  */
 export function getPreferredLanguage(): string | undefined {
   const preferredLanguage = localStorage.getItem('re.notifica.preferred_language');
@@ -100,7 +109,10 @@ export function getPreferredLanguage(): string | undefined {
 /**
  * Updates the preferred language setting for the device, with a callback.
  *
- * @param language The preferred language code, or `null` to clear the set preferred language.
+ * @param {string | null} language - The preferred language code, or `null` to clear the set
+ * preferred language.
+ * @returns {Promise<void>} - A promise that resolves when the preferred language
+ * has been successfully updated.
  */
 export async function updatePreferredLanguage(language: string | null): Promise<void> {
   checkPrerequisites();
@@ -136,7 +148,8 @@ export async function updatePreferredLanguage(language: string | null): Promise<
 /**
  * Fetches the tags associated with the device.
  *
- * @return A list of tags currently associated with the device.
+ * @return {Promise<string[]>} - A promise that resolves to a list of tags currently associated with
+ * the device.
  */
 export async function fetchTags(): Promise<string[]> {
   checkPrerequisites();
@@ -155,7 +168,9 @@ export async function fetchTags(): Promise<string[]> {
 /**
  * Adds a single tag to the device.
  *
- * @param tag The tag to add.
+ * @param {string} tag - The tag to add.
+ * @returns {Promise<void>} - A promise that resolves when the tag has been
+ * successfully added to the device.
  */
 export async function addTag(tag: string): Promise<void> {
   await addTags([tag]);
@@ -164,7 +179,9 @@ export async function addTag(tag: string): Promise<void> {
 /**
  * Adds multiple tags to the device.
  *
- * @param tags A list of tags to add.
+ * @param {string[]} tags - A list of tags to add.
+ * @returns {Promise<void>} - A promise that resolves when all the tags have
+ * been successfully added to the device.
  */
 export async function addTags(tags: string[]): Promise<void> {
   checkPrerequisites();
@@ -182,7 +199,9 @@ export async function addTags(tags: string[]): Promise<void> {
 /**
  * Removes a specific tag from the device.
  *
- * @param tag The tag to remove.
+ * @param {string} tag - The tag to remove.
+ * @returns {Promise<void>} - A promise that resolves when the tag has been
+ * successfully removed from the device.
  */
 export async function removeTag(tag: string): Promise<void> {
   await removeTags([tag]);
@@ -191,7 +210,9 @@ export async function removeTag(tag: string): Promise<void> {
 /**
  * Removes multiple tags from the device.
  *
- * @param tags A list of tags to remove.
+ * @param {string[]} tags - A list of tags to remove.
+ * @returns {Promise<void>} - A promise that resolves when all the specified tags
+ * have been successfully removed from the device.
  */
 export async function removeTags(tags: string[]): Promise<void> {
   checkPrerequisites();
@@ -208,6 +229,9 @@ export async function removeTags(tags: string[]): Promise<void> {
 
 /**
  * Clears all tags from the device.
+ *
+ * @returns {Promise<void>} - A promise that resolves when all tags have been
+ * successfully cleared from the device.
  */
 export async function clearTags(): Promise<void> {
   checkPrerequisites();
@@ -224,7 +248,9 @@ export async function clearTags(): Promise<void> {
 /**
  * Fetches the "Do Not Disturb" (DND) settings for the device.
  *
- * @return The current DND settings, or `null` if none are set.
+ * @return {Promise<NotificareDoNotDisturb | undefined>} - A promise that resolves to a
+ * {@link NotificareDoNotDisturb} object containing the current DND settings, or `null` if none are
+ * set.
  *
  * @see {@link NotificareDoNotDisturb}
  */
@@ -251,7 +277,9 @@ export async function fetchDoNotDisturb(): Promise<NotificareDoNotDisturb | unde
 /**
  * Updates the "Do Not Disturb" (DND) settings for the device.
  *
- * @param dnd The new DND settings to apply.
+ * @param {NotificareDoNotDisturb} dnd - The new DND settings to apply.
+ * @returns {Promise<void>} - A promise that resolves when the DND settings
+ * have been successfully updated.
  *
  * @see {@link NotificareDoNotDisturb}
  */
@@ -278,6 +306,9 @@ export async function updateDoNotDisturb(dnd: NotificareDoNotDisturb): Promise<v
 
 /**
  * Clears the "Do Not Disturb" (DND) settings for the device.
+ *
+ * @returns {Promise<void>} - A promise that resolves when the DND settings
+ * have been successfully cleared.
  */
 export async function clearDoNotDisturb(): Promise<void> {
   checkPrerequisites();
@@ -303,7 +334,8 @@ export async function clearDoNotDisturb(): Promise<void> {
 /**
  * Fetches the user data associated with the device.
  *
- * @return The current user data.
+ * @return {Promise<NotificareUserData>} - A promise that resolves to a {@link NotificareUserData}
+ * object containing the current user data.
  *
  * @see {@link NotificareUserData}
  */
@@ -330,7 +362,10 @@ export async function fetchUserData(): Promise<NotificareUserData> {
 /**
  * Updates the custom user data associated with the device.
  *
- * @param userData The updated {@link NotificareUserData} to associate with the device.
+ * @param {NotificareUserData} userData - The updated {@link NotificareUserData} to associate with
+ * the device.
+ * @returns {Promise<void>} - A promise that resolves when the user data has
+ * been successfully updated.
  */
 export async function updateUserData(userData: NotificareUserData): Promise<void> {
   checkPrerequisites();

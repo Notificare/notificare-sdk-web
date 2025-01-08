@@ -31,9 +31,10 @@ import { NotificareUserInboxResponse } from './models/notificare-user-inbox-resp
  * This method takes a {@link NetworkUserInboxResponse} and converts it into a structured
  * {@link NotificareUserInboxItem}.
  *
- * @param response The {@link NetworkUserInboxResponse} representing the user inbox response.
- * @return A {@link NotificareUserInboxItem} object parsed from the provided
- * {@link NetworkUserInboxResponse}.
+ * @param {NotificareUserInboxResponse} response - The {@link NetworkUserInboxResponse} representing
+ * the user inbox response.
+ * @return {Promise<NotificareUserInboxResponse>} - A promise that resolves to a
+ * {@link NotificareUserInboxItem} object parsed from the provided {@link NetworkUserInboxResponse}.
  */
 export async function parseInboxResponse(
   response: NetworkUserInboxResponse,
@@ -57,8 +58,9 @@ export async function parseInboxResponse(
  * This function opens the provided {@link NotificareUserInboxItem} and returns the associated
  * {@link NotificareNotification}. This operation marks the item as read.
  *
- * @param item The {@link NotificareUserInboxItem} to be opened.
- * @return The {@link NotificareNotification} associated with the opened inbox item.
+ * @param {NotificareUserInboxItem} item - The {@link NotificareUserInboxItem} to be opened.
+ * @return {Promise<NotificareNotification>} - A promise that resolves to a
+ * {@link NotificareNotification} associated with the opened inbox item.
  */
 export async function openInboxItem(
   item: NotificareUserInboxItem,
@@ -81,7 +83,9 @@ export async function openInboxItem(
  *
  * This function updates the status of the provided {@link NotificareUserInboxItem} to read.
  *
- * @param item The {@link NotificareUserInboxItem} to mark as read.
+ * @param {NotificareUserInboxItem} item - The {@link NotificareUserInboxItem} to mark as read.
+ * @returns {Promise<void>} - A promise that resolves when the inbox item has
+ * been successfully marked as read.
  */
 export async function markInboxItemAsRead(item: NotificareUserInboxItem): Promise<void> {
   checkPrerequisites();
@@ -94,7 +98,9 @@ export async function markInboxItemAsRead(item: NotificareUserInboxItem): Promis
  *
  * This function deletes the provided {@link NotificareUserInboxItem} from the user's inbox.
  *
- * @param item The {@link NotificareUserInboxItem} to be removed.
+ * @param {NotificareUserInboxItem} item - The {@link NotificareUserInboxItem} to be removed.
+ * @returns {Promise<void>} - A promise that resolves when the inbox item has
+ * been successfully removed.
  */
 export async function removeInboxItem(item: NotificareUserInboxItem): Promise<void> {
   checkPrerequisites();
