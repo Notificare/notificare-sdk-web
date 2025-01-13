@@ -62,7 +62,9 @@ export function getAllowedUI(): boolean {
 /**
  * Provides the current push transport information.
  *
- * @returns {NotificareTransport | undefined} - The {@link NotificareTransport} assigned to the device.
+ * @returns {NotificareTransport | undefined} - The {@link NotificareTransport} assigned to the
+ * device,  or `undefined` if no transport
+ * has been set.
  */
 export function getTransport(): NotificareTransport | undefined {
   return retrieveTransport();
@@ -71,8 +73,9 @@ export function getTransport(): NotificareTransport | undefined {
 /**
  * Provides the current push subscription token.
  *
- * @returns {NotificarePushSubscription | undefined} - The {@link NotificarePushSubscription} object
- * containing the device's current push subscription token, or `null` if no token is available.
+ * @returns {NotificarePushSubscription | undefined} - The device's current
+ * {@link NotificarePushSubscription}, or `undefined` if no {@link NotificarePushSubscription}
+ * is available.
  */
 export function getSubscription(): NotificarePushSubscription | undefined {
   return retrieveSubscription();
