@@ -68,18 +68,44 @@ export {
   OnUnlaunchedCallback,
 } from './internal/consumer-events';
 
+/**
+ * Sets the logging level for the SDK.
+ *
+ * @param {LogLevel | LogLevelString} logLevel - The desired logging level, which can be specified
+ * as either:
+ *  - A {@link LogLevel} enum value.
+ *  - A {@link LogLevelString} string representation of the log level.
+ */
 export function setLogLevel(logLevel: LogLevel | LogLevelString) {
   setLogLevelInternal(logLevel);
 }
 
+/**
+ * Indicates whether Notificare has been configured.
+ *
+ * @returns {boolean} - `true` if Notificare is successfully configured, and `false` otherwise.
+ */
 export function isConfigured(): boolean {
   return isConfiguredInternal();
 }
 
+/**
+ * Indicates whether Notificare is ready.
+ *
+ * @returns {boolean} - `true` once the SDK has completed the initialization process and is ready
+ * for use.
+ */
 export function isReady(): boolean {
   return isReadyInternal();
 }
 
+/**
+ * Configures Notificare using the services info in a provided {@link NotificareOptions} object.
+ *
+ * This method configures the SDK using the {@link NotificareOptions} object, preparing it for use.
+ *
+ * @param {NotificareOptions} options - The {@link NotificareOptions} object to use for configuration.
+ */
 export function configure(options: NotificareOptions) {
   const state = getLaunchState();
 
@@ -136,6 +162,12 @@ export function configure(options: NotificareOptions) {
   }
 }
 
+/**
+ * Launches the Notificare SDK, and all the additional available modules, preparing them for use.
+ *
+ * @returns {Promise<void>} - A promise that resolves when the Notificare SDK
+ * and its modules have been successfully launched and are ready for use.
+ */
 export async function launch(): Promise<void> {
   // TODO: check is lib supported
 
@@ -227,6 +259,15 @@ export async function launch(): Promise<void> {
   postLaunch().catch((e) => logger.error('Failed to execute the post-launch step.', e));
 }
 
+/**
+ * Unlaunches the Notificare SDK.
+ *
+ * This method shuts down the SDK, removing all data, both locally and remotely in
+ * the servers. It destroys all the device's data permanently.
+ *
+ * @returns {Promise<void>} - A promise that resolves when the SDK has been
+ * successfully unlaunched and all data has been removed.
+ */
 export async function unlaunch(): Promise<void> {
   if (!isReady()) {
     logger.warning('Cannot un-launch Notificare before it has been launched.');
@@ -269,14 +310,35 @@ export async function unlaunch(): Promise<void> {
   }
 }
 
+/**
+ * Provides the current application metadata, if available.
+ *
+ * @returns {NotificareApplication | undefined} - The {@link NotificareApplication} object
+ * representing the configured application, or `undefined` if the application is not yet available.
+ *
+ * @see {@link NotificareApplication}
+ */
 export function getApplication(): NotificareApplication | undefined {
   return getStoredApplication();
 }
 
+/**
+ * Fetches the application metadata.
+ *
+ * @returns {Promise<NotificareApplication>} - A promise that resolves to a
+ * {@link NotificareApplication} object containing the application metadata.
+ */
 export async function fetchApplication(): Promise<NotificareApplication> {
   return fetchApplicationInternal({ saveToLocalStorage: true });
 }
 
+/**
+ * Fetches a {@link NotificareNotification} by its ID.
+ *
+ * @param {string} id - The ID of the notification to fetch.
+ * @returns {Promise<NotificareNotification>} - A promise that resolves to a
+ * {@link NotificareNotification} object associated with the provided ID.
+ */
 export async function fetchNotification(id: string): Promise<NotificareNotification> {
   if (!isConfigured()) throw new NotificareNotConfiguredError();
 
@@ -288,6 +350,13 @@ export async function fetchNotification(id: string): Promise<NotificareNotificat
   return convertCloudNotificationToPublic(notification);
 }
 
+/**
+ * Fetches a {@link NotificareDynamicLink} from an url.
+ *
+ * @param {string} url - The url to fetch the dynamic link from.
+ * @returns {Promise<NotificareDynamicLink>} - A promise that resolves to a
+ * {@link NotificareDynamicLink} object.
+ */
 export async function fetchDynamicLink(url: string): Promise<NotificareDynamicLink> {
   if (!isConfigured()) throw new NotificareNotConfiguredError();
 
@@ -302,6 +371,17 @@ export async function fetchDynamicLink(url: string): Promise<NotificareDynamicLi
   return convertCloudDynamicLinkToPublic(link);
 }
 
+/**
+ * Sends a reply to a notification action.
+ *
+ * This method sends a reply to the specified {@link NotificareNotification} and
+ * {@link NotificareNotificationAction}, optionally including a message and media.
+ *
+ * @param {NotificareNotification} notification - The notification to reply to.
+ * @param {NotificareNotificationAction} action - The action associated with the reply.
+ * @param {NotificationReplyData} data - An {@link NotificationReplyData} object containing the reply.
+ * @returns {Promise<void>} - A promise that resolves once the reply has been sent.
+ */
 export async function createNotificationReply(
   notification: NotificareNotification,
   action: NotificareNotificationAction,
@@ -349,6 +429,17 @@ export interface NotificationReplyData {
   mimeType?: string;
 }
 
+/**
+ * Calls a webhook associated with a notification action.
+ *
+ * This method sends a payload to the specified webhook target URL defined in the notification action.
+ *
+ * @param {NotificareNotification} notification - The {@link NotificareNotification} containing
+ * details about the notification.
+ * @param {NotificareNotificationAction} action - The {@link NotificareNotificationAction} that
+ * triggers the webhook.
+ * @returns {Promise<void>} - A promise that resolves when the webhook has been successfully called.
+ */
 export async function callNotificationWebhook(
   notification: NotificareNotification,
   action: NotificareNotificationAction,
