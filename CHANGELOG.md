@@ -1,5 +1,9 @@
 # CHANGELOG
 
+# Upcoming release
+
+- Allow unsetting user data fields
+
 ## 4.0.1
 
 - Filter invisible and expired inbox items
