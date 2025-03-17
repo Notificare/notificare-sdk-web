@@ -362,12 +362,12 @@ export async function fetchUserData(): Promise<NotificareUserData> {
 /**
  * Updates the custom user data associated with the device.
  *
- * @param {NotificareUserData} userData - The updated {@link NotificareUserData} to associate with
- * the device.
+ * @param {Record<string, string | null>} userData - The updated user data to associate
+ * with the device.
  * @returns {Promise<void>} - A promise that resolves when the user data has
  * been successfully updated.
  */
-export async function updateUserData(userData: NotificareUserData): Promise<void> {
+export async function updateUserData(userData: Record<string, string | null>): Promise<void> {
   checkPrerequisites();
 
   const device = getStoredDevice();
@@ -384,6 +384,8 @@ export async function updateUserData(userData: NotificareUserData): Promise<void
   // Update current device properties.
   setStoredDevice({
     ...device,
-    userData,
+    userData: Object.fromEntries(
+      Object.entries(userData).filter(([, value]) => value != null),
+    ) as Record<string, string>,
   });
 }
