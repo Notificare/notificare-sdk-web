@@ -1,5 +1,4 @@
 import { CloudDoNotDisturb } from '../models/do-not-disturb';
-import { CloudUserData } from '../models/user-data';
 
 export interface CloudDeviceUpdatePayload {
   readonly userID?: string | null;
@@ -12,7 +11,7 @@ export interface CloudDeviceUpdatePayload {
   readonly userAgent?: string;
   readonly timeZoneOffset?: number;
   readonly dnd?: CloudDoNotDisturb | null;
-  readonly userData?: CloudUserData | null;
+  readonly userData?: Record<string, string | null>;
 
   // Push attributes
   readonly transport?: string;

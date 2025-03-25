@@ -23,10 +23,30 @@ let applicationState = ApplicationState.BACKGROUND;
 let backgroundTimestamp: number | undefined;
 let delayedMessageTimeoutId: number | undefined;
 
+/**
+ * Indicates whether in-app messages are currently suppressed.
+ *
+ * @returns {boolean} - `true` if message dispatching and the presentation of in-app messages are
+ * temporarily suppressed, `false` if in-app messages are allowed to be presented.
+ */
 export function hasMessagesSuppressed(): boolean {
   return messagesSuppressed;
 }
 
+/**
+ * Sets the message suppression state.
+ *
+ * When messages are suppressed, in-app messages will not be presented to the user.
+ * By default, stopping the in-app message suppression does not re-evaluate the foreground context.
+ *
+ * To trigger a new context evaluation after stopping in-app message suppression, set the
+ * `evaluateContext` parameter to `true`.
+ *
+ * @param {boolean} suppressed - Set to `true` to suppress in-app messages, or `false` to stop
+ * suppressing them.
+ * @param {boolean} evaluate - Set to `true` to re-evaluate the foreground context when stopping
+ * in-app message suppression.
+ */
 export function setMessagesSuppressed(suppressed: boolean, evaluate?: boolean) {
   const suppressChanged = suppressed !== messagesSuppressed;
   const canEvaluate = !suppressed && suppressChanged && evaluate;
