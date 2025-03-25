@@ -1,6 +1,6 @@
 # CHANGELOG
 
-# Upcoming release
+# 4.1.0
 
 - Allow unsetting user data fields
 
