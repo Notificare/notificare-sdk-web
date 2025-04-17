@@ -1,4 +1,6 @@
+import { NotificareNetworkRequestError } from '@notificare/web-cloud-api';
 import { Component } from '../component';
+import { components } from '../component-cache';
 import { notifyDeviceRegistered } from '../consumer-events';
 import {
   createDevice,
@@ -16,7 +18,7 @@ import { launch as launchSession, unlaunch as unlaunchSession } from '../interna
 import { isReady } from '../launch-state';
 import { logger } from '../logger';
 import { getOptions } from '../options';
-import { asPublicDevice, getStoredDevice } from '../storage/local-storage';
+import { asPublicDevice, getStoredDevice, setStoredDevice } from '../storage/local-storage';
 import { getApplicationVersion } from '../utils';
 
 /* eslint-disable class-methods-use-this */
@@ -49,7 +51,25 @@ export class DeviceComponent extends Component {
     } else if (device) {
       const isApplicationUpgrade = device.appVersion !== getApplicationVersion();
 
-      await updateDevice();
+      try {
+        await updateDevice();
+      } catch (e) {
+        if (e instanceof NotificareNetworkRequestError && e.response.status === 404) {
+          logger.warning('The device was removed from Notificare. Recovering...');
+
+          logger.debug('Resetting local storage.');
+          await this.resetLocalStorage();
+
+          if (!options?.ignoreTemporaryDevices) {
+            logger.debug('Creating a new device.');
+            await this.handleCreateDeviceWithSession();
+          }
+
+          return;
+        }
+
+        throw e;
+      }
 
       // Having a stored device, we can safely launch the session module.
       await launchSession();
@@ -125,5 +145,25 @@ export class DeviceComponent extends Component {
   private async handleDeleteDeviceWithSession() {
     await unlaunchSession();
     await deleteDevice();
+  }
+
+  private async resetLocalStorage() {
+    // eslint-disable-next-line no-restricted-syntax
+    for (const component of components.values()) {
+      logger.debug(`Resetting '${component.name}' component.`);
+
+      // eslint-disable-next-line no-await-in-loop
+      await component.clearStorage();
+    }
+
+    // Should only clear device-related local storage properties.
+    setStoredDevice(undefined);
+    localStorage.removeItem('re.notifica.preferred_language');
+    localStorage.removeItem('re.notifica.preferred_region');
+
+    // Clear cached session to prevent resuming the previous session.
+    // It should create a new session.
+    localStorage.removeItem('re.notifica.session');
+    localStorage.removeItem('re.notifica.unload_timestamp');
   }
 }
