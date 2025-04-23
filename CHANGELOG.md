@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## Upcoming release
+
+- Recover when a device is removed remotely
+
 # 4.1.0
 
 - Allow unsetting user data fields
