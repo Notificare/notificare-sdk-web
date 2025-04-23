@@ -29,7 +29,7 @@ jobs:
           role-to-assume: ${{ secrets.aws_iam_role }}
           aws-region: ${{ secrets.aws_region }}
       - name: Download binaries
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: sample-app
           path: build

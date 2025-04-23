@@ -3,6 +3,6 @@ import { DeviceComponent } from './internal/components/device-component';
 import { SessionComponent } from './internal/components/session-component';
 
 export function registerComponents() {
-  registerComponent(new SessionComponent());
   registerComponent(new DeviceComponent());
+  registerComponent(new SessionComponent());
 }
