@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## Upcoming Release
+
+- Fix issue where camera remained active after dismissing modal
+- Fix parseInboxResponse() parameters validation (user-inbox)
+
 ## 4.2.0
 
 - Recover when a device is removed remotely
