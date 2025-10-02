@@ -1,4 +1,6 @@
 import { createCloudEvent } from '@notificare/web-cloud-api';
+import { NotificareNotReadyError } from '../errors/notificare-not-ready-error';
+import { isReady } from '../public-api';
 import { getCloudApiEnvironment } from './cloud-api/environment';
 import { getSession } from './internal-api-session-shared';
 import { isConfigured } from './launch-state';
@@ -57,6 +59,11 @@ export async function logNotificationOpen(notificationId: string) {
  * details.
  */
 export async function logCustom(event: string, data?: Record<string, unknown>) {
+  if (!isReady()) {
+    logger.warning('Notificare is not ready yet.');
+    throw new NotificareNotReadyError();
+  }
+
   await logInternal({
     type: `re.notifica.event.custom.${event}`,
     data,
