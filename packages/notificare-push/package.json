@@ -1,6 +1,6 @@
 {
   "name": "@notificare/web-push",
-  "version": "4.2.0",
+  "version": "4.2.1",
   "description": "The push package for the 'notificare-web' umbrella package.",
   "author": "Notificare <info@notificare.com> (https://notificare.com)",
   "license": "MIT",
@@ -35,10 +35,10 @@
     "dist"
   ],
   "dependencies": {
-    "@notificare/web-cloud-api": "^4.2.0",
-    "@notificare/web-core": "^4.2.0",
-    "@notificare/web-logger": "^4.2.0",
-    "@notificare/web-ui": "^4.2.0",
+    "@notificare/web-cloud-api": "^4.2.1",
+    "@notificare/web-core": "^4.2.1",
+    "@notificare/web-logger": "^4.2.1",
+    "@notificare/web-ui": "^4.2.1",
     "tslib": "^2.5.0"
   },
   "devDependencies": {
