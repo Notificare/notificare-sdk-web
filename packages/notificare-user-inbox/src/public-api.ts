@@ -41,9 +41,18 @@ export async function parseInboxResponse(
 ): Promise<NotificareUserInboxResponse> {
   checkPrerequisites();
 
-  if (!response.count) throw new Error("Missing 'count' parameter.");
-  if (!response.unread) throw new Error("Missing 'unread' parameter.");
-  if (!response.inboxItems) throw new Error("Missing 'items' parameter.");
+  if (response.count == null) {
+    throw new Error("Missing 'count' parameter.");
+  }
+  if (response.unread == null) {
+    throw new Error("Missing 'unread' parameter.");
+  }
+  if (response.inboxItems == null) {
+    throw new Error("Missing 'inboxItems' parameter.");
+  }
+  if (!Array.isArray(response.inboxItems)) {
+    throw new Error("Invalid 'inboxItems' parameter: expected an array.");
+  }
 
   return {
     items: response.inboxItems.map(convertNetworkUserInboxItemToPublic),

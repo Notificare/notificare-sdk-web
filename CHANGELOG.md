@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 4.2.1
+
+- Fix issue where the camera remained active after dismissing modal
+- Fix parseInboxResponse() parameters validation (user-inbox)
+- Fix issue where custom events could be logged when Notificare was not ready
+
 ## 4.2.0
 
 - Recover when a device is removed remotely
