@@ -29,20 +29,26 @@
 .notificare .notificare__iam-banner-content {
     display: flex;
     flex-direction: column;
+    overflow: hidden;
 }
 
 .notificare .notificare__iam-banner-content-title {
     font-size: 16px;
     font-weight: 600;
 
-    /* TODO: max-lines 2 */
     overflow: hidden;
     text-overflow: ellipsis;
-    white-space: nowrap;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
 
     margin-bottom: 4px;
 }
 
 .notificare .notificare__iam-banner-content-message {
-    /* TODO: max-lines 3 */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
 }
