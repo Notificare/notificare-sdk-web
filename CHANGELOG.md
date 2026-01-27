@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## Upcoming release
+
+- Wait for the in-app message action event before executing the presenter
+
 ## 4.2.1
 
 - Fix issue where the camera remained active after dismissing modal
