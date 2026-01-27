@@ -43,16 +43,25 @@
     font-size: 16px;
     font-weight: 600;
 
-    /* TODO: max-lines 2 */
     overflow: hidden;
     text-overflow: ellipsis;
-    white-space: nowrap;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
 
     margin-bottom: 4px;
 }
 
+.notificare .notificare__iam-card:not(:has(> .notificare__iam-card-header)) .notificare__iam-card-content-title {
+    margin-right: 32px;
+}
+
 .notificare .notificare__iam-card-content-message {
-    /* TODO: max-lines 3 */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
 }
 
 .notificare .notificare__iam-card-actions {
