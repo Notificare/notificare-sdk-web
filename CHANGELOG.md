@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## Upcoming release
+## 4.2.2
 
 - Improve how long content overflows in the push onboarding and in-app messages.
 - Wait for the in-app message action event before executing the presenter
