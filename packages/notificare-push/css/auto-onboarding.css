@@ -23,7 +23,7 @@
 
 .notificare.notificare-push-onboarding .notificare__onboarding-title {
     font-size: 24px;
-    line-height: 24px;
+    line-height: 32px;
     font-weight: 400;
 
     overflow: hidden;
@@ -32,7 +32,11 @@
 }
 
 .notificare.notificare-push-onboarding .notificare__onboarding-text {
-
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 6;
 }
 
 .notificare.notificare-push-onboarding .notificare__onboarding-footer {
@@ -49,4 +53,5 @@
     flex-grow: 1;
     justify-content: flex-end;
     column-gap: 8px;
+    overflow: hidden;
 }

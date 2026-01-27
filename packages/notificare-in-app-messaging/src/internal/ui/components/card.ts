@@ -43,7 +43,17 @@ function createCardElement(
     e.preventDefault();
   });
 
-  container.appendChild(createHeaderElement(message, () => onCloseButtonClick()));
+  if (message.image) {
+    container.appendChild(createHeaderElement(message, () => onCloseButtonClick()));
+  } else {
+    container.appendChild(
+      createCloseButton({
+        variant: message.image ? 'solid' : 'default',
+        onClick: () => onCloseButtonClick(),
+      }),
+    );
+  }
+
   container.appendChild(createContentElement(message));
 
   const actionsElement = createActionsElement(message, onActionClick);
